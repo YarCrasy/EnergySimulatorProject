@@ -1,0 +1,12 @@
+import "./NotFound.css";
+
+function NotFound() {
+  return (
+    <div className="not-found-container">
+      <h1>Página No Encontrada</h1>
+      <p>Lo sentimos, la página que estás buscando no existe.</p>
+    </div>
+  );
+}
+
+export default NotFound;
