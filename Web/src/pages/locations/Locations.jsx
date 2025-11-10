@@ -5,7 +5,7 @@ function Contact() {
     <div className="contact-container">
       <h1>Contacto</h1>
       <p>
-        Si tienes preguntas o comentarios, no dudes en ponerte en contacto con nosotros.
+        Mostramos todas las ubicaciones donde operamos y cómo contactarnos.
       </p>
     </div>
   );
