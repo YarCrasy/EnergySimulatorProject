@@ -1,10 +1,12 @@
+import { Link } from "react-router-dom";
 import "./Header.css";
 
 function Header() {
     return (
-        <header className="header-container">
-            <h1>Simulador de Energía Renovable</h1>
+        <header>
+            <Link to="/">Renewable Energy Project</Link>
         </header>
     );
 }
+
 export default Header;
