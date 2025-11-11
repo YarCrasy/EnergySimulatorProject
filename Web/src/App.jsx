@@ -18,7 +18,7 @@ function App() {
     <>
       <BrowserRouter>
         <Header />
-        <SearchBar />
+        <SearchBar onSearch={() => alert("Search triggered")} withFilters={true} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="*" element={<NotFound />} />

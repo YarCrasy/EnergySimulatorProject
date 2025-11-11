@@ -17,8 +17,12 @@
 }
 
 .search-bar button{
+    background: none;
+    border: none;
     cursor: pointer;
     margin: 10px;
+    width: 22px;
+    height: 22px;
 }
 
 .search-bar input{
@@ -30,4 +34,33 @@
 
 .search-input:focus{
     outline: none;
+}
+
+.filter-list{
+    position: absolute;
+    background: white;
+    border-radius: 8px;
+    z-index: 1000;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 150px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--primary-color);
+}
+
+.filter-list ul{
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+}
+
+.menu-wrapper{
+    position: relative;
+    display: inline-block;
+}
+
+.search-inner{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
 }
