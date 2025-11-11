@@ -6,10 +6,11 @@ import Header from './components/header/Header'
 
 // Importing page components
 import Home from './pages/home/Home'
-import Simulator from './pages/simulator/Simulator'
-import Projects from './pages/projects/Projects'
-import Contact from './pages/contact/Contact'
 import NotFound from './pages/not-found/NotFound'
+import Simulator from './pages/simulator/Simulator'
+import About from './pages/about/About'
+import Contact from './pages/contact/Contact'
+import SearchBar from './components/searchBar/SearchBar'
 
 function App() {
 
@@ -17,12 +18,13 @@ function App() {
     <>
       <BrowserRouter>
         <Header />
+        <SearchBar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/simulator" element={<Simulator />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/simulator" element={<Simulator />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </BrowserRouter>
     </>
