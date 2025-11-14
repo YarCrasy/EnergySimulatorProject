@@ -1,31 +1,38 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
-
-// Importing components
+import Footer from './components/footer/Footer'
 import Header from './components/header/Header'
 
 // Importing page components
 import Home from './pages/home/Home'
-import NotFound from './pages/not-found/NotFound'
 import Simulator from './pages/simulator/Simulator'
-import About from './pages/about/About'
+import Projects from './pages/projects/Projects'
 import Contact from './pages/contact/Contact'
-import SearchBar from './components/searchBar/SearchBar'
+import NotFound from './pages/not-found/NotFound'
+import Register from './pages/register/Register'
 
 function App() {
+  const hidePaths = ['/simulator', '/projects', '/register', '/login']
+
+  const HeaderWrapper = () => {
+    const location = useLocation()
+    const isHidden = hidePaths.some(p => location.pathname.startsWith(p))
+    return isHidden ? null : <Header />
+  }
 
   return (
     <>
       <BrowserRouter>
-        <Header />
-        <SearchBar onSearch={() => alert("Search triggered")} withFilters={true} />
+        <HeaderWrapper />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="*" element={<NotFound />} />
           <Route path="/simulator" element={<Simulator />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/projects" element={<Projects />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </>
   )
