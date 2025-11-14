@@ -9,7 +9,8 @@ function Header() {
                 <ul>
                     <li><Link to="/simulator">Simulador</Link></li>
                     <li><Link to="/about">Sobre nosotros</Link></li>
-                    <li><Link to="/contact">Ubicación</Link></li>
+                    <li><Link to="/projects">Proyectos</Link></li>
+                    <li><Link to="/locations">Ubicaciones</Link></li>
                 </ul>
             </nav>
             <Link to="/login">Login</Link>
