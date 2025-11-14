@@ -15,16 +15,18 @@ function Projects() {
             </div>
             <div className="projects-list">
                 {
-                    [1, 2, 3, 4, 5, 6].map((project) => (
+                    [1, 2, 3, 4, 5, 6, 7, 8, 9].map((key) => (
                         <ProjectCard
-                            key={project}
-                            title={`Proyecto ${project}`}
-                            lastUpdated={`2024-06-${project.toString().padStart(2, '0')}`}
+                            key={key}
+                            id={key}
+                            title={`Proyecto ${key}`}
+                            lastUpdated={new Date().toLocaleDateString()}
                             imageUrl={placeHorderImg}
                         />
                     ))
                 }
             </div>
+            
         </main>
     );
 }
