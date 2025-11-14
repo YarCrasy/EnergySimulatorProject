@@ -10,6 +10,7 @@ header {
     position: absolute;
     align-self: center;
     justify-content: space-between;
+    z-index: 1000;
 }
 
 header ul {

@@ -1,12 +1,9 @@
-header {
+.top-bar{
     display: flex;
-    background-color: red;
-    padding: 0px;
-    text-align: center;
-    max-width: none;
-    width: 100%;
-    margin: 0px;
-    border-radius: 0px;
-    position: relative;
     justify-content: center;
+}
+
+.projects-list{
+    display: flex;
+    flex-wrap: wrap;
 }

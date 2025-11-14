@@ -21,3 +21,12 @@
   flex-direction: column;
     min-height: 100vh;
 }
+
+main {
+  flex: 1;
+  padding: 20px;
+  padding-top: 80px; /* To avoid overlap with fixed header */
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
