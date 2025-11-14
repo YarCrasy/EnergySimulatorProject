@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
 import Footer from './components/footer/Footer'
 import Header from './components/header/Header'
@@ -12,11 +12,18 @@ import NotFound from './pages/not-found/NotFound'
 import Register from './pages/register/Register'
 
 function App() {
+  const hidePaths = ['/simulator', '/projects', '/register', '/login']
+
+  const HeaderWrapper = () => {
+    const location = useLocation()
+    const isHidden = hidePaths.some(p => location.pathname.startsWith(p))
+    return isHidden ? null : <Header />
+  }
 
   return (
     <>
       <BrowserRouter>
-        <Header />
+        <HeaderWrapper />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/simulator" element={<Simulator />} />
@@ -28,7 +35,7 @@ function App() {
         <Footer />
       </BrowserRouter>
     </>
-    )
+  )
 }
 
 export default App
