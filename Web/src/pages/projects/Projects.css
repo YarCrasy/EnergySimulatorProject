@@ -77,3 +77,10 @@
     justify-content: center;
     align-items: center;
 }
+
+.create-project-button:hover{
+    background-color: #45a049;
+    box-shadow: 0 6px 10px #467c49;
+    transform: translateY(-1px);
+    transition: all 0.2s;
+}
