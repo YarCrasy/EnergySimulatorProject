@@ -16,6 +16,7 @@
   display: flex;
   flex-direction: column;
 }
+
 .app-container {
   display: flex;
   flex-direction: column;
@@ -29,4 +30,26 @@ main {
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
+}
+
+.force-orientation h2{
+  visibility: hidden;
+}
+
+@media (max-width: 600px) {
+  .force-orientation {
+    background: grey;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+  }
+  .force-orientation h2 {
+    visibility: visible;
+    color: white;
+    text-align: center;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }

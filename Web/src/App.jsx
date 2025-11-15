@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
+import usePortraitOrientation from './hooks/usePortraitOrientation'
 import './App.css'
 import Footer from './components/footer/Footer'
 import Header from './components/header/Header'
@@ -22,22 +23,38 @@ function App() {
     return isHidden ? null : <Header />
   }
 
+  const isPortraitSmall = usePortraitOrientation(600)
+
+  const ForceOrientationHTML = () => {
+    return (
+      <div className="force-orientation">
+        <h2>Por favor, gira tu dispositivo para una mejor experiencia.</h2>
+      </div>
+    );
+  }
+
+  const BrowserRouterHTML = () => {
+    return (
+      <BrowserRouter>
+          <HeaderWrapper />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/simulator" element={<Simulator />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path='/locations' element={<Mapa />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+    );
+  }
+
   return (
     <>
-      <BrowserRouter>
-        <HeaderWrapper />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/simulator" element={<Simulator />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path='/locations' element={<Mapa />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
+      {isPortraitSmall ? <ForceOrientationHTML /> : <BrowserRouterHTML />}
     </>
   )
 }

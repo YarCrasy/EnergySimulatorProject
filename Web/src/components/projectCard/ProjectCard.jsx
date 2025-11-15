@@ -65,8 +65,8 @@ function ProjectCard({ id, title, lastUpdated, imageUrl, onOpen, onDelete }) {
                     className="context-menu"
                     style={{ top: menuPos.y + "px", left: menuPos.x + "px" }}
                 >
-                    <li className="context-menu__item" onClick={handleOpen}>Abrir</li>
-                    <li className="context-menu__item" onClick={handleDelete}>Eliminar</li>
+                    <li className="context-menu_item" onClick={handleOpen}>Abrir</li>
+                    <li className="context-menu_item" onClick={handleDelete}>Eliminar</li>
                 </ul>
             )}
         </div>
