@@ -34,6 +34,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path='/locations' element={<Mapa />} />
           <Route path ="/about" element ={<About />} />
+          <Route path="/home" element={<Home />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
