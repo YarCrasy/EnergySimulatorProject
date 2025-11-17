@@ -6,36 +6,39 @@ import backIcon from "../../assets/back-arrow.svg";
 
 import { useState } from "react";
 
-function SearchBar({ onSearch, withFilters = false }) {
+const HeadingButton = {
+    NONE: 1,
+    FILTER: 2,
+    BACK: 3
+};
 
+function SearchBar({ onSearch, headingButton = HeadingButton.NONE, placeholder = "Buscar...", filterOptions = [] }) {
 
     return (
-        <>
-            <div className="search-bar">
-                <div className="search-inner" style={{ width: "100%" }}>
-                    {withFilters && <FilterList />}
-                    {!withFilters && <BackBtn />}
+        <div className="search-bar">
+            <div className="search-inner" style={{ width: "100%" }}>
+                {headingButton === HeadingButton.FILTER && <FilterList filterOptions={filterOptions} />}
+                {headingButton === HeadingButton.BACK && <BackBtn />}
 
-                    <input className="search-input" type="text" placeholder="Buscar..."
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                                onSearch();
-                            }
-                        }}
-                    />
-                </div>
-                <button
-                    type="button" aria-label="Buscar" className="search-button"
-                    onClick={onSearch}>
-                    <img src={searchIcon} alt="Buscar" />
-                </button>
-
+                <input className="search-input" type="text" placeholder={placeholder}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            onSearch();
+                        }
+                    }}
+                />
             </div>
-        </>
+            <button
+                type="button" aria-label="Buscar" className="search-button"
+                onClick={onSearch}>
+                <img src={searchIcon} alt="Buscar" />
+            </button>
+
+        </div>
     );
 }
 
-function FilterList() {
+function FilterList({ filterOptions }) {
     const [filterClicked, setFilterClicked] = useState(false);
     return (
         <div className="menu-wrapper">
@@ -47,9 +50,9 @@ function FilterList() {
             {filterClicked && (
                 <div className="filter-list">
                     <ul>
-                        <li>Filtro 1</li>
-                        <li>Filtro 2</li>
-                        <li>Filtro 3</li>
+                        {filterOptions.map((option, index) => (
+                            <li key={index}>{option}</li>
+                        ))}
                     </ul>
                 </div>
             )}
@@ -59,10 +62,10 @@ function FilterList() {
 
 function BackBtn() {
     return (
-        <button type="button" aria-label="Volver" className="back-button">
+        <button type="button" aria-label="Volver" className="back-button" onClick={() => window.history.back()}>
             <img src={backIcon} alt="Volver" />
         </ button>
     );
 }
 
-export default SearchBar;
+export { SearchBar, HeadingButton };

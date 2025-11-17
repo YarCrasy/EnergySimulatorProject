@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
+import usePortraitOrientation from './hooks/usePortraitOrientation'
 import './App.css'
 import Footer from './components/footer/Footer'
 import Header from './components/header/Header'
@@ -12,6 +13,7 @@ import NotFound from './pages/not-found/NotFound'
 import Register from './pages/register/Register'
 import Mapa from './pages/locations/Locations'
 import About from './pages/about/About'
+import Login from './pages/login/Login'
 
 function App() {
   const hidePaths = ['/simulator', '/projects', '/register', '/login']
@@ -22,8 +24,18 @@ function App() {
     return isHidden ? null : <Header />
   }
 
-  return (
-    <>
+  const isPortraitSmall = usePortraitOrientation(600)
+
+  const ForceOrientationHTML = () => {
+    return (
+      <div className="force-orientation">
+        <h2>Por favor, gira tu dispositivo para una mejor experiencia.</h2>
+      </div>
+    );
+  }
+
+  const BrowserRouterHTML = () => {
+    return (
       <BrowserRouter>
         <HeaderWrapper />
         <Routes>
@@ -39,6 +51,12 @@ function App() {
         </Routes>
         <Footer />
       </BrowserRouter>
+    );
+  }
+
+  return (
+    <>
+      {isPortraitSmall ? <ForceOrientationHTML /> : <BrowserRouterHTML />}
     </>
   )
 }

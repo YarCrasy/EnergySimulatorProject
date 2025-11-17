@@ -7,9 +7,10 @@ header {
     width: 100%;
     margin: 10px;
     border-radius: 50px;
-    position: relative;
+    position: absolute;
     align-self: center;
     justify-content: space-between;
+    z-index: 1000;
 }
 
 header ul {
