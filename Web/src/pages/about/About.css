@@ -1,0 +1,149 @@
+/* Contenedor principal */
+.about-us {
+  padding: 60px 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f7f9f6; /* fondo muy claro */
+  color: #0C123A;
+}
+
+/* Header de la sección */
+.section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #1a3d00; 
+}
+
+.section-header p {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+/* Valores de la empresa */
+.about-values {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+.value-card {
+  flex: 1 1 300px;
+  background-color: #fff;
+  padding: 25px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+    text-align: center;
+height: 58vh;
+}
+
+.value-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+}
+
+.value-card h3 {
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+  color: #2a5d0f; 
+}
+
+.value-card p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #555;
+}
+
+.value-card .green-world-image,
+.value-card .innovation-image {
+  margin-top: 15px;
+  width: 100%;
+  height: 250px;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+
+/* Sección Solutions */
+.solutions h3 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  color: #1a3d00; /* verde oscuro */
+}
+
+.comercial {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Imágenes de servicios */
+.domestic-image,
+.comunity-image,
+.industrial-image {
+  flex: 1 1 32%;
+  height: 220px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.domestic-image h4,
+.comunity-image h4,
+.industrial-image h4 {
+  margin: 0;
+  font-size: 3.5rem;
+  color: #f7f1c4; 
+}
+
+.domestic-image p,
+.comunity-image p,
+.industrial-image p {
+  margin: 5px 0 0;
+  font-size: 1.5rem;
+  color: #f7f1c4;
+}
+
+/* CTA final */
+.cta-about {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.cta-about p {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.btn-cta {
+  display: inline-block;
+  background-color: #9fde17;
+  color: #0C123A;
+  padding: 12px 25px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.btn-cta:hover {
+  background-color: #85c300;
+}

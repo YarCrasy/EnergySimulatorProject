@@ -11,6 +11,7 @@ import Contact from './pages/contact/Contact'
 import NotFound from './pages/not-found/NotFound'
 import Register from './pages/register/Register'
 import Mapa from './pages/locations/Locations'
+import About from './pages/about/About'
 
 function App() {
   const hidePaths = ['/simulator', '/projects', '/register', '/login']
@@ -32,6 +33,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/register" element={<Register />} />
           <Route path='/locations' element={<Mapa />} />
+          <Route path ="/about" element ={<About />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
