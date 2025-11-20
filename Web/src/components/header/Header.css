@@ -1,6 +1,6 @@
 header {
     display: flex;
-    background-color: var(--primary-color);
+    background-color: #d2d9cccf;
     padding: 15px 25px;
     text-align: center;
     max-width: 1400px;
@@ -23,7 +23,7 @@ header ul {
 }
 
 header a {
-    color: white;
+    color: rgb(15, 45, 29);
     text-decoration: none;
     font-size: 20px;
     font-weight: bold;
