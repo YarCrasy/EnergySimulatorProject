@@ -33,7 +33,7 @@ public class PanelController {
     }
 
     @GetMapping("/{id}")
-    public Panel getPanelById(@PathVariable Long id) {
+    public Panel getPanelById(@PathVariable int id) {
         return panelRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Panel not found"));
     }
@@ -44,7 +44,7 @@ public class PanelController {
     }
 
     @PutMapping("/{id}")
-    public Panel updatePanel(@PathVariable Long id, @RequestBody Panel panelDetails) {
+    public Panel updatePanel(@PathVariable int id, @RequestBody Panel panelDetails) {
         return panelRepository.findById(id)
                 .map(panel -> {
                     panel.setName(panelDetails.getName());
@@ -59,7 +59,7 @@ public class PanelController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletePanel(@PathVariable Long id) {
+    public void deletePanel(@PathVariable int id) {
         panelRepository.deleteById(id);
     }
 

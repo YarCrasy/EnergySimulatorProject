@@ -11,6 +11,7 @@ import ling.natt.backend_api.models.Element;
 
 @RestController
 @RequestMapping("/projects")
+@CrossOrigin(origins = "http://localhost:5173")
 public class ProjectController {
     @Autowired
     private ProjectRepository projectRepository;
@@ -20,14 +21,14 @@ public class ProjectController {
         return projectRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Optional<Project> getProjectById(@PathVariable int id) {
-        return projectRepository.findById(id);
-    }
-
     @PostMapping
     public Project createProject(@RequestBody Project project) {
         return projectRepository.save(project);
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Project> getProjectById(@PathVariable int id) {
+        return projectRepository.findById(id);
     }
 
     @PutMapping("/{id}")

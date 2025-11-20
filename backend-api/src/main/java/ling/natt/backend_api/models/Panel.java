@@ -14,7 +14,7 @@ public class Panel extends Element {
     public Panel() {
     }
 
-    public Panel(Long id, String nombre, Float x, Float y, String brand, Double efficiency, Double powerWatt) {
+    public Panel(int id, String nombre, Float x, Float y, String brand, Double efficiency, Double powerWatt) {
         super(id, nombre, x, y);
         this.brand = brand;
         this.efficiency = efficiency;

@@ -20,7 +20,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable Long id) {
+    public Optional<User> getUserById(@PathVariable int id) {
         return userRepository.findById(id);
     }
 
@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+    public User updateUser(@PathVariable int id, @RequestBody User userDetails) {
         User result = userRepository.findById(id)
                 .map(user -> {
                     user.setFullName(userDetails.getFullName());
@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public void deleteUser(@PathVariable int id) {
         userRepository.deleteById(id);
     }
 }

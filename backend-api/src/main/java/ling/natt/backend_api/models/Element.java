@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 public class Element {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     private String name;
     private Float x;
     private Float y;
@@ -22,7 +22,7 @@ public class Element {
     public Element() {
     }
 
-    public Element(Long id, String name, Float x, Float y) {
+    public Element(int id, String name, Float x, Float y) {
         this.id = id;
         this.name = name;
         this.x = x;
@@ -30,11 +30,11 @@ public class Element {
     }
 
     // getters y setters
-    public Long getId() {
+    public int getId() {
         return this.id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
