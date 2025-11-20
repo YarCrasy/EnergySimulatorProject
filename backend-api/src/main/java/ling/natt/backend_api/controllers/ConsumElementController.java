@@ -37,7 +37,7 @@ public class ConsumElementController {
     }
 
     @GetMapping("/{id}")
-    public ConsumElement getConsumElementById(@PathVariable Long id) {
+    public ConsumElement getConsumElementById(@PathVariable int id) {
         return consumElementRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("ConsumElement not found"));
     }
@@ -48,7 +48,7 @@ public class ConsumElementController {
     }
 
     @PutMapping("/{id}")
-    public ConsumElement updateConsumElement(@PathVariable Long id, @RequestBody ConsumElement details) {
+    public ConsumElement updateConsumElement(@PathVariable int id, @RequestBody ConsumElement details) {
         return consumElementRepository.findById(id)
                 .map(consumElement -> {
                     consumElement.setName(details.getName());
@@ -61,7 +61,7 @@ public class ConsumElementController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteConsumElement(@PathVariable Long id) {
+    public void deleteConsumElement(@PathVariable int id) {
         consumElementRepository.deleteById(id);
     }
     // Crear un ConsumElement asociado a un Project
