@@ -1,0 +1,40 @@
+.simulator-page{
+    padding: 0px;
+    max-width: none;
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+}
+
+.side-menu{
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+footer{
+    visibility: collapse;
+}
+
+
+.menu-top-side{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.menu-top-side .bar{
+    padding: 10px;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.simulator-viewer{
+    flex: 1;
+    background-color: #e0e0e0;
+}
