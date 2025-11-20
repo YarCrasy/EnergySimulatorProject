@@ -14,6 +14,7 @@ import Register from './pages/register/Register'
 import Mapa from './pages/locations/Locations'
 import About from './pages/about/About'
 import Login from './pages/login/Login'
+import ForceOrientationHTML from './components/forceOrientation/ForceOrientation'
 
 function App() {
   const hidePaths = ['/simulator', '/projects', '/register', '/login']
@@ -22,16 +23,6 @@ function App() {
     const location = useLocation()
     const isHidden = hidePaths.some(p => location.pathname.startsWith(p))
     return isHidden ? null : <Header />
-  }
-
-  const isPortraitSmall = usePortraitOrientation(600)
-
-  const ForceOrientationHTML = () => {
-    return (
-      <div className="force-orientation">
-        <h2>Por favor, gira tu dispositivo para una mejor experiencia.</h2>
-      </div>
-    );
   }
 
   const BrowserRouterHTML = () => {
@@ -56,7 +47,7 @@ function App() {
 
   return (
     <>
-      {isPortraitSmall ? <ForceOrientationHTML /> : <BrowserRouterHTML />}
+      {usePortraitOrientation() ? <ForceOrientationHTML /> : <BrowserRouterHTML />}
     </>
   )
 }

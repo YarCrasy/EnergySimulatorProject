@@ -17,39 +17,18 @@
   flex-direction: column;
 }
 
+
 .app-container {
   display: flex;
   flex-direction: column;
-    min-height: 100vh;
+  min-height: 100vh;
 }
 
 main {
   flex: 1;
   padding: 20px;
-  padding-top: 80px; /* To avoid overlap with fixed header */
+  padding-top: 80px;
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
-}
-
-.force-orientation h2{
-  visibility: hidden;
-}
-
-@media (max-width: 600px) {
-  .force-orientation {
-    background: grey;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 2000;
-  }
-  .force-orientation h2 {
-    visibility: visible;
-    color: white;
-    text-align: center;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-  }
 }
