@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+//import ling.natt.backend_api.models.Element;
 
 @RestController
 @RequestMapping("/projects")
@@ -46,8 +47,19 @@ public class ProjectController {
                 });
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteProject(@PathVariable int id) {
-        projectRepository.deleteById(id);
-    }
+    // @DeleteMapping("/{id}")
+    // public void deleteProject(@PathVariable Long id) {
+    // projectRepository.deleteById(id); // pendiente de que se haga el metodo en
+    // repositorio
+    // }
+
+    // @GetMapping("/{projectId}/elements")
+    // public List<Element> getProjectElements(@PathVariable Long projectId) {
+    // Project project = projectRepository.findById(projectId) // peniente de que se
+    // haga el metodo en repositorio
+    // .orElseThrow(() -> new RuntimeException("Project not found"));
+    // return project.getElements(); // Asumiendo que se creara un método
+    // getElements() en la clase Project
+    // }
+
 }

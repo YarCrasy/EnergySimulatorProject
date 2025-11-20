@@ -31,7 +31,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-        User result =userRepository.findById(id)
+        User result = userRepository.findById(id)
                 .map(user -> {
                     user.setFullName(userDetails.getFullName());
                     user.setEmail(userDetails.getEmail());
