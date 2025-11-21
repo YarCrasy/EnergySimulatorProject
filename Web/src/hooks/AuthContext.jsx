@@ -32,6 +32,13 @@ const usersDB = [
     name: "Nataly11",
     role: "admin",
   },
+  {
+    id: 5,
+    email: "123@testing.com",
+    password: "123",
+    name: "123",
+    role: "admin",
+  },
 ];
 
 export function AuthProvider({ children }) {

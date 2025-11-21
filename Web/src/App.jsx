@@ -37,15 +37,15 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/register" element={<Register />} />
           <Route path='/locations' element={<Mapa />} />
-          <Route path ="/about" element ={<About />} />
+          <Route path="/about" element={<About />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
- {/* RUTAS PROTEGIDAS */}
-        <Route path="/projects"element={ <PrivateRoute> <Projects /></PrivateRoute> }/>
+          {/* RUTAS PROTEGIDAS */}
+          <Route path="/projects" element={<PrivateRoute> <Projects /></PrivateRoute>} />
 
-        <Route path="/simulator"element={<PrivateRoute><Simulator /></PrivateRoute>}/>
-         {/* Solo admin */}
-        <Route path="/administration/users" element={<PrivateRoute><AdminUsers /></PrivateRoute>} />  
+          <Route path="/simulator" element={<PrivateRoute><Simulator /></PrivateRoute>} />
+          {/* Solo admin */}
+          <Route path="/administration/users" element={<PrivateRoute><AdminUsers /></PrivateRoute>} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

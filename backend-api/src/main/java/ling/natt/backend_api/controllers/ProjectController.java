@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import ling.natt.backend_api.models.Element;
 
 @RestController
-@RequestMapping("/projects")
+@RequestMapping("/api/projects")
 @CrossOrigin(origins = "http://localhost:5173")
 public class ProjectController {
     @Autowired

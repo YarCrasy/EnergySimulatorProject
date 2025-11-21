@@ -20,8 +20,8 @@
     border: none;
     cursor: pointer;
     margin: 10px;
-    width: 22px;
-    height: 22px;
+    width: 100%;
+    max-width: 22px;
 }
 
 .search-bar input{
