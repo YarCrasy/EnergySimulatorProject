@@ -1,35 +1,19 @@
+
 import "./Register.css";
-import register from "../../images/register.jpg";
+import registerImg from "../../images/registerImg.jpg";
+import RegisterForm from "../../components/registerForm/RegisterForm";
+
 
 export default function Register() {
   return (
-    <div className="register" style={{
-    background: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${register}) center/cover no-repeat`,
-  }}>
+    <div
+      className="register"
+      style={{
+        background: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${registerImg}) center/cover no-repeat`,
+      }}
+    >
       <div className="form">
-        <form className="register-form" onSubmit={(e) => e.preventDefault()}>
-          <div className="form-field">
-            <label>Nombre completo</label>
-            <input type="text" placeholder="Juan Lopez" />
-          </div>
-          <div className="form-field">
-            <label>Fecha nacimiento</label>
-            <input type="date" placeholder="01/08/2000" />
-          </div>
-          <div className="form-field">
-            <label>Correo electrónico</label>
-            <input type="email" placeholder="ejemplo@gmail.com" />
-          </div>
-          <div className="form-field">
-            <label>Contraseña</label>
-            <input type="password" placeholder="*********" />
-          </div>
-          <div className="form-field">
-            <label>Repita contraseña</label>
-            <input type="password" placeholder="*********" />
-          </div>
-          <button type="submit">Crear cuenta</button>
-        </form>
+        <RegisterForm />
       </div>
     </div>
   );

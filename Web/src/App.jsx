@@ -16,7 +16,7 @@ import Register from './pages/register/Register'
 import Mapa from './pages/locations/Locations'
 import About from './pages/about/About'
 import Login from './pages/login/Login'
-
+import AdminUsers from './pages/administration/adminUsers/AdminUsers'
 function App() {
   const hidePaths = ['/simulator', '/projects', '/login', '/register']
 
@@ -52,6 +52,8 @@ function App() {
         <Route path="/projects"element={ <PrivateRoute> <Projects /></PrivateRoute> }/>
 
         <Route path="/simulator"element={<PrivateRoute><Simulator /></PrivateRoute>}/>
+         {/* Solo admin */}
+        <Route path="/administration/users" element={<PrivateRoute><AdminUsers /></PrivateRoute>} />  
 
           <Route path="*" element={<NotFound />} />
         </Routes>

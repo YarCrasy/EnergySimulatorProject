@@ -1,0 +1,71 @@
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.tabla th,
+.tabla td {
+  padding: 6px 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.encabezadoTabla {
+  background: #f3f4f6;
+  font-weight: 600;
+  text-align: left;
+}
+
+.tabla tbody tr:hover {
+  background: #f9fafb;
+}
+
+.bg-blue-50 {
+  background: #e0f2fe;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.edit-button {
+  padding: 3px 6px;
+  margin-left: 5px;
+  background: #000000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.edit-button:hover {
+  background: #b30f90;
+}
+
+.selection-bar {
+  position: fixed;
+  bottom: 15vh;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border: 1px solid #e5e7eb;
+  padding: 6px 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.selection-bar button {
+  padding: 5px 8px;
+  border-radius: 5px;
+  border: 1px solid #d1d5db;
+  background: white;
+  cursor: pointer;
+}
+
+.selection-bar button:hover {
+  background: #f3f4f6;
+}
