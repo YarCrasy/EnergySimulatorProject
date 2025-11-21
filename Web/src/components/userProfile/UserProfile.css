@@ -8,6 +8,7 @@
     max-width: 40px;
     border-radius: 50%;
     background: grey;
+    border: 2px solid var(--primary-color);
 }
 
 .user-menu{

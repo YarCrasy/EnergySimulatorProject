@@ -11,6 +11,7 @@
 .side-menu.collapsed {
     max-width: 0;
     width: 0;
+    overflow: hidden;
 }
 
 .menu-toggle-button {

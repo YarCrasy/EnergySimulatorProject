@@ -1,0 +1,72 @@
+.diagram-canvas {
+    position: relative;
+    border-radius: 16px;
+    background-color: #f1f5f9;
+    overflow: auto;
+    border: 1px solid #e2e8f0;
+    cursor: default;
+    min-height: 0;
+    
+    height: 100vh;
+}
+
+.diagram-canvas-board {
+    position: relative;
+    transform-origin: 0 0;
+    background-image:
+        linear-gradient(90deg, rgba(120, 144, 156, 0.12) 1px, transparent 1px),
+        linear-gradient(rgba(120, 144, 156, 0.12) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+.diagram-connections {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.diagram-connections path {
+    fill: none;
+    stroke: #7c3aed;
+    stroke-width: 3px;
+    opacity: 0.7;
+}
+
+.diagram-node {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    min-width: 160px;
+    min-height: 90px;
+    border-radius: 14px;
+    border: 2px solid transparent;
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.15);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+    color: #1f2937;
+    cursor: grab;
+}
+
+.diagram-node.selected {
+    border-color: #2563eb;
+}
+
+.diagram-node.pending {
+    border-style: dashed;
+}
+
+.diagram-node .node-label {
+    font-weight: 600;
+}
+
+.diagram-node .node-wattage {
+    font-size: 0.9rem;
+    color: #4b5563;
+}
+
+.diagram-node .node-meta {
+    font-size: 0.8rem;
+    color: #6b7280;
+}

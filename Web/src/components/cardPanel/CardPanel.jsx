@@ -1,9 +1,31 @@
 import "./CardPanel.css"
 import placeholderImg from "../../assets/image.svg";
 
-function CardPanel({imgSrc = placeholderImg, id, model, wattage}) {
+function CardPanel({
+  imgSrc = placeholderImg,
+  id,
+  model,
+  wattage,
+  draggable = false,
+  onDragStart,
+  onClick
+}) {
   return (
-    <div className="card-panel">
+    <div
+      className={`card-panel${draggable ? " is-draggable" : ""}`}
+      draggable={draggable}
+      onDragStart={(event) => {
+        if (!draggable) {
+          return;
+        }
+        event.dataTransfer.effectAllowed = "copy";
+        if (typeof onDragStart === "function") {
+          onDragStart(event);
+        }
+      }}
+      onClick={onClick}
+      data-element-id={id}
+    >
       <img src={imgSrc} alt="solar-panel" />
 
       <div className="panel-content" id={`id-${id}`}>

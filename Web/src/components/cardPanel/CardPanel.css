@@ -10,6 +10,16 @@
   color: black;
 }
 
+.card-panel.is-draggable {
+  cursor: grab;
+  user-select: none;
+}
+
+.card-panel.is-draggable:active {
+  cursor: grabbing;
+  opacity: 0.85;
+}
+
 .card-panel img {
   width: 20%;
   height: auto;

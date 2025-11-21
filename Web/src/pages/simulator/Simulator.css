@@ -1,12 +1,14 @@
 .simulator-page {
-    padding: 0px;
+    padding: 0;
     max-width: none;
     display: flex;
     flex-direction: row;
     height: 100vh;
+    background-color: #eff4f7;
 }
 
-.simulator-viewer {
+.simulator-space {
     flex: 1;
-    background-color: #e0e0e0;
+    background: radial-gradient(circle at top, #f8fbff, #e9f0ff 70%);
+    overflow: auto;
 }

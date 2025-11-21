@@ -54,6 +54,11 @@ function SideMenu() {
         return "N/A";
     };
 
+    const handleDragStart = (element) => (event) => {
+        event.dataTransfer.setData("application/json", JSON.stringify(element));
+        event.dataTransfer.dropEffect = "copy";
+    };
+
     return (
         <div className={`side-menu${collapsed ? " collapsed" : ""}`}>
 
@@ -87,6 +92,8 @@ function SideMenu() {
                         id={element.id}
                         model={element.name ?? "Elemento sin nombre"}
                         wattage={formatWattage(element)}
+                        draggable
+                        onDragStart={handleDragStart(element)}
                     />
                 ))}
             </div>
