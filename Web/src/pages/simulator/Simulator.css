@@ -12,11 +12,6 @@
     flex-direction: column;
 }
 
-footer{
-    visibility: collapse;
-}
-
-
 .menu-top-side{
     padding: 10px;
     display: flex;
