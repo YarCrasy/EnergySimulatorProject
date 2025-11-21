@@ -1,0 +1,63 @@
+/* Contenedor principal de la página */
+.AdminUsersPage {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* Encabezado */
+.AdminUsersPage .Encabezado {
+  margin-bottom: 20px;
+}
+
+.AdminUsersPage .Encabezado h2 {
+  margin: 0 0 10px 0;
+  color: #0C123A;
+}
+
+.AdminUsersPage .Encabezado p {
+  margin: 0;
+  color: #333;
+}
+
+/* Contenedor interno para FormSection + UserList */
+.AdminUsersPage .ContentWrapper {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+/* Lado izquierdo: FormSection */
+.AdminUsersPage .FormSection {
+  flex: 1;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  height: fit-content;
+}
+
+/* Lado derecho: UserList */
+.AdminUsersPage .UserList {
+  flex: 2;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  overflow-x: auto;
+}
+
+/* Responsive: pantallas pequeñas */
+@media (max-width: 900px) {
+  .AdminUsersPage .ContentWrapper {
+    flex-direction: column;
+  }
+
+  .AdminUsersPage .FormSection,
+  .AdminUsersPage .UserList {
+    width: 100%;
+  }
+}

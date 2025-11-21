@@ -1,0 +1,55 @@
+
+.register-form .form-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.register-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #0C123A;
+}
+
+.register-form input {
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.register-form input:focus {
+  border-color: #0C123A;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(12, 18, 58, 0.2);
+}
+
+/* Botón */
+.register-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #FFD700;
+  color: #0B1D3A;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* Hover cambia a azul */
+.register-form button:hover {
+  background-color: #141a60;
+  color: #ffffff;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .register-form input,
+  .register-form button {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

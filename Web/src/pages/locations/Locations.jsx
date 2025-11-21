@@ -1,8 +1,10 @@
+import "./Locations";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 export default function Mapa() {
   return (
+    <div className="map-container">
     <MapContainer
       center={[27.915, -15.5713]}
       zoom={10}
@@ -39,5 +41,6 @@ export default function Mapa() {
         <Popup>Arguineguín – Uno de los lugares más soleados</Popup>
       </Marker>
     </MapContainer>
+    </div>
   );
 }
