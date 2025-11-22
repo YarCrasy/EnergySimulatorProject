@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "consum_elements")
+@DiscriminatorValue("CONSUM_ELEMENT")
 public class ConsumElement extends Element {
     private Double powerConsumption;
 
@@ -11,7 +12,7 @@ public class ConsumElement extends Element {
     public ConsumElement() {
     }
 
-    public ConsumElement(int id, String name, Float x, Float y, Double powerConsumption) {
+    public ConsumElement(Long id, String name, Float x, Float y, Double powerConsumption) {
         super(id, name, x, y);
         this.powerConsumption = powerConsumption;
     }
