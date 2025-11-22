@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "projects")
@@ -14,9 +15,6 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user; // relacion con User
     @Column(nullable = false)
     private String name;
 
@@ -26,9 +24,17 @@ public class Project {
 
     private float energyNeeded;
 
+    // relacion con User
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    // relacion con Element
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Element> elements = new ArrayList<>();
 
+    // constructores
     public Project(String name, User user, LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
         this.name = name;

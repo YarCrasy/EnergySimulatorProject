@@ -2,6 +2,10 @@ package ling.natt.backend_api.models;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "users")
@@ -22,7 +26,19 @@ public class User {
 
     private boolean isAdmin = false;
 
+    // relacion con Project
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
+    private List<Project> projects = new ArrayList<>();
+
+    // constructores
     public User() {
+    }
+
+    public User(String fullName, LocalDate dateOfBirth, String email) {
+        this.fullName = fullName;
+        this.dateOfBirth = dateOfBirth;
+        this.email = email;
     }
 
     public Long getId() {

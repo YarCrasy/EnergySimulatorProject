@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController // indica que es un controlador de Spring
-@RequestMapping("/api/consum-elements") // ruta base para las solicitudes HTTP
+@RequestMapping("/api/consum-element") // ruta base para las solicitudes HTTP
 @CrossOrigin("*") // permite solicitudes desde cualquier origen
 public class ConsumElementController {
 
@@ -42,6 +42,7 @@ public class ConsumElementController {
                 .orElseThrow(() -> new RuntimeException("ConsumElement not found" + id));
     }
 
+    // Obtener ConsumElements por Project ID
     @GetMapping("/project/{projectId}")
     public List<ConsumElement> getConsumElementsByProjectId(@PathVariable Long projectId) {
         // Verificar si el proyecto existe
@@ -58,7 +59,7 @@ public class ConsumElementController {
     }
 
     // Crear un consum-element asociado a un proyecto
-    @PostMapping("/projects/{projectId}")
+    @PostMapping("/project/{projectId}")
     public ConsumElement createConsumElementWithProject(@PathVariable Long projectId,
             @RequestBody ConsumElement element) {
         Project project = projectRepository.findById(projectId)
