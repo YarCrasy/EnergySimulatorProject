@@ -16,7 +16,6 @@ import ling.natt.backend_api.models.Panel;
 import ling.natt.backend_api.models.Project;
 import ling.natt.backend_api.repositories.PanelRepository;
 import ling.natt.backend_api.repositories.ProjectRepository;
-import ling.natt.exception.ResourceNotFoundException;
 
 @RestController
 @RequestMapping("/api/panel")
@@ -84,7 +83,7 @@ public class PanelController {
     @DeleteMapping("/{id}")
     public void deletePanel(@PathVariable Long id) {
         if (!panelRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Panel not found with id " + id);
+            throw new RuntimeException("Panel not found with id " + id);
         }
         panelRepository.deleteById(id);
     }

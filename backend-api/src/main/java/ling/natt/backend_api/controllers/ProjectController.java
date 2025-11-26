@@ -4,14 +4,12 @@ import ling.natt.backend_api.models.Project;
 import ling.natt.backend_api.models.User;
 import ling.natt.backend_api.repositories.ProjectRepository;
 import ling.natt.backend_api.repositories.UserRepository;
-import ling.natt.exception.ResourceNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "*") // Permite solicitudes desde el frontend
 @RestController
@@ -34,14 +32,14 @@ public class ProjectController {
     @GetMapping("/{id}")
     public Project getProjectById(@PathVariable Long id) {
         return projectRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Proyecto no encontrado con id " + id));
+                .orElseThrow();
     }
 
     // Crear un nuevo proyecto asociándolo a un usuario existente
     @PostMapping
     public Project createProject(@RequestParam Long userId, @RequestBody Project project) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id " + userId));
+                .orElseThrow();
         project.setUser(user);
         project.setUpdatedAt(LocalDateTime.now());
         return projectRepository.save(project);
@@ -51,7 +49,7 @@ public class ProjectController {
     @PutMapping("/{id}")
     public Project updateProject(@PathVariable Long id, @RequestBody Project projectDetails) {
         Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Proyecto no encontrado con id " + id));
+                .orElseThrow();
 
         project.setName(projectDetails.getName());
         project.setUpdatedAt(LocalDateTime.now());
@@ -62,7 +60,7 @@ public class ProjectController {
         if (projectDetails.getUser() != null) {
             Long newUserId = projectDetails.getUser().getId();
             User user = userRepository.findById(newUserId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id " + newUserId));
+                    .orElseThrow();
             project.setUser(user);
         }
 
@@ -73,7 +71,7 @@ public class ProjectController {
     @DeleteMapping("/{id}")
     public Project deleteProject(@PathVariable Long id) {
         Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Proyecto no encontrado con id " + id));
+                .orElseThrow();
         projectRepository.deleteById(id);
         return project;
     }

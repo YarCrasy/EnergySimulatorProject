@@ -2,7 +2,6 @@ package ling.natt.backend_api.controllers;
 
 import ling.natt.backend_api.models.User;
 import ling.natt.backend_api.repositories.UserRepository;
-import ling.natt.exception.ResourceNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +25,7 @@ public class UserController {
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id " + id));
+                .orElseThrow();
     }
 
     // Crear un nuevo usuario
@@ -40,7 +39,7 @@ public class UserController {
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Long id, @RequestBody User userDetails) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id " + id));
+                .orElseThrow();
 
         user.setFullName(userDetails.getFullName());
         user.setEmail(userDetails.getEmail());
@@ -55,7 +54,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public User deleteUser(@PathVariable Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id " + id));
+                .orElseThrow();
         userRepository.deleteById(id);
         return user;
     }
