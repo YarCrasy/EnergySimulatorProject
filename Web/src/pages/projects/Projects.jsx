@@ -90,7 +90,7 @@ function Projects() {
             };
             const createdProject = await createProject(newProjectPayload);
             setProjects((prev) => [...prev, createdProject]);
-            navigate("/simulator", { state: { projectId: createdProject?.id } });
+            navigate(`/simulator/${createdProject?.id}`);
         } catch (creationError) {
             console.error("No se pudo crear el proyecto", creationError);
             setError("No se pudo crear el proyecto");

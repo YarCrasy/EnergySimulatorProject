@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    final String url = "https://www.yarcrasy.com";
+    final String url = "https://www.google.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

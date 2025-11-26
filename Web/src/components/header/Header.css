@@ -10,6 +10,7 @@ header {
     position: absolute;
     align-self: center;
     justify-content: space-between;
+    align-items: center;
     z-index: 1000;
 }
 
@@ -28,21 +29,21 @@ header a {
     font-size: clamp(12px, 2vw, 20px);
     font-weight: bold;
 }
+
 .auth-button {
-  padding: 10px 20px;
-  background-color: #020202; /* azul morado */
-  color: white;
-  border: none;
-  border-radius: 18px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+    padding: 10px 20px;
+    background-color: #020202;
+    color: white;
+    border: none;
+    border-radius: 18px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .auth-button:hover {
-  background-color: #fdfdff; /* más claro al hover */
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  color: #020202;
+    background-color: #fdfdff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #020202;
 }
-

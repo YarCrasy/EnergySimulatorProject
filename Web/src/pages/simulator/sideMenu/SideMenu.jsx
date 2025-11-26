@@ -8,13 +8,11 @@ import UserProfile from "../../../components/userProfile/UserProfile";
 import CardPanel from "../../../components/cardPanel/CardPanel";
 import { getAllElements } from "../../../api/elements";
 import backBtn from "../../../assets/back-arrow.svg";
-import toolBoxIcon from "../../../assets/tool-box.svg";
 
-function SideMenu() {
+function SideMenu({ collapsed = false }) {
     const [elements, setElements] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [collapsed, setCollapsed] = useState(false);
 
     useEffect(() => {
         let isMounted = true;
@@ -61,11 +59,6 @@ function SideMenu() {
 
     return (
         <div className={`side-menu${collapsed ? " collapsed" : ""}`}>
-
-            <button className="menu-toggle-button" onClick={() => setCollapsed(!collapsed)}>
-                <img src={toolBoxIcon} alt="Toggle Menu" width={30} />
-            </button>
-
 
             <div className="menu-top-side">
                 <div className="bar">

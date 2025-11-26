@@ -21,6 +21,7 @@ import ForceOrientationHTML from './components/forceOrientation/ForceOrientation
 import AdminUsers from './pages/administration/adminUsers/AdminUsers'
 function App() {
   const hidePaths = ['/simulator', '/projects', '/login', '/register']
+  const isPortrait = usePortraitOrientation();
 
   const HeaderWrapper = () => {
     const location = useLocation()
@@ -44,6 +45,7 @@ function App() {
           <Route path="/projects" element={<PrivateRoute> <Projects /></PrivateRoute>} />
 
           <Route path="/simulator" element={<PrivateRoute><Simulator /></PrivateRoute>} />
+          <Route path="/simulator/:projectId" element={<PrivateRoute><Simulator /></PrivateRoute>} />
           {/* Solo admin */}
           <Route path="/administration/users" element={<PrivateRoute><AdminUsers /></PrivateRoute>} />
 
@@ -56,7 +58,7 @@ function App() {
 
   return (
     <>
-      {usePortraitOrientation() ? <ForceOrientationHTML /> : <BrowserRouterHTML />}
+      {isPortrait ? <ForceOrientationHTML /> : <BrowserRouterHTML />}
     </>
   )
 }
