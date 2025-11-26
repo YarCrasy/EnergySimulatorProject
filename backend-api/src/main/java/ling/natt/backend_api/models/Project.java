@@ -17,11 +17,8 @@ public class Project {
 
     @Column(nullable = false)
     private String name;
-
     private LocalDateTime updatedAt;
-
     private boolean isEnergyEnough;
-
     private float energyNeeded;
 
     // relacion con User
@@ -31,8 +28,7 @@ public class Project {
 
     // relacion con Element
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Element> elements = new ArrayList<>();
+    private List<ProjectElement> projectElements = new ArrayList<>();
 
     // constructores
     public Project(String name, User user, LocalDateTime updatedAt) {
@@ -45,13 +41,25 @@ public class Project {
     public Project() {
     }
 
-    // Getters and Setters
-    public List<Element> getElements() {
-        return elements;
+    // helper method to get elements directly
+    public void addElement(Element element, int unidades) {
+        ProjectElement pe = new ProjectElement(this, element, unidades);
+        projectElements.add(pe);
     }
 
-    public void setElements(List<Element> elements) {
-        this.elements = elements;
+    public void removeElement(ProjectElement pe) {
+        projectElements.remove(pe);
+        pe.setProject(null);
+        pe.setElement(null);
+    }
+
+    // Getters and Setters
+    public List<ProjectElement> getElements() {
+        return projectElements;
+    }
+
+    public void setElements(List<ProjectElement> projectElements) {
+        this.projectElements = projectElements;
     }
 
     public Long getId() {

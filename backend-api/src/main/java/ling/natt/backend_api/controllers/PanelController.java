@@ -1,6 +1,7 @@
 package ling.natt.backend_api.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ling.natt.backend_api.models.Panel;
 import ling.natt.backend_api.models.Project;
+import ling.natt.backend_api.models.ProjectElement;
 import ling.natt.backend_api.repositories.PanelRepository;
 import ling.natt.backend_api.repositories.ProjectRepository;
+import ling.natt.backend_api.repositories.ProjectElementRepository;
 import ling.natt.exception.ResourceNotFoundException;
 
 @RestController
@@ -25,6 +28,8 @@ public class PanelController {
     private PanelRepository panelRepository;
     @Autowired
     private ProjectRepository projectRepository;
+    @Autowired
+    private ProjectElementRepository projectElementRepository;
 
     // Obtener todos los Panels
     @GetMapping
@@ -41,12 +46,15 @@ public class PanelController {
 
     // Obtener Panels por Project ID
     @GetMapping("/project/{projectId}")
-    public List<Panel> getPanelsByProjectId(@PathVariable Long projectId) {
-        // Verificar si el proyecto existe
-        if (!projectRepository.existsById(projectId)) {
-            throw new RuntimeException("Project not found with id " + projectId);
-        }
-        return panelRepository.findByProjectId(projectId);
+    public List<Panel> getPanelsByProject(@PathVariable Long projectId) {
+
+        List<ProjectElement> entries = projectElementRepository.findByProjectId(projectId);
+
+        return entries.stream()
+                .map(ProjectElement::getElement)
+                .filter(e -> e instanceof Panel)
+                .map(e -> (Panel) e)
+                .toList();
     }
 
     // Crear Panel
@@ -55,13 +63,21 @@ public class PanelController {
         return panelRepository.save(panel);
     }
 
-    // Crear un panel asociado a un proyecto
+    // Crear panel y asociarlo a un proyecto
     @PostMapping("/project/{projectId}")
-    public Panel createPanelForProject(@PathVariable Long projectId, @RequestBody Panel panel) {
+    public Panel createPanelInProject(@PathVariable Long projectId, @RequestBody Panel panel) {
+
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new RuntimeException("Project not found with id " + projectId));
-        panel.setProject(project);
-        return panelRepository.save(panel);
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+
+        // Primero guardas el panel
+        Panel saved = panelRepository.save(panel);
+
+        // Luego creas la relación
+        ProjectElement pe = new ProjectElement(project, saved, 1);
+        projectElementRepository.save(pe);
+
+        return saved;
     }
 
     // Update panel
