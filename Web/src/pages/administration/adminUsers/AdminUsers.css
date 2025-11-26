@@ -1,4 +1,8 @@
 /* Contenedor principal de la página */
+.ContentWrapper{
+  display: flex;
+  padding-top:5vh;
+}
 .AdminUsersPage {
   display: flex;
   flex-direction: column;
@@ -11,6 +15,7 @@
 /* Encabezado */
 .AdminUsersPage .Encabezado {
   margin-bottom: 20px;
+  padding-top: 3vh;
 }
 
 .AdminUsersPage .Encabezado h2 {

@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ling.natt.backend_api.models.ConsumElement;
 import ling.natt.backend_api.models.Project;
+import ling.natt.backend_api.models.ProjectElement;
 import ling.natt.backend_api.repositories.ConsumElementRepository;
+import ling.natt.backend_api.repositories.ProjectElementRepository;
 import ling.natt.backend_api.repositories.ProjectRepository;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,8 +28,12 @@ public class ConsumElementController {
 
     @Autowired
     private ConsumElementRepository consumElementRepository;
+
     @Autowired
     private ProjectRepository projectRepository; // Inyecta el repositorio de proyecto
+
+    @Autowired
+    private ProjectElementRepository projectElementRepository;
 
     // Obtener todos los ConsumElements
     @GetMapping
@@ -42,14 +48,17 @@ public class ConsumElementController {
                 .orElseThrow(() -> new RuntimeException("ConsumElement not found" + id));
     }
 
-    // Obtener ConsumElements por Project ID
+    // Obtener consum elements dentro de un proyecto
     @GetMapping("/project/{projectId}")
-    public List<ConsumElement> getConsumElementsByProjectId(@PathVariable Long projectId) {
-        // Verificar si el proyecto existe
-        if (!projectRepository.existsById(projectId)) {
-            throw new RuntimeException("Project not found with id " + projectId);
-        }
-        return consumElementRepository.findByProjectId(projectId);
+    public List<ConsumElement> getConsumElementsByProject(@PathVariable Long projectId) {
+
+        List<ProjectElement> entries = projectElementRepository.findByProjectId(projectId);
+
+        return entries.stream()
+                .map(ProjectElement::getElement)
+                .filter(e -> e instanceof ConsumElement)
+                .map(e -> (ConsumElement) e)
+                .toList();
     }
 
     // Crear ConsumElement simple
@@ -60,12 +69,20 @@ public class ConsumElementController {
 
     // Crear un consum-element asociado a un proyecto
     @PostMapping("/project/{projectId}")
-    public ConsumElement createConsumElementWithProject(@PathVariable Long projectId,
+    public ConsumElement createConsumElementInProject(
+            @PathVariable Long projectId,
             @RequestBody ConsumElement element) {
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new RuntimeException("Project not found with id " + projectId));
-        element.setProject(project);
-        return consumElementRepository.save(element);
+
+        Project p = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+
+        ConsumElement saved = consumElementRepository.save(element);
+
+        // creas la relación
+        ProjectElement pe = new ProjectElement(p, saved, 1);
+        projectElementRepository.save(pe);
+
+        return saved;
     }
 
     // Actualizar ConsumElement
