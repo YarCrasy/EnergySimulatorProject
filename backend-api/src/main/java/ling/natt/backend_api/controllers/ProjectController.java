@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@CrossOrigin(origins = "*") // Permite solicitudes desde el frontend
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/projects")
 public class ProjectController {
@@ -36,7 +36,7 @@ public class ProjectController {
     }
 
     // Crear un nuevo proyecto asociándolo a un usuario existente
-    @PostMapping
+    @PostMapping()
     public Project createProject(@RequestParam Long userId, @RequestBody Project project) {
         User user = userRepository.findById(userId)
                 .orElseThrow();

@@ -5,8 +5,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 @Entity
 @Table(name = "users")
 public class User {
@@ -19,7 +17,7 @@ public class User {
 
     private LocalDate dateOfBirth;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String email;
     @Column(nullable = false)
     private String passwordHash;
@@ -28,7 +26,6 @@ public class User {
 
     // relacion con Project
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference
     private List<Project> projects = new ArrayList<>();
 
     // constructores

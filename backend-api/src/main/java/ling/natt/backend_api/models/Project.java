@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "projects")
@@ -38,10 +37,8 @@ public class Project {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Project() {
-    }
-
-    // helper method to get elements directly
+    public Project() {}
+        // helper method to get elements directly
     public void addElement(Element element, int unidades) {
         ProjectElement pe = new ProjectElement(this, element, unidades);
         projectElements.add(pe);
