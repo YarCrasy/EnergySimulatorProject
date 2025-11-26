@@ -1,10 +1,12 @@
 package ling.natt.backend_api.models;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "panels")
+@DiscriminatorValue("PANEL")
 public class Panel extends Element {
     private String brand;
     private Double efficiency;
@@ -14,8 +16,8 @@ public class Panel extends Element {
     public Panel() {
     }
 
-    public Panel(int id, String nombre, Float x, Float y, String brand, Double efficiency, Double powerWatt) {
-        super(id, nombre, x, y);
+    public Panel(String name, Float x, Float y, String brand, Double efficiency, Double powerWatt) {
+        super(name, x, y);
         this.brand = brand;
         this.efficiency = efficiency;
         this.powerWatt = powerWatt;

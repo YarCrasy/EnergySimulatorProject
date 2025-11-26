@@ -1,31 +1,51 @@
 package ling.natt.backend_api.models;
 
-import java.sql.Date;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
+    @Column(nullable = false)
     private String fullName;
-    private Date dateOfBirth;
+
+    private LocalDate dateOfBirth;
+
+    @Column(unique = true, nullable = false)
     private String email;
+    @Column(nullable = false)
     private String passwordHash;
+
     private boolean isAdmin = false;
 
-    public User() {}
+    // relacion con Project
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
+    private List<Project> projects = new ArrayList<>();
 
-    public int getId() {
+    // constructores
+    public User() {
+    }
+
+    public User(String fullName, LocalDate dateOfBirth, String email) {
+        this.fullName = fullName;
+        this.dateOfBirth = dateOfBirth;
+        this.email = email;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -37,11 +57,11 @@ public class User {
         this.fullName = fullName;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
