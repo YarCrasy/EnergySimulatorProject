@@ -9,32 +9,7 @@ export default function UsersTable() {
     { id: 1, name: "Juan", email: "juaaa@gmail.com", date: "12/09/2000", password: "nata" },
     { id: 2, name: "Pepe", email: "juppn@gmail.com", date: "12/09/2000", password: "nata" },
     { id: 3, name: "Maria", email: "jmmn@gmail.com", date: "12/09/2000", password: "nata" },
-    { id: 4, name: "Sonia", email: "soniaan@gmail.com", date: "12/09/2000", password: "nata" },
-    
-    { id: 2, name: "Pepe", email: "juppn@gmail.com", date: "12/09/2000", password: "nata" },
-    { id: 3, name: "Maria", email: "jmmn@gmail.com", date: "12/09/2000", password: "nata" },
-    { id: 4, name: "Sonia", email: "soniaan@gmail.com", date: "12/09/2000", password: "nata" },
-    
-    { id: 2, name: "Pepe", email: "juppn@gmail.com", date: "12/09/2000", password: "nata" },
-    { id: 3, name: "Maria", email: "jmmn@gmail.com", date: "12/09/2000", password: "nata" },
-    { id: 4, name: "Sonia", email: "soniaan@gmail.com", date: "12/09/2000", password: "nata" },
-    
-    { id: 2, name: "Pepe", email: "juppn@gmail.com", date: "12/09/2000", password: "nata" },
-    { id: 3, name: "Maria", email: "jmmn@gmail.com", date: "12/09/2000", password: "nata" },
-    { id: 4, name: "Sonia", email: "soniaan@gmail.com", date: "12/09/2000", password: "nata" },
-    
-    { id: 2, name: "Pepe", email: "juppn@gmail.com", date: "12/09/2000", password: "nata" },
-    { id: 3, name: "Maria", email: "jmmn@gmail.com", date: "12/09/2000", password: "nata" },
-    { id: 4, name: "Sonia", email: "soniaan@gmail.com", date: "12/09/2000", password: "nata" },
-    
-    { id: 2, name: "Pepe", email: "juppn@gmail.com", date: "12/09/2000", password: "nata" },
-    { id: 3, name: "Maria", email: "jmmn@gmail.com", date: "12/09/2000", password: "nata" },
-    { id: 4, name: "Sonia", email: "soniaan@gmail.com", date: "12/09/2000", password: "nata" },
-    
-    { id: 2, name: "Pepe", email: "juppn@gmail.com", date: "12/09/2000", password: "nata" },
-    { id: 3, name: "Maria", email: "jmmn@gmail.com", date: "12/09/2000", password: "nata" },
-    { id: 4, name: "Sonia", email: "soniaan@gmail.com", date: "12/09/2000", password: "nata" },
-    
+    { id: 4, name: "Sonia", email: "soniaan@gmail.com", date: "12/09/2000", password: "nata" }
   ];
 
   const toggleRow = (id) => {

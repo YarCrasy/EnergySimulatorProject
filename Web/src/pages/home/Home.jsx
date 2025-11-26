@@ -11,10 +11,6 @@ function Home() {
         }}
       >
         <h1>Bienvenido al Simulador de Energía Renovable</h1>
-        <p>
-          Explore diferentes fuentes de energía renovable y simule su impacto en
-          el medio ambiente y en su factura.
-        </p>
       </div>
     </div>
   );

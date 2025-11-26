@@ -1,0 +1,22 @@
+.formPanel {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.register-form {
+  background: white;
+  padding: 28px;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  width: 380px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.form-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #0C123A;
+  text-align: left;
+}

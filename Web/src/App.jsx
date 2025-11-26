@@ -19,8 +19,10 @@ import Login from './pages/login/Login'
 import ForceOrientationHTML from './components/forceOrientation/ForceOrientation'
 
 import AdminUsers from './pages/administration/adminUsers/AdminUsers'
+import AdminElements from './pages/administration/adminElements/AdminElements'
+
 function App() {
-  const hidePaths = ['/simulator', '/projects', '/login', '/register']
+  const hidePaths = ['/simulator', '/projects', '/login', '/register', '/administration']
 
   const HeaderWrapper = () => {
     const location = useLocation()
@@ -46,6 +48,7 @@ function App() {
         <Route path="/simulator"element={<PrivateRoute><Simulator /></PrivateRoute>}/>
          {/* Solo admin */}
         <Route path="/administration/users" element={<PrivateRoute><AdminUsers /></PrivateRoute>} />  
+                <Route path="/administration/receivers" element={<PrivateRoute><AdminElements/></PrivateRoute>} /> 
 
           <Route path="*" element={<NotFound />} />
         </Routes>
