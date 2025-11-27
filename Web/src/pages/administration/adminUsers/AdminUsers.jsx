@@ -1,9 +1,13 @@
 import RegisterForm from "../../../components/registerForm/RegisterForm";
 import TableUsers from "../../../components/adminComponents/tableUsers/TableUsers";
-import "./AdminUsers.css";
-import NavBar from "../../../components/adminComponents/navBar/NavBar";
 
-export default function AdminUsers({ userData }) {
+import { useState } from "react";
+import NavBar from "../../../components/adminComponents/navBar/NavBar";
+import "./AdminUsers.css";
+export default function AdminUsers() {
+// Estado para el usuario que se está editando
+   const [editingUser, setEditingUser] = useState(null);
+
   return (
     <div className="AdminUsersPage">
       <div className="Encabezado">
@@ -13,12 +17,15 @@ export default function AdminUsers({ userData }) {
       <div className="ContentWrapper">
         <div className="UserList">
           <h3>Lista de Usuarios</h3>
-          <TableUsers />
+         <TableUsers onEdit={setEditingUser} />
         </div>
 
         <div className="FormSection">
-          <h3>Crear/Editar Usuario</h3>
-          <RegisterForm userData={userData} />
+          <RegisterForm
+        user={editingUser}
+        onSaved={() => setEditingUser(null)}
+        onCancel={() => setEditingUser(null)}
+      />
         </div>
       </div>
     </div>

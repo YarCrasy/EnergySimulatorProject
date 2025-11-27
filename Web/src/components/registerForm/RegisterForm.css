@@ -29,8 +29,8 @@
 .register-form button {
   width: 100%;
   padding: 12px;
-  background-color: #FFD700;
-  color: #0B1D3A;
+  background-color: #000000;
+  color: #ffffff;
   font-size: 16px;
   font-weight: bold;
   border: none;
@@ -41,8 +41,8 @@
 
 /* Hover cambia a azul */
 .register-form button:hover {
-  background-color: #141a60;
-  color: #ffffff;
+  background-color: #bfef3b;
+  color: #000000;
 }
 
 /* Responsive */

@@ -22,51 +22,79 @@ import AdminUsers from './pages/administration/adminUsers/AdminUsers'
 import AdminElements from './pages/administration/adminElements/AdminElements'
 
 function App() {
-  const hidePaths = ['/simulator', '/projects', '/login', '/register', '/administration']
-  const isPortrait = usePortraitOrientation();
+    const hidePaths = ['/simulator', '/projects', '/login', '/register', '/administration']
+    const isPortrait = usePortraitOrientation();
 
-  const HeaderWrapper = () => {
-    const location = useLocation()
-    const isHidden = hidePaths.some(p => location.pathname.startsWith(p))
-    return isHidden ? null : <Header />
-  }
+    const HeaderWrapper = () => {
+        const location = useLocation()
+        const isHidden = hidePaths.some(p => location.pathname.startsWith(p))
+        return isHidden ? null : <Header />
+    }
 
-  const BrowserRouterHTML = () => {
+    const BrowserRouterHTML = () => {
+        return (
+            <BrowserRouter>
+                <div className="app-layout">
+                    <HeaderWrapper />
+                    <div className="content">
+                        <Routes>
+                            <Route path="*" element={<NotFound />} />
+                            <Route path="/" element={<Home />} />
+                            <Route path="/contact" element={<Contact />} />
+                            <Route path="/register" element={<Register />} />
+                            <Route path='/locations' element={<Mapa />} />
+                            <Route path="/about" element={<About />} />
+                            <Route path="/home" element={<Home />} />
+                            <Route path="/login" element={<Login />} />
+
+                            {/* RUTAS PROTEGIDAS */}
+                            <Route path="/projects" element={
+                                <PrivateRoute> 
+                                    <Projects />
+                                </PrivateRoute>
+                            } />
+
+                            <Route path="/simulator" element={
+                                <PrivateRoute>
+                                    <Simulator />
+                                </PrivateRoute>
+                            } />
+                            <Route path="/simulator/:projectId" element={
+                                <PrivateRoute>
+                                    <Simulator />
+                                </PrivateRoute>
+                            } />
+                            <Route path="/simulator" element={
+                                <PrivateRoute>
+                                    <Simulator />
+                                </PrivateRoute>
+                            }/>
+
+
+                            <Route path="/administration/users" element={
+                                <PrivateRoute>
+                                    <AdminUsers />
+                                </PrivateRoute>
+                            } />
+                            <Route path="/administration/receivers" element={
+                                <PrivateRoute>
+                                    <AdminElements />
+                                </PrivateRoute>
+                            } />
+                        </Routes>
+                    </div>
+
+                    <Footer />
+                </div>
+            </BrowserRouter>
+        );
+    };
+
     return (
-      <BrowserRouter>
-        <HeaderWrapper />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/register" element={<Register />} />
-          <Route path='/locations' element={<Mapa />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          {/* RUTAS PROTEGIDAS */}
-          <Route path="/projects" element={<PrivateRoute> <Projects /></PrivateRoute>} />
-
-          <Route path="/simulator" element={<PrivateRoute><Simulator /></PrivateRoute>} />
-          <Route path="/simulator/:projectId" element={<PrivateRoute><Simulator /></PrivateRoute>} />
-          {/* Solo admin */}
-          <Route path="/administration/users" element={<PrivateRoute><AdminUsers /></PrivateRoute>} />
-          <Route path="/simulator" element={<PrivateRoute><Simulator /></PrivateRoute>} />
-          {/* Solo admin */}
-          <Route path="/administration/users" element={<PrivateRoute><AdminUsers /></PrivateRoute>} />
-          <Route path="/administration/receivers" element={<PrivateRoute><AdminElements /></PrivateRoute>} />
-
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
-    );
-  }
-
-  return (
-    <>
-      {isPortrait ? <ForceOrientationHTML /> : <BrowserRouterHTML />}
-    </>
-  )
+        <>
+            {isPortrait ? <ForceOrientationHTML /> : <BrowserRouterHTML />}
+        </>
+    )
 }
 
 export default App

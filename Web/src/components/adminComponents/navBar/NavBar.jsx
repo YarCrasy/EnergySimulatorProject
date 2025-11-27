@@ -25,7 +25,7 @@ export default function NavBar() {
         </nav>
         {/* Button login */}
         <button
-          className="auth-button"
+          className="auth-button2"
           onClick={user ? logout : () => navigate("/login")}
         >
           {user ? "Cerrar sesión" : "Iniciar sesión"}

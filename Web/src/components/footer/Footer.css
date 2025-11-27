@@ -11,21 +11,77 @@
     justify-content: space-around;
 }
 
-/* Redes sociales */
 .social-media-container {
   display: flex;
   gap: 20px;
+  margin-top: 20px;
 }
 
+/* Estilo base */
 .social-media-container a {
-  color: #333;
-  transition: opacity 0.3s ease, transform 0.2s ease;
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: #000000; /* color verde por defecto */
+  text-decoration: none;
+  transition: transform 0.25s ease, color 0.25s ease;
 }
 
+/* Efecto de agrandar */
 .social-media-container a:hover {
-  opacity: 0.7;
-  transform: translateY(-2px);
+  transform: scale(1.15);
 }
+
+/* Tooltip general */
+.social-media-container a::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: 35px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(5px);
+  pointer-events: none;
+  transition: all 0.25s ease;
+}
+
+/* 🔵 Facebook */
+.social-media-container a.facebook:hover {
+  color: #06479c;
+}
+.social-media-container a.facebook:hover::after {
+  background-color: #06479c;
+  color: #ffffff;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ⚙️ Twitter (metalizado) */
+.social-media-container a.twitter:hover {
+  color: #a9a9a9; /* gris metal */
+}
+.social-media-container a.twitter:hover::after {
+  background-color: #000000;
+  color: #fcfcfc;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 🌸 Instagram rosado */
+.social-media-container a.instagram:hover {
+  color: #e1306c;
+}
+.social-media-container a.instagram:hover::after {
+  background-color: #e1306c;
+  color: #ffffff;
+  opacity: 1;
+  transform: translateY(0);
+}
+
 
 /* Enlaces del footer */
 .footer-contact,

@@ -5,13 +5,13 @@ function Footer() {
   return (
     <footer className="footer-container">
       <div className="social-media-container">
-        <a href="https://facebook.com" target="_blank">
+        <a href="https://facebook.com" target="_blank" className="facebook" data-label="Facebook">
           <FaFacebook size={24} />
         </a>
-        <a href="https://twitter.com" target="_blank">
+        <a href="https://twitter.com" target="_blank" className="twitter" data-label="Twitter">
           <FaTwitter size={24} />
         </a>
-        <a href="https://instagram.com" target="_blank">
+        <a href="https://instagram.com" target="_blank" className="instagram" data-label="Instagram">
           <FaInstagram size={24} />
         </a>
       </div>
