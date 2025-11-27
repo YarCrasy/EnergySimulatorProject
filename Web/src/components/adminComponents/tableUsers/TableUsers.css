@@ -25,7 +25,6 @@ th, td {
 
 /* Filas */
 tbody tr {
-  transition: background 0.3s, transform 0.2s;
   cursor: default;
 }
 

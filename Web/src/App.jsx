@@ -31,31 +31,38 @@ function App() {
   }
 
   const BrowserRouterHTML = () => {
-    return (
-      <BrowserRouter>
+  return (
+    <BrowserRouter>
+      <div className="app-layout">
         <HeaderWrapper />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/register" element={<Register />} />
-          <Route path='/locations' element={<Mapa />} />
-          <Route path ="/about" element ={<About />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/login" element={<Login />} />
- {/* RUTAS PROTEGIDAS */}
-        <Route path="/projects"element={ <PrivateRoute> <Projects /></PrivateRoute> }/>
 
-        <Route path="/simulator"element={<PrivateRoute><Simulator /></PrivateRoute>}/>
-         {/* Solo admin */}
-        <Route path="/administration/users" element={<PrivateRoute><AdminUsers /></PrivateRoute>} />  
-                <Route path="/administration/receivers" element={<PrivateRoute><AdminElements/></PrivateRoute>} /> 
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/register" element={<Register />} />
+            <Route path='/locations' element={<Mapa />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/login" element={<Login />} />
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            {/* RUTAS PROTEGIDAS */}
+            <Route path="/projects" element={<PrivateRoute><Projects /></PrivateRoute>} />
+            <Route path="/simulator" element={<PrivateRoute><Simulator /></PrivateRoute>} />
+
+            {/* Solo admin */}
+            <Route path="/administration/users" element={<PrivateRoute><AdminUsers /></PrivateRoute>} />
+            <Route path="/administration/receivers" element={<PrivateRoute><AdminElements /></PrivateRoute>} />
+
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
+
         <Footer />
-      </BrowserRouter>
-    );
-  }
+      </div>
+    </BrowserRouter>
+  );
+};
 
   return (
     <>
