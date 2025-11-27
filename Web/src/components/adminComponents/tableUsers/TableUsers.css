@@ -1,71 +1,73 @@
-.tabla {
-  width: 100%;
+/* Contenedor de la tabla */
+table {
+  width: 90%;
+  margin: 20px auto;
   border-collapse: collapse;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-.tabla th,
-.tabla td {
-  padding: 6px 8px;
-  border: 1px solid #e5e7eb;
-}
-
-.encabezadoTabla {
-  background: #f3f4f6;
-  font-weight: 600;
-  text-align: left;
-}
-
-.tabla tbody tr:hover {
-  background: #f9fafb;
-}
-
-.bg-blue-50 {
-  background: #e0f2fe;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.edit-button {
-  padding: 3px 6px;
-  margin-left: 5px;
-  background: #000000;
+/* Encabezado */
+thead tr {
+  background: linear-gradient(90deg, #4caf50, #45a049);
   color: white;
+  text-align: left;
+  font-weight: bold;
+}
+
+/* Celdas de encabezado y cuerpo */
+th, td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Filas */
+tbody tr {
+  transition: background 0.3s, transform 0.2s;
+  cursor: default;
+}
+
+tbody tr:hover {
+  background-color: #f1f1f1;
+  transform: scale(1.01);
+}
+
+/* Botones de acciones */
+button {
+  margin-right: 5px;
+  padding: 6px 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 0.9rem;
 }
 
-.edit-button:hover {
-  background: #b30f90;
+button:hover {
+  transform: scale(1.05);
 }
 
-.selection-bar {
-  position: fixed;
-  bottom: 15vh;
-  left: 50%;
-  transform: translateX(-50%);
-  background: white;
-  border: 1px solid #e5e7eb;
-  padding: 6px 12px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+/* Botones de editar y eliminar diferenciados */
+button:nth-child(1) {
+  background-color: #2196F3;
+  color: white;
 }
 
-.selection-bar button {
-  padding: 5px 8px;
-  border-radius: 5px;
-  border: 1px solid #d1d5db;
-  background: white;
-  cursor: pointer;
+button:nth-child(1):hover {
+  background-color: #1976D2;
 }
 
-.selection-bar button:hover {
-  background: #f3f4f6;
+button:nth-child(2) {
+  background-color: #f44336;
+  color: white;
+}
+
+
+/* Responsive: hacer scroll horizontal si la tabla es muy grande */
+@media (max-width: 768px) {
+  table {
+    display: block;
+    overflow-x: auto;
+  }
 }
