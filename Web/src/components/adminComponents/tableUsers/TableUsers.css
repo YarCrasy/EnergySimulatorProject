@@ -32,8 +32,7 @@ tbody tr:hover {
   background-color: #f1f1f1;
   transform: scale(1.01);
 }
-
-/* Botones de acciones */
+/* 
 button {
   margin-right: 5px;
   padding: 6px 10px;
@@ -47,7 +46,6 @@ button:hover {
   transform: scale(1.05);
 }
 
-/* Botones de editar y eliminar diferenciados */
 button:nth-child(1) {
   background-color: #2196F3;
   color: white;
@@ -61,7 +59,7 @@ button:nth-child(2) {
   background-color: #f44336;
   color: white;
 }
-
+ */
 
 /* Responsive: hacer scroll horizontal si la tabla es muy grande */
 @media (max-width: 768px) {
