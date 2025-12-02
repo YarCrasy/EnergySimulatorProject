@@ -1,45 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
-
+import api from "../api/axios";
 export const AuthContext = createContext(null);
-
-// Datos de usuario falso para simular login/logout
-const usersDB = [
-  {
-    id: 1,
-    email: "juan@email.com",
-    password: "1234",
-    name: "Juan",
-    role: "user",
-  },
-  {
-    id: 2,
-    email: "ana@email.com",
-    password: "abcd",
-    name: "Ana",
-    role: "user",
-  },
-  {
-    id: 3,
-    email: "natalyipiales@gmail.com",
-    password: "111",
-    name: "Nataly",
-    role: "user",
-  },
-  {
-    id: 4,
-    email: "nat@gmail.com",
-    password: "111",
-    name: "Nataly11",
-    role: "admin",
-  },
-  {
-    id: 5,
-    email: "123@testing.com",
-    password: "123",
-    name: "123",
-    role: "admin",
-  },
-];
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -67,26 +28,20 @@ export function AuthProvider({ children }) {
     }
   }, [user]);
 
-  // Login "fake" usando la DB de prueba
-  async function login(email, password) {
-    if (!email || !password) {
-      throw new Error("Credenciales inválidas");
-    }
+ // login real con llamada a backend
+ async function login(email, password) {
+  try {
+    const res = await api.post("/users/login", { email, password });
+    const { id, fullName, email: userEmail, admin } = res.data;
 
-    const foundUser = usersDB.find(
-      (u) => u.email === email && u.password === password
-    );
-
-    if (!foundUser) {
-      throw new Error("Usuario o contraseña incorrectos");
-    }
-
-    // Guardamos solo lo necesario en el context y localStorage
-    const { id, name, role } = foundUser;
-    setUser({ id, name, role });
-
-    return { id, name, role };
+    const role = admin ? "admin" : "user";
+    setUser({ id, name: fullName, email: userEmail, role });
+    return { id, name: fullName, role };
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Usuario o contraseña incorrectos");
   }
+}
+
 
   // Logout
   function logout() {

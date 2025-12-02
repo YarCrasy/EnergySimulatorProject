@@ -7,20 +7,20 @@ function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
 
+  // Manejar el envío del formulario de login
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const form = new FormData(e.target);
-    const email = form.get("email");
-    const password = form.get("password");
+  const email = e.target.email.value;
+  const password = e.target.password.value;
 
-    try {
-      await login(email, password); // Valida usuario y guarda en localStorage
-      navigate("/projects");        // Redirige a Projects
-    } catch (err) {
-      alert(err.message);
-    }
-  };
+  try {
+    await login(email, password); // Valida usuario y guarda en localStorage
+    navigate("/projects");        // Redirige a Projects
+  } catch (err) {
+    alert(err.message);
+  }
+};
 
   return (
     <main className="login-page">

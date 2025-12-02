@@ -22,7 +22,7 @@ import AdminUsers from './pages/administration/adminUsers/AdminUsers'
 import AdminElements from './pages/administration/adminElements/AdminElements'
 
 function App() {
-    const hidePaths = ['/simulator', '/projects', '/login', '/register', '/administration']
+    const hidePaths = ['/simulator', '/login', '/register', '/administration']
     const isPortrait = usePortraitOrientation();
 
     const HeaderWrapper = () => {
