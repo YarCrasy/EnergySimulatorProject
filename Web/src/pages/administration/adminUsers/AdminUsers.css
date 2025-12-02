@@ -1,8 +1,6 @@
+/* --------- ESTILOS BASE (ESCRITORIO GRANDE) --------- */
+
 /* Contenedor principal de la página */
-.ContentWrapper{
-  display: flex;
-  padding-top:5vh;
-}
 .AdminUsersPage {
   display: flex;
   flex-direction: column;
@@ -21,21 +19,18 @@
 .AdminUsersPage .Encabezado h2 {
   margin: 0 0 10px 0;
   color: #0C123A;
+  font-size: 28px;
 }
 
-.AdminUsersPage .Encabezado p {
-  margin: 0;
-  color: #333;
-}
-
-/* Contenedor interno para FormSection + UserList */
-.AdminUsersPage .ContentWrapper {
+/* Contenedor principal interno */
+.ContentWrapper {
   display: flex;
   gap: 20px;
   justify-content: space-between;
+  padding-top: 5vh;
 }
 
-/* Lado izquierdo: FormSection */
+/* Formulario del lado izquierdo */
 .AdminUsersPage .FormSection {
   flex: 1;
   background: #ffffff;
@@ -45,7 +40,7 @@
   height: fit-content;
 }
 
-/* Lado derecho: UserList */
+/* Lista de usuarios del lado derecho */
 .AdminUsersPage .UserList {
   flex: 2;
   background: #ffffff;
@@ -55,14 +50,54 @@
   overflow-x: auto;
 }
 
-/* Responsive: pantallas pequeñas */
+
+
+/* --------- RESPONSIVE: PANTALLAS GRANDES (hasta 1200px) --------- */
+
+@media (max-width: 1200px) {
+  .ContentWrapper {
+    flex-direction: column-reverse;
+  }
+
+  .AdminUsersPage .FormSection,
+  .AdminUsersPage .UserList {
+    width: 100%;
+  }
+}
+
+
+
+/* --------- RESPONSIVE: PANTALLAS MEDIANAS (hasta 900px) --------- */
+
 @media (max-width: 900px) {
-  .AdminUsersPage .ContentWrapper {
+  .ContentWrapper {
     flex-direction: column;
   }
 
   .AdminUsersPage .FormSection,
   .AdminUsersPage .UserList {
     width: 100%;
+  }
+}
+
+
+
+/* --------- RESPONSIVE: MÓVILES (hasta 600px) --------- */
+
+@media (max-width: 600px) {
+  .ContentWrapper {
+    flex-direction: column;
+    padding-top: 2vh;
+  }
+
+  .AdminUsersPage .FormSection,
+  .AdminUsersPage .UserList {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .AdminUsersPage .Encabezado h2 {
+    font-size: 22px;
+    text-align: center;
   }
 }

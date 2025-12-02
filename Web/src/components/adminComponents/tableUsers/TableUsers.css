@@ -3,8 +3,8 @@ table {
   width: 90%;
   margin: 20px auto;
   border-collapse: collapse;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   overflow: hidden;
 }
@@ -18,7 +18,8 @@ thead tr {
 }
 
 /* Celdas de encabezado y cuerpo */
-th, td {
+th,
+td {
   padding: 12px 15px;
   border-bottom: 1px solid #ddd;
 }
@@ -32,34 +33,52 @@ tbody tr:hover {
   background-color: #f1f1f1;
   transform: scale(1.01);
 }
-/* 
-button {
-  margin-right: 5px;
-  padding: 6px 10px;
+/* Botones de acción */
+.admin-options {
+  display: flex;
+  justify-content: center;
+  align-content: space-around;
+    gap: 12px; 
+}
+
+/* Estilo base de los botones */
+.admin-options button {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: bold;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 0.9rem;
+  transition: all 0.25s ease-in-out;
+  color: #fff;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  width: 90%;
+   padding: 6px 0;
 }
 
-button:hover {
-  transform: scale(1.05);
+/* Botón editar */
+.editButton {
+  background: #2196f3;
+  padding-top: 10px;
 }
 
-button:nth-child(1) {
-  background-color: #2196F3;
-  color: white;
+.editButton:hover {
+  background:  #083364;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(25, 118, 210, 0.3);
 }
 
-button:nth-child(1):hover {
-  background-color: #1976D2;
+/* Botón eliminar */
+.deleteButton {
+  background:  #cc3533;
+  padding-top: 10px;
 }
 
-button:nth-child(2) {
-  background-color: #f44336;
-  color: white;
+.deleteButton:hover {
+  background:  #9e2929;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(211, 47, 47, 0.3);
 }
- */
 
 /* Responsive: hacer scroll horizontal si la tabla es muy grande */
 @media (max-width: 768px) {

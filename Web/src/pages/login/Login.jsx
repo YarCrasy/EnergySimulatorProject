@@ -14,9 +14,16 @@ function Login() {
   const email = e.target.email.value;
   const password = e.target.password.value;
 
-  try {
-    await login(email, password); // Valida usuario y guarda en localStorage
-    navigate("/projects");        // Redirige a Projects
+   try {
+    const loggedUser = await login(email, password); // login devuelve {id,name,role}
+
+    // Redirección según rol
+    if (loggedUser.role === "admin") {
+      navigate("/administration/users");   // ADMIN → página de administración
+    } else {
+      navigate("/projects");               // USER → página de proyectos
+    }
+
   } catch (err) {
     alert(err.message);
   }
@@ -31,8 +38,8 @@ function Login() {
             background: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${loginImg}) center/cover no-repeat`,
           }}
         ></div>
-
         <div className="login-panel">
+         
           <form className="login-form" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email">Email:</label>

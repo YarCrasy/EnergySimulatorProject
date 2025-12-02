@@ -11,55 +11,95 @@ export default function RegisterForm({ editingUser, onSuccess, onCancel }) {
     email: "",
     passwordHash: "",
   });
+  const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
 
-  // Evitar render mientras se carga el usuario
-  if (loading) return null;
+  if (loading) return null; // Evita render mientras cargamos
 
   const isAdmin = currentUser?.role === "admin";
 
-  // === Cuando se selecciona un usuario para editar o limpiar el formulario ===
+  // Cuando se selecciona un usuario para editar o limpiar el formulario
   useEffect(() => {
     if (editingUser) {
       setForm({
         fullName: editingUser.fullName,
         dateOfBirth: editingUser.dateOfBirth,
         email: editingUser.email,
-        passwordHash: "", // opcional, solo para cambiar
-      });
-    } else {
-      setForm({
-        fullName: "",
-        dateOfBirth: "",
-        email: "",
         passwordHash: "",
       });
+    } else {
+      setForm({ fullName: "", dateOfBirth: "", email: "", passwordHash: "" });
     }
+    setErrors({});
   }, [editingUser]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" });
+  };
+
+  // Validaciones
+  const validate = () => {
+    const newErrors = {};
+    if (!form.fullName.trim()) newErrors.fullName = "Nombre obligatorio";
+    else if (form.fullName.length < 3) newErrors.fullName = "Mínimo 3 caracteres";
+
+    if (!form.dateOfBirth) newErrors.dateOfBirth = "Fecha de nacimiento obligatoria";
+    else if (new Date(form.dateOfBirth) > new Date())
+      newErrors.dateOfBirth = "Fecha no puede ser futura";
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!form.email.trim()) newErrors.email = "Correo obligatorio";
+    else if (!emailRegex.test(form.email)) newErrors.email = "Correo inválido";
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!form.passwordHash) newErrors.passwordHash = "Contraseña obligatoria";
+    else if (!passwordRegex.test(form.passwordHash))
+      newErrors.passwordHash =
+        "8 caracteres, al menos 1 mayúscula, 1 minúscula y 1 número";
+
+    return newErrors;
   };
 
   const handleCreate = async (e) => {
-    e?.preventDefault(); // Previene submit si se llama desde form
+    e?.preventDefault();
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setSubmitting(true);
     try {
       await api.post("/users", form);
       alert("Usuario creado");
       onSuccess();
+      setForm({ fullName: "", dateOfBirth: "", email: "", passwordHash: "" });
     } catch (err) {
-      console.error("Error creando usuario:", err);
-      alert("Error creando usuario");
+      console.error(err);
+      alert(err.response?.data?.message || "Error creando usuario");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   const handleUpdate = async () => {
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setSubmitting(true);
     try {
       await api.put(`/users/${editingUser.id}`, form);
       alert("Usuario actualizado");
       onSuccess();
     } catch (err) {
-      console.error("Error actualizando usuario:", err);
-      alert("Error actualizando usuario");
+      console.error(err);
+      alert(err.response?.data?.message || "Error actualizando usuario");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -77,6 +117,7 @@ export default function RegisterForm({ editingUser, onSuccess, onCancel }) {
           type="text"
           placeholder="Juan Perez"
         />
+        {errors.fullName && <span className="error">{errors.fullName}</span>}
       </div>
 
       <div className="form-field">
@@ -87,6 +128,7 @@ export default function RegisterForm({ editingUser, onSuccess, onCancel }) {
           onChange={handleChange}
           type="date"
         />
+        {errors.dateOfBirth && <span className="error">{errors.dateOfBirth}</span>}
       </div>
 
       <div className="form-field">
@@ -98,6 +140,7 @@ export default function RegisterForm({ editingUser, onSuccess, onCancel }) {
           type="email"
           placeholder="ejemplo@gmail.com"
         />
+        {errors.email && <span className="error">{errors.email}</span>}
       </div>
 
       <div className="form-field">
@@ -107,36 +150,36 @@ export default function RegisterForm({ editingUser, onSuccess, onCancel }) {
           value={form.passwordHash}
           onChange={handleChange}
           type="password"
-          placeholder="*********"
+          placeholder="********"
         />
+        {errors.passwordHash && <span className="error">{errors.passwordHash}</span>}
       </div>
 
-      {/* === BOTONES SEGÚN ROL === */}
-      {!isAdmin && (
-        <button type="submit">
-          Crear cuenta
-        </button>
-      )}
-
-      {isAdmin && editingUser && (
-        <>
-        <div className="button-group">
-          <button type="button" onClick={handleUpdate}>
-            Actualizar
+      {/* BOTONES */}
+      <div className="button-group">
+        {!isAdmin && (
+          <button type="submit" disabled={submitting}>
+            {submitting ? "Creando..." : "Crear cuenta"}
           </button>
-          <button type="button" onClick={onCancel}>
-            Cancelar
-          </button>
-          </div>
-        
-        </>
-      )}
+        )}
 
-      {isAdmin && !editingUser && (
-        <button type="button" onClick={handleCreate}>
-          Crear usuario
-        </button>
-      )}
+        {isAdmin && editingUser && (
+          <>
+            <button type="button" onClick={handleUpdate} disabled={submitting}>
+              {submitting ? "Actualizando..." : "Actualizar"}
+            </button>
+            <button type="button" onClick={onCancel}>
+              Cancelar
+            </button>
+          </>
+        )}
+
+        {isAdmin && !editingUser && (
+          <button type="button" onClick={handleCreate} disabled={submitting}>
+            {submitting ? "Creando..." : "Crear usuario"}
+          </button>
+        )}
+      </div>
     </form>
   );
 }
