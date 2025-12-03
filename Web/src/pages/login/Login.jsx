@@ -39,6 +39,7 @@ function Login() {
           }}
         ></div>
         <div className="login-panel">
+          <h2>Iniciar sesión</h2>
          
           <form className="login-form" onSubmit={handleSubmit}>
             <div>

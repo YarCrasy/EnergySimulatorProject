@@ -13,7 +13,10 @@ export default function Register() {
       }}
     >
       <div className="form">
+        <h2>Nuevo usuario</h2>
         <RegisterForm />
+        <p>Si ya tienes cuenta:</p>
+        <a href="/login">Inicia sesión</a>
       </div>
     </div>
   );

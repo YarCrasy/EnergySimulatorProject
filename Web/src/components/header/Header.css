@@ -30,9 +30,9 @@ header a {
     font-weight: bold;
 }
 
-.auth-button {
+button.auth-button{
     padding: 10px 20px;
-    background-color: #020202;
+    background-color: #094507;
     color: white;
     border: none;
     border-radius: 18px;
@@ -41,9 +41,9 @@ header a {
     transition: all 0.3s ease;
 }
 
-.auth-button:hover {
-    background-color: #fdfdff;
+button.auth-button:hover {
+    background-color: #030705ed;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    color: #020202;
+    color: #ffffff;
 }

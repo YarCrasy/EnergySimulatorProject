@@ -31,9 +31,16 @@
   flex: 1; /* Ocupa el otro 50% */
   background: white;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 0% 0% 0% 0%;
+}
+
+.login-panel h2 {
+  text-align: center;
+  color: #0c123a;
+  margin-bottom: 30px;
 }
 
 /* ======== FORMULARIO ======== */
@@ -97,7 +104,8 @@
 }
 
 .login-form button[type="button"]:hover {
-  background: #d1d5db;
+  background: #0d0d0df5;
+  color: white;
 }
 
 /* ======== OLVIDÉ CONTRASEÑA ======== */
