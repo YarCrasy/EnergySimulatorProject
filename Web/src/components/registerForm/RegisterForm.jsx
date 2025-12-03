@@ -1,79 +1,48 @@
-import { useEffect, useState } from "react";
-import api from "../../api/api";
 import { useAuth } from "../../hooks/AuthContext";
+import useRegisterForm from "./useRegisterForm";
 import "./registerform.css";
 
-export default function RegisterForm({ editingUser, clearEditing }) {
-  const { user } = useAuth();
-  console.log("ROL DEL USUARIO ACTUAL:", user?.role);
- 
-  const isAdmin = user?.role === "admin";
+export default function RegisterForm({ editingUser, onSuccess, onCancel }) {
+  const { user: currentUser, loading } = useAuth();
+  const isAdmin = currentUser?.role === "admin";
 
-  const [form, setForm] = useState({
-    name: "",
-    birthdate: "",
-    email: "",
-    password: "",
-  });
+  const {
+    form,
+    errors,
+    submitting,
+    handleChange,
+    handleCreate,
+    handleUpdate,
+  } = useRegisterForm(editingUser, onSuccess);
 
-  // === Cuando el admin toca "Editar" ===
-  useEffect(() => {
-    if (editingUser) {
-      setForm({
-        name: editingUser.name,
-        birthdate: editingUser.birthdate,
-        email: editingUser.email,
-        password: "", // opcional
-      });
-    }
-  }, [editingUser]);
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleCreate = async (e) => {
-    e.preventDefault();
-    try {
-      await api.post("/user", form);
-      alert("Usuario creado");
-      setForm({ name: "", birthdate: "", email: "", password: "" });
-    } catch (err) {
-      console.error("Error creando usuario:", err);
-    }
-  };
-
-  const handleUpdate = async () => {
-    try {
-      await api.put(`/user/${editingUser.id}`, form);
-      alert("Usuario actualizado");
-      clearEditing();
-    } catch (err) {
-      console.error("Error actualizando:", err);
-    }
-  };
+  if (loading) return null;
 
   return (
-    <form className="register-form" onSubmit={handleCreate}>
+    <form
+      className="register-form"
+      onSubmit={!isAdmin ? handleCreate : (e) => e.preventDefault()}
+    >
       <div className="form-field">
         <label>Nombre completo</label>
         <input
-          name="name"
-          value={form.name}
+          name="fullName"
+          value={form.fullName}
           onChange={handleChange}
           type="text"
-          placeholder="Juan Lopez"
+          placeholder="Juan Perez"
         />
+        {errors.fullName && <span className="error">{errors.fullName}</span>}
       </div>
 
       <div className="form-field">
         <label>Fecha nacimiento</label>
         <input
-          name="birthdate"
-          value={form.birthdate}
+          name="dateOfBirth"
+          value={form.dateOfBirth}
           onChange={handleChange}
           type="date"
         />
+        {errors.dateOfBirth && <span className="error">{errors.dateOfBirth}</span>}
       </div>
 
       <div className="form-field">
@@ -85,38 +54,45 @@ export default function RegisterForm({ editingUser, clearEditing }) {
           type="email"
           placeholder="ejemplo@gmail.com"
         />
+        {errors.email && <span className="error">{errors.email}</span>}
       </div>
 
       <div className="form-field">
         <label>Contraseña</label>
         <input
-          name="password"
-          value={form.password}
+          name="passwordHash"
+          value={form.passwordHash}
           onChange={handleChange}
           type="password"
-          placeholder="*********"
+          placeholder="********"
         />
+        {errors.passwordHash && <span className="error">{errors.passwordHash}</span>}
       </div>
 
-      {/* === BOTONES SEGÚN ROL === */}
-
-      {!isAdmin && <button type="submit">Crear cuenta</button>}
-
-      {isAdmin && editingUser && (
-        <>
-          <button type="button" onClick={handleUpdate}>
-            Actualizar
+      <div className="button-group">
+        {!isAdmin && (
+          <button type="submit" disabled={submitting}>
+            {submitting ? "Creando..." : "Crear cuenta"}
           </button>
+        )}
 
-          <button type="button" onClick={clearEditing} style={{ marginLeft: 10 }}>
-            Cancelar
+        {isAdmin && editingUser && (
+          <>
+            <button type="button" onClick={handleUpdate} disabled={submitting}>
+              {submitting ? "Actualizando..." : "Actualizar"}
+            </button>
+            <button type="button" onClick={onCancel}>
+              Cancelar
+            </button>
+          </>
+        )}
+
+        {isAdmin && !editingUser && (
+          <button type="button" onClick={handleCreate} disabled={submitting}>
+            {submitting ? "Creando..." : "Crear usuario"}
           </button>
-        </>
-      )}
-
-      {isAdmin && !editingUser && (
-        <button type="submit">Crear usuario</button>
-      )}
+        )}
+      </div>
     </form>
   );
 }

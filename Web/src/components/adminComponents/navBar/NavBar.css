@@ -1,10 +1,8 @@
 /* Contenedor principal de la navbar */
 .navBar {
-  background-color: #ffffff; /* fondo blanco */
   padding: 10px 20px;
   display: flex;
   justify-content: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -28,8 +26,7 @@
 
 /* Cada enlace estilo “value” */
 .nav-header nav ul li a {
-  background-color: #f0fdf4; /* verde muy suave de fondo */
-  border-radius: 5px;
+  border-radius: 18px;
   padding: 10px 15px;
   color: #1b5e20; /* verde oscuro para el texto */
   text-decoration: none;
@@ -38,6 +35,8 @@
   position: relative;
   cursor: pointer;
   transition: all 0.2s ease;
+  width: 10vw;
+  justify-content: center;
 }
 
 .nav-header nav ul li a.active {
@@ -84,27 +83,28 @@
   color: #ffffff;
 }
 
-.auth-button2 {
-  background-color: #f0fdf4; /* verde muy suave */
+button.auth-button2 {
+  background-color: #000000; /* verde muy suave */
   border: none;
   padding: 10px 15px;
-  color: #1b5e20; /* verde oscuro */
-  border-radius: 5px;
+  color: #ffffff; /* verde oscuro */
+  border-radius: 18px;
   cursor: pointer;
   position: relative;
   transition: all 0.2s ease;
 }
 
-.auth-button:hover,
-.auth-button:focus {
-  background-color: #c8e6c9;
+button.auth-button2:hover,
+button.auth-button2:focus {
+  background-color: #909290;
+  color: black;
 }
 
-.auth-button:active {
+button.auth-button2:active {
   background-color: #081e08;
 }
 
-.auth-button::before {
+button.auth-button2::before {
   content: "";
   position: absolute;
   bottom: -3px;
@@ -117,11 +117,6 @@
   transition: opacity 0.2s ease;
 }
 
-.auth-button:hover::before,
-.auth-button:focus::before,
-.auth-button:active::before {
-  opacity: 1;
-}
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -135,9 +130,5 @@
     gap: 10px;
     width: 100%;
     align-items: center;
-  }
-
-  .auth-button {
-    width: fit-content;
   }
 }

@@ -7,20 +7,27 @@ function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
 
+  // Manejar el envío del formulario de login
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const form = new FormData(e.target);
-    const email = form.get("email");
-    const password = form.get("password");
+  const email = e.target.email.value;
+  const password = e.target.password.value;
 
-    try {
-      await login(email, password); // Valida usuario y guarda en localStorage
-      navigate("/projects");        // Redirige a Projects
-    } catch (err) {
-      alert(err.message);
+   try {
+    const loggedUser = await login(email, password); // login devuelve {id,name,role}
+
+    // Redirección según rol
+    if (loggedUser.role === "admin") {
+      navigate("/administration/users");   // ADMIN → página de administración
+    } else {
+      navigate("/projects");               // USER → página de proyectos
     }
-  };
+
+  } catch (err) {
+    alert(err.message);
+  }
+};
 
   return (
     <main className="login-page">
@@ -31,8 +38,9 @@ function Login() {
             background: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${loginImg}) center/cover no-repeat`,
           }}
         ></div>
-
         <div className="login-panel">
+          <h2>Iniciar sesión</h2>
+         
           <form className="login-form" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email">Email:</label>

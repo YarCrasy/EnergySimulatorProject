@@ -1,0 +1,81 @@
+/* Contenedor principal */
+.receiver-list-page {
+  min-height: 100vh;
+  background-color: #f3f4f6; /* gris claro */
+  padding: 2.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  font-family: "Inter", sans-serif;
+}
+
+/* Contenedor central */
+.receiver-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Cabecera: título + botón */
+.receiver-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.receiver-list-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #111827; /* gris oscuro */
+}
+
+.btn-new-receiver {
+  background-color: #16a34a; /* verde */
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-new-receiver:hover {
+  background-color: #15803d; /* verde más oscuro */
+  transform: translateY(-2px);
+}
+
+/* Mensaje cuando no hay receivers */
+.no-receivers {
+  text-align: center;
+  font-size: 1.25rem;
+  color: #6b7280; /* gris medio */
+}
+
+/* Contenedor de tarjetas */
+.receiver-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+/* Cada tarjeta ya tiene sus estilos en ReceiverCard.css, solo ajustamos el ancho */
+.receiver-cards .receiver-card {
+  flex: 1 1 280px; /* ancho mínimo 280px, se adapta al espacio */
+  max-width: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mensaje de carga */
+.loading-receivers {
+  text-align: center;
+  font-size: 1.25rem;
+  color: #374151; /* gris oscuro */
+  padding: 2rem 0;
+}

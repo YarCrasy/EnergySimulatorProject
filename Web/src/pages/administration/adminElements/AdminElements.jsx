@@ -2,7 +2,7 @@ import "./AdminElements.css";
 import NavBar from "../../../components/adminComponents/navBar/NavBar";
 
 import { useState, useEffect } from "react";
-import ReceiverCard from "../../../components/adminComponents/cardReceiver/cardReceiver";
+import ReceiverCard from "../../../components/adminComponents/cardReceiver/ReceiverCard";
 import FormReceiver from "../../../components/adminComponents/formReceiver/FormReceiver";
 import { receiverApi } from "../../../api/receiverApi";
 
@@ -56,51 +56,57 @@ export default function ReceiverList() {
   if (loading) return <p className="text-center py-10">Cargando receivers...</p>;
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
-      <NavBar />  
-      <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800">Gestión de Receivers</h1>
-          <button
-            onClick={() => {
-              setEditingReceiver(null);
+   <div className="receiver-list-page">
+  <NavBar />
+
+  <div className="receiver-list-container">
+    <div className="receiver-list-header">
+      <h1>Gestión de Receivers</h1>
+      <button
+        onClick={() => {
+          setEditingReceiver(null);
+          setShowForm(true);
+        }}
+        className="btn-new-receiver"
+      >
+        + Nuevo Receiver
+      </button>
+    </div>
+
+    {loading && (
+      <p className="loading-receivers">Cargando receivers...</p>
+    )}
+
+    {!loading && receivers.length === 0 ? (
+      <p className="no-receivers">No hay receivers aún. ¡Crea el primero!</p>
+    ) : (
+      <div className="receiver-cards">
+        {receivers.map((receiver) => (
+          <ReceiverCard
+            key={receiver.id}
+            receiver={receiver}
+            onEdit={(r) => {
+              setEditingReceiver(r);
               setShowForm(true);
             }}
-            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition text-lg font-medium"
-          >
-            + Nuevo Receiver
-          </button>
-        </div>
-
-        {receivers.length === 0 ? (
-          <p className="text-center text-gray-600 text-xl">No hay receivers aún. ¡Crea el primero!</p>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {receivers.map((receiver) => (
-              <ReceiverCard
-                key={receiver.id}
-                receiver={receiver}
-                onEdit={(r) => {
-                  setEditingReceiver(r);
-                  setShowForm(true);
-                }}
-                onDelete={handleDelete}
-              />
-            ))}
-          </div>
-        )}
+            onDelete={handleDelete}
+          />
+        ))}
       </div>
+    )}
+  </div>
 
-      {showForm && (
-        <FormReceiver
-          receiverToEdit={editingReceiver}
-          onSave={handleSave}
-          onCancel={() => {
-            setShowForm(false);
-            setEditingReceiver(null);
-          }}
-        />
-      )}
-    </div>
+  {showForm && (
+    <FormReceiver
+      receiverToEdit={editingReceiver}
+      onSave={handleSave}
+      onCancel={() => {
+        setShowForm(false);
+        setEditingReceiver(null);
+      }}
+    />
+  )}
+</div>
+
   );
 }
