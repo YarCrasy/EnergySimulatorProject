@@ -1,5 +1,5 @@
-// src/components/FormReceiver.jsx
 import { useState, useEffect } from "react";
+import "./FormReceiver.css";
 
 export default function FormReceiver({ receiverToEdit, onSave, onCancel }) {
   const [nombre, setNombre] = useState("");
@@ -29,75 +29,63 @@ export default function FormReceiver({ receiverToEdit, onSave, onCancel }) {
       x: parseFloat(x) || 0,
       y: parseFloat(y) || 0,
     };
-
     onSave(receiverToEdit ? { ...data, id: receiverToEdit.id } : data);
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full">
-        <h2 className="text-2xl font-bold mb-6">
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <h2 className="modal-title">
           {receiverToEdit ? "Editar Receiver" : "Nuevo Receiver"}
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium">Nombre</label>
+        <form onSubmit={handleSubmit} className="receiver-form">
+          <div className="form-group">
+            <label>Nombre</label>
             <input
               type="text"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
-              className="w-full border rounded px-3 py-2 mt-1"
               required
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium">Consumo (W)</label>
+          <div className="form-group">
+            <label>Consumo (W)</label>
             <input
               type="number"
               value={consumo}
               onChange={(e) => setConsumo(e.target.value)}
-              className="w-full border rounded px-3 py-2 mt-1"
               required
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium">Posición X</label>
+          <div className="form-grid">
+            <div className="form-group">
+              <label>Posición X</label>
               <input
                 type="number"
                 step="0.01"
                 value={x}
                 onChange={(e) => setX(e.target.value)}
-                className="w-full border rounded px-3 py-2 mt-1"
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium">Posición Y</label>
+            <div className="form-group">
+              <label>Posición Y</label>
               <input
                 type="number"
                 step="0.01"
                 value={y}
                 onChange={(e) => setY(e.target.value)}
-                className="w-full border rounded px-3 py-2 mt-1"
               />
             </div>
           </div>
 
-          <div className="flex gap-4 pt-4">
-            <button
-              type="submit"
-              className="flex-1 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
-            >
+          <div className="form-buttons">
+            <button type="submit" className="btn btn-save">
               Guardar
             </button>
-            <button
-              type="button"
-              onClick={onCancel}
-              className="flex-1 bg-gray-500 text-white py-2 rounded hover:bg-gray-600 transition"
-            >
+            <button type="button" onClick={onCancel} className="btn btn-cancel">
               Cancelar
             </button>
           </div>

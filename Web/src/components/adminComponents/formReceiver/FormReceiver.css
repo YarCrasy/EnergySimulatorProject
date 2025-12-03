@@ -1,22 +1,110 @@
-.formPanel {
+/* Fondo semitransparente */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  align-items: center;
+  z-index: 50;
 }
 
-.register-form {
-  background: white;
-  padding: 28px;
-  border-radius: 14px;
-  border: 1px solid #e5e7eb;
-  width: 380px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+/* Contenedor del modal */
+.modal-content {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 420px;
+  transition: transform 0.3s ease;
 }
 
-.form-title {
-  font-size: 20px;
+.modal-content:hover {
+  transform: translateY(-2px);
+}
+
+/* Título */
+.modal-title {
+  font-size: 1.75rem;
   font-weight: 700;
-  margin-bottom: 20px;
-  color: #0C123A;
-  text-align: left;
+  margin-bottom: 1.5rem;
+  color: #1f2937; /* gris oscuro */
+  text-align: center;
+}
+
+/* Formulario */
+.receiver-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: #374151; /* gris medio */
+}
+
+.form-group input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db; /* gris claro */
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #3b82f6; /* azul */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  outline: none;
+}
+
+/* Grid para X e Y */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+/* Botones */
+.form-buttons {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.btn {
+  flex: 1;
+  padding: 0.5rem 0;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-save {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.btn-save:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.btn-cancel {
+  background-color: #9ca3af;
+  color: #ffffff;
+}
+
+.btn-cancel:hover {
+  background-color: #6b7280;
+  transform: translateY(-1px);
 }

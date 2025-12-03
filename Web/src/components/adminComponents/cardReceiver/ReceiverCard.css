@@ -1,0 +1,77 @@
+.receiver-card {
+  background: linear-gradient(145deg, #ffffff, #f9fafb); /* ligero degradado */
+  padding: 1.5rem;
+  border-radius: 0.75rem; /* más redondeado */
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08); /* sombra más suave y difusa */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #e5e7eb; /* borde sutil */
+}
+
+.receiver-card:hover {
+  transform: translateY(-4px); /* efecto flotante */
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.receiver-name {
+  font-size: 1.375rem; /* un poco más grande */
+  font-weight: 700;
+  color: #111827; /* gris muy oscuro */
+  margin-bottom: 0.25rem;
+}
+
+.receiver-power {
+  color: #4b5563;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
+
+.receiver-power-value {
+  font-weight: 700;
+  color: #3b82f6; /* azul más vibrante */
+}
+
+.receiver-position {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.receiver-buttons {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.btn {
+  flex: 1;
+  padding: 0.625rem 0;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Botón Editar */
+.btn-edit {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: white;
+}
+
+.btn-edit:hover {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Botón Borrar */
+.btn-delete {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.btn-delete:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+}
