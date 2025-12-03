@@ -1,6 +1,6 @@
 import { useAuth } from "../../hooks/AuthContext";
 import useRegisterForm from "./useRegisterForm";
-import "./registerform.css";
+import "./RegisterForm.css";
 
 export default function RegisterForm({ editingUser, onSuccess, onCancel }) {
   const { user: currentUser, loading } = useAuth();
