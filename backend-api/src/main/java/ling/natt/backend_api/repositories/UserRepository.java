@@ -13,4 +13,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // Buscar usuarios cuyo nombre completo contenga un texto
     List<User> findByFullNameContaining(String fullName);
+
+    // Buscar usuario por email y passwordHash para login
+    Optional<User> findByEmailAndPasswordHash(String email, String passwordHash);
+
 }

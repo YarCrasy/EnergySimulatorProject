@@ -1,6 +1,5 @@
 package ling.natt.backend_api.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,15 +10,9 @@ public abstract class Element {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
     private Float x;
     private Float y;
-
-    @ManyToOne(fetch = FetchType.LAZY) // relacion con Project
-    @JoinColumn(name = "project_id", nullable = true)
-    @JsonBackReference // Evita la referencia circular en la serialización JSON
-    private Project project;
 
     // constructores
     public Element() {
@@ -62,14 +55,6 @@ public abstract class Element {
 
     public void setY(Float y) {
         this.y = y;
-    }
-
-    public Project getProject() {
-        return this.project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*") // Permite solicitudes desde cualquier frontend
 @RestController
@@ -32,6 +33,11 @@ public class UserController {
     @PostMapping
     public User createUser(@RequestBody User user) {
         // Agregar mas atrde lógica para verificar si el email ya existe, etc.
+
+        // verificar si el email ya existe
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new RuntimeException("El email ya está registrado");
+        }
         return userRepository.save(user);
     }
 
@@ -64,4 +70,15 @@ public class UserController {
     public List<User> searchUsersByFullName(@RequestParam String name) {
         return userRepository.findByFullNameContaining(name);
     }
+
+    // para hacer login
+    @PostMapping("/login")
+    public User login(@RequestBody Map<String, String> credentials) {
+        String email = credentials.get("email");
+        String password = credentials.get("password");
+
+        return userRepository.findByEmailAndPasswordHash(email, password)
+                .orElseThrow(() -> new RuntimeException("Usuario o contraseña incorrectos"));
+    }
+
 }
