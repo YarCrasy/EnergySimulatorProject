@@ -1,9 +1,9 @@
 package ling.natt.backend_api.controllers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,9 +19,9 @@ import ling.natt.backend_api.models.ProjectElement;
 import ling.natt.backend_api.repositories.PanelRepository;
 import ling.natt.backend_api.repositories.ProjectRepository;
 import ling.natt.backend_api.repositories.ProjectElementRepository;
-import ling.natt.exception.ResourceNotFoundException;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/panel")
 public class PanelController {
     @Autowired

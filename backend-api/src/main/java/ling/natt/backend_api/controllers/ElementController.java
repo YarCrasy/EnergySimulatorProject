@@ -12,8 +12,8 @@ import ling.natt.backend_api.models.Element;
 import ling.natt.backend_api.repositories.ElementRepository;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/elements")
-@CrossOrigin(origins = "http://localhost:5173")
 public class ElementController {
 
     @Autowired

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "*") // Permite solicitudes desde cualquier frontend
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/users")
 public class UserController {
     @Autowired
@@ -77,8 +77,14 @@ public class UserController {
         String email = credentials.get("email");
         String password = credentials.get("password");
 
-        return userRepository.findByEmailAndPasswordHash(email, password)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuario o contraseña incorrectos"));
+
+        if (!user.getPasswordHash().equals(password)) {
+            throw new RuntimeException("Usuario o contraseña incorrectos");
+        }
+
+        return user;
     }
 
 }

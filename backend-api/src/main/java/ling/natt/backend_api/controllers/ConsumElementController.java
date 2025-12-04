@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController // indica que es un controlador de Spring
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/consum-element") // ruta base para las solicitudes HTTP
-@CrossOrigin("*") // permite solicitudes desde cualquier origen
 public class ConsumElementController {
 
     @Autowired
