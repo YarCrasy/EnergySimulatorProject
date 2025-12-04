@@ -1,5 +1,5 @@
 
-const API_URL = "http://localhost:8080/api/consum-element";
+const API_URL = "https://dam-project.yarcrasy.com/api/consum-element";
 
 export const receiverApi = {
   getAll: async () => {

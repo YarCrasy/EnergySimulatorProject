@@ -1,7 +1,7 @@
 // src/api/elements.js
 // Funciones para interactuar con los elementos (Panel, ConsumElement, etc.)
 
-const API_URL = 'http://localhost:8080/api/elements';
+const API_URL = 'https://dam-project.yarcrasy.com/api/elements';
 
 const FALLBACK_ELEMENTS = [
     {

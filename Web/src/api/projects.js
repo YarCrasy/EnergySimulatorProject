@@ -1,7 +1,7 @@
 // src/api/projects.js
 // Funciones para interactuar con la API REST de proyectos
 
-const API_URL = 'http://localhost:8080/projects';
+const API_URL = 'https://dam-project.yarcrasy.com/api/projects';
 
 const FALLBACK_PROJECTS = [
   {
@@ -66,4 +66,3 @@ export async function createProject(projectData = {}) {
   }
 }
 
-// Puedes agregar más funciones según lo que necesites (crear, actualizar, eliminar, etc.)

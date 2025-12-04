@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/AuthContext"; 
+import { useAuth } from "../../hooks/AuthContext";
 import "./Login.css";
 import loginImg from "../../images/loginImg.jpg";
 
@@ -9,25 +9,25 @@ function Login() {
 
   // Manejar el envío del formulario de login
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const email = e.target.email.value;
-  const password = e.target.password.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
 
-   try {
-    const loggedUser = await login(email, password); // login devuelve {id,name,role}
+    try {
+      const loggedUser = await login(email, password); // login devuelve {id,name,role}
 
-    // Redirección según rol
-    if (loggedUser.role === "admin") {
-      navigate("/administration/users");   // ADMIN → página de administración
-    } else {
-      navigate("/projects");               // USER → página de proyectos
+      // Redirección según rol
+      if (loggedUser.role === "admin") {
+        navigate("/administration/users");   // ADMIN → página de administración
+      } else {
+        navigate("/projects");               // USER → página de proyectos
+      }
+
+    } catch (err) {
+      alert(err.message);
     }
-
-  } catch (err) {
-    alert(err.message);
-  }
-};
+  };
 
   return (
     <main className="login-page">
@@ -40,7 +40,7 @@ function Login() {
         ></div>
         <div className="login-panel">
           <h2>Iniciar sesión</h2>
-         
+
           <form className="login-form" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email">Email:</label>
