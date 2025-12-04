@@ -7,6 +7,7 @@ import ProjectCard from "../../components/projectCard/ProjectCard";
 import placeHorderImg from "../../assets/image.svg"
 import { getAllProjects, createProject } from "../../api/projects";
 import UserProfile from "../../components/userProfile/UserProfile";
+import { useAuth } from "../../hooks/AuthContext";
 
 function Projects() {
 
@@ -15,6 +16,7 @@ function Projects() {
     const [loading, setLoading] = useState(true);
     const [creatingProject, setCreatingProject] = useState(false);
     const navigate = useNavigate();
+    const { user } = useAuth();
 
     useEffect(() => {
         let isMounted = true;
@@ -70,25 +72,30 @@ function Projects() {
         );
     }
 
-    const filterOptions = [
-        <SortAlphabeticAscendente />,
-        <SortAlphabeticDescendente />,
-        <SortLastUpdatedAscendente />,
-        <SortLastUpdatedDescendente />
-    ];
+    // const filterOptions = [
+    //     <SortAlphabeticAscendente />,
+    //     <SortAlphabeticDescendente />,
+    //     <SortLastUpdatedAscendente />,
+    //     <SortLastUpdatedDescendente />
+    // ];
 
     const handleCreateProject = async () => {
         if (creatingProject) return;
+        if (!user?.id) {
+            setError("Debes iniciar sesión para crear un proyecto");
+            return;
+        }
         setCreatingProject(true);
         setError(null);
         try {
-            const now = new Date();
             // Crear un proyecto básico antes de abrir el simulador.
             const newProjectPayload = {
-                title: `Nuevo proyecto ${now.toLocaleDateString()}`,
-                lastUpdated: now.toISOString(),
+                name: "Nuevo Proyecto",
+                isEnergyEnough: false,
+                energyNeeded: 0,
+                projectElements: [],
             };
-            const createdProject = await createProject(newProjectPayload);
+            const createdProject = await createProject(user.id, newProjectPayload);
             setProjects((prev) => [...prev, createdProject]);
             navigate(`/simulator/${createdProject?.id}`);
         } catch (creationError) {
@@ -101,7 +108,7 @@ function Projects() {
 
     return (
         <main className="projects-page">
-            <div className="top-bar">
+            {/* <div className="top-bar">
                 <SearchBar placeholder="Buscar proyectos..." headingButton={HeadingButton.FILTER} filterOptions={filterOptions} />
                 <UserProfile menu={
                     <ul>
@@ -110,7 +117,7 @@ function Projects() {
                         <li>Cerrar Sesión</li>
                     </ul>
                 } />
-            </div>
+            </div> */}
             {loading && <p className="projects-status">Cargando proyectos...</p>}
             {error && !loading && <p className="projects-status error">{error}</p>}
             <div className="projects-list">

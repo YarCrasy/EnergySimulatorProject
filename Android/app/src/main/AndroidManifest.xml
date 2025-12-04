@@ -15,15 +15,19 @@
         android:theme="@style/Theme.EnergySimulator">
         <activity
             android:name=".SimulatorActity"
+            android:screenOrientation="sensorLandscape"
             android:exported="false" />
         <activity
             android:name=".ProfileAcitvity"
+            android:screenOrientation="sensorLandscape"
             android:exported="false" />
         <activity
             android:name=".ProjectsActivity"
+            android:screenOrientation="sensorLandscape"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="sensorLandscape"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
