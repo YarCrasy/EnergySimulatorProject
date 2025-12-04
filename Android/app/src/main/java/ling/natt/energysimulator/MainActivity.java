@@ -12,7 +12,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    final String url = "https://www.google.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +24,5 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        WebView webView = findViewById(R.id.web);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl(url);
     }
 }
