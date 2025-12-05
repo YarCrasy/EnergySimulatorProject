@@ -18,6 +18,9 @@
   font-weight: 700;
   color: #111827; /* gris muy oscuro */
   margin-bottom: 0.25rem;
+  white-space: nowrap;       /* evita que el texto haga salto de línea */
+  overflow: hidden;          /* oculta el exceso de texto */
+  text-overflow: ellipsis;   /* añade "..." al final si no cabe */
 }
 
 .receiver-power {
@@ -51,23 +54,26 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  font-size: 0.9rem;
+  border: none;
+  margin-bottom: 1rem;
 }
 
 /* Botón Editar */
 .btn-edit {
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    background: #2196f3;
   color: white;
 }
 
 .btn-edit:hover {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
+  background:  #083364;
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
 }
 
 /* Botón Borrar */
 .btn-delete {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  background-color: #dc2626; /* rojo */
   color: white;
 }
 
