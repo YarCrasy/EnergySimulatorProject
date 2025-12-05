@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
-                    Intent intent = new Intent(MainActivity.this, ProjectsActivity.class);
+                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                     User loggedUser = response.body();
                     assert loggedUser != null;
                     intent.putExtra("user", loggedUser.getId());

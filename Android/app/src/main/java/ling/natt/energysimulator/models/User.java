@@ -7,7 +7,7 @@ public class User {
     private Long id;
     private String fullName;
     private String email;
-    private LocalDate dateOfBirth;
+    private String dateOfBirth;
     private String passwordHash;
     private boolean admin;
     private ArrayList<Project> projects = new ArrayList<>();
