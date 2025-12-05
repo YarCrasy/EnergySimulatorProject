@@ -1,5 +1,5 @@
 .receiver-card {
-  background: linear-gradient(145deg, #ffffff, #f9fafb); /* ligero degradado */
+  background: whitesmoke;
   padding: 1.5rem;
   border-radius: 0.75rem; /* más redondeado */
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08); /* sombra más suave y difusa */
@@ -10,6 +10,7 @@
 .receiver-card:hover {
   transform: translateY(-4px); /* efecto flotante */
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  border:1px solid #22c55e; /* borde del card verde */
 }
 
 .receiver-name {

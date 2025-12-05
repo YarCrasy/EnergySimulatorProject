@@ -3,13 +3,14 @@ import RegisterForm from "../../../components/registerForm/RegisterForm";
 import TableUsers from "../../../components/adminComponents/tableUsers/TableUsers";
 import NavBar from "../../../components/adminComponents/navBar/NavBar";
 import api from "../../../api/axios";
-import { useAuth } from "../../../hooks/AuthContext"; // <--- Importa
+import { useAuth } from "../../../hooks/AuthContext";
 import "./AdminUsers.css";
 
 export default function AdminUsers() {
-  const { user: currentUser } = useAuth(); // <--- Usuario logueado
+  const { user: currentUser } = useAuth();
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
+  const [showForm, setShowForm] = useState(false); // nuevo estado para modal
 
   const loadUsers = async () => {
     try {
@@ -37,6 +38,7 @@ export default function AdminUsers() {
   const refreshUsers = async () => {
     await loadUsers();
     setEditingUser(null);
+    setShowForm(false); // cerrar formulario al refrescar
   };
 
   return (
@@ -46,24 +48,52 @@ export default function AdminUsers() {
       </div>
 
       <div className="ContentWrapper">
+        {/* Lista de usuarios */}
         <div className="UserList">
-          <h3>Lista de Usuarios</h3>
+          <h1>Gestión de Usuarios</h1>
+          <button
+            className="btn-new-user"
+            onClick={() => {
+              setEditingUser(null); // Nuevo usuario
+              setShowForm(true);
+            }}
+          >
+            Nuevo Usuario
+          </button>
           <TableUsers
             users={users}
-            onEdit={setEditingUser}
+            onEdit={(user) => {
+              setEditingUser(user); // Editar usuario
+              setShowForm(true);
+            }}
             onDelete={handleDelete}
-            currentUser={currentUser} // <--- Pasar el usuario logueado
-          />
-        </div>
-
-        <div className="FormSection">
-          <RegisterForm
-            editingUser={editingUser}
-            onSuccess={refreshUsers}
-            onCancel={() => setEditingUser(null)}
+            currentUser={currentUser}
           />
         </div>
       </div>
+
+      {/* Formulario como modal flotante */}
+      {showForm && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            {/* BOTÓN CANCELAR (solo cuando agregas un usuario nuevo) */}
+            {editingUser === null && (
+              <button
+                className="btn-cancel-modal"
+                onClick={() => setShowForm(false)}
+              >
+                Cancelar
+              </button>
+            )}
+
+            <RegisterForm
+              editingUser={editingUser}
+              onSuccess={refreshUsers}
+              onCancel={() => setShowForm(false)} // si RegisterForm tiene botón cancelar interno
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

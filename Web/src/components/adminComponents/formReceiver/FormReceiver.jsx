@@ -47,6 +47,12 @@ export default function FormReceiver({ receiverToEdit, onSave, onCancel }) {
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
               required
+              onInvalid={(e) =>
+                e.target.setCustomValidity(
+                  "Por favor, ingrese el nombre del elemento"
+                )
+              }
+              onInput={(e) => e.target.setCustomValidity("")}
             />
           </div>
 
@@ -57,27 +63,37 @@ export default function FormReceiver({ receiverToEdit, onSave, onCancel }) {
               value={consumo}
               onChange={(e) => setConsumo(e.target.value)}
               required
+              onInvalid={(e) =>
+                e.target.setCustomValidity(
+                  "Por favor, ingrese el consumo en watios del elemento"
+                )
+              }
+              onInput={(e) => e.target.setCustomValidity("")}
             />
           </div>
 
           <div className="form-grid">
-            <div className="form-group">
-              <label>Posición X</label>
-              <input
-                type="number"
-                step="0.01"
-                value={x}
-                onChange={(e) => setX(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label>Posición Y</label>
-              <input
-                type="number"
-                step="0.01"
-                value={y}
-                onChange={(e) => setY(e.target.value)}
-              />
+            <div className="position">
+              <div className="form-group">
+                <label>Posición X</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={x}
+                  onChange={(e) => setX(e.target.value)}
+                  title="Inserte coordenada x"
+                />
+              </div>
+              <div className="form-group">
+                <label>Posición Y</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={y}
+                  onChange={(e) => setY(e.target.value)}
+                   title= "Inserte coordenada y"
+                />
+              </div>
             </div>
           </div>
 

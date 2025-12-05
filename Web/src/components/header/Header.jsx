@@ -2,13 +2,14 @@ import { useAuth } from "../../hooks/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./Header.css";
+import Logo from "../logo/Logo";
 
 function Header() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   return (
     <header>
-      <Link to="/">Logo</Link>
+      <div className="logo-container"> <Logo/></div>
       <nav>
         <ul>
           <li>

@@ -16,6 +16,7 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  margin-top: 2.5%;
 }
 
 /* Cabecera: título + botón */
@@ -24,13 +25,14 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 10rem;
 }
 
 .receiver-list-header h1 {
   font-size: 2.5rem;
-  font-weight: 700;
+   font-size: 28px;
   color: #111827; /* gris oscuro */
+  justify-content: space-between;
 }
 
 .btn-new-receiver {
@@ -38,6 +40,7 @@
   color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 0.75rem;
+  border: #6b7280;
   font-size: 1.125rem;
   font-weight: 500;
   cursor: pointer;
@@ -45,7 +48,7 @@
 }
 
 .btn-new-receiver:hover {
-  background-color: #15803d; /* verde más oscuro */
+  background-color: #147337; /* verde más oscuro */
   transform: translateY(-2px);
 }
 

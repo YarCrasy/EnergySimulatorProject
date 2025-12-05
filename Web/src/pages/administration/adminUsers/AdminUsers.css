@@ -15,9 +15,9 @@
   margin-top: 15px;
 }
 
-.AdminUsersPage .Encabezado h2 {
+.AdminUsersPage .Encabezado h1 {
   margin: 0 0 10px 0;
-  color: #0C123A;
+  color: #0c123a;
   font-size: 28px;
 }
 
@@ -32,24 +32,54 @@
 /* Formulario del lado izquierdo */
 .AdminUsersPage .FormSection {
   flex: 1;
-  background: #ffffff;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   height: fit-content;
 }
 
 /* Lista de usuarios del lado derecho */
 .AdminUsersPage .UserList {
   flex: 2;
-  background: #ffffff;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   overflow-x: auto;
 }
 
+.btn-cancel-modal {
+  background-color: #dc2626; /* rojo */
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
 
+.btn-cancel-modal:hover {
+  background-color: #b91c1c; /* rojo oscuro */
+  transform: translateY(-1px);
+}
+
+.btn-new-user {
+  background-color: #419c2f; /* rojo */
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  margin-top: 2%;
+}
+
+.btn-new-user:hover {
+  background-color: #096b13;
+}
 
 /* --------- RESPONSIVE: PANTALLAS GRANDES (hasta 1200px) --------- */
 
@@ -64,8 +94,6 @@
   }
 }
 
-
-
 /* --------- RESPONSIVE: PANTALLAS MEDIANAS (hasta 900px) --------- */
 
 @media (max-width: 900px) {
@@ -78,8 +106,6 @@
     width: 100%;
   }
 }
-
-
 
 /* --------- RESPONSIVE: MÓVILES (hasta 600px) --------- */
 
