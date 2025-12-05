@@ -60,17 +60,28 @@
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/*input coordenadas*/
+.position .form-group input{
+  width: 100%;
+  margin-top: 0.25rem;
+  margin-bottom: 0.30rem;
+}
+
+.position {
+  display: flex;       /* los hijos se alinean en fila */
+  gap: 4rem;           /* espacio entre X e Y */
+  justify-content: space-around; /* los alinea al inicio */
+}
+
+
+.form-group:hover input{
+  border: 1px solid #2ee282;
+}
+
 .form-group input:focus {
   border-color: #3b82f6; /* azul */
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
   outline: none;
-}
-
-/* Grid para X e Y */
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
 }
 
 /* Botones */
