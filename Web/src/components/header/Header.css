@@ -22,6 +22,11 @@ header ul {
     flex-direction: row;
     gap: 20px;
 }
+/*logo adaptaciones*/
+.logo-container{
+    height: 1vh;
+    width: 1vh;
+}
 
 header a {
     color: rgb(15, 45, 29);
