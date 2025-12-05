@@ -1,19 +1,15 @@
 import { useAuth } from "../../hooks/AuthContext";
 import useRegisterForm from "./useRegisterForm";
 import "./RegisterForm.css";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterForm({ editingUser, onSuccess, onCancel }) {
   const { user: currentUser, loading } = useAuth();
   const isAdmin = currentUser?.role === "admin";
+  const navigate = useNavigate();
 
-  const {
-    form,
-    errors,
-    submitting,
-    handleChange,
-    handleCreate,
-    handleUpdate,
-  } = useRegisterForm(editingUser, onSuccess);
+  const { form, errors, submitting, handleChange, handleCreate, handleUpdate } =
+    useRegisterForm(editingUser, onSuccess);
 
   if (loading) return null;
 
@@ -42,7 +38,9 @@ export default function RegisterForm({ editingUser, onSuccess, onCancel }) {
           onChange={handleChange}
           type="date"
         />
-        {errors.dateOfBirth && <span className="error">{errors.dateOfBirth}</span>}
+        {errors.dateOfBirth && (
+          <span className="error">{errors.dateOfBirth}</span>
+        )}
       </div>
 
       <div className="form-field">
@@ -66,13 +64,22 @@ export default function RegisterForm({ editingUser, onSuccess, onCancel }) {
           type="password"
           placeholder="********"
         />
-        {errors.passwordHash && <span className="error">{errors.passwordHash}</span>}
+        {errors.passwordHash && (
+          <span className="error">{errors.passwordHash}</span>
+        )}
       </div>
 
       <div className="button-group">
         {!isAdmin && (
-          <button type="submit" disabled={submitting}>
-            {submitting ? "Creando..." : "Crear cuenta"}
+          <button
+            type="button"
+            onClick={async (e) => {
+              e.preventDefault(); // Esto evita el submit del form
+              await handleCreate(e);
+              navigate("/projects");
+            }}
+          >
+            Crear
           </button>
         )}
 
@@ -81,6 +88,7 @@ export default function RegisterForm({ editingUser, onSuccess, onCancel }) {
             <button type="button" onClick={handleUpdate} disabled={submitting}>
               {submitting ? "Actualizando..." : "Actualizar"}
             </button>
+
             <button type="button" onClick={onCancel}>
               Cancelar
             </button>

@@ -31,6 +31,8 @@ export default function useRegisterForm(editingUser, onSuccess) {
     setErrors({ ...errors, [e.target.name]: "" });
   };
 
+  //validaciones para el formulario
+
   const validate = () => {
     const newErrors = {};
 
@@ -73,7 +75,7 @@ export default function useRegisterForm(editingUser, onSuccess) {
       alert(err.response?.data?.message || "Error creando usuario");
     } finally {
       setSubmitting(false);
-    }
+   }
   };
 
   const handleUpdate = async () => {

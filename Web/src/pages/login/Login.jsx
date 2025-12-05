@@ -54,8 +54,6 @@ function Login() {
 
             <button type="submit">Login</button>
 
-            <a href="#" target="_blank">Olvidé la contraseña</a>
-
             <button
               type="button"
               onClick={() => navigate("/register")}
