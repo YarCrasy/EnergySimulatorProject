@@ -10,6 +10,7 @@
 .receiver-card:hover {
   transform: translateY(-4px); /* efecto flotante */
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  border:1px solid #22c55e; /* borde del card verde */
 }
 
 .receiver-name {
