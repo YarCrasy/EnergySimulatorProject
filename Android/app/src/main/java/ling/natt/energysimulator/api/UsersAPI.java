@@ -25,6 +25,10 @@ public class UsersAPI {
     public static void updateUser(User user) throws JSONException, IOException {
         ApiConnection.put("users/" + user.getId(), user.toJSON());
     }
+    public static void deleteUser(Long userId) throws JSONException, IOException {
+        if (userId == null) throw new IllegalArgumentException("userId requerido");
+        ApiConnection.delete("users/" + userId);
+    }
 
     public static User login(String email, String password) throws JSONException, IOException {
         JSONObject loginObject = new JSONObject();

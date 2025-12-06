@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EnergySimulator">
         <activity
-            android:name=".SimulatorActity"
+            android:name=".SimulatorActivity"
             android:screenOrientation="sensorLandscape"
             android:exported="false" />
         <activity

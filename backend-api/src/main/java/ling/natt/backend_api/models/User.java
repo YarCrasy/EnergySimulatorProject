@@ -25,7 +25,8 @@ public class User {
     private boolean isAdmin = false;
 
     // relacion con Project
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     private List<Project> projects = new ArrayList<>();
 
     // constructores
@@ -84,5 +85,9 @@ public class User {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+    
+    public List<Project> getProjects() {
+        return projects;
     }
 }

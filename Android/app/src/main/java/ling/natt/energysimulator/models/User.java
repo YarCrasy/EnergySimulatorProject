@@ -24,7 +24,6 @@ public class User implements Parcelable {
         this.dateOfBirth = userObject.getString("dateOfBirth");
         this.passwordHash = userObject.getString("passwordHash");
         this.admin = userObject.getBoolean("admin");
-
     }
 
     protected User(Parcel in) {
@@ -58,6 +57,9 @@ public class User implements Parcelable {
     public String getDateOfBirth() { return dateOfBirth; }
     public String getPasswordHash() { return passwordHash; }
     public boolean isAdmin() { return admin; }
+
+    public void setEmail(String email) { this.email = email; }
+    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
 
     public JSONObject toJSON() throws JSONException {
         JSONObject userObject = new JSONObject();

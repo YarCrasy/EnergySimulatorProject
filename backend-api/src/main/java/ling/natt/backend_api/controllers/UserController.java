@@ -1,5 +1,6 @@
 package ling.natt.backend_api.controllers;
 
+import ling.natt.backend_api.models.Project;
 import ling.natt.backend_api.models.User;
 import ling.natt.backend_api.repositories.UserRepository;
 
@@ -85,6 +86,14 @@ public class UserController {
         }
 
         return user;
+    }
+
+    @GetMapping("/{id}/projects")
+    public List<Project> getProjectsByUserId(@PathVariable Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        List<Project> projects = user.getProjects();
+        return projects;
     }
 
 }

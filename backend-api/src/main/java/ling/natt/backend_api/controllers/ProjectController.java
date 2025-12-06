@@ -40,7 +40,7 @@ public class ProjectController {
     public Project createProject(@RequestParam Long userId, @RequestBody Project project) {
         User user = userRepository.findById(userId)
                 .orElseThrow();
-        project.setUser(user);
+        project.setUserId(user.getId());
         project.setUpdatedAt(LocalDateTime.now());
         return projectRepository.save(project);
     }
@@ -57,11 +57,11 @@ public class ProjectController {
         project.setEnergyNeeded(projectDetails.getEnergyNeeded());
 
         // Si quieres cambiar el usuario del proyecto
-        if (projectDetails.getUser() != null) {
-            Long newUserId = projectDetails.getUser().getId();
+        if (projectDetails.getUserId() != null) {
+            Long newUserId = projectDetails.getUserId();
             User user = userRepository.findById(newUserId)
                     .orElseThrow();
-            project.setUser(user);
+            project.setUserId(user.getId());
         }
 
         return projectRepository.save(project);

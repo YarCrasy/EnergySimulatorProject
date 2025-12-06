@@ -3,4 +3,9 @@
     <string name="login">Login</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="project_card_profile">Perfil</string>
+    <string name="project_card_simulator">Simulador</string>
+    <string name="project_card_default_title">Proyecto sin nombre</string>
+    <string name="project_card_default_subtitle">Sin descripción</string>
+    <string name="project_card_meta">ID #%1$s</string>
 </resources>

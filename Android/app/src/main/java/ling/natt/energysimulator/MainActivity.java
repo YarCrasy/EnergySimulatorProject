@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         loginExecutor.execute(() -> {
             try {
                 User u = UsersAPI.login(email, pass);
-                runOnUiThread(() -> navigateToProfile(u));
+                runOnUiThread(() -> navigateToProject(u));
             } catch (Exception e) {
                 runOnUiThread(() -> {
                     setLoading(false);
@@ -72,9 +72,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void navigateToProfile(User user) {
+    private void navigateToProject(User user) {
         setLoading(false);
-        Intent intent = new Intent(this, ProfileActivity.class);
+        Intent intent = new Intent(this, ProjectsActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
     }

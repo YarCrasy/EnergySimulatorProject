@@ -21,19 +21,18 @@ public class Project {
     private float energyNeeded;
 
     // relacion con User
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
     // relacion con Element
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectElement> projectElements = new ArrayList<>();
 
     // constructores
-    public Project(String name, User user, LocalDateTime updatedAt) {
+    public Project(String name, Long userId, LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
         this.name = name;
-        this.user = user;
+        this.userId = userId;
         this.updatedAt = LocalDateTime.now();
     }
 
@@ -67,12 +66,12 @@ public class Project {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getName() {
