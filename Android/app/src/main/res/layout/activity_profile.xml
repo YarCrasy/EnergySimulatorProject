@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/profileActivity"
@@ -8,4 +8,154 @@
     android:orientation="vertical"
     tools:context=".ProfileActivity">
 
-</LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="10dp"/>
+
+    <ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="70dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintStart_toStartOf="@id/profileActivity"
+        app:layout_constraintTop_toTopOf="@id/profileActivity" />
+
+    <LinearLayout
+        android:id="@+id/dataDisplay"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        app:layout_constraintStart_toEndOf="@id/profileImage"
+        app:layout_constraintTop_toTopOf="@id/profileImage"
+        app:layout_constraintEnd_toEndOf="@id/emailChange"
+        android:layout_marginStart="10dp">
+
+        <TextView
+            android:id="@+id/profileName"
+            android:text="Nombre Apellido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/profileBirthday"
+            android:text="1999-99-99"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/profileUserType"
+            android:text="Usuario/Administrador"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/passwordChange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/profileImage"
+        app:layout_constraintTop_toBottomOf="@id/profileImage"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/oldPassword"
+            android:hint="contraseña antigua"
+            android:layout_width="200dp"
+            android:layout_height="50dp"/>
+        <EditText
+            android:id="@+id/newPassword"
+            android:hint="contraseña nueva"
+            android:layout_width="200dp"
+            android:layout_height="50dp" />
+        <Button
+            android:id="@+id/changePasswordBtn"
+            android:text="Cambiar"
+            android:layout_width="200dp"
+            android:layout_height="50dp"/>
+        <TextView
+            android:id="@+id/passwordErrMsg"
+            android:text=""
+            android:textColor="@color/red"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/emailChange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/passwordChange"
+        app:layout_constraintTop_toBottomOf="@id/profileImage"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/oldEmail"
+            android:hint="Correo antiguo"
+            android:layout_width="200dp"
+            android:layout_height="50dp"/>
+        <EditText
+            android:id="@+id/newEmail"
+            android:hint="Correo nuevo"
+            android:layout_width="200dp"
+            android:layout_height="50dp" />
+        <Button
+            android:id="@+id/changeEmailBtn"
+            android:text="Cambiar"
+            android:layout_width="200dp"
+            android:layout_height="50dp"/>
+        <TextView
+            android:id="@+id/emailErrMsg"
+            android:text=""
+            android:textColor="@color/red"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/optionsBtns"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+        <Button
+            android:id="@+id/settingsBtn"
+            android:text="Ajustes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+
+        <Button
+            android:id="@+id/privacyPolicyBtn"
+            android:text="Privacidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+
+        <Button
+            android:id="@+id/accountDeleteBtn"
+            android:text="Eliminar cuenta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/red"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
