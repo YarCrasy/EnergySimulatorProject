@@ -1,9 +1,11 @@
 package ling.natt.energysimulator.models;
 
-import android.os.Build;
+import static java.time.LocalDateTime.now;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,7 +25,7 @@ public class Project implements Parcelable {
 
     public Project() {
         name = "Nuevo Proyecto";
-        updatedAt = LocalDateTime.now();
+        updatedAt = now();
         isEnergyEnough = false;
         energyNeeded = 0.0f;
     }
@@ -75,6 +77,20 @@ public class Project implements Parcelable {
             return new Project[size];
         }
     };
+
+    public static List<Project> fromJsonArray(JSONArray projectsArray) {
+        List<Project> projects = new ArrayList<>();
+        if (projectsArray == null) return projects;
+        for (int i = 0; i < projectsArray.length(); i++) {
+            try {
+                JSONObject projectObject = projectsArray.getJSONObject(i);
+                projects.add(new Project(projectObject));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return projects;
+    }
 
     public void addElement(Element element, int unidades) {
         ProjectElement pe = new ProjectElement(this, element, unidades);

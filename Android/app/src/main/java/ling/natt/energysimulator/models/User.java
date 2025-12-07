@@ -6,7 +6,10 @@ import android.os.Parcelable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import ling.natt.energysimulator.api.ProjectsAPI;
 
 public class User implements Parcelable {
     private Long id;
@@ -37,6 +40,10 @@ public class User implements Parcelable {
         dateOfBirth = in.readString();
         passwordHash = in.readString();
         admin = in.readByte() != 0;
+        projects = in.createTypedArrayList(Project.CREATOR);
+        if (projects == null) {
+            projects = new ArrayList<>();
+        }
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -91,6 +98,7 @@ public class User implements Parcelable {
         dest.writeString(dateOfBirth);
         dest.writeString(passwordHash);
         dest.writeByte((byte) (admin ? 1 : 0));
+        dest.writeTypedList(projects);
     }
 
     public ArrayList<Project> getProjects() {

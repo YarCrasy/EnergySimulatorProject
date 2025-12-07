@@ -2,6 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
+        android:id="@+id/projectCardLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -18,7 +19,7 @@
             android:ellipsize="end" />
 
         <TextView
-            android:id="@+id/projectCardSubtitle"
+            android:id="@+id/projectCardUpdatedAt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -27,36 +28,6 @@
             android:maxLines="2"
             android:ellipsize="end" />
 
-        <TextView
-            android:id="@+id/projectCardMeta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:textColor="@android:color/darker_gray"
-            android:layout_marginTop="6dp" />
-
-        <LinearLayout
-            android:id="@+id/projectCardActions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/projectCardProfileBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:layout_weight="1"
-                android:text="@string/project_card_profile" />
-
-            <Button
-                android:id="@+id/projectCardSimulatorBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/project_card_simulator" />
-        </LinearLayout>
     </LinearLayout>
 </merge>
 
