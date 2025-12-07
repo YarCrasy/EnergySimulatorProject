@@ -18,10 +18,8 @@ public class ConsumerElementController {
 
     @Autowired
     private ConsumerElementRepository consumerElementRepository;
-
     @Autowired
     private ProjectRepository projectRepository;
-
     @Autowired
     private ProjectElementRepository projectElementRepository;
 

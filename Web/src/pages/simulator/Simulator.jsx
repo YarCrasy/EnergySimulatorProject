@@ -1,13 +1,13 @@
 import "./Simulator.css";
-/* import { useState } from "react";
+import { useState } from "react";
 import { useParams, useLocation } from 'react-router-dom';
 
 import SideMenu from "./sideMenu/SideMenu";
 import DiagramWorkspace from "./workspace/DiagramWorkspace";
 import toolBoxIcon from "../../assets/tool-box.svg";
- */
+
 function Simulator() {
-/*     const { projectId } = useParams();
+    const { projectId } = useParams();
     const location = useLocation();
     const [collapsed, setCollapsed] = useState(false);
     
@@ -16,7 +16,13 @@ function Simulator() {
     return (
         <main className="simulator-page">
             
-            <button className="menu-toggle-button" onClick={() => setCollapsed(!collapsed)}>
+            <button
+                type="button"
+                className={`menu-toggle-button${collapsed ? " collapsed" : ""}`}
+                onClick={() => setCollapsed(!collapsed)}
+                aria-pressed={collapsed}
+                aria-label={collapsed ? "Abrir menú" : "Cerrar menú"}
+            >
                 <img src={toolBoxIcon} alt="Toggle Menu" width={30} />
             </button>
 
@@ -25,14 +31,14 @@ function Simulator() {
                 <DiagramWorkspace projectId={resolvedProjectId} />
             </div>
         </main>
-    ); */
-
-    return(
-        <main className="simulator-page">
-            <h1>Estamos trabajando en el simulador</h1>
-            <h2>disculpen las molestias</h2>
-        </main>
     );
+
+    // return(
+    //     <main className="simulator-page">
+    //         <h1>Estamos trabajando en el simulador</h1>
+    //         <h2>disculpen las molestias</h2>
+    //     </main>
+    // );
 }
 
 export default Simulator;

@@ -1,42 +1,31 @@
-// src/api/projects.js
-// Funciones para interactuar con la API REST de proyectos
 
 import api from './api';
 
 const RESOURCE = '/projects';
 
-const FALLBACK_PROJECTS = [
-  {
-    id: 1,
-    title: 'Proyecto Solar 1',
-    lastUpdated: '2024-01-15',
-  },
-  {
-    id: 2,
-    title: 'Proyecto Eólico 2',
-    lastUpdated: '2024-02-20',
-  },
-  {
-    id: 3,
-    title: 'Proyecto Hidroeléctrico 3',
-    lastUpdated: '2024-03-10',
-  },
-];
+const ensureArray = (data) => (Array.isArray(data) ? data : []);
+const logError = (message, error) => {
+  console.error(message, error);
+};
 
 export async function getAllProjects() {
   try {
     const { data } = await api.get(RESOURCE);
-    if (!Array.isArray(data)) return FALLBACK_PROJECTS;
-    return data;
+    return ensureArray(data);
   } catch (error) {
-    console.error('Error solicitando proyectos', error);
-    return FALLBACK_PROJECTS;
+    logError('Error solicitando proyectos', error);
+    return [];
   }
 }
 
 export async function getProjectById(id) {
-  const { data } = await api.get(`${RESOURCE}/${id}`);
-  return data;
+  try {
+    const { data } = await api.get(`${RESOURCE}/${id}`);
+    return data;
+  } catch (error) {
+    logError('Error al obtener el proyecto', error);
+    throw error;
+  }
 }
 
 export async function createProject(projectData = {}) {
@@ -44,7 +33,17 @@ export async function createProject(projectData = {}) {
     const { data } = await api.post(RESOURCE, projectData);
     return data;
   } catch (error) {
-    console.error('Error creando proyecto', error);
+    logError('Error creando proyecto', error);
+    throw error;
+  }
+}
+
+export async function deleteProject(id) {
+  try {
+    await api.delete(`${RESOURCE}/${id}`);
+    return true;
+  } catch (error) {
+    logError('Error eliminando proyecto', error);
     throw error;
   }
 }

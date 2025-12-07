@@ -5,7 +5,7 @@ import "./Projects.css";
 import {SearchBar, HeadingButton} from "../../components/searchBar/SearchBar";
 import ProjectCard from "../../components/projectCard/ProjectCard";
 import placeHorderImg from "../../assets/image.svg"
-import { getAllProjects, createProject } from "../../api/projects";
+import { getAllProjects, createProject, deleteProject } from "../../api/projects";
 import UserProfile from "../../components/userProfile/UserProfile";
 import { useAuth } from "../../hooks/AuthContext";
 
@@ -79,6 +79,8 @@ function Projects() {
     //     <SortLastUpdatedDescendente />
     // ];
 
+    const showCreateGuide = !loading && !error && projects.length === 0;
+
     const handleCreateProject = async () => {
         if (creatingProject) return;
         if (!user?.id) {
@@ -91,11 +93,11 @@ function Projects() {
             // Crear un proyecto básico antes de abrir el simulador.
             const newProjectPayload = {
                 name: "Nuevo Proyecto",
-                isEnergyEnough: false,
+                energyEnough: false,
                 energyNeeded: 0,
-                projectElements: [],
+                userId: user.id
             };
-            const createdProject = await createProject(user.id, newProjectPayload);
+            const createdProject = await createProject(newProjectPayload);
             setProjects((prev) => [...prev, createdProject]);
             navigate(`/simulator/${createdProject?.id}`);
         } catch (creationError) {
@@ -103,6 +105,21 @@ function Projects() {
             setError("No se pudo crear el proyecto");
         } finally {
             setCreatingProject(false);
+        }
+    };
+
+    const handleDeleteProject = async (projectId, projectName) => {
+        if (!projectId) return;
+        const confirmed = window.confirm(`¿Eliminar "${projectName}"? Esta acción no se puede deshacer.`);
+        if (!confirmed) return;
+
+        try {
+            setError(null);
+            await deleteProject(projectId);
+            setProjects((prev) => prev.filter((project) => project.id !== projectId));
+        } catch (deleteError) {
+            console.error("No se pudo eliminar el proyecto", deleteError);
+            setError("No se pudo eliminar el proyecto");
         }
     };
 
@@ -122,23 +139,33 @@ function Projects() {
             {error && !loading && <p className="projects-status error">{error}</p>}
             <div className="projects-list">
                 {
-                    projects.map((project) => (
-                        <ProjectCard
-                            key={project.id}
-                            id={project.id}
-                            title={project.title || `Proyecto ${project.id}`}
-                            lastUpdated={project.lastUpdated ? new Date(project.lastUpdated).toLocaleDateString() : new Date().toLocaleDateString()}
-                            imageUrl={project.imageUrl || placeHorderImg}
-                        />
-                    ))
+                    projects.map((project) => {
+                        const title = project.name || project.title || `Proyecto ${project.id}`;
+                        const updated = project.updatedAt || project.lastUpdated;
+                        return (
+                            <ProjectCard
+                                key={project.id}
+                                id={project.id}
+                                title={title}
+                                lastUpdated={updated ? new Date(updated).toLocaleDateString() : new Date().toLocaleDateString()}
+                                imageUrl={project.imageUrl || placeHorderImg}
+                                onDelete={(cardId) => handleDeleteProject(cardId, title)}
+                            />
+                        );
+                    })
                 }
+                {showCreateGuide && (
+                    <p className="projects-empty-hint">
+                        Aún no tienes proyectos. Pulsa “Nuevo Proyecto” para comenzar.
+                    </p>
+                )}
             </div>
             <button
-                className="create-project-button"
+                className={`create-project-button${showCreateGuide ? " guide" : ""}`}
                 onClick={handleCreateProject}
                 disabled={creatingProject}
             >
-                {creatingProject ? "..." : "+"}
+                {creatingProject ? "..." : "Nuevo Proyecto"}
             </button>
         </main>
     );

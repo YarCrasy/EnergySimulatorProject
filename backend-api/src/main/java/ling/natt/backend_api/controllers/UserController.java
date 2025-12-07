@@ -125,7 +125,7 @@ public class UserController {
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id " + id));
     }
 
-    public record LoginRequest(String email, String password) {
+    public record LoginRequest(String email, String password){
         
     }
 }

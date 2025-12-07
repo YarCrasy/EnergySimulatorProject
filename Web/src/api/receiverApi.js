@@ -1,7 +1,7 @@
 
 import api from "./api";
 
-const RESOURCE = "/consum-element";
+const RESOURCE = "/consumer-element";
 
 const handleError = (error, fallbackMessage) => {
   console.error(fallbackMessage, error);

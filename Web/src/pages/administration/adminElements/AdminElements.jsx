@@ -17,7 +17,7 @@ export default function ReceiverList() {
       const data = await receiverApi.getAll();
       setReceivers(data);
     } catch (err) {
-      alert("Error al cargar receivers");
+      alert("Error al cargar receivers: " + err.message);
     } finally {
       setLoading(false);
     }
@@ -37,8 +37,8 @@ export default function ReceiverList() {
       loadReceivers();
       setShowForm(false);
       setEditingReceiver(null);
-    } catch (err) {
-      alert("Error al guardar");
+    } catch (e) {
+      alert("Error al guardar: " + e.message);
     }
   };
 
@@ -47,8 +47,8 @@ export default function ReceiverList() {
       try {
         await receiverApi.delete(id);
         loadReceivers();
-      } catch (err) {
-        alert("Error al eliminar");
+      } catch (e) {
+        alert("Error al eliminar: " + e.message);
       }
     }
   };
@@ -62,7 +62,7 @@ export default function ReceiverList() {
 
       <div className="receiver-list-container">
         <div className="receiver-list-header">
-          <h1>Gestión de Receivers</h1>
+          <h1>Gestión de Elementos de Consumo</h1>
           <button
             onClick={() => {
               setEditingReceiver(null);
