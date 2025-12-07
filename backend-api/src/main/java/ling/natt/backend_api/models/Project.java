@@ -1,61 +1,63 @@
 package ling.natt.backend_api.models;
 
-import jakarta.persistence.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "projects")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 150)
     private String name;
+
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-    private boolean isEnergyEnough;
+
+    @Column(name = "is_energy_enough")
+    private boolean energyEnough;
+
+    @Column(name = "energy_needed")
     private float energyNeeded;
 
-    // relacion con User
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    // relacion con Element
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "project-elements")
     private List<ProjectElement> projectElements = new ArrayList<>();
 
-    // constructores
-    public Project(String name, Long userId, LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public Project() {
+    }
+
+    public Project(String name, float energyNeeded, boolean energyEnough, Long userId) {
         this.name = name;
+        this.energyNeeded = energyNeeded;
+        this.energyEnough = energyEnough;
         this.userId = userId;
+    }
+
+    @PrePersist
+    @PreUpdate
+    private void touchUpdatedAt() {
         this.updatedAt = LocalDateTime.now();
-    }
-
-    public Project() {}
-        // helper method to get elements directly
-    public void addElement(Element element, int unidades) {
-        ProjectElement pe = new ProjectElement(this, element, unidades);
-        projectElements.add(pe);
-    }
-
-    public void removeElement(ProjectElement pe) {
-        projectElements.remove(pe);
-        pe.setProject(null);
-        pe.setElement(null);
-    }
-
-    // Getters and Setters
-    public List<ProjectElement> getElements() {
-        return projectElements;
-    }
-
-    public void setElements(List<ProjectElement> projectElements) {
-        this.projectElements = projectElements;
     }
 
     public Long getId() {
@@ -64,14 +66,6 @@ public class Project {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public String getName() {
@@ -91,11 +85,11 @@ public class Project {
     }
 
     public boolean isEnergyEnough() {
-        return isEnergyEnough;
+        return energyEnough;
     }
 
     public void setEnergyEnough(boolean energyEnough) {
-        isEnergyEnough = energyEnough;
+        this.energyEnough = energyEnough;
     }
 
     public float getEnergyNeeded() {
@@ -106,4 +100,19 @@ public class Project {
         this.energyNeeded = energyNeeded;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public List<ProjectElement> getProjectElements() {
+        return projectElements;
+    }
+
+    public void setProjectElements(List<ProjectElement> projectElements) {
+        this.projectElements = projectElements;
+    }
 }

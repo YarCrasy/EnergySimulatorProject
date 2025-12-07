@@ -1,26 +1,36 @@
 package ling.natt.backend_api.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "project_elements", uniqueConstraints = {
         @UniqueConstraint(columnNames = { "project_id", "element_id" })
-}) // asegura que no haya duplicados de elemento por proyecto
+})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class ProjectElement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false) // relacion con Project
-    @JoinColumn(name = "project_id", nullable = false) // obliga a que siempre haya un proyecto asociado
-    @JsonBackReference // evita referencias cíclicas según tu serialización
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "project_id", nullable = false)
+    @JsonBackReference(value = "project-elements")
     private Project project;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false) // relacion con Element
-    @JoinColumn(name = "element_id", nullable = false) // obliga a que siempre haya un elemento asociado
-    @JsonBackReference // evita referencias cíclicas según tu serialización
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "element_id", nullable = false)
+    @JsonBackReference
     private Element element;
 
     private Integer unidades = 1;
@@ -34,9 +44,8 @@ public class ProjectElement {
         this.unidades = unidades;
     }
 
-    // getters y setters
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(Long id) {
@@ -44,7 +53,7 @@ public class ProjectElement {
     }
 
     public Project getProject() {
-        return this.project;
+        return project;
     }
 
     public void setProject(Project project) {
@@ -52,7 +61,7 @@ public class ProjectElement {
     }
 
     public Element getElement() {
-        return this.element;
+        return element;
     }
 
     public void setElement(Element element) {
@@ -60,14 +69,13 @@ public class ProjectElement {
     }
 
     public Integer getUnidades() {
-        return this.unidades;
+        return unidades;
     }
 
     public void setUnidades(Integer unidades) {
         this.unidades = unidades;
     }
 
-    // toString
     @Override
     public String toString() {
         return "{" +

@@ -4,53 +4,64 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Project implements Parcelable {
 
-    private long id;
-
+    private Long id;
     private String name;
-    private String description;
     private LocalDateTime updatedAt;
     private boolean isEnergyEnough;
     private float energyNeeded;
-
-    private long user;
-
+    private Long userId;
     private List<ProjectElement> projectElements = new ArrayList<>();
 
-    public Project(String name, long user, LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-        this.name = name;
-        this.user = user;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.updatedAt = LocalDateTime.now();
+    public Project() {
+        name = "Nuevo Proyecto";
+        updatedAt = LocalDateTime.now();
+        isEnergyEnough = false;
+        energyNeeded = 0.0f;
+    }
+
+    public Project(JSONObject projectObject) throws JSONException {
+        if (projectObject == null) return;
+        if (projectObject.has("id") && !projectObject.isNull("id"))
+            this.id = projectObject.getLong("id");
+        if (projectObject.has("name") && !projectObject.isNull("name"))
+            this.name = projectObject.getString("name");
+        if (projectObject.has("updatedAt") && !projectObject.isNull("updatedAt")) {
+            String updatedAtStr = projectObject.getString("updatedAt");
+            this.updatedAt = LocalDateTime.parse(updatedAtStr);
         }
+        if (projectObject.has("isEnergyEnough") && !projectObject.isNull("isEnergyEnough"))
+            this.isEnergyEnough = projectObject.getBoolean("isEnergyEnough");
+        if (projectObject.has("energyNeeded") && !projectObject.isNull("energyNeeded"))
+            this.energyNeeded = (float) projectObject.getDouble("energyNeeded");
+        if (projectObject.has("userId") && !projectObject.isNull("userId"))
+            this.userId = projectObject.getLong("userId");
     }
 
-    public Project(org.json.JSONObject projectObject) throws org.json.JSONException {
-        this.id = projectObject.has("id") ? projectObject.getLong("id") : null;
-        this.name = projectObject.has("name") ? projectObject.getString("name") : null;
-        this.user = projectObject.has("user") ? projectObject.getLong("user") : null;
-    }
-
-    // Parcelable constructor
+    // Parcelable
     protected Project(Parcel in) {
         if (in.readByte() == 0) {
-            id = Long.parseLong(null);
+            id = null;
         } else {
             id = in.readLong();
         }
         name = in.readString();
-        description = in.readString();
         isEnergyEnough = in.readByte() != 0;
         energyNeeded = in.readFloat();
-        user = in.readLong();
-        updatedAt = LocalDateTime.now();
-
+        if (in.readByte() == 0) {
+            userId = null;
+        } else {
+            userId = in.readLong();
+        }
+        // not parceling updatedAt or projectElements for simplicity
     }
 
     public static final Creator<Project> CREATOR = new Creator<Project>() {
@@ -76,15 +87,16 @@ public class Project implements Parcelable {
         pe.setElement(null);
     }
 
-    public org.json.JSONObject toJSON() throws org.json.JSONException {
-        org.json.JSONObject obj = new org.json.JSONObject();
+    public JSONObject toJSON() throws JSONException {
+        JSONObject obj = new JSONObject();
         if (this.id != null) obj.put("id", this.id);
         if (this.name != null) obj.put("name", this.name);
-        if (this.description != null) obj.put("description", this.description);
+        if (this.userId != null) obj.put("userId", this.userId);
+        // omitimos projectElements y updatedAt en el payload mínimo
         return obj;
     }
 
-    // Getters and Setters
+    // Getters y Setters
     public List<ProjectElement> getElements() {
         return projectElements;
     }
@@ -101,12 +113,12 @@ public class Project implements Parcelable {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -115,14 +127,6 @@ public class Project implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public LocalDateTime getUpdatedAt() {
@@ -163,10 +167,14 @@ public class Project implements Parcelable {
             dest.writeLong(id);
         }
         dest.writeString(name);
-        dest.writeString(description);
         dest.writeByte((byte) (isEnergyEnough ? 1 : 0));
         dest.writeFloat(energyNeeded);
-        dest.writeParcelable(user, flags);
+        if (userId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(userId);
+        }
     }
 
 }

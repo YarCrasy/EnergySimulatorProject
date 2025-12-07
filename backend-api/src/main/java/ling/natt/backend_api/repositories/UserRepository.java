@@ -9,10 +9,14 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     // Buscar usuario por email, si existe
-    Optional<User> findByEmail(String email);
+    Optional<User> findByEmailIgnoreCase(String email);
+
+    boolean existsByEmailIgnoreCase(String email);
 
     // Buscar usuarios cuyo nombre completo contenga un texto
-    List<User> findByFullNameContaining(String fullName);
+    List<User> findByFullNameContainingIgnoreCase(String fullName);
+
+    List<User> findByEmailContainingIgnoreCase(String email);
 
     // Buscar usuario por email y passwordHash para login
     Optional<User> findByEmailAndPasswordHash(String email, String passwordHash);

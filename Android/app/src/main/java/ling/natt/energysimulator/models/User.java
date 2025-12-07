@@ -92,4 +92,12 @@ public class User implements Parcelable {
         dest.writeString(passwordHash);
         dest.writeByte((byte) (admin ? 1 : 0));
     }
+
+    public ArrayList<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(ArrayList<Project> projects) {
+        this.projects = projects;
+    }
 }

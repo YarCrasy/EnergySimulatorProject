@@ -15,7 +15,7 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
         
         config.setAllowCredentials(true);
-        //config.addAllowedOrigin("http://localhost:5173");
+        config.addAllowedOrigin("http://localhost:5173");
         config.addAllowedOrigin("https://dam-project.yarcrasy.com");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");

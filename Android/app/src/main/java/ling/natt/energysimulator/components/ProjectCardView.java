@@ -7,30 +7,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
 import ling.natt.energysimulator.R;
+import ling.natt.energysimulator.models.Project;
 
 public class ProjectCardView extends CardView {
-    private TextView titleView;
-    private TextView subtitleView;
-    private TextView metaView;
-    private Button profileBtn;
-    private Button simulatorBtn;
+    private TextView nameView;
+    private TextView DateView;
+    private Project project;
 
-    public ProjectCardView(Context context) {
+    @Override
+    public void setOnClickListener(@Nullable OnClickListener l) {
+        super.setOnClickListener(l);
+    }
+
+    public ProjectCardView(Context context, Project p) {
         super(context);
         init(context);
-    }
-
-    public ProjectCardView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
-    }
-
-    public ProjectCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(context);
+        project = p;
     }
 
     private void init(Context context) {
@@ -40,23 +36,14 @@ public class ProjectCardView extends CardView {
         setRadius(radius);
         setCardElevation(radius / 3f);
 
-        titleView = findViewById(R.id.projectCardTitle);
-        subtitleView = findViewById(R.id.projectCardSubtitle);
-        metaView = findViewById(R.id.projectCardMeta);
-        profileBtn = findViewById(R.id.projectCardProfileBtn);
-        simulatorBtn = findViewById(R.id.projectCardSimulatorBtn);
+        nameView = findViewById(R.id.projectCardTitle);
+        DateView = findViewById(R.id.projectCardMeta);
+
     }
 
-    public void bind(CharSequence title,
-                     CharSequence subtitle,
-                     CharSequence meta,
-                     View.OnClickListener profileListener,
-                     View.OnClickListener simulatorListener) {
-        titleView.setText(title);
-        subtitleView.setText(subtitle);
-        metaView.setText(meta);
-        profileBtn.setOnClickListener(profileListener);
-        simulatorBtn.setOnClickListener(simulatorListener);
+    public void bind(CharSequence title, CharSequence meta) {
+        nameView.setText(title);
+        DateView.setText(meta);
     }
 }
 
