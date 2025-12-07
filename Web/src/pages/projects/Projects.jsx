@@ -40,37 +40,37 @@ function Projects() {
         };
     }, []);
 
-    const SortAlphabeticAscendente = () => {
-        return(
-            <button onClick={() => alert("Ordenar A-Z")}>
-                Ordenar A-Z
-            </button>
-        );
-    }
+    // const SortAlphabeticAscendente = () => {
+    //     return(
+    //         <button onClick={() => alert("Ordenar A-Z")}>
+    //             Ordenar A-Z
+    //         </button>
+    //     );
+    // }
 
-    const SortAlphabeticDescendente = () => {
-        return(
-            <button onClick={() => alert("Ordenar Z-A")}>
-                Ordenar Z-A
-            </button>
-        );
-    }
+    // const SortAlphabeticDescendente = () => {
+    //     return(
+    //         <button onClick={() => alert("Ordenar Z-A")}>
+    //             Ordenar Z-A
+    //         </button>
+    //     );
+    // }
 
-    const SortLastUpdatedAscendente = () => {
-        return(
-            <button onClick={() => alert("Ordenar por mas reciente")}>
-                Ordenar por mas reciente
-            </button>
-        );
-    } 
+    // const SortLastUpdatedAscendente = () => {
+    //     return(
+    //         <button onClick={() => alert("Ordenar por mas reciente")}>
+    //             Ordenar por mas reciente
+    //         </button>
+    //     );
+    // } 
 
-    const SortLastUpdatedDescendente = () => {
-        return(
-            <button onClick={() => alert("Ordenar por mas antiguo")}>
-                Ordenar por mas antiguo
-            </button>
-        );
-    }
+    // const SortLastUpdatedDescendente = () => {
+    //     return(
+    //         <button onClick={() => alert("Ordenar por mas antiguo")}>
+    //             Ordenar por mas antiguo
+    //         </button>
+    //     );
+    // }
 
     // const filterOptions = [
     //     <SortAlphabeticAscendente />,

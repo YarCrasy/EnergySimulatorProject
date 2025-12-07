@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import api from "../../api/axios";
+import api from "../../api/api";
 import RegisterForm from "../register/RegisterForm";
 import { useAuth } from "../../hooks/AuthContext";
 

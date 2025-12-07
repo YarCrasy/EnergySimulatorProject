@@ -12,13 +12,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import ling.natt.energysimulator.api.ApiClient;
-import ling.natt.energysimulator.api.ApiService;
-import ling.natt.energysimulator.api.LoginRequest;
+import ling.natt.energysimulator.api.UsersAPI;
 import ling.natt.energysimulator.models.User;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     EditText password;
     Button loginBtn;
     TextView errorMessage;
+    private final ExecutorService loginExecutor = Executors.newSingleThreadExecutor();
 
 
     @Override
@@ -50,44 +49,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void login() {
-        String user = username.getText().toString().trim();
+        String email = username.getText().toString().trim();
         String pass = password.getText().toString().trim();
-
-        // Validación simple
-        if (user.isEmpty() || pass.isEmpty()) {
-            errorMessage.setText("Por favor, complete todos los campos");
+        if (email.isEmpty() || pass.isEmpty()) {
+            errorMessage.setText("Por favor, ingrese un usuario y contraseña");
             return;
         }
-
-        // Crear request
-        LoginRequest loginRequest = new LoginRequest(user, pass);
-
-        ApiService api = ApiClient.getClient().create(ApiService.class);
-
-        Call<User> call = api.login(loginRequest);
-
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful()) {
-                    Intent intent = new Intent(MainActivity.this, ProjectsActivity.class);
-                    User loggedUser = response.body();
-                    assert loggedUser != null;
-                    intent.putExtra("user", loggedUser.getId());
-                    startActivity(intent);
-                } else {
-                    errorMessage.setText("Credenciales incorrectas");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                errorMessage.setText(t.getMessage());
+        errorMessage.setText("");
+        setLoading(true);
+        loginExecutor.execute(() -> {
+            try {
+                User u = UsersAPI.login(email, pass);
+                runOnUiThread(() -> navigateToProject(u));
+            } catch (Exception e) {
+                runOnUiThread(() -> {
+                    setLoading(false);
+                    String message = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
+                    errorMessage.setText("Hubo un error, intente de nuevo\n" + message);
+                });
             }
         });
+
     }
 
+    private void navigateToProject(User user) {
+        setLoading(false);
+        Intent intent = new Intent(this, ProjectsActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+    }
 
+    private void setLoading(boolean loading) {
+        loginBtn.setEnabled(!loading);
+    }
 
-
+    @Override
+    protected void onDestroy() {
+        loginExecutor.shutdownNow();
+        super.onDestroy();
+    }
 }

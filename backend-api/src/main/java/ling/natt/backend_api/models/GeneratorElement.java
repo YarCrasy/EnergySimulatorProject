@@ -5,18 +5,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "panels")
-@DiscriminatorValue("PANEL")
-public class Panel extends Element {
+@Table(name = "generator_elements")
+@DiscriminatorValue("GENERATOR_ELEMENT")
+public class GeneratorElement extends Element {
     private String brand;
     private Double efficiency;
     private Double powerWatt;
 
     // constructores
-    public Panel() {
+    public GeneratorElement() {
     }
 
-    public Panel(String name, Float x, Float y, String brand, Double efficiency, Double powerWatt) {
+    public GeneratorElement(String name, Float x, Float y, String brand, Double efficiency, Double powerWatt) {
         super(name, x, y);
         this.brand = brand;
         this.efficiency = efficiency;

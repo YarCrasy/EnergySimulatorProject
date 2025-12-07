@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import api from "../../api/axios";
+import api from "../../api/api";
 
 export default function useRegisterForm(editingUser, onSuccess) {
   const [form, setForm] = useState({

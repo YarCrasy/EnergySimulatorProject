@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import RegisterForm from "../../../components/registerForm/RegisterForm";
 import TableUsers from "../../../components/adminComponents/tableUsers/TableUsers";
 import NavBar from "../../../components/adminComponents/navBar/NavBar";
-import api from "../../../api/axios";
+import api from "../../../api/api";
 import { useAuth } from "../../../hooks/AuthContext";
 import "./AdminUsers.css";
 

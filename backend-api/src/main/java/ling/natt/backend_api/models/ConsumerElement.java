@@ -1,23 +1,24 @@
 package ling.natt.backend_api.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "consum_elements")
-@DiscriminatorValue("CONSUM_ELEMENT")
-public class ConsumElement extends Element {
+@Table(name = "consumer_elements")
+@DiscriminatorValue("CONSUMER_ELEMENT")
+public class ConsumerElement extends Element {
+
     private Double powerConsumption;
 
-    // constructores
-    public ConsumElement() {
+    public ConsumerElement() {
     }
 
-    public ConsumElement(String name, Float x, Float y, Double powerConsumption) {
+    public ConsumerElement(String name, Float x, Float y, Double powerConsumption) {
         super(name, x, y);
         this.powerConsumption = powerConsumption;
     }
 
-    // getters y setters
     public Double getPowerConsumption() {
         return this.powerConsumption;
     }

@@ -1,7 +1,9 @@
 // src/api/projects.js
 // Funciones para interactuar con la API REST de proyectos
 
-const API_URL = 'https://dam-project.yarcrasy.com/api/projects';
+import api from './api';
+
+const RESOURCE = '/projects';
 
 const FALLBACK_PROJECTS = [
   {
@@ -23,13 +25,9 @@ const FALLBACK_PROJECTS = [
 
 export async function getAllProjects() {
   try {
-    const response = await fetch(API_URL);
-    if (!response.ok) return FALLBACK_PROJECTS;
-
-    const contentType = response.headers.get('content-type') || '';
-    if (!contentType.includes('application/json')) return FALLBACK_PROJECTS;
-
-    return await response.json();
+    const { data } = await api.get(RESOURCE);
+    if (!Array.isArray(data)) return FALLBACK_PROJECTS;
+    return data;
   } catch (error) {
     console.error('Error solicitando proyectos', error);
     return FALLBACK_PROJECTS;
@@ -37,29 +35,14 @@ export async function getAllProjects() {
 }
 
 export async function getProjectById(id) {
-  const response = await fetch(`${API_URL}/${id}`);
-  if (!response.ok) throw new Error('Error al obtener el proyecto');
-  return response.json();
+  const { data } = await api.get(`${RESOURCE}/${id}`);
+  return data;
 }
 
 export async function createProject(projectData = {}) {
   try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(projectData),
-    });
-
-    if (!response.ok) throw new Error('Error al crear el proyecto');
-
-    const contentType = response.headers.get('content-type') || '';
-    if (!contentType.includes('application/json')) {
-      throw new Error('Respuesta inválida al crear el proyecto');
-    }
-
-    return await response.json();
+    const { data } = await api.post(RESOURCE, projectData);
+    return data;
   } catch (error) {
     console.error('Error creando proyecto', error);
     throw error;
