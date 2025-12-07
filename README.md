@@ -1,8 +1,8 @@
 ## RenewableEnergyProject
 
 **Este documento es un documento introductorio a la parte tecnica del proyecto, si su prioridad es aprender como usar el proyecto final consulte el manual de usuario en:**<br>
-[Manual de Usuario (Web)](https://tu-url.com)<br>
-[Manual de Usuario (Android)](https://tu-url.com)
+[Manual de Usuario (Web)](https://docs.google.com/document/d/12xeus-JGfbwC0Ine3CZPigrr-ipz_3QHTLpGWaRd5t4/edit?usp=drive_link)<br>
+[Manual de Usuario (Android)](https://docs.google.com/document/d/1SdTfeUq5j6bhIeMLVS9A8FnPbdgZmPRywt4s4j0Jkxc/edit?usp=drive_link)
 
 Para la descarga del APK de la versión Android, puede dirigirse a la parte
 derecha del repositorio GitHub y entrar en el apartado de **Releases** o abrir directamente este [enlace](https://github.com/YarCrasy/RenewableEnergyProject/releases/tag/0.0.1-snapshoot) y descargar el apk como se muestra en la imagen.
