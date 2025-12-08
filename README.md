@@ -1,4 +1,30 @@
-## RenewableEnergyProject
+# Simulador de energías renovables
+
+[![Java](https://img.shields.io/badge/Java-21-red)](https://java.com)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-green)](https://spring.io)
+[![React](https://img.shields.io/badge/React-18.2-blue)](https://reactjs.org)
+[![Android](https://img.shields.io/badge/Android-API%2024+-brightgreen)](https://android.com)
+
+## 📌 Tabla de Contenidos
+- [Introducción](#introducción)
+- [Arquitectura](#arquitectura-general)
+- [Deployment](#deployment)
+- [Instalación](#instalación-rápida-del-proyecto)
+- [Backend](#backend)
+- [Web](#web)
+- [Android](#android)
+- [Autores](#autoría)
+- [Licencia](#licencia)
+
+## 📸 Capturas del Sistema
+
+### 🌐 Plataforma Web
+| Funcionalidad | Captura | Descripción |
+|---------------|---------|-------------|
+| **Gestión de Proyectos** | ![Gestión de Proyectos](./screenshots/projects.png) | Interfaz principal para crear, editar y eliminar proyectos de energía |
+| **Simulador Energético** | ![Simulador](./screenshots/simulator.png) | Herramienta de simulación con arrastrar/soltar elementos |
+| **Panel de Administración - Usuarios** | ![Admin Usuarios](./screenshots/administration.png) | Gestión de usuarios |
+| **Panel de Administración - Elementos** | ![Admin Elementos](./screenshots/adminElements.png) | Catálogo de elementos consumidores para el simulador |
 
 **Este documento es un documento introductorio a la parte tecnica del proyecto, si su prioridad es aprender como usar el proyecto final consulte el manual de usuario en:**<br>
 [Manual de Usuario (Web)](https://docs.google.com/document/d/12xeus-JGfbwC0Ine3CZPigrr-ipz_3QHTLpGWaRd5t4/edit?usp=drive_link)<br>
@@ -26,6 +52,13 @@ Este proyecto es Plataforma integral para simular y gestionar soluciones de ener
 
 ---
 
+## Instalación Rápida del proyecto
+
+### 1. Clonar repositorio
+```bash
+git clone https://github.com/YarCrasy/RenewableEnergyProject.git
+cd RenewableEnergyProject
+```
 ## Backend
 **Tecnologías:** Java 21, Spring Boot, Spring Data JPA, Gradle, MySQL.
 
@@ -54,10 +87,10 @@ Para ejecutar pruebas:
 ---
 
 ## Web
-**Tecnologías:** Node 18+, Vite, React, React Router, CSS Modules.
+**Tecnologías:** Node 18+, Vite, React, React Router DOM, CSS Modules, Axios para peticiones HTTP,  React Leaftles para mapa interactivo.
 
 ### Requisitos previos
-- Node.js 18+ y npm 9+.
+- Node.js 18+, vite y npm 9+.
 - Variables opcionales en `.env` (por ejemplo `VITE_API_BASE_URL`). Si no existe se usa la URL definida en `src/api/api.js`.
 
 ### Instalación y ejecución (Local)
@@ -108,5 +141,20 @@ El servidor Vite se expone en `http://localhost:5173`.
 
 ---
 
+## Autoría 
+| Autor | GitHub |
+|-------|--------|
+| **Lingcheng Jiang** | [@YarCrasy](https://github.com/YarCrasy) |
+| **Nataly Alexandra Ipiales Barrigas** | [@natalyipiales](https://github.com/IpialesNatt) |
+
+**Institución:** IES El Rincón  
+**Curso:** 2º DAM - Desarrollo de Aplicaciones Multiplataforma  
+**Año Académico:** 2025-2026  
+**Módulo:** Proyecto Interdisciplinar
+
+---
+
 ## Licencia
 Pendiente de definir.
+
+---
