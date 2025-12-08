@@ -1,15 +1,21 @@
 import "./ReceiverCard.css";
 
 export default function ReceiverCard({ receiver, onEdit, onDelete }) {
+  const hasPosition = Number.isFinite(receiver?.x) && Number.isFinite(receiver?.y);
+  const formattedPower = Number.isFinite(receiver?.powerConsumption)
+    ? `${receiver.powerConsumption} W`
+    : "N/D";
+  const formatCoord = (value) => Number(value).toFixed(2);
+
   return (
     <div className="receiver-card">
       <h3 className="receiver-name">{receiver.name}</h3>
       <p className="receiver-power">
-        Consumo: <span className="receiver-power-value">{receiver.powerConsumption} W</span>
+        Consumo: <span className="receiver-power-value">{formattedPower}</span>
       </p>
-      {receiver.x !== null && receiver.y !== null && (
+      {hasPosition && (
         <p className="receiver-position">
-          Posición: ({receiver.x.toFixed(2)}, {receiver.y.toFixed(2)})
+          Posición: ({formatCoord(receiver.x)}, {formatCoord(receiver.y)})
         </p>
       )}
 

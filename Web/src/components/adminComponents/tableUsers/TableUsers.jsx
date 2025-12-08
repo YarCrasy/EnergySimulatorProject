@@ -20,12 +20,10 @@ export default function TableUsers({ users, onEdit, onDelete, currentUser }) {
             <td>{u.dateOfBirth}</td>
 
             {currentUser?.role === "admin" && (
-              <div className="admin-options">
-                <td>
-                  <button className="editButton" onClick={() => onEdit(u)}>Editar</button>
-                  <button className="deleteButton" onClick={() => onDelete(u.id)}>Eliminar</button>
-                </td>
-              </div>
+              <td className="admin-options">
+                <button className="editButton" onClick={() => onEdit(u)}>Editar</button>
+                <button className="deleteButton" onClick={() => onDelete(u.id)}>Eliminar</button>
+              </td>
             )}
           </tr>
         ))}

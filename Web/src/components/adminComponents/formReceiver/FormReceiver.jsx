@@ -73,6 +73,7 @@ export default function FormReceiver({ receiverToEdit, onSave, onCancel }) {
           </div>
 
           <div className="form-grid">
+            <p>Posiciones (opcional)</p>
             <div className="position">
               <div className="form-group">
                 <label>Posición X</label>

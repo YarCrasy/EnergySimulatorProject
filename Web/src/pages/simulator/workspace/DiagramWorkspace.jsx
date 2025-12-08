@@ -28,7 +28,6 @@ function DiagramWorkspace({ projectId }) {
     const [currentTool, setCurrentTool] = useState("select");
     const [zoom, setZoom] = useState(1);
     const [loadingProject, setLoadingProject] = useState(false);
-    const [loadingElements, setLoadingElements] = useState(false);
     const [projectData, setProjectData] = useState(null);
     const [elementCatalog, setElementCatalog] = useState(null);
     const [saving, setSaving] = useState(false);
@@ -41,7 +40,6 @@ function DiagramWorkspace({ projectId }) {
 
     useEffect(() => {
         let mounted = true;
-        setLoadingElements(true);
         getAllElements()
             .then((elements) => {
                 if (!mounted) {
@@ -54,13 +52,7 @@ function DiagramWorkspace({ projectId }) {
                 if (mounted) {
                     setElementCatalog(new Map());
                 }
-            })
-            .finally(() => {
-                if (mounted) {
-                    setLoadingElements(false);
-                }
             });
-
         return () => {
             mounted = false;
         };
