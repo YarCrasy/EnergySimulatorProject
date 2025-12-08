@@ -11,17 +11,13 @@ public abstract class Element {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Float x;
-    private Float y;
 
     // constructores
     public Element() {
     }
 
-    public Element(String name, Float x, Float y) {
+    public Element(String name) {
         this.name = name;
-        this.x = x;
-        this.y = y;
     }
 
     // getters y setters
@@ -41,29 +37,11 @@ public abstract class Element {
         this.name = name;
     }
 
-    public Float getX() {
-        return this.x;
-    }
-
-    public void setX(Float x) {
-        this.x = x;
-    }
-
-    public Float getY() {
-        return this.y;
-    }
-
-    public void setY(Float y) {
-        this.y = y;
-    }
-
     @Override
     public String toString() {
         return "{" +
                 " id='" + getId() + "'" +
                 ", name='" + getName() + "'" +
-                ", x='" + getX() + "'" +
-                ", y='" + getY() + "'" +
                 "}";
     }
 }

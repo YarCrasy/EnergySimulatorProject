@@ -65,10 +65,10 @@ function SideMenu({ collapsed = false }) {
                     <Link to="/projects" className="back-button">
                         <img src={backBtn} alt="Back" width={30} />
                     </Link>
-                    <UserProfile />
+                    {/* <UserProfile /> */}
                 </div>
-                <SearchBar placeholder="Buscar en el simulador..."
-                    headingButton={HeadingButton.FILTER} filterOptions={[]} />
+                {/* <SearchBar placeholder="Buscar en el simulador..."
+                    headingButton={HeadingButton.FILTER} filterOptions={[]} /> */}
             </div>
 
             <div id="elements-list" className="elements-list">

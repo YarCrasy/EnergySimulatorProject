@@ -16,8 +16,8 @@ public class GeneratorElement extends Element {
     public GeneratorElement() {
     }
 
-    public GeneratorElement(String name, Float x, Float y, String brand, Double efficiency, Double powerWatt) {
-        super(name, x, y);
+    public GeneratorElement(String name, String brand, Double efficiency, Double powerWatt) {
+        super(name);
         this.brand = brand;
         this.efficiency = efficiency;
         this.powerWatt = powerWatt;

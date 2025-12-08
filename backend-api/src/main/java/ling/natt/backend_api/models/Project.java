@@ -41,8 +41,12 @@ public class Project {
     private Long userId;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference(value = "project-elements")
-    private List<ProjectElement> projectElements = new ArrayList<>();
+    @JsonManagedReference(value = "project-nodes")
+    private List<ProjectNode> projectNodes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "project-node-connections")
+    private List<ProjectNodeConnection> nodeConnections = new ArrayList<>();
 
     public Project() {
     }
@@ -108,11 +112,19 @@ public class Project {
         this.userId = userId;
     }
 
-    public List<ProjectElement> getProjectElements() {
-        return projectElements;
+    public List<ProjectNode> getProjectNodes() {
+        return projectNodes;
     }
 
-    public void setProjectElements(List<ProjectElement> projectElements) {
-        this.projectElements = projectElements;
+    public void setProjectNodes(List<ProjectNode> projectNodes) {
+        this.projectNodes = projectNodes;
+    }
+
+    public List<ProjectNodeConnection> getNodeConnections() {
+        return nodeConnections;
+    }
+
+    public void setNodeConnections(List<ProjectNodeConnection> nodeConnections) {
+        this.nodeConnections = nodeConnections;
     }
 }

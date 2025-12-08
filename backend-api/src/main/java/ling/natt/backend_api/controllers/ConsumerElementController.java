@@ -2,9 +2,9 @@ package ling.natt.backend_api.controllers;
 
 import ling.natt.backend_api.models.ConsumerElement;
 import ling.natt.backend_api.models.Project;
-import ling.natt.backend_api.models.ProjectElement;
+import ling.natt.backend_api.models.ProjectNode;
 import ling.natt.backend_api.repositories.ConsumerElementRepository;
-import ling.natt.backend_api.repositories.ProjectElementRepository;
+import ling.natt.backend_api.repositories.ProjectNodeRepository;
 import ling.natt.backend_api.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,7 @@ public class ConsumerElementController {
     @Autowired
     private ProjectRepository projectRepository;
     @Autowired
-    private ProjectElementRepository projectElementRepository;
+    private ProjectNodeRepository projectNodeRepository;
 
     @GetMapping
     public List<ConsumerElement> getAllConsumerElements() {
@@ -37,10 +37,10 @@ public class ConsumerElementController {
     @GetMapping("/project/{projectId}")
     public List<ConsumerElement> getConsumerElementsByProject(@PathVariable Long projectId) {
 
-        List<ProjectElement> entries = projectElementRepository.findByProjectId(projectId);
+        List<ProjectNode> nodes = projectNodeRepository.findByProjectId(projectId);
 
-        return entries.stream()
-                .map(ProjectElement::getElement)
+        return nodes.stream()
+            .map(ProjectNode::getElement)
                 .filter(e -> e instanceof ConsumerElement)
                 .map(e -> (ConsumerElement) e)
                 .toList();
@@ -61,8 +61,8 @@ public class ConsumerElementController {
 
         ConsumerElement saved = consumerElementRepository.save(element);
 
-        ProjectElement pe = new ProjectElement(p, saved, 1);
-        projectElementRepository.save(pe);
+        ProjectNode node = new ProjectNode(p, saved);
+        projectNodeRepository.save(node);
 
         return saved;
     }
@@ -72,8 +72,6 @@ public class ConsumerElementController {
         return consumerElementRepository.findById(id)
                 .map(element -> {
                     element.setName(details.getName());
-                    element.setX(details.getX());
-                    element.setY(details.getY());
                     element.setPowerConsumption(details.getPowerConsumption());
                     return consumerElementRepository.save(element);
                 })

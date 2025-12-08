@@ -15,7 +15,6 @@ function DiagramCanvas({
     onClearSelection,
     onNodeMove,
     onRequestConnection,
-    onCanvasDoubleClick,
     onDropElement,
     onZoomChange
 }) {
@@ -117,11 +116,6 @@ function DiagramCanvas({
             className={`diagram-canvas tool-${currentTool}`}
             ref={boardRef}
             onWheel={handleWheel}
-            onDoubleClick={(event) => {
-                event.preventDefault();
-                event.stopPropagation();
-                onCanvasDoubleClick(getBoardCoords(event));
-            }}
             onClick={onClearSelection}
             onDragOver={(event) => event.preventDefault()}
             onDrop={handleDrop}

@@ -31,6 +31,12 @@ function App() {
     return isHidden ? null : <Header />;
   };
 
+  const FooterWrapper = () => {
+    const location = useLocation();
+    const shouldHide = location.pathname.startsWith("/simulator");
+    return shouldHide ? null : <Footer />;
+  };
+
   const BrowserRouterHTML = () => {
     return (
       <BrowserRouter>
@@ -101,7 +107,7 @@ function App() {
             </Routes>
           </div>
 
-          <Footer />
+          <FooterWrapper />
         </div>
       </BrowserRouter>
     );

@@ -3,26 +3,27 @@ import "./DiagramToolbar.css";
 const clampZoom = (value) => Math.min(1.6, Math.max(0.4, value));
 
 function DiagramToolbar({
-    onAddNode,
     onClear,
     currentTool,
     onChangeTool,
     zoom,
     onZoomChange,
-    snapToGrid,
-    onToggleSnap,
     onExport,
     canDeleteSelection,
     onDeleteSelection,
     onDuplicateSelection,
-    stats
+    stats,
+    onSave,
+    canSave,
+    saving,
+    hasChanges,
+    statusMessage,
+    loadingProject
 }) {
+    const saveDisabled = !canSave || saving || loadingProject || !hasChanges;
     return (
         <header className="diagram-toolbar">
             <div className="toolbar-group">
-                <button type="button" className="primary" onClick={onAddNode}>
-                    Añadir nodo
-                </button>
                 <button
                     type="button"
                     className={currentTool === "select" ? "active" : ""}
@@ -68,13 +69,17 @@ function DiagramToolbar({
                     <span>{Math.round(zoom * 100)}%</span>
                     <button type="button" onClick={() => onZoomChange((prev) => clampZoom(prev + 0.1))}>+</button>
                 </div>
-                <label className="toggle">
-                    <input type="checkbox" checked={snapToGrid} onChange={onToggleSnap} />
-                    Rejilla
-                </label>
             </div>
 
             <div className="toolbar-group">
+                <button
+                    type="button"
+                    className="primary subtle"
+                    disabled={saveDisabled}
+                    onClick={onSave}
+                >
+                    {saving ? "Guardando..." : hasChanges ? "Guardar cambios" : "Sin cambios"}
+                </button>
                 <div className="stats">
                     <span>{stats.nodes} nodos</span>
                     <span>{stats.connections} enlaces</span>
@@ -83,6 +88,9 @@ function DiagramToolbar({
                 <button type="button" onClick={onExport}>
                     Exportar JSON
                 </button>
+                {statusMessage && (
+                    <span className="toolbar-status">{statusMessage}</span>
+                )}
             </div>
         </header>
     );

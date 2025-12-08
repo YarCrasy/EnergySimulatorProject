@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import ling.natt.backend_api.models.Element;
 
 @Repository
-public interface ElementRepository extends JpaRepository<Element, Integer> {
+public interface ElementRepository extends JpaRepository<Element, Long> {
 }

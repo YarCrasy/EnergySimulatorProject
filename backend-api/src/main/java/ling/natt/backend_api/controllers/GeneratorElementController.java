@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ling.natt.backend_api.models.GeneratorElement;
 import ling.natt.backend_api.models.Project;
-import ling.natt.backend_api.models.ProjectElement;
+import ling.natt.backend_api.models.ProjectNode;
 import ling.natt.backend_api.repositories.GeneratorElementRepository;
 import ling.natt.backend_api.repositories.ProjectRepository;
-import ling.natt.backend_api.repositories.ProjectElementRepository;
+import ling.natt.backend_api.repositories.ProjectNodeRepository;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -29,7 +29,7 @@ public class GeneratorElementController {
     @Autowired
     private ProjectRepository projectRepository;
     @Autowired
-    private ProjectElementRepository projectElementRepository;
+    private ProjectNodeRepository projectNodeRepository;
 
     // Obtener todos los Panels
     @GetMapping
@@ -48,10 +48,10 @@ public class GeneratorElementController {
     @GetMapping("/project/{projectId}")
     public List<GeneratorElement> getGeneratorElementsByProject(@PathVariable Long projectId) {
 
-        List<ProjectElement> entries = projectElementRepository.findByProjectId(projectId);
+        List<ProjectNode> nodes = projectNodeRepository.findByProjectId(projectId);
 
-        return entries.stream()
-            .map(ProjectElement::getElement)
+        return nodes.stream()
+            .map(ProjectNode::getElement)
                 .filter(e -> e instanceof GeneratorElement)
                 .map(e -> (GeneratorElement) e)
                 .toList();
@@ -72,8 +72,8 @@ public class GeneratorElementController {
 
         GeneratorElement saved = generatorElementRepository.save(generatorElement);
 
-        ProjectElement pe = new ProjectElement(project, saved, 1);
-        projectElementRepository.save(pe);
+        ProjectNode node = new ProjectNode(project, saved);
+        projectNodeRepository.save(node);
 
         return saved;
     }
@@ -84,8 +84,6 @@ public class GeneratorElementController {
         return generatorElementRepository.findById(id)
                 .map(generatorElement -> {
                     generatorElement.setName(generatorElementDetails.getName());
-                    generatorElement.setX(generatorElementDetails.getX());
-                    generatorElement.setY(generatorElementDetails.getY());
                     generatorElement.setBrand(generatorElementDetails.getBrand());
                     generatorElement.setEfficiency(generatorElementDetails.getEfficiency());
                     generatorElement.setPowerWatt(generatorElementDetails.getPowerWatt());

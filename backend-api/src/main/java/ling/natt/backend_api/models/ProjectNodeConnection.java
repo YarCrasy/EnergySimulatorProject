@@ -10,14 +10,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "project_elements", uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "project_id", "element_id" })
-})
+@Table(name = "project_node_connections")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class ProjectElement {
+public class ProjectNodeConnection {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,23 +22,27 @@ public class ProjectElement {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "project_id", nullable = false)
-    @JsonBackReference(value = "project-elements")
+    @JsonBackReference(value = "project-node-connections")
     private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "element_id", nullable = false)
-    @JsonBackReference
-    private Element element;
+    @JoinColumn(name = "source_node_id", nullable = false)
+    private ProjectNode source;
 
-    private Integer unidades = 1;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "target_node_id", nullable = false)
+    private ProjectNode target;
 
-    public ProjectElement() {
+    private String connectionType;
+
+    public ProjectNodeConnection() {
     }
 
-    public ProjectElement(Project project, Element element, Integer unidades) {
+    public ProjectNodeConnection(Project project, ProjectNode source, ProjectNode target, String connectionType) {
         this.project = project;
-        this.element = element;
-        this.unidades = unidades;
+        this.source = source;
+        this.target = target;
+        this.connectionType = connectionType;
     }
 
     public Long getId() {
@@ -60,26 +61,27 @@ public class ProjectElement {
         this.project = project;
     }
 
-    public Element getElement() {
-        return element;
+    public ProjectNode getSource() {
+        return source;
     }
 
-    public void setElement(Element element) {
-        this.element = element;
+    public void setSource(ProjectNode source) {
+        this.source = source;
     }
 
-    public Integer getUnidades() {
-        return unidades;
+    public ProjectNode getTarget() {
+        return target;
     }
 
-    public void setUnidades(Integer unidades) {
-        this.unidades = unidades;
+    public void setTarget(ProjectNode target) {
+        this.target = target;
     }
 
-    @Override
-    public String toString() {
-        return "{" +
-                "unidades='" + getUnidades() + "'" +
-                "}";
+    public String getConnectionType() {
+        return connectionType;
+    }
+
+    public void setConnectionType(String connectionType) {
+        this.connectionType = connectionType;
     }
 }

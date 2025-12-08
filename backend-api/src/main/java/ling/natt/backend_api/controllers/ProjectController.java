@@ -1,7 +1,10 @@
 package ling.natt.backend_api.controllers;
 
+import ling.natt.backend_api.models.Element;
 import ling.natt.backend_api.models.Project;
-import ling.natt.backend_api.models.ProjectElement;
+import ling.natt.backend_api.models.ProjectNode;
+import ling.natt.backend_api.models.ProjectNodeConnection;
+import ling.natt.backend_api.repositories.ElementRepository;
 import ling.natt.backend_api.repositories.ProjectRepository;
 import ling.natt.backend_api.repositories.UserRepository;
 import ling.natt.exception.ResourceNotFoundException;
@@ -23,6 +26,9 @@ public class ProjectController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ElementRepository elementRepository;
 
     @GetMapping
     public List<Project> getAllProjects() {
@@ -56,7 +62,7 @@ public class ProjectController {
 
         project.setUserId(userId);
         project.setUpdatedAt(LocalDateTime.now());
-        bindProjectToElements(project);
+        bindProjectStructure(project);
 
         return projectRepository.save(project);
     }
@@ -76,7 +82,8 @@ public class ProjectController {
             existingProject.setUserId(userId);
         }
 
-        replaceProjectElements(existingProject, project.getProjectElements());
+        replaceProjectNodes(existingProject, project.getProjectNodes());
+        replaceNodeConnections(existingProject, project.getNodeConnections());
         existingProject.setUpdatedAt(LocalDateTime.now());
         return projectRepository.save(existingProject);
     }
@@ -102,21 +109,57 @@ public class ProjectController {
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id " + userId));
     }
 
-    private void bindProjectToElements(Project project) {
-        if (project.getProjectElements() == null) {
-            project.setProjectElements(new java.util.ArrayList<>());
+    private void bindProjectStructure(Project project) {
+        if (project.getProjectNodes() == null) {
+            project.setProjectNodes(new java.util.ArrayList<>());
         }
-        project.getProjectElements().forEach(element -> element.setProject(project));
+        if (project.getNodeConnections() == null) {
+            project.setNodeConnections(new java.util.ArrayList<>());
+        }
+
+        project.getProjectNodes().forEach(node -> {
+            node.setProject(project);
+            ensureElementAssigned(node);
+        });
+        project.getNodeConnections().forEach(connection -> connection.setProject(project));
     }
 
-    private void replaceProjectElements(Project project, List<ProjectElement> elements) {
-        project.getProjectElements().clear();
-        if (elements == null) {
+    private void replaceProjectNodes(Project project, List<ProjectNode> nodes) {
+        project.getProjectNodes().clear();
+        if (nodes == null) {
             return;
         }
-        elements.forEach(element -> {
-            element.setProject(project);
-            project.getProjectElements().add(element);
+        nodes.forEach(node -> {
+            node.setProject(project);
+            ensureElementAssigned(node);
+            project.getProjectNodes().add(node);
         });
+    }
+
+    private void replaceNodeConnections(Project project, List<ProjectNodeConnection> connections) {
+        project.getNodeConnections().clear();
+        if (connections == null) {
+            return;
+        }
+        connections.forEach(connection -> {
+            connection.setProject(project);
+            project.getNodeConnections().add(connection);
+        });
+    }
+
+    private void ensureElementAssigned(ProjectNode node) {
+        if (node.getElement() != null && node.getElement().getId() != null) {
+            return;
+        }
+
+        Long elementId = node.getElementIdReference();
+        if (elementId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cada nodo debe incluir element.id");
+        }
+
+        Element element = elementRepository.findById(elementId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Elemento no encontrado con id " + elementId));
+        node.setElement(element);
     }
 }

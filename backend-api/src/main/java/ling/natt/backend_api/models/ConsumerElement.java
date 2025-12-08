@@ -14,8 +14,8 @@ public class ConsumerElement extends Element {
     public ConsumerElement() {
     }
 
-    public ConsumerElement(String name, Float x, Float y, Double powerConsumption) {
-        super(name, x, y);
+    public ConsumerElement(String name, Double powerConsumption) {
+        super(name);
         this.powerConsumption = powerConsumption;
     }
 

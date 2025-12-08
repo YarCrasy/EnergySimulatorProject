@@ -48,3 +48,16 @@ export async function deleteProject(id) {
   }
 }
 
+export async function updateProject(id, projectData = {}) {
+  if (!id) {
+    throw new Error('updateProject requiere un id');
+  }
+  try {
+    const { data } = await api.put(`${RESOURCE}/${id}`, projectData);
+    return data;
+  } catch (error) {
+    logError('Error actualizando el proyecto', error);
+    throw error;
+  }
+}
+

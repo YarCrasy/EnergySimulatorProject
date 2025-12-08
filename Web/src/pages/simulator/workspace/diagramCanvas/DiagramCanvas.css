@@ -1,23 +1,9 @@
 .diagram-canvas {
-    position: relative;
     border-radius: 16px;
-    background-color: #f1f5f9;
     overflow: auto;
-    border: 1px solid #e2e8f0;
-    cursor: default;
-    min-height: 0;
-    
-    height: 100vh;
+    flex: 1;
 }
 
-.diagram-canvas-board {
-    position: relative;
-    transform-origin: 0 0;
-    background-image:
-        linear-gradient(90deg, rgba(120, 144, 156, 0.12) 1px, transparent 1px),
-        linear-gradient(rgba(120, 144, 156, 0.12) 1px, transparent 1px);
-    background-size: 40px 40px;
-}
 
 .diagram-connections {
     position: absolute;
