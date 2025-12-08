@@ -10,12 +10,13 @@ import PrivateRoute from "./components/privateRoute/PrivateRoute";
 import Home from "./pages/home/Home";
 import Simulator from "./pages/simulator/Simulator";
 import Projects from "./pages/projects/Projects";
-import Contact from "./pages/contact/Contact";
 import NotFound from "./pages/not-found/NotFound";
 import Register from "./pages/register/Register";
 import Mapa from "./pages/locations/Locations";
 import About from "./pages/about/About";
 import Login from "./pages/login/Login";
+import Legals from "./pages/legals/Legals";
+
 import ForceOrientationHTML from "./components/forceOrientation/ForceOrientation";
 
 import AdminUsers from "./pages/administration/adminUsers/AdminUsers";
@@ -46,8 +47,8 @@ function App() {
             <Routes>
               <Route path="*" element={<NotFound />} />
               <Route path="/" element={<Home />} />
-              <Route path="/contact" element={<Contact />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/legals" element={<Legals />} />
               <Route path="/locations" element={<Mapa />} />
               <Route path="/about" element={<About />} />
               <Route path="/home" element={<Home />} />

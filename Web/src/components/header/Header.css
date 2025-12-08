@@ -14,14 +14,13 @@ header {
     z-index: 1000;
 }
 
-header ul {
-    list-style-type: none;
-    margin-left: 20px;
-    padding: 0;
+header nav {
     display: flex;
-    flex-direction: row;
-    gap: 20px;
+    margin-left: 75px;
+    align-items: center;
+    gap: clamp(15px, 3vw, 30px);
 }
+
 /*logo adaptaciones*/
 .logo-container{
     height: 1vh;

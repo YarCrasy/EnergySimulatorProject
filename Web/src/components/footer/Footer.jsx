@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Footer.css";
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 
@@ -16,13 +17,10 @@ function Footer() {
         </a>
       </div>
       <div className="footer-contact">
-        <a href="/privacy-contact">Contact</a>
-      </div>
-      <div className="footer-work">
-        <a href="/privacy-work">Work</a>
+        <Link to="/about">Sobre Nosotros</Link>
       </div>
       <div className="footer-legals">
-        <a href="/privacy-legals">Legals</a>
+        <Link to="/legals">Legals</Link>
       </div>
     </footer>
   );

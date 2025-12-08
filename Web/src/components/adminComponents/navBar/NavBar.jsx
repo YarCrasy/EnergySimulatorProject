@@ -15,9 +15,9 @@ export default function NavBar() {
             <li>
               <Link to="/administration/users">Usuarios</Link>
             </li>
-            <li>
+            {/* <li>
               <Link to="/panels">Paneles</Link>
-            </li>
+            </li> */}
             <li>
               <Link to="/administration/receivers">Receptores</Link>
             </li>

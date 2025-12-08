@@ -1,11 +1,14 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/AuthContext";
+import { createProject } from "../../api/projects";
 import "./Login.css";
 import loginImg from "../../images/loginImg.jpg";
 
 function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
+  const redirectToSimulator = Boolean(location.state?.redirectToSimulator);
 
   // Manejar el envío del formulario de login
   const handleSubmit = async (e) => {
@@ -16,13 +19,31 @@ function Login() {
 
     try {
       const loggedUser = await login(email, password); // login devuelve {id,name,role}
+      const fallbackPath = loggedUser.role === "admin" ? "/administration/users" : "/projects";
+
+      if (redirectToSimulator) {
+        try {
+          const newProjectPayload = {
+            name: "Nuevo Proyecto",
+            energyEnough: false,
+            energyNeeded: 0,
+            userId: loggedUser.id,
+          };
+
+          const createdProject = await createProject(newProjectPayload);
+          const projectId = createdProject?.id;
+          navigate(projectId ? `/simulator/${projectId}` : "/simulator");
+          return;
+        } catch (creationError) {
+          console.error("No se pudo preparar el simulador", creationError);
+          alert("No se pudo iniciar el simulador. Intenta nuevamente.");
+          navigate(fallbackPath);
+          return;
+        }
+      }
 
       // Redirección según rol
-      if (loggedUser.role === "admin") {
-        navigate("/administration/users");   // ADMIN → página de administración
-      } else {
-        navigate("/projects");               // USER → página de proyectos
-      }
+      navigate(fallbackPath);
 
     } catch (err) {
       alert(err.message);
