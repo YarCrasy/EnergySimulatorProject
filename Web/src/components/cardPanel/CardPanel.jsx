@@ -1,4 +1,4 @@
-import "./CardPanel.css"
+import "./CardPanel.css";
 import placeholderImg from "../../assets/image.svg";
 
 function CardPanel({
@@ -10,6 +10,19 @@ function CardPanel({
   onDragStart,
   onClick
 }) {
+  const formattedPower = (() => {
+    const numeric = Number(wattage);
+    if (Number.isFinite(numeric)) {
+      return new Intl.NumberFormat("es-ES", {
+        maximumFractionDigits: 1
+      }).format(numeric) + " W";
+    }
+    if (typeof wattage === "string" && wattage.trim().length > 0) {
+      return wattage;
+    }
+    return "Sin dato";
+  })();
+
   return (
     <div
       className={`card-panel${draggable ? " is-draggable" : ""}`}
@@ -26,13 +39,15 @@ function CardPanel({
       onClick={onClick}
       data-element-id={id}
     >
-      <img src={imgSrc} alt="solar-panel" />
-
-      <div className="panel-content" id={`id-${id}`}>
-        <h2 className="panel-model">{model}</h2>
-        <div className="panel-watios">{wattage} kw/h</div>
+      <div className="panel-media" aria-hidden="true">
+        <img src={imgSrc} alt="" loading="lazy" />
       </div>
 
+      <div className="panel-content" id={`id-${id}`}>
+        <p className="panel-eyebrow">Elemento #{id ?? "—"}</p>
+        <h2 className="panel-model">{model}</h2>
+        <div className="panel-watios">{formattedPower}</div>
+      </div>
     </div>
   );
 }

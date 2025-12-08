@@ -1,13 +1,19 @@
 .card-panel {
-  padding: 10px;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
-  flex-direction: row;
-  gap: 10px;
-  font-family: "Inter", sans-serif;
-  justify-content: start;
-  color: black;
+  gap: 1rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: 22px;
+  border: 1px solid var(--surface-line);
+  background: rgba(6, 15, 36, 0.85);
+  box-shadow: 0 18px 32px rgba(0, 0, 0, 0.45);
+  color: var(--legals-text);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.card-panel:hover {
+  transform: translateY(-3px);
+  border-color: rgba(162, 255, 134, 0.6);
 }
 
 .card-panel.is-draggable {
@@ -17,23 +23,52 @@
 
 .card-panel.is-draggable:active {
   cursor: grabbing;
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
-.card-panel img {
-  width: 20%;
-  height: auto;
+.panel-media {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.panel-media img {
+  width: 70%;
+  height: 70%;
   object-fit: contain;
 }
 
 .panel-content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 5px;
+  gap: 0.3rem;
+  min-width: 0;
+}
 
+.panel-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.panel-model {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.panel-watios {
+  font-size: 0.95rem;
+  color: var(--accent-main);
+  font-weight: 600;
 }

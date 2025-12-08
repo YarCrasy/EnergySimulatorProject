@@ -115,28 +115,49 @@ function ProjectCard({ id, title, lastUpdated, imageUrl, onOpen, onDelete }) {
     return (
         <div
             ref={containerRef}
-            className="project-card-container"
+            className="project-card-shell"
             onContextMenu={handleContextMenu}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
             onTouchMove={handleTouchMove}
             onTouchCancel={handleTouchCancel}
         >
-            <Link to={`/simulator/${id}`} className="project-card" onClick={handleCardClick}>
-                {imageUrl && <img src={imageUrl} alt={title} className="project-image" />}
-                <div className="project-info">
+            <Link
+                to={`/simulator/${id}`}
+                className="project-card"
+                onClick={handleCardClick}
+            >
+                <div className="project-card-media">
+                    {imageUrl && (
+                        <img src={imageUrl} alt={title} className="project-image" />
+                    )}
+                    <span className="project-card-pill">
+                        {lastUpdated ? `Actualizado ${lastUpdated}` : "Sin registro"}
+                    </span>
+                </div>
+
+                <div className="project-card-body">
+                    <p className="project-card-eyebrow">Proyecto #{id}</p>
                     <h3 className="project-title">{title}</h3>
-                    <p className="project-description">Last updated at: {lastUpdated}</p>
+                    <p className="project-description">
+                        Haz click para abrir el simulador y continuar con tu diseño.
+                    </p>
+                </div>
+
+                <div className="project-card-footer">
+                    <button type="button" className="project-card-btn" onClick={handleOpen}>
+                        Abrir simulador
+                    </button>
                 </div>
             </Link>
 
             {menuOpen && (
                 <ul
-                    className="context-menu"
-                    style={{ top: menuPos.y + "px", left: menuPos.x + "px" }}
+                    className="project-context-menu"
+                    style={{ top: `${menuPos.y}px`, left: `${menuPos.x}px` }}
                 >
-                    <li className="context-menu_item" onClick={handleOpen}>Abrir</li>
-                    <li className="context-menu_item" onClick={handleDelete}>Eliminar</li>
+                    <li onClick={handleOpen}>Abrir</li>
+                    <li onClick={handleDelete}>Eliminar</li>
                 </ul>
             )}
         </div>

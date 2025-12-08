@@ -1,151 +1,240 @@
-/* ======== CONTENEDOR PRINCIPAL ======== */
 .login-page {
-  height: 90vh;
-  width: 100%;
+  min-height: calc(100vh - 80px);
   display: flex;
-  justify-content: center;
   align-items: center;
-  background: #f3f4f6;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  padding: 0% 0% 0% 0%;
+  justify-content: center;
+  padding: clamp(1.5rem, 4vw, 4rem) 1rem 3rem;
 }
 
-/* Contenedor interno */
-.login-page > div {
+.login-shell {
+  width: min(1100px, 100%);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(1.5rem, 4vw, 3rem);
+  background: rgba(5, 12, 27, 0.85);
+  border: 1px solid var(--surface-line);
+  border-radius: 40px;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  box-shadow: 0 45px 80px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(30px);
+}
+
+.login-panel {
   display: flex;
-  width: 100%;
-  height: 90vh;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
-/* ======== IMAGEN A LA DERECHA ======== */
+.login-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.login-panel h1 {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: var(--legals-text);
+  line-height: 1.15;
+}
+
+.login-lede {
+  color: var(--text-muted);
+  max-width: 460px;
+  line-height: 1.5;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-control label {
+  font-size: 0.9rem;
+  color: var(--legals-text);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.form-control input {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(6, 15, 36, 0.75);
+  padding: 0.95rem 1.1rem;
+  font-size: 1rem;
+  color: var(--legals-text);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control input::placeholder {
+  color: rgba(245, 247, 251, 0.45);
+}
+
+.form-control input:focus {
+  outline: none;
+  border-color: var(--accent-main);
+  box-shadow: 0 0 0 3px rgba(162, 255, 134, 0.15);
+}
+
+.login-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.login-actions button {
+  border: none;
+  border-radius: 999px;
+  padding: 0.85rem 1.65rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(120deg, var(--accent-main), var(--accent-alt));
+  color: #051028;
+  box-shadow: 0 18px 35px rgba(92, 225, 230, 0.45);
+}
+
+.btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-primary:not(:disabled):hover {
+  transform: translateY(-2px);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--surface-line);
+  color: var(--legals-text);
+  backdrop-filter: blur(6px);
+}
+
+.btn-ghost:hover {
+  color: var(--accent-main);
+  border-color: var(--accent-main);
+}
+
+.login-hint {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.login-indicators {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+}
+
+.login-indicators article {
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.85rem 1rem;
+  background: rgba(6, 15, 36, 0.7);
+}
+
+.login-indicators span {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-main);
+}
+
+.login-indicators p {
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+}
+
+.login-showcase {
+  position: relative;
+  border-radius: 32px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  min-height: 420px;
+}
+
 .login-image {
-  flex: 1; /* Ocupa el 50% */
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
-  min-height: 100%;
+  border-radius: inherit;
+  position: relative;
 }
 
-/* ======== PANEL DEL FORMULARIO (IZQUIERDA) ======== */
-.login-panel {
-  flex: 1; /* Ocupa el otro 50% */
-  background: white;
+.login-showcase__content {
+  position: absolute;
+  inset: 0;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0% 0% 0% 0%;
+  justify-content: flex-end;
+  gap: 1rem;
+  color: var(--legals-text);
 }
 
-.login-panel h2 {
-  text-align: center;
-  color: #0c123a;
-  margin-bottom: 30px;
+.login-showcase__content p {
+  font-size: 1.1rem;
+  max-width: 360px;
 }
 
-/* ======== FORMULARIO ======== */
-.login-form {
-  width: 100%;
-  max-width: 380px;
+.login-showcase__content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 0.5rem;
 }
 
-.login-form div {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.login-showcase__content li {
+  position: relative;
+  padding-left: 1.25rem;
+  color: var(--text-muted);
 }
 
-.login-form label {
-  font-weight: 600;
-  color: #0c123a;
+.login-showcase__content li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.45rem;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  background: linear-gradient(120deg, var(--accent-main), var(--accent-alt));
+  box-shadow: 0 0 12px rgba(92, 225, 230, 0.6);
 }
 
-.login-form input {
-  padding: 12px 14px;
-  border-radius: 10px;
-  border: 1px solid #d1d5db;
-  font-size: 15px;
-  background: #f9fafb;
-  transition: all 0.2s;
-}
+@media (max-width: 640px) {
+  .login-shell {
+    border-radius: 28px;
+    padding: 1.5rem;
+  }
 
-.login-form input:focus {
-  border-color: #2563eb;
-  background: white;
-  box-shadow: 0px 0px 6px rgba(37, 99, 235, 0.4);
-}
-
-/* ======== BOTONES ======== */
-.login-form button {
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.login-form button[type="submit"] {
-  background: #2563eb;
-  color: white;
-}
-
-.login-form button[type="submit"]:hover {
-  background: #1e40af;
-}
-
-.login-form button[type="button"] {
-  background: #e5e7eb;
-  color: #111827;
-}
-
-.login-form button[type="button"]:hover {
-  background: #0d0d0df5;
-  color: white;
-}
-
-/* ======== OLVIDÉ CONTRASEÑA ======== */
-.login-form a {
-  text-align: right;
-  font-size: 14px;
-  color: #2563eb;
-  text-decoration: none;
-}
-
-.login-form a:hover {
-  color: #1e40af;
-  text-decoration: underline;
-}
-
-/* ======== RESPONSIVE ======== */
-@media (max-width: 850px) {
-  .login-page > div {
+  .login-actions {
     flex-direction: column;
   }
 
-  .login-image {
-    height: 250px;
+  .btn-primary,
+  .btn-ghost {
     width: 100%;
+    text-align: center;
   }
 
-  .login-panel {
-    height: auto;
-    padding: 30px;
-    box-shadow: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .login-panel {
-    padding: 25px 20px;
-  }
-
-  .login-form input,
-  .login-form button {
-    font-size: 14px;
+  .login-showcase {
+    min-height: 320px;
   }
 }

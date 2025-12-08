@@ -33,11 +33,16 @@ export default function FormReceiver({ receiverToEdit, onSave, onCancel }) {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <h2 className="modal-title">
+    <div className="receiver-modal-overlay">
+      <div className="receiver-modal">
+        <h2 className="receiver-modal-title">
           {receiverToEdit ? "Editar Receiver" : "Nuevo Receiver"}
         </h2>
+        <p className="receiver-modal-subtitle">
+          {receiverToEdit
+            ? "Ajusta el consumo y la posición de este elemento."
+            : "Define el consumo nominal y su localización estimada."}
+        </p>
 
         <form onSubmit={handleSubmit} className="receiver-form">
           <div className="form-group">
@@ -98,11 +103,18 @@ export default function FormReceiver({ receiverToEdit, onSave, onCancel }) {
             </div>
           </div>
 
-          <div className="form-buttons">
-            <button type="submit" className="btn btn-save">
+          <div className="receiver-form-buttons">
+            <button
+              type="submit"
+              className="receiver-form-btn receiver-form-btn-primary"
+            >
               Guardar
             </button>
-            <button type="button" onClick={onCancel} className="btn btn-cancel">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="receiver-form-btn receiver-form-btn-secondary"
+            >
               Cancelar
             </button>
           </div>

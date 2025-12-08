@@ -1,84 +1,164 @@
-/* Contenedor principal */
 .receiver-list-page {
   min-height: 100vh;
-  background-color: #f3f4f6; /* gris claro */
-  padding: 2.5rem 1rem;
+  padding: clamp(1.5rem, 4vw, 3.5rem);
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  font-family: "Inter", sans-serif;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  color: var(--legals-text);
 }
 
-/* Contenedor central */
-.receiver-list-container {
-  max-width: 1200px;
+.receiver-shell {
+  width: min(1180px, 100%);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  margin-top: 2.5%;
+  gap: clamp(1.5rem, 4vw, 3rem);
 }
 
-/* Cabecera: título + botón */
-.receiver-list-header {
+.receiver-hero {
+  border-radius: 40px;
+  border: 1px solid var(--surface-line);
+  padding: clamp(1.75rem, 4vw, 3rem);
+  background: rgba(5, 13, 28, 0.92);
+  box-shadow: 0 45px 90px rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.receiver-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.receiver-hero h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+  margin: 0;
+}
+
+.receiver-hero p {
+  color: var(--text-muted);
+  max-width: 640px;
+  line-height: 1.5;
+}
+
+.receiver-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.85rem;
+}
+
+.receiver-stats article {
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1rem 1.25rem;
+  background: rgba(6, 15, 36, 0.75);
+}
+
+.receiver-stats span {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent-main);
+  display: block;
+}
+
+.receiver-stats p {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+}
+
+.receiver-panel {
+  border-radius: 36px;
+  border: 1px solid var(--surface-line);
+  padding: clamp(1.5rem, 4vw, 2.75rem);
+  background: rgba(5, 12, 27, 0.88);
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.receiver-panel header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  gap: 1.5rem;
   flex-wrap: wrap;
-  gap: 10rem;
+  align-items: center;
 }
 
-.receiver-list-header h1 {
-  font-size: 2.5rem;
-   font-size: 28px;
-  color: #111827; /* gris oscuro */
-  justify-content: space-between;
+.receiver-panel h2 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.receiver-panel header p {
+  margin-top: 0.3rem;
+  color: var(--text-muted);
+  max-width: 520px;
 }
 
 .btn-new-receiver {
-  background-color: #16a34a; /* verde */
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.75rem;
-  border: #6b7280;
-  font-size: 1.125rem;
-  font-weight: 500;
+  background: linear-gradient(120deg, var(--accent-main), var(--accent-alt));
+  color: #041126;
+  padding: 0.85rem 1.8rem;
+  border-radius: 999px;
+  border: none;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  box-shadow: 0 18px 35px rgba(92, 225, 230, 0.45);
+  transition: transform 0.2s ease;
 }
 
 .btn-new-receiver:hover {
-  background-color: #147337; /* verde más oscuro */
   transform: translateY(-2px);
 }
 
-/* Mensaje cuando no hay receivers */
-.no-receivers {
+.receiver-loading {
   text-align: center;
-  font-size: 1.25rem;
-  color: #6b7280; /* gris medio */
+  padding: 2.5rem 0;
+  color: var(--text-muted);
 }
 
-/* Contenedor de tarjetas */
-.receiver-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  justify-content: center;
-}
-
-/* Cada tarjeta ya tiene sus estilos en ReceiverCard.css, solo ajustamos el ancho */
-.receiver-cards .receiver-card {
-  flex: 1 1 280px; /* ancho mínimo 280px, se adapta al espacio */
-  max-width: 200px;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Mensaje de carga */
-.loading-receivers {
+.receiver-empty {
+  border-radius: 24px;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  padding: 2rem;
   text-align: center;
+  color: var(--text-muted);
+  background: rgba(6, 15, 36, 0.6);
+}
+
+.receiver-empty p {
   font-size: 1.25rem;
-  color: #374151; /* gris oscuro */
-  padding: 2rem 0;
+  color: var(--legals-text);
+  margin-bottom: 0.35rem;
+}
+
+.receiver-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .receiver-hero,
+  .receiver-panel {
+    border-radius: 28px;
+  }
+
+  .receiver-panel header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-new-receiver {
+    width: 100%;
+    text-align: center;
+  }
 }

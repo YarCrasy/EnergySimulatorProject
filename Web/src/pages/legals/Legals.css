@@ -1,16 +1,3 @@
-:root {
-    --legals-bg: #040b18;
-    --legals-gradient: radial-gradient(circle at 20% 20%, #14274e 0%, transparent 45%),
-        radial-gradient(circle at 80% 0%, #1c4448 0%, transparent 50%),
-        linear-gradient(135deg, #02040a 0%, #060f23 60%, #040b18 100%);
-    --legals-card: rgba(10, 18, 38, 0.9);
-    --legals-line: rgba(255, 255, 255, 0.08);
-    --legals-accent: #a2ff86;
-    --legals-accent-2: #5ce1e6;
-    --legals-text: #f5f7fb;
-    --legals-muted: rgba(245, 247, 251, 0.68);
-}
-
 .legals-page {
     min-height: 100vh;
     padding: clamp(3rem, 6vw, 5rem);

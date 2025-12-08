@@ -27,6 +27,30 @@ export default function ReceiverList() {
     loadReceivers();
   }, []);
 
+  const hasCoordinates = (receiver) =>
+    Number.isFinite(receiver?.x) && Number.isFinite(receiver?.y);
+
+  const totalReceivers = receivers.length;
+  const totalConsumption = receivers.reduce(
+    (acc, item) => acc + (Number(item?.powerConsumption) || 0),
+    0
+  );
+  const locatedReceivers = receivers.filter(hasCoordinates).length;
+  const averageConsumption = totalReceivers
+    ? totalConsumption / totalReceivers
+    : 0;
+
+  const formatInteger = (value) =>
+    new Intl.NumberFormat("es-ES", { maximumFractionDigits: 0 }).format(value);
+
+  const formatWatts = (value) =>
+    new Intl.NumberFormat("es-ES", { maximumFractionDigits: 0 }).format(value);
+
+  const formatKw = (value) =>
+    new Intl.NumberFormat("es-ES", { maximumFractionDigits: 1 }).format(
+      value / 1000
+    );
+
   const handleSave = async (data) => {
     try {
       if (editingReceiver) {
@@ -53,48 +77,82 @@ export default function ReceiverList() {
     }
   };
 
-  if (loading)
-    return <p className="text-center py-10">Cargando receivers...</p>;
-
   return (
     <div className="receiver-list-page">
       <NavBar />
 
-      <div className="receiver-list-container">
-        <div className="receiver-list-header">
-          <h1>Gestión de Elementos de Consumo</h1>
-          <button
-            onClick={() => {
-              setEditingReceiver(null);
-              setShowForm(true);
-            }}
-            className="btn-new-receiver"
-          >
-            Nuevo elemento de consumo
-          </button>
-        </div>
-
-        {loading && <p className="loading-receivers">Cargando receivers...</p>}
-
-        {!loading && receivers.length === 0 ? (
-          <p className="no-receivers">
-            No hay receivers aún. ¡Crea el primero!
+      <div className="receiver-shell">
+        <section className="receiver-hero">
+          <p className="receiver-eyebrow">Panel administrativo</p>
+          <h1>Gestiona los elementos de consumo conectados a tu red</h1>
+          <p>
+            Supervisa el consumo declarado, localiza dispositivos y mantén tu
+            inventario sincronizado con el estado real de tus receivers.
           </p>
-        ) : (
-          <div className="receiver-cards">
-            {receivers.map((receiver) => (
-              <ReceiverCard
-                key={receiver.id}
-                receiver={receiver}
-                onEdit={(r) => {
-                  setEditingReceiver(r);
-                  setShowForm(true);
-                }}
-                onDelete={handleDelete}
-              />
-            ))}
+
+          <div className="receiver-stats">
+            <article>
+              <span>{formatInteger(totalReceivers)}</span>
+              <p>Elementos activos</p>
+            </article>
+            <article>
+              <span>{formatKw(totalConsumption)} kW</span>
+              <p>Consumo total estimado</p>
+            </article>
+            <article>
+              <span>{formatInteger(locatedReceivers)}</span>
+              <p>Con coordenadas</p>
+            </article>
+            <article>
+              <span>{formatWatts(averageConsumption)} W</span>
+              <p>Consumo promedio</p>
+            </article>
           </div>
-        )}
+        </section>
+
+        <section className="receiver-panel">
+          <header>
+            <div>
+              <h2>Inventario de consumo</h2>
+              <p>
+                Añade, edita o elimina elementos según su consumo nominal y
+                ubicación planeada.
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                setEditingReceiver(null);
+                setShowForm(true);
+              }}
+              className="btn-new-receiver"
+            >
+              Nuevo elemento de consumo
+            </button>
+          </header>
+
+          {loading ? (
+            <p className="receiver-loading">Cargando elementos...</p>
+          ) : receivers.length === 0 ? (
+            <div className="receiver-empty">
+              <p>No hay receivers registrados todavía.</p>
+              <span>Comienza creando el primero para visualizar sus datos.</span>
+            </div>
+          ) : (
+            <div className="receiver-cards-grid">
+              {receivers.map((receiver) => (
+                <ReceiverCard
+                  key={receiver.id}
+                  receiver={receiver}
+                  onEdit={(r) => {
+                    setEditingReceiver(r);
+                    setShowForm(true);
+                  }}
+                  onDelete={handleDelete}
+                />
+              ))}
+            </div>
+          )}
+        </section>
       </div>
 
       {showForm && (

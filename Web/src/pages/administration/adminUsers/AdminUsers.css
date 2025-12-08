@@ -1,128 +1,170 @@
-/* --------- ESTILOS BASE (ESCRITORIO GRANDE) --------- */
-
-/* Contenedor principal de la página */
-.AdminUsersPage {
+.admin-users-page {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  min-height: 100vh;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding: clamp(1.5rem, 4vw, 3.5rem);
 }
 
-/* Encabezado */
-.AdminUsersPage .Encabezado {
-  margin-bottom: 20px;
-  margin-top: 15px;
-}
-
-.AdminUsersPage .Encabezado h1 {
-  margin: 0 0 10px 0;
-  color: #0c123a;
-  font-size: 28px;
-}
-
-/* Contenedor principal interno */
-.ContentWrapper {
+.admin-users-hero {
+  border-radius: 40px;
+  border: 1px solid var(--surface-line);
+  padding: clamp(1.5rem, 4vw, 3rem);
+  background: rgba(5, 13, 28, 0.9);
+  box-shadow: 0 45px 90px rgba(0, 0, 0, 0.55);
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.admin-users-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.admin-users-hero h1 {
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  color: var(--legals-text);
+  line-height: 1.15;
+}
+
+.admin-users-hero p {
+  color: var(--text-muted);
+  max-width: 640px;
+  line-height: 1.5;
+}
+
+.admin-users-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.admin-users-stats article {
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1rem 1.25rem;
+  background: rgba(6, 15, 36, 0.75);
+}
+
+.admin-users-stats span {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent-main);
+}
+
+.admin-users-stats p {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.admin-users-content {
+  border-radius: 36px;
+  border: 1px solid var(--surface-line);
+  padding: clamp(1.5rem, 4vw, 2.75rem);
+  background: rgba(5, 12, 27, 0.85);
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.admin-users-content header {
+  display: flex;
   justify-content: space-between;
-  padding-top: 5vh;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
-/* Formulario del lado izquierdo */
-.AdminUsersPage .FormSection {
-  flex: 1;
-  padding: 20px;
-  border-radius: 12px;
-  height: fit-content;
+.admin-users-content h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: var(--legals-text);
 }
 
-/* Lista de usuarios del lado derecho */
-.AdminUsersPage .UserList {
-  flex: 2;
-  padding: 20px;
-  border-radius: 12px;
-  overflow-x: auto;
-}
-
-.btn-cancel-modal {
-  background-color: #dc2626; /* rojo */
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  border: none;
-  margin-bottom: 1rem;
-  transition: all 0.3s ease;
-}
-
-.btn-cancel-modal:hover {
-  background-color: #b91c1c; /* rojo oscuro */
-  transform: translateY(-1px);
+.admin-users-content p {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
 }
 
 .btn-new-user {
-  background-color: #419c2f; /* rojo */
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
+  background: linear-gradient(120deg, var(--accent-main), var(--accent-alt));
+  color: #041126;
+  padding: 0.85rem 1.8rem;
+  border-radius: 999px;
   border: none;
-  margin-bottom: 1rem;
-  transition: all 0.3s ease;
-  margin-top: 2%;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 18px 35px rgba(92, 225, 230, 0.45);
+  transition: transform 0.2s ease;
 }
 
 .btn-new-user:hover {
-  background-color: #096b13;
+  transform: translateY(-2px);
 }
 
-/* --------- RESPONSIVE: PANTALLAS GRANDES (hasta 1200px) --------- */
-
-@media (max-width: 1200px) {
-  .ContentWrapper {
-    flex-direction: column-reverse;
-  }
-
-  .AdminUsersPage .FormSection,
-  .AdminUsersPage .UserList {
-    width: 100%;
-  }
+.admin-users-table {
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1rem;
+  background: rgba(6, 15, 36, 0.7);
+  overflow-x: auto;
 }
 
-/* --------- RESPONSIVE: PANTALLAS MEDIANAS (hasta 900px) --------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 8, 18, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  padding: 1rem;
+}
 
-@media (max-width: 900px) {
-  .ContentWrapper {
+.modal-content {
+  width: min(520px, 100%);
+  background: rgba(5, 13, 28, 0.95);
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 1.75rem;
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.6);
+}
+
+.btn-cancel-modal {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--legals-text);
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.btn-cancel-modal:hover {
+  border-color: var(--accent-main);
+  color: var(--accent-main);
+}
+
+@media (max-width: 640px) {
+  .admin-users-hero,
+  .admin-users-content {
+    border-radius: 28px;
+  }
+
+  .admin-users-content header {
     flex-direction: column;
+    align-items: flex-start;
   }
 
-  .AdminUsersPage .FormSection,
-  .AdminUsersPage .UserList {
+  .btn-new-user {
     width: 100%;
-  }
-}
-
-/* --------- RESPONSIVE: MÓVILES (hasta 600px) --------- */
-
-@media (max-width: 600px) {
-  .ContentWrapper {
-    flex-direction: column;
-    padding-top: 2vh;
-  }
-
-  .AdminUsersPage .FormSection,
-  .AdminUsersPage .UserList {
-    width: 100%;
-    padding: 15px;
-  }
-
-  .AdminUsersPage .Encabezado h2 {
-    font-size: 22px;
     text-align: center;
   }
 }

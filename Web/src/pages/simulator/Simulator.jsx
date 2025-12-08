@@ -1,6 +1,6 @@
 import "./Simulator.css";
 import { useState } from "react";
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation } from "react-router-dom";
 
 import SideMenu from "./sideMenu/SideMenu";
 import DiagramWorkspace from "./workspace/DiagramWorkspace";
@@ -10,26 +10,25 @@ function Simulator() {
     const { projectId } = useParams();
     const location = useLocation();
     const [collapsed, setCollapsed] = useState(false);
-    
+
     const resolvedProjectId = projectId ?? location?.state?.projectId ?? null;
 
     return (
         <main className="simulator-page">
-            
+            <section className="simulator-shell">
+                <SideMenu projectId={resolvedProjectId} collapsed={collapsed} />
+                <div className="simulator-workbench">
+                    <DiagramWorkspace projectId={resolvedProjectId} />
+                </div>
+            </section>
             <button
                 type="button"
-                className={`menu-toggle-button${collapsed ? " collapsed" : ""}`}
-                onClick={() => setCollapsed(!collapsed)}
+                className="simulator-toggle"
+                onClick={() => setCollapsed((prev) => !prev)}
                 aria-pressed={collapsed}
-                aria-label={collapsed ? "Abrir menú" : "Cerrar menú"}
             >
-                <img src={toolBoxIcon} alt="Toggle Menu" width={30} />
+                <img src={toolBoxIcon} alt="Icono del catálogo" width={20} height={20} />
             </button>
-
-            <SideMenu projectId={resolvedProjectId} collapsed={collapsed} />
-            <div className="simulator-space">
-                <DiagramWorkspace projectId={resolvedProjectId} />
-            </div>
         </main>
     );
 

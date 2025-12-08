@@ -1,39 +1,37 @@
-/* Fondo semitransparente */
-.modal-overlay {
+.receiver-modal-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background: rgba(3, 7, 18, 0.78);
+  backdrop-filter: blur(12px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 50;
+  padding: 1.5rem;
 }
 
-/* Contenedor del modal */
-.modal-content {
-  background-color: #ffffff;
-  padding: 2rem;
-  border-radius: 0.75rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  max-width: 420px;
-  transition: transform 0.3s ease;
+.receiver-modal {
+  width: min(520px, 100%);
+  background: rgba(5, 13, 28, 0.96);
+  border: 1px solid var(--surface-line);
+  border-radius: 32px;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  color: var(--legals-text);
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.6);
 }
 
-.modal-content:hover {
-  transform: translateY(-2px);
+.receiver-modal-title {
+  font-size: 1.9rem;
+  line-height: 1.1;
+  margin-bottom: 0.35rem;
 }
 
-/* Título */
-.modal-title {
-  font-size: 1.75rem;
-  font-weight: 700;
+.receiver-modal-subtitle {
+  color: var(--text-muted);
   margin-bottom: 1.5rem;
-  color: #1f2937; /* gris oscuro */
-  text-align: center;
+  font-size: 0.95rem;
 }
 
-/* Formulario */
 .receiver-form {
   display: flex;
   flex-direction: column;
@@ -43,79 +41,91 @@
 .form-group {
   display: flex;
   flex-direction: column;
+  gap: 0.35rem;
 }
 
 .form-group label {
   font-size: 0.9rem;
-  font-weight: 500;
-  margin-bottom: 0.25rem;
-  color: #374151; /* gris medio */
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .form-group input {
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #d1d5db; /* gris claro */
-  border-radius: 0.5rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--legals-text);
   font-size: 1rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/*input coordenadas*/
-.position .form-group input{
-  width: 100%;
-  margin-top: 0.25rem;
-  margin-bottom: 0.30rem;
-}
-
-.position {
-  display: flex;       /* los hijos se alinean en fila */
-  gap: 4rem;           /* espacio entre X e Y */
-  justify-content: space-around; /* los alinea al inicio */
-}
-
-
-.form-group:hover input{
-  border: 1px solid #2ee282;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .form-group input:focus {
-  border-color: #3b82f6; /* azul */
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  border-color: rgba(162, 255, 134, 0.9);
+  box-shadow: 0 0 0 3px rgba(92, 225, 230, 0.2);
   outline: none;
 }
 
-/* Botones */
-.form-buttons {
+.form-grid {
   display: flex;
+  flex-direction: column;
   gap: 0.75rem;
-  margin-top: 1rem;
 }
 
-.btn {
+.form-grid p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.position {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.receiver-form-buttons {
+  display: flex;
+  gap: 0.85rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.receiver-form-btn {
   flex: 1;
-  padding: 0.5rem 0;
+  min-width: 140px;
+  padding: 0.85rem 1rem;
+  border-radius: 999px;
   font-weight: 600;
-  border-radius: 0.5rem;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  border: none;
+  transition: transform 0.2s ease;
 }
 
-.btn-save {
-  background-color: #3b82f6;
-  color: #ffffff;
+.receiver-form-btn-primary {
+  background: linear-gradient(120deg, var(--accent-main), var(--accent-alt));
+  color: #041126;
+  box-shadow: 0 18px 35px rgba(92, 225, 230, 0.45);
 }
 
-.btn-save:hover {
-  background-color: #2563eb;
-  transform: translateY(-1px);
+.receiver-form-btn-secondary {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--legals-text);
 }
 
-.btn-cancel {
-  background-color: #9ca3af;
-  color: #ffffff;
+.receiver-form-btn:hover {
+  transform: translateY(-2px);
 }
 
-.btn-cancel:hover {
-  background-color: #6b7280;
-  transform: translateY(-1px);
+@media (max-width: 540px) {
+  .receiver-modal {
+    border-radius: 24px;
+  }
+
+  .receiver-form-buttons {
+    flex-direction: column;
+  }
 }

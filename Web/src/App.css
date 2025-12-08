@@ -1,17 +1,45 @@
+ :root {
+  --color-bg-deep: #040b18;
+  --color-gradient: radial-gradient(circle at 20% 20%, #14274e 0%, transparent 45%),
+    radial-gradient(circle at 80% 0%, #1c4448 0%, transparent 50%),
+    linear-gradient(135deg, #02040a 0%, #060f23 60%, #040b18 100%);
+  --surface-card: rgba(10, 18, 38, 0.9);
+  --surface-line: rgba(255, 255, 255, 0.08);
+  --accent-main: #a2ff86;
+  --accent-alt: #5ce1e6;
+  --text-high: #f5f7fb;
+  --text-muted: rgba(245, 247, 251, 0.68);
+  --primary-color: var(--accent-main);
+  --secondary-color: var(--accent-alt);
+  --background-color: var(--color-bg-deep);
+  --text-color: var(--text-high);
+  --app-gradient: var(--color-gradient);
+  --legals-bg: var(--color-bg-deep);
+  --legals-gradient: var(--color-gradient);
+  --legals-card: var(--surface-card);
+  --legals-line: var(--surface-line);
+  --legals-accent: var(--accent-main);
+  --legals-accent-2: var(--accent-alt);
+  --legals-text: var(--text-high);
+  --legals-muted: var(--text-muted);
+}
+
 *{
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-#root {
-  --primary-color: #4caf50;
-  --secondary-color: #ff9800;
-  --background-color: #f5f5f5;
-  --text-color: #333333;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: var(--background-color);
+body {
+  background: var(--app-gradient, var(--background-color));
   color: var(--text-color);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#root {
+  font-family: inherit;
+  background: transparent;
+  color: inherit;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

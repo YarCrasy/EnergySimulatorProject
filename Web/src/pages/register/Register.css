@@ -1,56 +1,172 @@
-/* =============== */
-/*  Register Page  */
-/* =============== */
-
-/* Contenedor principal: centra todo vertical y horizontalmente */
-.register {
-  min-height: 100vh;
+.register-page {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  padding: 80px;
+  flex-direction: column;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding: clamp(1.5rem, 4vw, 3.5rem) clamp(1rem, 5vw, 3.5rem) 4rem;
 }
 
-/* Contenedor del formulario */
-.form {
-  width: 100%;
-  max-width: 500px;
-  background: #ffffff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+.register-shell {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(1.25rem, 4vw, 2.5rem);
+  align-items: stretch;
 }
 
-.form h2 {
+.register-hero {
+  border: 1px solid var(--surface-line);
+  border-radius: 36px;
+  padding: clamp(1.5rem, 4vw, 2.75rem);
+  background: rgba(5, 13, 28, 0.8);
+  box-shadow: 0 35px 75px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.register-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.register-hero h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--legals-text);
+  line-height: 1.15;
+}
+
+.register-lede {
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.register-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.register-checklist li {
+  position: relative;
+  padding-left: 1.5rem;
+  color: var(--text-muted);
+}
+
+.register-checklist li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.45rem;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  background: linear-gradient(120deg, var(--accent-main), var(--accent-alt));
+  box-shadow: 0 0 12px rgba(92, 225, 230, 0.6);
+}
+
+.register-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+}
+
+.register-metrics article {
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.9rem 1.2rem;
+  background: rgba(6, 15, 36, 0.75);
+}
+
+.register-metrics span {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent-main);
+}
+
+.register-metrics p {
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.register-card {
+  border: 1px solid var(--surface-line);
+  border-radius: 36px;
+  padding: clamp(1.5rem, 4vw, 2.75rem);
+  background: rgba(5, 13, 28, 0.92);
+  box-shadow: 0 45px 85px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(28px);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.register-card header p {
+  text-transform: uppercase;
+  letter-spacing: 0.45em;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.register-card header h2 {
+  font-size: 1.8rem;
+  color: var(--legals-text);
+}
+
+.register-login-hint {
   text-align: center;
-  margin-bottom: 20px;
-  color: #0c123a;
+  color: var(--text-muted);
 }
 
-.form p{
-  text-align: center;
-  margin-bottom: 20px;
-  margin-top: 20px;
-  color: #0c123a;
-}
-
-.form a{
-  display: block;
-  text-align: center;
-  color: #040855;
+.register-login-hint a {
+  color: var(--accent-main);
   text-decoration: none;
-  font-weight: 600;
 }
 
-.form a:hover {
+.register-login-hint a:hover {
   text-decoration: underline;
-  color: rgb(30, 25, 167);
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .register .form {
-    padding: 20px;
+.register-visual {
+  border-radius: 40px;
+  min-height: 320px;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.register-visual__overlay {
+  position: absolute;
+  inset: 0;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  color: var(--legals-text);
+}
+
+.register-visual__overlay h3 {
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+}
+
+.register-visual__overlay p {
+  color: var(--text-muted);
+  max-width: 460px;
+}
+
+@media (max-width: 640px) {
+  .register-card,
+  .register-hero {
+    border-radius: 28px;
   }
 }

@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 
 import "./SideMenu.css";
 
-import { SearchBar, HeadingButton } from "../../../components/searchBar/SearchBar";
-import UserProfile from "../../../components/userProfile/UserProfile";
 import CardPanel from "../../../components/cardPanel/CardPanel";
 import { getAllElements } from "../../../api/elements";
 import backBtn from "../../../assets/back-arrow.svg";
@@ -52,6 +50,13 @@ function SideMenu({ collapsed = false }) {
         return "N/A";
     };
 
+    const totalCatalogPower = elements.reduce((acc, element) => {
+        const watt = element?.powerWatt ?? element?.powerConsumption;
+        return acc + (Number(watt) || 0);
+    }, 0);
+
+    const formatNumber = (value) => new Intl.NumberFormat("es-ES", { maximumFractionDigits: 0 }).format(value);
+
     const handleDragStart = (element) => (event) => {
         event.dataTransfer.setData("application/json", JSON.stringify(element));
         event.dataTransfer.dropEffect = "copy";
@@ -59,17 +64,24 @@ function SideMenu({ collapsed = false }) {
 
     return (
         <div className={`side-menu${collapsed ? " collapsed" : ""}`}>
-
-            <div className="menu-top-side">
-                <div className="bar">
+            <header className="side-menu-header">
+                <div className="side-menu-header-row">
+                    <p className="side-menu-eyebrow">Catálogo de componentes</p>
                     <Link to="/projects" className="back-button">
-                        <img src={backBtn} alt="Back" width={30} />
+                        <img src={backBtn} alt="Volver a proyectos" width={24} height={24} />
                     </Link>
-                    {/* <UserProfile /> */}
                 </div>
-                {/* <SearchBar placeholder="Buscar en el simulador..."
-                    headingButton={HeadingButton.FILTER} filterOptions={[]} /> */}
-            </div>
+                <h2>Arrastra, suelta y conecta</h2>
+                <p>
+                    Selecciona elementos del catálogo y arrástralos al lienzo para construir tu
+                    microred. Cada tarjeta incluye el consumo estimado para ayudarte a balancear
+                    la potencia.
+                </p>
+                <div className="side-menu-meta">
+                    <span>{formatNumber(elements.length)} elementos</span>
+                    <span>{formatNumber(totalCatalogPower)} W en catálogo</span>
+                </div>
+            </header>
 
             <div id="elements-list" className="elements-list">
                 {loading && <p className="elements-status">Cargando elementos...</p>}

@@ -2,31 +2,49 @@ import "./ReceiverCard.css";
 
 export default function ReceiverCard({ receiver, onEdit, onDelete }) {
   const hasPosition = Number.isFinite(receiver?.x) && Number.isFinite(receiver?.y);
+  const formatNumber = (value) =>
+    new Intl.NumberFormat("es-ES", { maximumFractionDigits: 0 }).format(value);
+
   const formattedPower = Number.isFinite(receiver?.powerConsumption)
-    ? `${receiver.powerConsumption} W`
+    ? `${formatNumber(receiver.powerConsumption)} W`
     : "N/D";
   const formatCoord = (value) => Number(value).toFixed(2);
 
   return (
-    <div className="receiver-card">
-      <h3 className="receiver-name">{receiver.name}</h3>
-      <p className="receiver-power">
-        Consumo: <span className="receiver-power-value">{formattedPower}</span>
-      </p>
-      {hasPosition && (
-        <p className="receiver-position">
-          Posición: ({formatCoord(receiver.x)}, {formatCoord(receiver.y)})
-        </p>
-      )}
+    <article className="receiver-card">
+      <div className="receiver-card-header">
+        <span className="receiver-chip">Elemento</span>
+        <h3 className="receiver-name">{receiver.name}</h3>
+      </div>
 
-      <div className="receiver-buttons">
-        <button onClick={() => onEdit(receiver)} className="btn btn-edit">
+      <div className="receiver-meta">
+        <p className="receiver-power">
+          Consumo
+          <span className="receiver-power-value">{formattedPower}</span>
+        </p>
+        {hasPosition ? (
+          <p className="receiver-position">
+            Posición <span>({formatCoord(receiver.x)}, {formatCoord(receiver.y)})</span>
+          </p>
+        ) : (
+          <p className="receiver-position muted">Sin coordenadas registradas</p>
+        )}
+      </div>
+
+      <div className="receiver-card-actions">
+        <button
+          onClick={() => onEdit(receiver)}
+          className="receiver-card-btn receiver-card-btn-primary"
+        >
           Editar
         </button>
-        <button onClick={() => onDelete(receiver.id)} className="btn btn-delete">
+        <button
+          onClick={() => onDelete(receiver.id)}
+          className="receiver-card-btn receiver-card-btn-danger"
+        >
           Borrar
         </button>
       </div>
-    </div>
+    </article>
   );
 }

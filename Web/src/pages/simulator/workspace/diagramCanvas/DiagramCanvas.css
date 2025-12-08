@@ -1,9 +1,22 @@
 .diagram-canvas {
-    border-radius: 16px;
+    border-radius: 28px;
     overflow: auto;
     flex: 1;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: radial-gradient(circle at 20% 20%, rgba(92, 225, 230, 0.08), transparent 55%),
+        radial-gradient(circle at 80% 0%, rgba(162, 255, 134, 0.08), transparent 50%),
+        rgba(3, 8, 20, 0.9);
 }
 
+.diagram-canvas-board {
+    position: relative;
+    transform-origin: 0 0;
+    border-radius: 24px;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 80px 80px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
 
 .diagram-connections {
     position: absolute;
@@ -13,30 +26,31 @@
 
 .diagram-connections path {
     fill: none;
-    stroke: #7c3aed;
+    stroke: rgba(92, 225, 230, 0.85);
     stroke-width: 3px;
-    opacity: 0.7;
+    opacity: 0.85;
 }
 
 .diagram-node {
     position: absolute;
     transform: translate(-50%, -50%);
-    min-width: 160px;
-    min-height: 90px;
-    border-radius: 14px;
+    min-width: 180px;
+    min-height: 110px;
+    border-radius: 18px;
     border: 2px solid transparent;
-    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.15);
+    box-shadow: 0 12px 30px rgba(4, 0, 27, 0.4);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 6px;
-    padding: 12px;
-    color: #1f2937;
+    gap: 8px;
+    padding: 14px;
+    color: #061025;
     cursor: grab;
+    backdrop-filter: blur(6px);
 }
 
 .diagram-node.selected {
-    border-color: #2563eb;
+    border-color: rgba(162, 255, 134, 0.9);
 }
 
 .diagram-node.pending {
@@ -44,15 +58,17 @@
 }
 
 .diagram-node .node-label {
-    font-weight: 600;
+    font-weight: 700;
+    font-size: 1rem;
 }
 
 .diagram-node .node-wattage {
-    font-size: 0.9rem;
-    color: #4b5563;
+    font-size: 0.95rem;
+    color: #061025;
+    font-weight: 600;
 }
 
 .diagram-node .node-meta {
     font-size: 0.8rem;
-    color: #6b7280;
+    color: rgba(0, 0, 0, 0.55);
 }

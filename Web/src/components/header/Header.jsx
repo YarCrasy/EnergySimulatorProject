@@ -8,7 +8,7 @@ function Header() {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     return (
-        <header>
+        <header className="app-header">
             <div className="logo-container"> <Logo /></div>
             <nav>
                 <Link to="/">Inicio</Link>
