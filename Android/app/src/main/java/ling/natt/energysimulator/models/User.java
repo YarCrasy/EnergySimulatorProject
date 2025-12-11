@@ -24,7 +24,9 @@ public class User implements Parcelable {
         this.id = userObject.getLong("id");
         this.fullName = userObject.getString("fullName");
         this.email = userObject.getString("email");
-        this.dateOfBirth = userObject.getString("dateOfBirth");
+        this.dateOfBirth = userObject.has("dateOfBirth") && !userObject.isNull("dateOfBirth")
+            ? userObject.getString("dateOfBirth")
+            : null;
         this.passwordHash = userObject.getString("passwordHash");
         this.admin = userObject.getBoolean("admin");
     }
@@ -60,6 +62,7 @@ public class User implements Parcelable {
 
     public Long getId() { return id; }
     public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
     public String getEmail() { return email; }
     public String getDateOfBirth() { return dateOfBirth; }
     public String getPasswordHash() { return passwordHash; }

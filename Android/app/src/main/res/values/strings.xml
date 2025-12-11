@@ -8,4 +8,9 @@
     <string name="project_card_default_title">Proyecto sin nombre</string>
     <string name="project_card_default_subtitle">Sin descripción</string>
     <string name="project_card_meta">ID #%1$s</string>
+    <string name="register">Registrarse</string>
+    <string name="full_name_hint">Nombre completo</string>
+    <string name="full_name_required">Ingrese su nombre completo</string>
+    <string name="register_error">No se pudo registrar\n%1$s</string>
+    <string name="login_missing_credentials">Por favor, ingrese un usuario y contraseña</string>
 </resources>

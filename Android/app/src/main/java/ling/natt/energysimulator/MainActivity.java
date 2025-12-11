@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     EditText username;
     EditText password;
     Button loginBtn;
+    Button registerBtn;
     TextView errorMessage;
     private final ExecutorService loginExecutor = Executors.newSingleThreadExecutor();
 
@@ -44,10 +45,12 @@ public class MainActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         loginBtn = findViewById(R.id.login);
+        registerBtn = findViewById(R.id.register);
         errorMessage = findViewById(R.id.error);
 
 
         loginBtn.setOnClickListener(v -> login());
+        registerBtn.setOnClickListener(v -> registerUser());
 
     }
 
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         String email = username.getText().toString().trim();
         String pass = password.getText().toString().trim();
         if (email.isEmpty() || pass.isEmpty()) {
-            errorMessage.setText("Por favor, ingrese un usuario y contraseña");
+            errorMessage.setText(R.string.login_missing_credentials);
             return;
         }
         errorMessage.setText("");
@@ -76,6 +79,30 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void registerUser() {
+        String email = username.getText().toString().trim();
+        String pass = password.getText().toString().trim();
+        if (email.isEmpty() || pass.isEmpty()) {
+            errorMessage.setText(R.string.login_missing_credentials);
+            return;
+        }
+        errorMessage.setText("");
+        setLoading(true);
+        loginExecutor.execute(() -> {
+            try {
+                User user = UsersAPI.register(email, pass);
+                user.setProjects((ArrayList<Project>) ProjectsAPI.getProjectsFromUser(user.getId()));
+                runOnUiThread(() -> navigateToProject(user));
+            } catch (Exception e) {
+                runOnUiThread(() -> {
+                    setLoading(false);
+                    String message = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
+                    errorMessage.setText(getString(R.string.register_error, message));
+                });
+            }
+        });
+    }
+
     private void navigateToProject(User user) {
         setLoading(false);
         Intent intent = new Intent(this, ProjectsActivity.class);
@@ -85,6 +112,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setLoading(boolean loading) {
         loginBtn.setEnabled(!loading);
+        if (registerBtn != null) {
+            registerBtn.setEnabled(!loading);
+        }
     }
 
     @Override
