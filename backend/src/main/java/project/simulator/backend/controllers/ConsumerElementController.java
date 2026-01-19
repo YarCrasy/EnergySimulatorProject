@@ -1,0 +1,97 @@
+package project.simulator.backend.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import project.simulator.backend.models.ConsumerElement;
+import project.simulator.backend.models.Project;
+import project.simulator.backend.models.ProjectNode;
+import project.simulator.backend.repositories.ConsumerElementRepository;
+import project.simulator.backend.repositories.ProjectNodeRepository;
+import project.simulator.backend.repositories.ProjectRepository;
+
+@RestController
+@CrossOrigin(origins = "*")
+@RequestMapping("/api/consumer-element")
+public class ConsumerElementController {
+
+    @Autowired
+    private ConsumerElementRepository consumerElementRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
+    @Autowired
+    private ProjectNodeRepository projectNodeRepository;
+
+    @GetMapping
+    public List<ConsumerElement> getAllConsumerElements() {
+        return consumerElementRepository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ConsumerElement getConsumerElementById(@PathVariable Long id) {
+        return consumerElementRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ConsumerElement not found" + id));
+    }
+
+    @GetMapping("/project/{projectId}")
+    public List<ConsumerElement> getConsumerElementsByProject(@PathVariable Long projectId) {
+
+        List<ProjectNode> nodes = projectNodeRepository.findByProjectId(projectId);
+
+        return nodes.stream()
+            .map(ProjectNode::getElement)
+                .filter(e -> e instanceof ConsumerElement)
+                .map(e -> (ConsumerElement) e)
+                .toList();
+    }
+
+    @PostMapping
+    public ConsumerElement createConsumerElement(@RequestBody ConsumerElement consumerElement) {
+        return consumerElementRepository.save(consumerElement);
+    }
+
+    @PostMapping("/project/{projectId}")
+    public ConsumerElement createConsumerElementInProject(
+            @PathVariable Long projectId,
+            @RequestBody ConsumerElement element) {
+
+        Project p = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+
+        ConsumerElement saved = consumerElementRepository.save(element);
+
+        ProjectNode node = new ProjectNode(p, saved);
+        projectNodeRepository.save(node);
+
+        return saved;
+    }
+
+    @PutMapping("/{id}")
+    public ConsumerElement updateConsumerElement(@PathVariable Long id, @RequestBody ConsumerElement details) {
+        return consumerElementRepository.findById(id)
+                .map(element -> {
+                    element.setName(details.getName());
+                    element.setPowerConsumption(details.getPowerConsumption());
+                    return consumerElementRepository.save(element);
+                })
+                .orElseThrow(() -> new RuntimeException("ConsumerElement not found with id " + id));
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteConsumerElement(@PathVariable Long id) {
+        if (!consumerElementRepository.existsById(id)) {
+            throw new RuntimeException("ConsumerElement not found with id " + id);
+        }
+        consumerElementRepository.deleteById(id);
+    }
+}
