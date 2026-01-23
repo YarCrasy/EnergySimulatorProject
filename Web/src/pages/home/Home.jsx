@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/AuthContext";
+import { useAuth } from "@/hooks/auth";
 import "./Home.css";
-import home from "../../images/home.jpg";
+import home from "@jpg/home.jpg";
 
 const stats = [
   { label: "Proyectos Analizados", value: "123" },

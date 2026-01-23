@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../../hooks/AuthContext";
+import { useAuth } from "@/hooks/auth";
 import { createProject } from "../../api/projects";
 import "./Login.css";
-import loginImg from "../../images/loginImg.jpg";
+import loginImg from "@jpg/loginImg.jpg";
 
 const trustIndicators = [
   { label: "Disponibilidad", value: "99.9%" },

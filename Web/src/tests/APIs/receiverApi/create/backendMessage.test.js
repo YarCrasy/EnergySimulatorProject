@@ -1,13 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('@/api/api', () => ({
+vi.mock('@api/api', () => ({
   default: {
     post: vi.fn(),
   },
 }));
 
-import api from '@/api/api';
-import { receiverApi } from '@/api/receiverApi';
+import api from '@api/api';
+import { receiverApi } from '@api/receiverApi';
 
 describe('receiverApi.js', () => {
   it('receiverApi.create lanza error con mensaje del backend', async () => {

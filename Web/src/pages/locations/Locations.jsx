@@ -3,7 +3,7 @@ import "./Locations.css";
 import Spiner from "../../components/spiner/Spiner";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import iconMarker from "../../assets/marker.png";
+import iconMarker from "@png/marker.png";
 import L from "leaflet";
 
 const DefaultIcon = L.icon({

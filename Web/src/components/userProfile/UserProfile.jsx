@@ -1,6 +1,6 @@
 import "./UserProfile.css";
 
-import userProfile from "../../assets/user-profile.svg";
+import userProfile from "@svg/user-profile.svg";
 
 function UserProfile({ avatarUrl, menu }) {
     return (

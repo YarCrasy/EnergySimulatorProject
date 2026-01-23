@@ -1,13 +1,12 @@
+import api from '@api/api';
+import { getAllProjects } from '@api/projects';
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('@/api/api', () => ({
+vi.mock('@api/api', () => ({
   default: {
     get: vi.fn(),
   },
 }));
-
-import api from '@/api/api';
-import { getAllProjects } from '@/api/projects';
 
 describe('projects.js', () => {
   it('getAllProjects devuelve [] si falla la API', async () => {

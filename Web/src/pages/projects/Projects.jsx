@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import "./Projects.css";
 
 import ProjectCard from "../../components/projectCard/ProjectCard";
-import placeHorderImg from "../../assets/image.svg";
+import placeHorderImg from "@svg/image.svg";
 import { getAllProjects, createProject, deleteProject } from "../../api/projects";
-import { useAuth } from "../../hooks/AuthContext";
+import { useAuth } from "@/hooks/auth";
 
 function Projects() {
 

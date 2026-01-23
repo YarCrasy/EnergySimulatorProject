@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import "./About.css";
-import domestic from "../../images/domestic.jpg";
-import comunity from "../../images/comunity.jpg";
-import industrial from "../../images/industrial.jpg";
-import greenWorld from "../../images/greenWorld.jpg";
-import innovation from "../../images/innovation.jpg";
+import domestic from "@jpg/domestic.jpg";
+import comunity from "@jpg/comunity.jpg";
+import industrial from "@jpg/industrial.jpg";
+import greenWorld from "@jpg/greenWorld.jpg";
+import innovation from "@jpg/innovation.jpg";
 
 const pillars = [
   {

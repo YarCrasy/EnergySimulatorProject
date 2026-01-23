@@ -3,7 +3,7 @@ import RegisterForm from "../../../components/registerForm/RegisterForm";
 import TableUsers from "../../../components/adminComponents/tableUsers/TableUsers";
 import NavBar from "../../../components/adminComponents/navBar/NavBar";
 import api from "../../../api/api";
-import { useAuth } from "../../../hooks/AuthContext";
+import { useAuth } from "@/hooks/auth";
 import "./AdminUsers.css";
 
 export default function AdminUsers() {

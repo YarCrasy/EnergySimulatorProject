@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./ForceOrientation.css";
 
-import rotate from "../../assets/rotate.svg";
+import rotate from "@svg/rotate.svg";
 
 export default function ForceOrientation() {
   const [show, setShow] = useState(false);
