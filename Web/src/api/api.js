@@ -2,7 +2,7 @@ import axios from "axios";
 
 const DEFAULT_BASE_URL 
     //="http://localhost:8080/api";
-    ="https://dam-project.yarcrasy.com/api";
+    ="https://damt-project.yarcrasy.com/api";
 
 const api = axios.create({
   baseURL: DEFAULT_BASE_URL,
