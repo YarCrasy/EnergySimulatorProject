@@ -1,4 +1,4 @@
-package ling.natt.energysimulator.models;
+package ies.elrincon.energysimulator.models;
 
 import static java.time.LocalDateTime.now;
 

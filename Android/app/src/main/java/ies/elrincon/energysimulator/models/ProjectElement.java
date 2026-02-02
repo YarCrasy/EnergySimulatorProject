@@ -1,4 +1,4 @@
-package ling.natt.energysimulator.models;
+package ies.elrincon.energysimulator.models;
 
 
 public class ProjectElement {

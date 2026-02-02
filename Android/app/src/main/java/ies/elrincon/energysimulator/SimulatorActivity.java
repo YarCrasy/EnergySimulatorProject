@@ -1,4 +1,4 @@
-package ling.natt.energysimulator;
+package ies.elrincon.energysimulator;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,11 +14,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import ling.natt.energysimulator.api.ProjectsAPI;
-import ling.natt.energysimulator.models.Project;
+import ies.elrincon.energysimulator.api.ProjectsAPI;
+import ies.elrincon.energysimulator.models.Project;
 
 public class SimulatorActivity extends AppCompatActivity {
-    public static final String EXTRA_FROM_PROJECTS = "project";
+    public static final String EXTRA_PROJECT = "project";
     private Project currentProject;
 
     private static final String TAG = "SimulatorActivity";
@@ -43,9 +43,9 @@ public class SimulatorActivity extends AppCompatActivity {
         backBtn.setOnClickListener(v -> returnProjectAndFinish());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            currentProject = getIntent().getParcelableExtra(EXTRA_FROM_PROJECTS, Project.class);
+            currentProject = getIntent().getParcelableExtra(EXTRA_PROJECT, Project.class);
         } else {
-            currentProject = getIntent().getParcelableExtra(EXTRA_FROM_PROJECTS);
+            currentProject = getIntent().getParcelableExtra(EXTRA_PROJECT);
         }
         loadProject();
     }
@@ -57,17 +57,26 @@ public class SimulatorActivity extends AppCompatActivity {
         saveProject();
     }
 
-    private void returnProjectAndFinish() {
-        String latest = titleEdit.getText().toString();
-        currentProject.setName(latest);
+    @Override
+    public void onBackPressed() {
+        returnProjectAndFinish();
+    }
 
+    private void returnProjectAndFinish() {
         if (currentProject == null) {
             setResult(Activity.RESULT_CANCELED);
-        } else {
-            Intent data = new Intent();
-            data.putExtra("project", currentProject);
-            setResult(Activity.RESULT_OK, data);
+            finish();
+            return;
         }
+
+        if (titleEdit != null) {
+            String latest = titleEdit.getText().toString();
+            currentProject.setName(latest);
+        }
+
+        Intent data = new Intent();
+        data.putExtra(EXTRA_PROJECT, currentProject);
+        setResult(Activity.RESULT_OK, data);
         finish();
     }
 
@@ -129,3 +138,4 @@ public class SimulatorActivity extends AppCompatActivity {
     }
 
 }
+

@@ -1,4 +1,4 @@
-package ling.natt.energysimulator.models;
+package ies.elrincon.energysimulator.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import ling.natt.energysimulator.api.ProjectsAPI;
+import ies.elrincon.energysimulator.api.ProjectsAPI;
 
 public class User implements Parcelable {
     private Long id;
@@ -112,3 +112,4 @@ public class User implements Parcelable {
         this.projects = projects;
     }
 }
+

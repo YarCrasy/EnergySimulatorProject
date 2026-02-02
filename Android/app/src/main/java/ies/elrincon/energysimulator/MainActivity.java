@@ -1,4 +1,4 @@
-package ling.natt.energysimulator;
+package ies.elrincon.energysimulator;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,10 +12,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import ling.natt.energysimulator.api.ProjectsAPI;
-import ling.natt.energysimulator.api.UsersAPI;
-import ling.natt.energysimulator.models.Project;
-import ling.natt.energysimulator.models.User;
+import ies.elrincon.energysimulator.api.ProjectsAPI;
+import ies.elrincon.energysimulator.api.UsersAPI;
+import ies.elrincon.energysimulator.models.Project;
+import ies.elrincon.energysimulator.models.User;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -106,8 +106,10 @@ public class MainActivity extends AppCompatActivity {
     private void navigateToProject(User user) {
         setLoading(false);
         Intent intent = new Intent(this, ProjectsActivity.class);
-        intent.putExtra("user", user);
+        intent.putExtra(ProjectsActivity.EXTRA_USER, user);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        finish();
     }
 
     private void setLoading(boolean loading) {
@@ -123,3 +125,4 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 }
+

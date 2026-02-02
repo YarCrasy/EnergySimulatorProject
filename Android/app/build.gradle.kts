@@ -3,15 +3,13 @@ plugins {
 }
 
 android {
-    namespace = "ling.natt.energysimulator"
-    compileSdk {
-        version = release(36)
-    }
+    namespace = "ies.elrincon.energysimulator"
+    compileSdk = 34
 
     defaultConfig {
-        applicationId = "ling.natt.energysimulator"
+        applicationId = "ies.elrincon.energysimulator"
         minSdk = 26
-        targetSdk = 36
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -27,7 +25,6 @@ android {
             )
         }
     }
-    buildToolsVersion = "36.1.0"
 }
 
 dependencies {
