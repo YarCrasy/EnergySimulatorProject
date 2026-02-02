@@ -1,4 +1,4 @@
-<resources>
+﻿<resources>
     <string name="app_name">EnergySimulator</string>
     <string name="login">Login</string>
     <string name="email">Email</string>
@@ -6,11 +6,12 @@
     <string name="project_card_profile">Perfil</string>
     <string name="project_card_simulator">Simulador</string>
     <string name="project_card_default_title">Proyecto sin nombre</string>
-    <string name="project_card_default_subtitle">Sin descripción</string>
+    <string name="project_card_default_subtitle">Sin descripci&#243;n</string>
     <string name="project_card_meta">ID #%1$s</string>
     <string name="register">Registrarse</string>
     <string name="full_name_hint">Nombre completo</string>
     <string name="full_name_required">Ingrese su nombre completo</string>
     <string name="register_error">No se pudo registrar\n%1$s</string>
-    <string name="login_missing_credentials">Por favor, ingrese un usuario y contraseña</string>
+    <string name="login_missing_credentials">Por favor, ingrese un usuario y contrase&#241;a</string>
 </resources>
+

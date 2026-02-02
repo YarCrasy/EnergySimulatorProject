@@ -1,4 +1,4 @@
-package ling.natt.energysimulator.api;
+package ies.elrincon.energysimulator.api;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ApiConnection {
-    public final static String BASE_URL = "https://dam-project.yarcrasy.com/api/";
+    public final static String BASE_URL = "https://damt-project.yarcrasy.com/api/";
 
     private static String buildUrl(String endpoint) {
         String normalized = endpoint == null ? "" : endpoint.trim();

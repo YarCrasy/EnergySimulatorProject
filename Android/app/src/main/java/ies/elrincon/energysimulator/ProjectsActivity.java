@@ -1,4 +1,4 @@
-package ling.natt.energysimulator;
+package ies.elrincon.energysimulator;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -27,12 +27,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import ling.natt.energysimulator.api.ProjectsAPI;
-import ling.natt.energysimulator.components.ProjectCardView;
-import ling.natt.energysimulator.models.Project;
-import ling.natt.energysimulator.models.User;
+import ies.elrincon.energysimulator.api.ProjectsAPI;
+import ies.elrincon.energysimulator.components.ProjectCardView;
+import ies.elrincon.energysimulator.models.Project;
+import ies.elrincon.energysimulator.models.User;
 
 public class ProjectsActivity extends AppCompatActivity {
+    public static final String EXTRA_USER = "user";
     private GridLayout projectsGrid;
     private User sessionUser;
     private TextView errMsg;
@@ -82,9 +83,9 @@ public class ProjectsActivity extends AppCompatActivity {
     private void loadProjects() {
         projectsGrid = findViewById(R.id.projectsGrid);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            sessionUser = getIntent().getParcelableExtra("user", User.class);
+            sessionUser = getIntent().getParcelableExtra(EXTRA_USER, User.class);
         } else {
-            sessionUser = getIntent().getParcelableExtra("user");
+            sessionUser = getIntent().getParcelableExtra(EXTRA_USER);
         }
 
         if (sessionUser == null) {
@@ -126,9 +127,9 @@ public class ProjectsActivity extends AppCompatActivity {
                         Intent data = result.getData();
                         Project updated;
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            updated = data.getParcelableExtra("project", Project.class);
+                            updated = data.getParcelableExtra(SimulatorActivity.EXTRA_PROJECT, Project.class);
                         } else {
-                            updated = data.getParcelableExtra("project");
+                            updated = data.getParcelableExtra(SimulatorActivity.EXTRA_PROJECT);
                         }
                         if (updated != null && sessionUser.getProjects() != null) {
                             for (int i = 0; i < sessionUser.getProjects().size(); i++) {
@@ -158,7 +159,7 @@ public class ProjectsActivity extends AppCompatActivity {
             public void onOpenProject(Project p) {
                 // Abrir el simulador pasando el proyecto
                 Intent intent = new Intent(ProjectsActivity.this, SimulatorActivity.class);
-                intent.putExtra("project", p);
+                intent.putExtra(SimulatorActivity.EXTRA_PROJECT, p);
                 projectLauncher.launch(intent);
             }
 
@@ -263,7 +264,7 @@ public class ProjectsActivity extends AppCompatActivity {
             return;
         }
         Intent intent = new Intent(this, ProfileActivity.class);
-        intent.putExtra("user", sessionUser);
+        intent.putExtra(ProfileActivity.EXTRA_USER, sessionUser);
         startActivity(intent);
     }
 
@@ -293,9 +294,9 @@ public class ProjectsActivity extends AppCompatActivity {
                 }
 
                 runOnUiThread(() -> {
-                    intent.putExtra("project", newProject);
+                    intent.putExtra(SimulatorActivity.EXTRA_PROJECT, newProject);
                     renderProjects(sessionUser != null ? sessionUser.getProjects() : null);
-                    startActivity(intent);
+                    projectLauncher.launch(intent);
                 });
             } catch (JSONException e) {
                 runOnUiThread(() -> errMsg.setText(e.getMessage()));
@@ -306,8 +307,13 @@ public class ProjectsActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        setResult(Activity.RESULT_OK);
-        Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Sesion cerrada", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
         finish();
     }
 }
+
+
+

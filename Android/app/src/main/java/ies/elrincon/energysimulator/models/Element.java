@@ -1,4 +1,4 @@
-package ling.natt.energysimulator.models;
+package ies.elrincon.energysimulator.models;
 
 public abstract class Element {
     private Long id;

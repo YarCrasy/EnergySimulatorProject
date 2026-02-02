@@ -1,4 +1,4 @@
-package ling.natt.energysimulator.api;
+package ies.elrincon.energysimulator.api;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ling.natt.energysimulator.models.User;
+import ies.elrincon.energysimulator.models.User;
 
 public class UsersAPI {
     public static ArrayList<User> getUsers() throws JSONException, IOException {
@@ -62,3 +62,4 @@ public class UsersAPI {
         return new User(userPayload);
     }
 }
+

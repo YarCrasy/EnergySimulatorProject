@@ -1,4 +1,4 @@
-package ling.natt.energysimulator;
+package ies.elrincon.energysimulator;
 
 import org.junit.Test;
 

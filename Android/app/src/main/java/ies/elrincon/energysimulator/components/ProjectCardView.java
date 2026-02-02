@@ -1,4 +1,4 @@
-package ling.natt.energysimulator.components;
+package ies.elrincon.energysimulator.components;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -10,8 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
-import ling.natt.energysimulator.R;
-import ling.natt.energysimulator.models.Project;
+import ies.elrincon.energysimulator.R;
+import ies.elrincon.energysimulator.models.Project;
 
 public class ProjectCardView extends CardView {
     private TextView nameView;
@@ -102,3 +102,4 @@ public class ProjectCardView extends CardView {
         void onDeleteRequested(Project project);
     }
 }
+

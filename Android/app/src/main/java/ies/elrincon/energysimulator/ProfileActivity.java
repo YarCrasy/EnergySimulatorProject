@@ -1,4 +1,4 @@
-package ling.natt.energysimulator;
+package ies.elrincon.energysimulator;
 
 import android.app.AlertDialog;
 import android.os.Build;
@@ -15,11 +15,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import ling.natt.energysimulator.api.UsersAPI;
-import ling.natt.energysimulator.models.User;
+import ies.elrincon.energysimulator.api.UsersAPI;
+import ies.elrincon.energysimulator.models.User;
 
 public class ProfileActivity extends AppCompatActivity {
-    private static final String EXTRA_USER = "user";
+    public static final String EXTRA_USER = "user";
     private User currentUser;
 
 
@@ -184,3 +184,4 @@ public class ProfileActivity extends AppCompatActivity {
         }).start();
     }
 }
+

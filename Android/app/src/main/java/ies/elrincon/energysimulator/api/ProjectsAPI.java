@@ -1,4 +1,4 @@
-package ling.natt.energysimulator.api;
+package ies.elrincon.energysimulator.api;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.List;
 
-import ling.natt.energysimulator.models.Project;
+import ies.elrincon.energysimulator.models.Project;
 
 public class ProjectsAPI {
 
@@ -41,3 +41,4 @@ public class ProjectsAPI {
         return true;
     }
 }
+
