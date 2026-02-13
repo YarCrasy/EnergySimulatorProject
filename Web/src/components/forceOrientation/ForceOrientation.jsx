@@ -24,8 +24,8 @@ export default function ForceOrientation() {
   if (!show) return null;
 
   return (
-    <div className="force-orientation" role="dialog" aria-hidden={!show}>
-      <h2>Por favor, gira tu dispositivo para una mejor experiencia.</h2>
+    <div className="force-orientation" role="dialog" aria-hidden={!show} aria-modal={show} aria-labelledby="force-orientation-title">
+      <h2 id="force-orientation-title">Por favor, gira tu dispositivo para una mejor experiencia.</h2>
       <img src={rotate} alt="Rotate device icon" className="rotate-img" />
     </div>
   );

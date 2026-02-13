@@ -129,7 +129,7 @@ function ProjectCard({ id, title, lastUpdated, imageUrl, onOpen, onDelete }) {
             >
                 <div className="project-card-media">
                     {imageUrl && (
-                        <img src={imageUrl} alt={title} className="project-image" />
+                        <img src={imageUrl} alt={title} className="project-image" loading="lazy" />
                     )}
                     <span className="project-card-pill">
                         {lastUpdated ? `Actualizado ${lastUpdated}` : "Sin registro"}

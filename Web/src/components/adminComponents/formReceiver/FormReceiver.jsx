@@ -34,11 +34,11 @@ export default function FormReceiver({ receiverToEdit, onSave, onCancel }) {
 
   return (
     <div className="receiver-modal-overlay">
-      <div className="receiver-modal">
-        <h2 className="receiver-modal-title">
+      <div className="receiver-modal" role="dialog" aria-modal="true" aria-labelledby="receiver-modal-title" aria-describedby="receiver-modal-desc">
+        <h2 id="receiver-modal-title" className="receiver-modal-title">
           {receiverToEdit ? "Editar Receiver" : "Nuevo Receiver"}
         </h2>
-        <p className="receiver-modal-subtitle">
+        <p id="receiver-modal-desc" className="receiver-modal-subtitle">
           {receiverToEdit
             ? "Ajusta el consumo y la posición de este elemento."
             : "Define el consumo nominal y su localización estimada."}
@@ -46,8 +46,9 @@ export default function FormReceiver({ receiverToEdit, onSave, onCancel }) {
 
         <form onSubmit={handleSubmit} className="receiver-form">
           <div className="form-group">
-            <label>Nombre</label>
+            <label htmlFor="receiver-nombre">Nombre</label>
             <input
+              id="receiver-nombre"
               type="text"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
@@ -62,8 +63,9 @@ export default function FormReceiver({ receiverToEdit, onSave, onCancel }) {
           </div>
 
           <div className="form-group">
-            <label>Consumo (W)</label>
+            <label htmlFor="receiver-consumo">Consumo (W)</label>
             <input
+              id="receiver-consumo"
               type="number"
               value={consumo}
               onChange={(e) => setConsumo(e.target.value)}
@@ -81,8 +83,9 @@ export default function FormReceiver({ receiverToEdit, onSave, onCancel }) {
             <p>Posiciones (opcional)</p>
             <div className="position">
               <div className="form-group">
-                <label>Posición X</label>
+                <label htmlFor="receiver-posx">Posición X</label>
                 <input
+                  id="receiver-posx"
                   type="number"
                   step="0.01"
                   value={x}
@@ -91,8 +94,9 @@ export default function FormReceiver({ receiverToEdit, onSave, onCancel }) {
                 />
               </div>
               <div className="form-group">
-                <label>Posición Y</label>
+                <label htmlFor="receiver-posy">Posición Y</label>
                 <input
+                  id="receiver-posy"
                   type="number"
                   step="0.01"
                   value={y}

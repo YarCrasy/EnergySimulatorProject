@@ -24,6 +24,12 @@
     max-width: 22px;
 }
 
+.search-bar button:focus-visible,
+.search-bar input:focus-visible {
+    box-shadow: 0 0 0 4px rgba(162, 255, 134, 0.15);
+    border-radius: 6px;
+}
+
 .search-bar input{
     background: none;
     border: none;

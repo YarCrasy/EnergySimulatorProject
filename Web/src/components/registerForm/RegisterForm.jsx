@@ -19,8 +19,9 @@ export default function RegisterForm({ editingUser, onSuccess, onCancel }) {
       onSubmit={!isAdmin ? handleCreate : (e) => e.preventDefault()}
     >
       <div className="form-field">
-        <label>Nombre completo</label>
+        <label htmlFor="register-fullName">Nombre completo</label>
         <input
+          id="register-fullName"
           name="fullName"
           value={form.fullName}
           onChange={handleChange}
@@ -31,8 +32,9 @@ export default function RegisterForm({ editingUser, onSuccess, onCancel }) {
       </div>
 
       <div className="form-field">
-        <label>Fecha nacimiento</label>
+        <label htmlFor="register-dateOfBirth">Fecha nacimiento</label>
         <input
+          id="register-dateOfBirth"
           name="dateOfBirth"
           value={form.dateOfBirth}
           onChange={handleChange}
@@ -44,8 +46,9 @@ export default function RegisterForm({ editingUser, onSuccess, onCancel }) {
       </div>
 
       <div className="form-field">
-        <label>Correo electrónico</label>
+        <label htmlFor="register-email">Correo electrónico</label>
         <input
+          id="register-email"
           name="email"
           value={form.email}
           onChange={handleChange}
@@ -56,8 +59,9 @@ export default function RegisterForm({ editingUser, onSuccess, onCancel }) {
       </div>
 
       <div className="form-field">
-        <label>Contraseña</label>
+        <label htmlFor="register-passwordHash">Contraseña</label>
         <input
+          id="register-passwordHash"
           name="passwordHash"
           value={form.passwordHash}
           onChange={handleChange}
