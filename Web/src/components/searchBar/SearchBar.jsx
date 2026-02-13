@@ -1,8 +1,8 @@
 import "./SearchBar.css";
 
-import menuBtn from "../../assets/burger-menu.svg";
-import searchIcon from "../../assets/search-icon.svg";
-import backIcon from "../../assets/back-arrow.svg";
+import menuBtn from "@svg/burger-menu.svg";
+import searchIcon from "@svg/search-icon.svg";
+import backIcon from "@svg/back-arrow.svg";
 
 import { useState } from "react";
 

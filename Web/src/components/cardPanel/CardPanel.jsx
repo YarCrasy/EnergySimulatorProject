@@ -1,5 +1,5 @@
 import "./CardPanel.css";
-import placeholderImg from "../../assets/image.svg";
+import placeholderImg from "@svg/image.svg";
 
 function CardPanel({
   imgSrc = placeholderImg,

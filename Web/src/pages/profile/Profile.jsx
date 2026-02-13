@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../api/api";
 import RegisterForm from "../register/RegisterForm";
-import { useAuth } from "../../hooks/AuthContext";
+import { useAuth } from "@/hooks/auth";
 
 export default function ProfilePage() {
   const { user } = useAuth();

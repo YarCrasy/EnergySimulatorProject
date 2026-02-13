@@ -1,6 +1,6 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import api from "../api/api";
-export const AuthContext = createContext(null);
+import { useEffect, useState } from "react";
+import api from "@api/api";
+import { AuthContext } from "./auth";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -56,6 +56,3 @@ export function AuthProvider({ children }) {
 }
 
 // Custom hook para acceder al contexto fácilmente
-export function useAuth() {
-  return useContext(AuthContext);
-}

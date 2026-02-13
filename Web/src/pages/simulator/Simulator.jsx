@@ -4,7 +4,7 @@ import { useParams, useLocation } from "react-router-dom";
 
 import SideMenu from "./sideMenu/SideMenu";
 import DiagramWorkspace from "./workspace/DiagramWorkspace";
-import toolBoxIcon from "../../assets/tool-box.svg";
+import toolBoxIcon from "@svg/tool-box.svg";
 
 function Simulator() {
     const { projectId } = useParams();

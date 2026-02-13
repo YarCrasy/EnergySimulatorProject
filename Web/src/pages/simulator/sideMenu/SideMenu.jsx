@@ -5,7 +5,7 @@ import "./SideMenu.css";
 
 import CardPanel from "../../../components/cardPanel/CardPanel";
 import { getAllElements } from "../../../api/elements";
-import backBtn from "../../../assets/back-arrow.svg";
+import backBtn from "@svg/back-arrow.svg";
 
 function SideMenu({ collapsed = false }) {
     const [elements, setElements] = useState([]);
