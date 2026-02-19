@@ -32,11 +32,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",
     "globals": "^16.4.0",
-<<<<<<< HEAD
-    "sharp": "^0.34.5",
-=======
     "jsdom": "^26.1.0",
->>>>>>> 09be0836fa04a5f660fed05cdf89bb07caa3520c
     "vite": "^7.1.7"
   }
 }
