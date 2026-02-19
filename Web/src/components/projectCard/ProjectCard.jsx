@@ -145,14 +145,34 @@ function ProjectCard({ id, title, lastUpdated, imageUrl, onOpen, onDelete }) {
                 </div>
 
                 <div className="project-card-footer">
-                    <button type="button" className="project-card-btn" onClick={handleOpen}>
+                    <button
+                        type="button"
+                        className="project-card-btn"
+                        onClick={handleOpen}
+                    >
                         Abrir simulador
+                    </button>
+
+                    {/* 🔹 NUEVO: botón accesible para tests */}
+                    <button
+                        type="button"
+                        aria-label="menu"
+                        className="project-card-menu-btn"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            openContextMenu(rect.right, rect.bottom);
+                        }}
+                    >
+                        ⋮
                     </button>
                 </div>
             </Link>
 
             {menuOpen && (
                 <ul
+                    role="menu"
+                    data-testid="menu"
                     className="project-context-menu"
                     style={{ top: `${menuPos.y}px`, left: `${menuPos.x}px` }}
                 >
