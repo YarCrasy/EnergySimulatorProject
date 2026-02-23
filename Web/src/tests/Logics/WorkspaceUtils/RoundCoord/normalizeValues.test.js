@@ -1,39 +1,14 @@
-import { describe, it, expect, afterEach, vi } from 'vitest'
-import { roundCoord } from '@/Logics/WorkspaceUtils'
+import { describe, expect, it } from 'vitest';
 
-afterEach(() => vi.restoreAllMocks())
+import { roundCoord } from '@/pages/simulator/workspace/WorkspaceUtils';
 
-describe('roundCoord - normalize coordinate values', () => {
-  it('should round numbers to 2 decimals (AAA)', () => {
-    // Arrange
-    const num = 1.2356
-
-    // Act
-    const result = roundCoord(num)
-
-    // Assert
-    expect(result).toBeCloseTo(1.24, 2)
-  })
-
-  it('should handle null values gracefully (AAA)', () => {
-    // Arrange
-    const nil = null
-
-    // Act
-    const result = roundCoord(nil)
-
-    // Assert
-    expect(result).toBeNull()
-  })
-
-  it('should convert and round numeric strings (AAA)', () => {
-    // Arrange
-    const str = '2.3456'
-
-    // Act
-    const result = roundCoord(str)
-
-    // Assert
-    expect(result).toBeCloseTo(2.35, 2)
-  })
-})
+describe('WorkspaceUtils.js', () => {
+  it('roundCoord normaliza a 2 decimales y hace fallback a 0', () => {
+    expect(roundCoord(1.234)).toBe(1.23);
+    expect(roundCoord('2.345')).toBe(2.35);
+    expect(roundCoord(undefined)).toBe(0);
+    expect(roundCoord('no-number')).toBe(0);
+    expect(roundCoord(null)).toBe(0);
+    expect(roundCoord(-3.456)).toBe(-3.46);
+  });
+});

@@ -9,6 +9,8 @@
     "convert-images": "node tools/convert-images.js",
     "lint": "eslint .",
     "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest run --coverage",
     "preview": "vite preview"
   },
   "dependencies": {

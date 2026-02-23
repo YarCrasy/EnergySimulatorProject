@@ -1,6 +1,6 @@
 # Simulador de energías renovables
 
-[![Java](https://img.shields.io/badge/Java-21-red)](https://java.com)
+[![Java](https://img.shields.io/badge/Java-25-red)](https://java.com)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-green)](https://spring.io)
 [![React](https://img.shields.io/badge/React-18.2-blue)](https://reactjs.org)
 [![Android](https://img.shields.io/badge/Android-API%2024+-brightgreen)](https://android.com)
@@ -104,6 +104,57 @@ El servidor Vite se expone en `http://localhost:5173`.
 ### Scripts útiles
 - `npm run build` genera la versión de producción.
 - `npm run lint` (si se habilita en `package.json`) valida el estilo.
+- `npm run test` ejecuta todos los tests con Vitest.
+- `npm run test:watch` ejecuta tests en modo watch.
+- `npm run test:coverage` ejecuta tests y genera cobertura.
+
+### Testing
+#### Requisitos / Setup
+- Node LTS recomendado (Node 18+).
+- Instalar dependencias en `Web/` con `npm install`.
+
+#### Comandos completos
+- `npm run test`
+- `npm run test:watch`
+- `npm run test:coverage`
+- Ejecutar archivo específico: `npx vitest run src/tests/Logics/WorkspaceUtils/buildNodeSignature.test.js`
+- Ejecutar por patrón o nombre: `npx vitest -t "updateProject"`
+
+#### Cobertura (detalle)
+- Se revisan métricas de `lines`, `branches`, `functions` y `statements`.
+- El reporte se genera en `Web/coverage/` (`Web/coverage/index.html`).
+- Regla de equipo: no aceptar PR si baja cobertura en módulos críticos (`WorkspaceUtils`, `api/projects`, `ProjectCard`, `PrivateRoute`).
+
+#### Qué se está testeando
+- Lógica: utilidades de `WorkspaceUtils` (normalización, payload, firmas, hidratación).
+- Datos/API: servicios en `src/api` con mocks de cliente HTTP.
+- Interfaz: flujos de `ProjectCard`, `PrivateRoute` y `FormReceiver`.
+
+#### Guía para escribir tests (AAA)
+Plantilla mínima:
+```js
+it('caso', async () => {
+  // Arrange
+  // Act
+  // Assert
+});
+```
+Ejemplo real del proyecto:
+```js
+it('updateProject lanza error si falta id', async () => {
+  await expect(updateProject()).rejects.toThrow('updateProject requiere un id');
+});
+```
+
+#### Mocks y aislamiento
+- Mock de API con `vi.mock('@api/api', () => ({ ... }))` o `vi.spyOn(...)`.
+- Limpieza de estado con `afterEach(() => vi.restoreAllMocks())`.
+
+#### Troubleshooting
+- `Failed to resolve import "@/..."`: revisar alias en `Web/vite.config.js` y ruta exacta (mayúsculas/minúsculas).
+- `esbuild build() is unavailable in this environment`: ejecutar tests fuera del sandbox.
+- `ReferenceError: fetch is not defined`: en este proyecto se mockea `@api/api` (axios), no `fetch`.
+- Error de entorno DOM: confirmar `environment: 'jsdom'` y `setupFiles` en `Web/vite.config.js`.
 
 ### Funcionalidades clave
 - Página de proyectos con menú contextual para abrir o eliminar proyectos.

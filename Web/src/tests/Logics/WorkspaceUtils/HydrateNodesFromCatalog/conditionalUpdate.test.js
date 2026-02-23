@@ -1,29 +1,59 @@
-import { describe, it, expect, afterEach, vi } from 'vitest'
-import { hydrateNodesFromCatalog } from '@/Logics/WorkspaceUtils'
+import { describe, expect, it } from 'vitest';
 
-afterEach(() => vi.restoreAllMocks())
+import { buildElementDictionary, hydrateNodesFromCatalog } from '@/pages/simulator/workspace/WorkspaceUtils';
 
-describe('hydrateNodesFromCatalog - conditional update behavior', () => {
-  it('should update node properties when catalog match exists (AAA)', () => {
-    // Arrange
-    const nodes = [{ id: 'n1', signature: 's1', label: 'Old', type: 'old' }]
-    const catalog = [{ signature: 's1', label: 'New', type: 'panel' }]
+describe('WorkspaceUtils.js', () => {
+  it('hydrateNodesFromCatalog no muta si el nodo ya coincide con el catálogo', () => {
+    const catalogEntry = { id: 1, name: 'Solar', elementType: 'source', powerWatt: 100 };
+    const catalog = buildElementDictionary([catalogEntry]);
 
-    // Act
-    const result = hydrateNodesFromCatalog(nodes, catalog)
+    const nodes = [
+      {
+        id: 'n1',
+        elementId: 1,
+        label: 'Solar',
+        type: 'source',
+        wattage: 100,
+        meta: catalogEntry,
+      },
+    ];
 
-    // Assert
-    expect(result[0]).toMatchObject({ label: 'New', type: 'panel' })
-  })
+    const result = hydrateNodesFromCatalog(nodes, catalog);
 
-  it('should return unchanged nodes when catalog is null (AAA)', () => {
-    // Arrange
-    const nodes = [{ id: 'n1', signature: 's1', label: 'Label' }]
+    expect(result).toBe(nodes);
+    expect(result[0]).toBe(nodes[0]);
+  });
 
-    // Act
-    const result = hydrateNodesFromCatalog(nodes, null)
+  it('hydrateNodesFromCatalog actualiza label/type/wattage cuando encuentra catálogo', () => {
+    const catalogEntry = { id: 3, name: 'Battery', elementType: 'storage', powerWatt: 450 };
+    const catalog = buildElementDictionary([catalogEntry]);
 
-    // Assert
-    expect(result).toEqual(nodes)
-  })
-})
+    const nodes = [
+      {
+        id: 'n1',
+        elementId: 3,
+        label: 'Old',
+        type: 'old-type',
+        wattage: 0,
+        meta: {},
+      },
+    ];
+
+    const result = hydrateNodesFromCatalog(nodes, catalog);
+
+    expect(result).not.toBe(nodes);
+    expect(result[0]).toMatchObject({
+      label: 'Battery',
+      type: 'storage',
+      wattage: 450,
+      meta: catalogEntry,
+    });
+  });
+
+  it('hydrateNodesFromCatalog devuelve el mismo array cuando no hay catálogo válido', () => {
+    const nodes = [{ id: 'n1', elementId: 3, label: 'X' }];
+
+    expect(hydrateNodesFromCatalog(nodes, null)).toBe(nodes);
+    expect(hydrateNodesFromCatalog(nodes, new Map())).toBe(nodes);
+  });
+});

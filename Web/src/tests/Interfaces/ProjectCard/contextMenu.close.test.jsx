@@ -1,50 +1,59 @@
-import React from 'react';
-import { describe, it, expect, afterEach, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import '@testing-library/jest-dom';
-import ProjectCard from '@/components/ProjectCard/ProjectCard';
+import { describe, expect, it } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
-afterEach(() => vi.restoreAllMocks());
+import ProjectCard from '@/components/projectCard/ProjectCard.jsx';
 
-describe('ProjectCard - context menu closing behavior', () => {
-  it('should close menu when clicking outside component', async () => {
-    const user = userEvent.setup();
-    render(
-      <div>
-        <ProjectCard project={{ id: 'p1', name: 'Project 1' }} />
-        <button data-testid="outside-button">Outside</button>
-      </div>
+describe('ProjectCard.jsx', () => {
+  it('cierra el menú contextual al hacer click fuera', () => {
+    const { container } = render(
+      <MemoryRouter>
+        <ProjectCard id={1} title="Demo" lastUpdated="hoy" />
+      </MemoryRouter>,
     );
 
-    // Abrir el menú
-    const menuButton = screen.getByRole('button', { name: /menu/i });
-    await user.click(menuButton);
+    const shell = container.querySelector('.project-card-shell');
+    expect(shell).toBeTruthy();
 
-    // Verificar que el menú está abierto
-    const menu = screen.getByTestId('menu'); // Asegúrate que ProjectCard tenga data-testid="menu"
-    expect(menu).toBeInTheDocument();
+    fireEvent.contextMenu(shell, { clientX: 10, clientY: 20 });
+    expect(screen.getByText('Abrir')).toBeInTheDocument();
 
-    // Click fuera
-    await user.click(screen.getByTestId('outside-button'));
-
-    // El menú debería cerrarse
-    expect(screen.queryByTestId('menu')).not.toBeInTheDocument();
+    fireEvent.mouseDown(document.body);
+    expect(screen.queryByText('Abrir')).not.toBeInTheDocument();
+    expect(screen.queryByText('Eliminar')).not.toBeInTheDocument();
   });
 
-  it('should close menu when Escape key is pressed', async () => {
-    const user = userEvent.setup();
-    render(<ProjectCard project={{ id: 'p2', name: 'Project 2' }} />);
-    
-    const menuButton = screen.getByRole('button', { name: /menu/i });
-    await user.click(menuButton);
+  it('cierra el menú contextual al presionar Escape', () => {
+    const { container } = render(
+      <MemoryRouter>
+        <ProjectCard id={1} title="Demo" lastUpdated="hoy" />
+      </MemoryRouter>,
+    );
 
-    const menu = screen.getByTestId('menu');
-    expect(menu).toBeInTheDocument();
+    const shell = container.querySelector('.project-card-shell');
+    expect(shell).toBeTruthy();
 
-    // Presionar Escape
-    fireEvent.keyDown(document, { key: 'Escape', code: 'Escape' });
+    fireEvent.contextMenu(shell, { clientX: 10, clientY: 20 });
+    expect(screen.getByText('Abrir')).toBeInTheDocument();
 
-    expect(screen.queryByTestId('menu')).not.toBeInTheDocument();
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(screen.queryByText('Abrir')).not.toBeInTheDocument();
+  });
+
+  it('cierra el menú contextual al hacer scroll', () => {
+    const { container } = render(
+      <MemoryRouter>
+        <ProjectCard id={1} title="Demo" lastUpdated="hoy" />
+      </MemoryRouter>,
+    );
+
+    const shell = container.querySelector('.project-card-shell');
+    expect(shell).toBeTruthy();
+
+    fireEvent.contextMenu(shell, { clientX: 10, clientY: 20 });
+    expect(screen.getByText('Abrir')).toBeInTheDocument();
+
+    fireEvent.scroll(window);
+    expect(screen.queryByText('Abrir')).not.toBeInTheDocument();
   });
 });

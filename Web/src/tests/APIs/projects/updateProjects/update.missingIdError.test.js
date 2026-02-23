@@ -1,32 +1,42 @@
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { describe, expect, it, vi } from 'vitest';
+import api from '@api/api';
+import { updateProject } from '@api/projects';
 
+vi.mock('@api/api', () => ({
+  default: {
+    put: vi.fn(),
+  },
+}));
 
 afterEach(() => {
-  vi.restoreAllMocks()
-})
+  vi.restoreAllMocks();
+});
 
-describe('updateProject - missing ID error handling', () => {
-  it('should throw error when project ID is missing', async () => {
-    // Arrange
-    const invalidPayload = { name: 'Updated Project' }
+describe('projects.js', () => {
+  it('updateProject lanza error si falta id', async () => {
+    await expect(updateProject()).rejects.toThrow('updateProject requiere un id');
+    expect(api.put).not.toHaveBeenCalled();
+  });
 
-    // Act & Assert
-    await expect(updateProject(invalidPayload)).rejects.toThrow()
-  })
+  it('updateProject hace PUT y devuelve data cuando recibe id', async () => {
+    const payload = { name: 'Updated Project' };
+    api.put.mockResolvedValueOnce({ data: { id: 1, ...payload } });
 
-  it('should successfully update when ID is provided', async () => {
-    // Arrange
-    const validPayload = { id: 'p1', name: 'Updated' }
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => ({ success: true, ...validPayload })
-    }))
+    await expect(updateProject(1, payload)).resolves.toEqual({
+      id: 1,
+      ...payload,
+    });
+    expect(api.put).toHaveBeenCalledWith('/projects/1', payload);
+  });
 
-    // Act
-    const result = await updateProject(validPayload)
+  it('updateProject relanza el error del API', async () => {
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const apiError = new Error('boom');
+    api.put.mockRejectedValueOnce(apiError);
 
-    // Assert
-    expect(result.success).toBe(true)
-  })
-})
+    await expect(updateProject(1, { name: 'P' })).rejects.toBe(apiError);
+
+    consoleError.mockRestore();
+  });
+});
