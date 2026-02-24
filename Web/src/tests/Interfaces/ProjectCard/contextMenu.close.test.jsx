@@ -56,4 +56,5 @@ describe('ProjectCard.jsx', () => {
     fireEvent.scroll(window);
     expect(screen.queryByText('Abrir')).not.toBeInTheDocument();
   });
+
 });
