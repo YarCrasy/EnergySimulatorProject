@@ -1,6 +1,6 @@
 
 import { describe, expect, it, vi } from 'vitest';
-
+import { updateProject } from '@/apis/projects/updateProject'
 
 afterEach(() => {
   vi.restoreAllMocks()

@@ -1,25 +1,46 @@
 import { describe, it, expect } from 'vitest';
-import { attachBackendIdentifiers } from '@/Logics/WorkspaceUtils/AttachBackendIdentifiers';
+import { attachBackendIdentifiers } from '@/pages/simulator/workspace/WorkspaceUtils';
 
-describe('attachBackendIdentifiers - bySignature', () => {
+describe('WorkspaceUtils.js - attachBackendIdentifiers', () => {
   it('should assign backendId to nodes matching catalog by signature', () => {
-    // Arrange
-    const catalog = [
-      { signature: 'sig_001', backendId: 'backend_001' },
-      { signature: 'sig_002', backendId: 'backend_002' }
-    ];
-    const nodes = [
-      { id: 'node_1', signature: 'sig_001' },
-      { id: 'node_2', signature: 'sig_002' },
-      { id: 'node_3', signature: 'sig_unknown' }
+
+    const uiNodes = [
+      {
+        id: 'node_1',
+        elementId: 1,
+        position: { x: 0, y: 0 }
+      },
+      {
+        id: 'node_2',
+        elementId: 2,
+        position: { x: 10, y: 10 }
+      },
+      {
+        id: 'node_3',
+        elementId: 3,
+        position: { x: 20, y: 20 }
+      }
     ];
 
-    // Act
-    const result = attachBackendIdentifiers(nodes, catalog);
+    const apiNodes = [
+      {
+        id: 'backend_001',
+        element: { id: 1 },
+        positionX: 0,
+        positionY: 0
+      },
+      {
+        id: 'backend_002',
+        element: { id: 2 },
+        positionX: 10,
+        positionY: 10
+      }
+    ];
 
-    // Assert
-    expect(result[0]).toEqual({ id: 'node_1', signature: 'sig_001', backendId: 'backend_001' });
-    expect(result[1]).toEqual({ id: 'node_2', signature: 'sig_002', backendId: 'backend_002' });
+    const result = attachBackendIdentifiers(uiNodes, apiNodes);
+
+    expect(result[0].backendId).toBe('backend_001');
+    expect(result[1].backendId).toBe('backend_002');
     expect(result[2].backendId).toBeUndefined();
   });
 });
