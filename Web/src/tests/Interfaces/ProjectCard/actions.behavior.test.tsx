@@ -14,7 +14,7 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
-import ProjectCard from '@/components/projectCard/ProjectCard.jsx';
+import ProjectCard from '@/components/projectCard/ProjectCard';
 
 const renderCard = (props = {}) => render(
   <MemoryRouter>

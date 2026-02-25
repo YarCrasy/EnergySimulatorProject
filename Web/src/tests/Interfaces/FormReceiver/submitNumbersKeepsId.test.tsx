@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import FormReceiver from '@/components/adminComponents/formReceiver/FormReceiver.jsx';
+import FormReceiver from '@/components/adminComponents/formReceiver/FormReceiver';
 
 describe('FormReceiver.jsx', () => {
   it('envía powerConsumption/x/y como number y respeta id al editar', () => {

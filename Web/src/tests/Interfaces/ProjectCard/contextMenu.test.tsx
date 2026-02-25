@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
-import ProjectCard from '@/components/projectCard/ProjectCard.jsx';
+import ProjectCard from '@/components/projectCard/ProjectCard';
 
 describe('ProjectCard.jsx', () => {
   it('abre menú con contextmenu y renderiza opciones', () => {

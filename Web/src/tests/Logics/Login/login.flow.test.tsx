@@ -31,7 +31,7 @@ vi.mock('@/api/projects', () => ({
 
 import { useAuth } from '@/hooks/auth';
 import { createProject } from '@/api/projects';
-import Login from '@/pages/login/Login.jsx';
+import Login from '@/pages/login/Login';
 
 const DEFAULT_EMAIL = 'user@corp.com';
 const DEFAULT_PASSWORD = 'Strong123';

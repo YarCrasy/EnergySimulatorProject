@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
-import PrivateRoute from '@/components/privateRoute/PrivateRoute.jsx';
+import PrivateRoute from '@/components/privateRoute/PrivateRoute';
 
 vi.mock('@/hooks/auth', () => ({
   useAuth: vi.fn(),
