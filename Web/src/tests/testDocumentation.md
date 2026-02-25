@@ -1,7 +1,7 @@
 # Testing
 
-Este documento es una overview para el apartado de testing, para una mejor lectura y documentación más completa, tambien se creó un documento en el Google Drive del proyecto:
-[Documentación de Testing](https://docs.google.com/document/d/1Sy74oTu3YtfXCcV8eZ4wlMOHkB7JcsmZ51l742gUkWM/edit?pli=1&tab=t.0#heading=h.i8167o4izlsf)
+**Este documento es una overview para el apartado de testing, para una mejor lectura y documentación más completa, tambien se creó un documento en el Google Drive del proyecto:
+[Documentación de Testing](https://docs.google.com/document/d/1Sy74oTu3YtfXCcV8eZ4wlMOHkB7JcsmZ51l742gUkWM/edit?pli=1&tab=t.0#heading=h.i8167o4izlsf)**
 
 ## 1. Requisitos / Setup
 
