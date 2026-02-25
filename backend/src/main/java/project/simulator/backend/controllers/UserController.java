@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import project.simulator.backend.dto.auth.AuthResponse;
+import project.simulator.backend.dto.auth.LoginRequest;
 import project.simulator.backend.models.Project;
 import project.simulator.backend.models.User;
 import project.simulator.backend.repositories.ProjectRepository;
 import project.simulator.backend.repositories.UserRepository;
+import project.simulator.backend.services.AuthService;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -28,10 +31,12 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
+    private final AuthService authService;
 
-    public UserController(UserRepository userRepository, ProjectRepository projectRepository) {
+    public UserController(UserRepository userRepository, ProjectRepository projectRepository, AuthService authService) {
         this.userRepository = userRepository;
         this.projectRepository = projectRepository;
+        this.authService = authService;
     }
 
     // Obtener todos los usuarios con filtros opcionales por nombre o email
@@ -58,7 +63,11 @@ public class UserController {
     // Crear un nuevo usuario
     @PostMapping
     public User createUser(@RequestBody User user) {
-        ensureEmailAvailable(user.getEmail(), null);
+        String normalizedEmail = normalizeEmail(user.getEmail());
+        ensureEmailAvailable(normalizedEmail, null);
+
+        user.setEmail(normalizedEmail);
+        user.setPasswordHash(authService.encodeIfNeeded(user.getPasswordHash()));
         return userRepository.save(user);
     }
 
@@ -66,13 +75,14 @@ public class UserController {
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Long id, @RequestBody User userDetails) {
         User user = findUserOrThrow(id);
-        ensureEmailAvailable(userDetails.getEmail(), id);
+        String normalizedEmail = normalizeEmail(userDetails.getEmail());
+        ensureEmailAvailable(normalizedEmail, id);
 
         user.setFullName(userDetails.getFullName());
-        user.setEmail(userDetails.getEmail());
+        user.setEmail(normalizedEmail);
         user.setDateOfBirth(userDetails.getDateOfBirth());
         if (userDetails.getPasswordHash() != null && !userDetails.getPasswordHash().isBlank()) {
-            user.setPasswordHash(userDetails.getPasswordHash());
+            user.setPasswordHash(authService.encodeIfNeeded(userDetails.getPasswordHash()));
         }
         user.setAdmin(userDetails.isAdmin());
 
@@ -93,18 +103,10 @@ public class UserController {
         return userRepository.findByFullNameContainingIgnoreCase(name);
     }
 
-    // Login sencillo por email/password hash (pendiente de hashing real)
+    // Endpoint legado compatible con la ruta anterior, ahora retorna JWT.
     @PostMapping("/login")
-    public User login(@RequestBody LoginRequest credentials) {
-        User user = userRepository.findByEmailIgnoreCase(credentials.email())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-                        "Usuario o contraseña incorrectos"));
-
-        if (!user.getPasswordHash().equals(credentials.password())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario o contraseña incorrectos");
-        }
-
-        return user;
+    public AuthResponse login(@RequestBody LoginRequest credentials) {
+        return authService.login(credentials);
     }
 
     @GetMapping("/{id}/projects")
@@ -120,14 +122,17 @@ public class UserController {
         }
     }
 
+    private String normalizeEmail(String email) {
+        if (email == null || email.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El email es obligatorio");
+        }
+        return email.trim().toLowerCase();
+    }
+
     private User findUserOrThrow(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(
                         () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado")
                 );
-    }
-
-    public record LoginRequest(String email, String password){
-        
     }
 }

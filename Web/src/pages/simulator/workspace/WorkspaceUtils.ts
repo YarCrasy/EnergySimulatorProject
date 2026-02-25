@@ -1,3 +1,5 @@
+import { resolveElementWattage } from "@/Models/element.model";
+
 const palette = [
 	"#C5E7FF",
 	"#FFE4C4",
@@ -106,7 +108,7 @@ const normalizeProject = (project) => {
 			elementId,
 			label: node.element?.name ?? `Nodo ${index + 1}`,
 			type: node.element?.elementType ?? "catálogo",
-			wattage: node.element?.powerWatt ?? node.element?.powerConsumption ?? null,
+			wattage: resolveElementWattage(node.element),
 			notes: "",
 			color: palette[index % palette.length],
 			position: {
@@ -272,7 +274,7 @@ const hydrateNodesFromCatalog = (nodes = [], catalog) => {
 			...node,
 			label: catalogEntry.name ?? node.label,
 			type: catalogEntry.elementType ?? catalogEntry.category ?? node.type,
-			wattage: catalogEntry.powerWatt ?? catalogEntry.powerConsumption ?? node.wattage,
+			wattage: resolveElementWattage(catalogEntry) ?? node.wattage,
 			meta: catalogEntry
 		};
 

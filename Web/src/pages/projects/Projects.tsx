@@ -6,6 +6,11 @@ import ProjectCard from "../../components/projectCard/ProjectCard";
 import placeHorderImg from "@svg/image.svg";
 import { getAllProjects, createProject, deleteProject } from "../../api/projects";
 import { useAuth } from "@/hooks/auth";
+import {
+    buildNewProjectPayload,
+    resolveProjectLastUpdated,
+    resolveProjectTitle
+} from "@/Models/project.model";
 
 function Projects() {
 
@@ -102,13 +107,7 @@ function Projects() {
         setCreatingProject(true);
         setError(null);
         try {
-            // Crear un proyecto básico antes de abrir el simulador.
-            const newProjectPayload = {
-                name: "Nuevo Proyecto",
-                energyEnough: false,
-                energyNeeded: 0,
-                userId: user.id
-            };
+            const newProjectPayload = buildNewProjectPayload(user.id);
             const createdProject = await createProject(newProjectPayload);
             setProjects((prev) => [...prev, createdProject]);
             navigate(`/simulator/${createdProject?.id}`);
@@ -213,8 +212,8 @@ function Projects() {
                         ) : (
                             <div className="projects-grid">
                                 {projects.map((project) => {
-                                    const title = project.name || project.title || `Proyecto ${project.id}`;
-                                    const updated = project.updatedAt || project.lastUpdated;
+                                    const title = resolveProjectTitle(project);
+                                    const updated = resolveProjectLastUpdated(project);
                                     return (
                                         <ProjectCard
                                             key={project.id}

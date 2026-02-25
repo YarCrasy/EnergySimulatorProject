@@ -5,6 +5,7 @@ import "./SideMenu.css";
 
 import CardPanel from "../../../components/cardPanel/CardPanel";
 import { getAllElements } from "../../../api/elements";
+import { resolveElementWattage } from "@/Models/element.model";
 import backBtn from "@svg/back-arrow.svg";
 
 function SideMenu({ collapsed = false }) {
@@ -43,16 +44,12 @@ function SideMenu({ collapsed = false }) {
     }, []);
 
     const formatWattage = (element) => {
-        const watt = element?.powerWatt ?? element?.powerConsumption;
-        if (typeof watt === "number" && Number.isFinite(watt)) {
-            return Math.round(watt * 100) / 100;
-        }
-        return "N/A";
+        const watt = resolveElementWattage(element);
+        return watt ?? "N/A";
     };
 
     const totalCatalogPower = elements.reduce((acc, element) => {
-        const watt = element?.powerWatt ?? element?.powerConsumption;
-        return acc + (Number(watt) || 0);
+        return acc + (resolveElementWattage(element) ?? 0);
     }, 0);
 
     const formatNumber = (value) => new Intl.NumberFormat("es-ES", { maximumFractionDigits: 0 }).format(value);

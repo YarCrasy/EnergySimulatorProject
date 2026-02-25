@@ -71,8 +71,16 @@ describe('FormReceiver.jsx', () => {
     render(<FormReceiver onSave={() => {}} onCancel={() => {}} />);
     const nameInput = screen.getByLabelText('Nombre');
     const consumoInput = screen.getByLabelText('Consumo (W)');
-    const nameValiditySpy = vi.spyOn(nameInput, 'setCustomValidity');
-    const consumoValiditySpy = vi.spyOn(consumoInput, 'setCustomValidity');
+    const nameValiditySpy = vi.fn();
+    const consumoValiditySpy = vi.fn();
+    Object.defineProperty(nameInput, 'setCustomValidity', {
+      value: nameValiditySpy,
+      configurable: true,
+    });
+    Object.defineProperty(consumoInput, 'setCustomValidity', {
+      value: consumoValiditySpy,
+      configurable: true,
+    });
 
     // Act
     fireEvent.invalid(nameInput);

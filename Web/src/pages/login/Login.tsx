@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/auth";
 import { createProject } from "../../api/projects";
+import { buildNewProjectPayload } from "@/Models/project.model";
 import "./Login.css";
 import loginImg from "@jpg/loginImg.jpg";
 
@@ -40,14 +41,7 @@ function Login() {
 
       if (redirectToSimulator) {
         try {
-          const newProjectPayload = {
-            name: "Nuevo Proyecto",
-            energyEnough: false,
-            energyNeeded: 0,
-            userId: loggedUser.id,
-          };
-
-          const createdProject = await createProject(newProjectPayload);
+          const createdProject = await createProject(buildNewProjectPayload(loggedUser.id));
           const projectId = createdProject?.id;
           navigate(projectId ? `/simulator/${projectId}` : "/simulator");
           return;

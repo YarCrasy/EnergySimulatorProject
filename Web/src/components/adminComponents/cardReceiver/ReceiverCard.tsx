@@ -1,12 +1,17 @@
 import "./ReceiverCard.css";
+import {
+  hasReceiverCoordinates,
+  hasReceiverPower,
+  resolveReceiverPower,
+} from "@/Models/receiver.model";
 
 export default function ReceiverCard({ receiver, onEdit, onDelete }) {
-  const hasPosition = Number.isFinite(receiver?.x) && Number.isFinite(receiver?.y);
+  const hasPosition = hasReceiverCoordinates(receiver);
   const formatNumber = (value) =>
     new Intl.NumberFormat("es-ES", { maximumFractionDigits: 0 }).format(value);
 
-  const formattedPower = Number.isFinite(receiver?.powerConsumption)
-    ? `${formatNumber(receiver.powerConsumption)} W`
+  const formattedPower = hasReceiverPower(receiver)
+    ? `${formatNumber(resolveReceiverPower(receiver))} W`
     : "N/D";
   const formatCoord = (value) => Number(value).toFixed(2);
 

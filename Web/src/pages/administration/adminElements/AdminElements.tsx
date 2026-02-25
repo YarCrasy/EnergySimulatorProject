@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import ReceiverCard from "../../../components/adminComponents/cardReceiver/ReceiverCard";
 import FormReceiver from "../../../components/adminComponents/formReceiver/FormReceiver";
 import { receiverApi } from "../../../api/receiverApi";
+import { hasReceiverCoordinates, resolveReceiverPower } from "@/Models/receiver.model";
 
 export default function ReceiverList() {
   const [receivers, setReceivers] = useState([]);
@@ -27,15 +28,12 @@ export default function ReceiverList() {
     loadReceivers();
   }, []);
 
-  const hasCoordinates = (receiver) =>
-    Number.isFinite(receiver?.x) && Number.isFinite(receiver?.y);
-
   const totalReceivers = receivers.length;
   const totalConsumption = receivers.reduce(
-    (acc, item) => acc + (Number(item?.powerConsumption) || 0),
+    (acc, item) => acc + resolveReceiverPower(item),
     0
   );
-  const locatedReceivers = receivers.filter(hasCoordinates).length;
+  const locatedReceivers = receivers.filter(hasReceiverCoordinates).length;
   const averageConsumption = totalReceivers
     ? totalConsumption / totalReceivers
     : 0;

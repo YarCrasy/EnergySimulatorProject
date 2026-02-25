@@ -1,35 +1,29 @@
 import { useState, useEffect } from "react";
+import {
+  buildReceiverPayload,
+  EMPTY_RECEIVER_FORM,
+  toReceiverFormModel,
+} from "@/Models/receiver.model";
 import "./FormReceiver.css";
 
-export default function FormReceiver({ receiverToEdit, onSave, onCancel }) {
-  const [nombre, setNombre] = useState("");
-  const [consumo, setConsumo] = useState("");
-  const [x, setX] = useState("");
-  const [y, setY] = useState("");
+export default function FormReceiver({ receiverToEdit = null, onSave, onCancel }) {
+  const [form, setForm] = useState(() => ({ ...EMPTY_RECEIVER_FORM }));
 
   useEffect(() => {
-    if (receiverToEdit) {
-      setNombre(receiverToEdit.name || "");
-      setConsumo(receiverToEdit.powerConsumption || "");
-      setX(receiverToEdit.x || "");
-      setY(receiverToEdit.y || "");
-    } else {
-      setNombre("");
-      setConsumo("");
-      setX("");
-      setY("");
-    }
+    setForm(toReceiverFormModel(receiverToEdit));
   }, [receiverToEdit]);
+
+  const handleChange = (field) => (event) => {
+    const { value } = event.target;
+    setForm((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = {
-      name: nombre,
-      powerConsumption: parseFloat(consumo) || 0,
-      x: parseFloat(x) || 0,
-      y: parseFloat(y) || 0,
-    };
-    onSave(receiverToEdit ? { ...data, id: receiverToEdit.id } : data);
+    onSave(buildReceiverPayload(form, receiverToEdit));
   };
 
   return (
@@ -50,15 +44,15 @@ export default function FormReceiver({ receiverToEdit, onSave, onCancel }) {
             <input
               id="receiver-nombre"
               type="text"
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
+              value={form.name}
+              onChange={handleChange("name")}
               required
               onInvalid={(e) =>
-                e.target.setCustomValidity(
+                e.currentTarget.setCustomValidity(
                   "Por favor, ingrese el nombre del elemento"
                 )
               }
-              onInput={(e) => e.target.setCustomValidity("")}
+              onInput={(e) => e.currentTarget.setCustomValidity("")}
             />
           </div>
 
@@ -67,15 +61,15 @@ export default function FormReceiver({ receiverToEdit, onSave, onCancel }) {
             <input
               id="receiver-consumo"
               type="number"
-              value={consumo}
-              onChange={(e) => setConsumo(e.target.value)}
+              value={form.powerConsumption}
+              onChange={handleChange("powerConsumption")}
               required
               onInvalid={(e) =>
-                e.target.setCustomValidity(
+                e.currentTarget.setCustomValidity(
                   "Por favor, ingrese el consumo en watios del elemento"
                 )
               }
-              onInput={(e) => e.target.setCustomValidity("")}
+              onInput={(e) => e.currentTarget.setCustomValidity("")}
             />
           </div>
 
@@ -88,8 +82,8 @@ export default function FormReceiver({ receiverToEdit, onSave, onCancel }) {
                   id="receiver-posx"
                   type="number"
                   step="0.01"
-                  value={x}
-                  onChange={(e) => setX(e.target.value)}
+                  value={form.x}
+                  onChange={handleChange("x")}
                   title="Inserte coordenada x"
                 />
               </div>
@@ -99,8 +93,8 @@ export default function FormReceiver({ receiverToEdit, onSave, onCancel }) {
                   id="receiver-posy"
                   type="number"
                   step="0.01"
-                  value={y}
-                  onChange={(e) => setY(e.target.value)}
+                  value={form.y}
+                  onChange={handleChange("y")}
                    title= "Inserte coordenada y"
                 />
               </div>

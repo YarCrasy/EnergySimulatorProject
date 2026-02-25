@@ -4,6 +4,7 @@ import DiagramToolbar from "./diagramToolbar/DiagramToolbar";
 import DiagramCanvas from "./diagramCanvas/DiagramCanvas";
 import { getProjectById, updateProject } from "../../../api/projects";
 import { getAllElements } from "../../../api/elements";
+import { resolveElementWattage } from "@/Models/element.model";
 
 import {
     palette,
@@ -164,7 +165,7 @@ function DiagramWorkspace({ projectId }) {
         addNode({
             label: payload.name ?? payload.model ?? "Elemento",
             type: payload.category ?? payload.type ?? "catálogo",
-            wattage: payload.powerWatt ?? payload.powerConsumption ?? null,
+            wattage: resolveElementWattage(payload),
             notes: payload.description ?? "",
             color: "#FDE68A",
             meta: payload,

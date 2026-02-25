@@ -1,40 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "@api/api";
 import { AuthContext } from "./auth";
-
-function sanitizeText(value) {
-  if (typeof value !== "string") {
-    return "";
-  }
-
-  return value
-    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "")
-    .replace(/<[^>]*>/g, "")
-    .replace(/javascript:/gi, "")
-    .trim();
-}
-
-function normalizeRole(value) {
-  return value === "admin" ? "admin" : "user";
-}
-
-function normalizeSafeUser(userLike) {
-  if (!userLike || typeof userLike !== "object") {
-    return null;
-  }
-
-  const rawId = userLike.id;
-  if (rawId === null || rawId === undefined) {
-    return null;
-  }
-
-  return {
-    id: rawId,
-    name: sanitizeText(userLike.name ?? userLike.fullName ?? ""),
-    email: sanitizeText(userLike.email ?? ""),
-    role: normalizeRole(userLike.role),
-  };
-}
+import { mapBackendLoginResponse, normalizeSafeUser } from "@/Models/user.model";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -66,14 +33,10 @@ export function AuthProvider({ children }) {
  async function login(email, password) {
   try {
     const res = await api.post("/users/login", { email, password });
-    const { id, fullName, email: userEmail, admin } = res.data;
-
-    const safeUser = normalizeSafeUser({
-      id,
-      fullName,
-      email: userEmail,
-      role: admin ? "admin" : "user",
-    });
+    const safeUser = mapBackendLoginResponse(res.data);
+    if (!safeUser) {
+      throw new Error("No se pudo validar la respuesta del servidor");
+    }
     setUser(safeUser);
     return { id: safeUser.id, name: safeUser.name, role: safeUser.role };
   } catch (error) {
