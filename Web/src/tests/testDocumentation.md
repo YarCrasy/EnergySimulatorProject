@@ -1,6 +1,6 @@
 # Testing
 
-Para una mejor lectura, tambien está creado un documento en el Google Drive del proyecto:
+Este documento es una overview para el apartado de testing, para una mejor lectura y documentación más completa, tambien se creó un documento en el Google Drive del proyecto:
 [Documentación de Testing](https://docs.google.com/document/d/1Sy74oTu3YtfXCcV8eZ4wlMOHkB7JcsmZ51l742gUkWM/edit?pli=1&tab=t.0#heading=h.i8167o4izlsf)
 
 ## 1. Requisitos / Setup
@@ -127,7 +127,6 @@ Reglas prácticas:
 - Nombre intencional en `describe` e `it`.
 - `expect` específico (evitar aserciones ambiguas).
 - Evitar duplicación con helpers de render/submit.
-- No dejar `it.todo` en entrega final.
 
 ## 7. Ejemplo real del proyecto
 
@@ -158,15 +157,7 @@ Aislamiento:
 - Limpieza de `localStorage` en tests de autenticación.
 - Sin dependencias de red real ni estado compartido entre pruebas.
 
-## 9. Checklist de criterios
-
-- Cantidad y tipo: se supera el mínimo con equilibrio entre lógica, API/datos e interfaz.
-- Relevancia: se cubren flujos críticos, errores y casos límite.
-- Calidad técnica/AAA: bloques `Arrange/Act/Assert` explícitos y nombres intencionales.
-- Uso de Vitest: ejecución continua con `test`, `test:watch` y `test:coverage`.
-- Colaboración y mocks: aislamiento consistente y estilo homogéneo en toda la suite.
-
-## 10. Troubleshooting
+## 9. Troubleshooting
 
 1. `ReferenceError: fetch is not defined`
 - Solución: mockear capa API o agregar polyfill en `setupTests.js`.
