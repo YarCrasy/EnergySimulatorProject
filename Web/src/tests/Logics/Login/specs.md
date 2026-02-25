@@ -11,4 +11,4 @@
   - Flujo `redirectToSimulator` con `createProject` (ok/error/fallback).
   - Prevención de doble submit y navegación a registro.
 - `jwt.auth.todo.test.js`:
-  - Casos `todo` de contrato JWT (tokens, expiración, refresh, logout automático).
+  - Contrato actual de sesión en `AuthProvider` (persistencia, errores de login, mapeo de roles y logout idempotente).

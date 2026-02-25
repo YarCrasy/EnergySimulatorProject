@@ -14,94 +14,95 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+const renderPrivateRoute = ({
+  authState,
+  initialPath = '/private',
+  privatePath = '/private',
+  requiredRole,
+  privateLabel = 'Privado',
+} = {}) => {
+  useAuth.mockReturnValue(authState);
+
+  render(
+    <MemoryRouter initialEntries={[initialPath]}>
+      <Routes>
+        <Route path="/" element={<div>Home</div>} />
+        <Route path="/login" element={<div>Login</div>} />
+        <Route
+          path={privatePath}
+          element={(
+            <PrivateRoute role={requiredRole}>
+              <div>{privateLabel}</div>
+            </PrivateRoute>
+          )}
+        />
+      </Routes>
+    </MemoryRouter>,
+  );
+};
+
 describe('PrivateRoute.jsx', () => {
-  it('redirige a /login si no hay usuario autenticado', async () => {
-    useAuth.mockReturnValue({ user: null, loading: false });
+  it('redirige a /login si no hay usuario autenticado', () => {
+    // Arrange
+    renderPrivateRoute({
+      authState: { user: null, loading: false },
+    });
 
-    render(
-      <MemoryRouter initialEntries={['/private']}>
-        <Routes>
-          <Route path="/login" element={<div>Login</div>} />
-          <Route
-            path="/private"
-            element={
-              <PrivateRoute>
-                <div>Privado</div>
-              </PrivateRoute>
-            }
-          />
-        </Routes>
-      </MemoryRouter>,
-    );
-
-    expect(await screen.findByText('Login')).toBeInTheDocument();
+    // Assert
+    expect(screen.getByText('Login')).toBeInTheDocument();
     expect(screen.queryByText('Privado')).not.toBeInTheDocument();
   });
 
-  it('renderiza el contenido privado cuando hay usuario autenticado', async () => {
-    useAuth.mockReturnValue({ user: { id: 5, role: 'user' }, loading: false });
+  it('renderiza el contenido privado cuando hay usuario autenticado', () => {
+    // Arrange
+    renderPrivateRoute({
+      authState: { user: { id: 5, role: 'user' }, loading: false },
+    });
 
-    render(
-      <MemoryRouter initialEntries={['/private']}>
-        <Routes>
-          <Route path="/login" element={<div>Login</div>} />
-          <Route
-            path="/private"
-            element={
-              <PrivateRoute>
-                <div>Privado</div>
-              </PrivateRoute>
-            }
-          />
-        </Routes>
-      </MemoryRouter>,
-    );
-
-    expect(await screen.findByText('Privado')).toBeInTheDocument();
+    // Assert
+    expect(screen.getByText('Privado')).toBeInTheDocument();
     expect(screen.queryByText('Login')).not.toBeInTheDocument();
   });
 
-  it('redirige a / cuando el rol requerido no coincide', async () => {
-    useAuth.mockReturnValue({ user: { id: 7, role: 'user' }, loading: false });
+  it('redirige a / cuando el rol requerido no coincide', () => {
+    // Arrange
+    renderPrivateRoute({
+      authState: { user: { id: 7, role: 'user' }, loading: false },
+      initialPath: '/admin',
+      privatePath: '/admin',
+      requiredRole: 'admin',
+      privateLabel: 'Panel admin',
+    });
 
-    render(
-      <MemoryRouter initialEntries={['/admin']}>
-        <Routes>
-          <Route path="/" element={<div>Home</div>} />
-          <Route
-            path="/admin"
-            element={
-              <PrivateRoute role="admin">
-                <div>Panel admin</div>
-              </PrivateRoute>
-            }
-          />
-        </Routes>
-      </MemoryRouter>,
-    );
-
-    expect(await screen.findByText('Home')).toBeInTheDocument();
+    // Assert
+    expect(screen.getByText('Home')).toBeInTheDocument();
     expect(screen.queryByText('Panel admin')).not.toBeInTheDocument();
   });
 
-  it('no renderiza children mientras loading es true', () => {
-    useAuth.mockReturnValue({ user: null, loading: true });
+  it('renderiza contenido cuando el rol requerido coincide', () => {
+    // Arrange
+    renderPrivateRoute({
+      authState: { user: { id: 1, role: 'admin' }, loading: false },
+      initialPath: '/admin',
+      privatePath: '/admin',
+      requiredRole: 'admin',
+      privateLabel: 'Panel admin',
+    });
 
-    render(
-      <MemoryRouter initialEntries={['/private']}>
-        <Routes>
-          <Route
-            path="/private"
-            element={
-              <PrivateRoute>
-                <div>Privado</div>
-              </PrivateRoute>
-            }
-          />
-        </Routes>
-      </MemoryRouter>,
-    );
+    // Assert
+    expect(screen.getByText('Panel admin')).toBeInTheDocument();
+    expect(screen.queryByText('Home')).not.toBeInTheDocument();
+  });
 
+  it('no renderiza children ni redirige mientras loading es true', () => {
+    // Arrange
+    renderPrivateRoute({
+      authState: { user: { id: 15, role: 'admin' }, loading: true },
+    });
+
+    // Assert
     expect(screen.queryByText('Privado')).not.toBeInTheDocument();
+    expect(screen.queryByText('Login')).not.toBeInTheDocument();
+    expect(screen.queryByText('Home')).not.toBeInTheDocument();
   });
 });
