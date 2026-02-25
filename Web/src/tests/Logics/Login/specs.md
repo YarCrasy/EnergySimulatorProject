@@ -10,5 +10,3 @@
   - Redirección por rol tras login.
   - Flujo `redirectToSimulator` con `createProject` (ok/error/fallback).
   - Prevención de doble submit y navegación a registro.
-- `jwt.auth.todo.test.js`:
-  - Contrato actual de sesión en `AuthProvider` (persistencia, errores de login, mapeo de roles y logout idempotente).

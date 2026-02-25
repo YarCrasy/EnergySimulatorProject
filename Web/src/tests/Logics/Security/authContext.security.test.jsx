@@ -138,6 +138,39 @@ describe('AuthProvider - security hardening', () => {
     expect(localStorage.getItem('auth:user')).toBeNull();
   });
 
+  it('descarta sesión cuando localStorage contiene un valor no-objeto', async () => {
+    localStorage.setItem('auth:user', JSON.stringify('texto-plano'));
+
+    mountProvider();
+
+    await waitFor(() => {
+      expect(auth.loading).toBe(false);
+      expect(auth.user).toBeNull();
+    });
+    expect(localStorage.getItem('auth:user')).toBeNull();
+  });
+
+  it('normaliza campos no-string a string vacío durante hidratación', async () => {
+    localStorage.setItem('auth:user', JSON.stringify({
+      id: 44,
+      name: 1234,
+      email: null,
+      role: 'admin',
+    }));
+
+    mountProvider();
+
+    await waitFor(() => {
+      expect(auth.loading).toBe(false);
+      expect(auth.user).toEqual({
+        id: 44,
+        name: '',
+        email: '',
+        role: 'admin',
+      });
+    });
+  });
+
   it('si backend responde login sin id no persiste sesión y falla de forma controlada', async () => {
     api.post.mockResolvedValueOnce({
       data: {

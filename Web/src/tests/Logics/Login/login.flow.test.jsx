@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 const { navigateMock, getLocation, setLocation } = vi.hoisted(() => {
@@ -193,7 +193,9 @@ describe('Login.jsx - submit flow', () => {
       expect(screen.getByRole('button', { name: 'Ingresando...' })).toBeDisabled();
     });
 
-    await user.click(screen.getByRole('button', { name: 'Ingresando...' }));
+    const form = screen.getByRole('button', { name: 'Ingresando...' }).closest('form');
+    expect(form).toBeTruthy();
+    fireEvent.submit(form);
 
     // Assert
     expect(login).toHaveBeenCalledTimes(1);
@@ -251,5 +253,30 @@ describe('Login.jsx - submit flow', () => {
 
     // Assert
     expect(navigateMock).toHaveBeenCalledWith('/register');
+  });
+
+  it('si FormData no devuelve email/password usa strings vacíos', async () => {
+    // Arrange
+    const login = vi.fn().mockResolvedValue({ id: 11, role: 'user' });
+    renderLoginPage({ loginMock: login });
+    const form = screen.getByRole('button', { name: 'Iniciar sesión' }).closest('form');
+    expect(form).toBeTruthy();
+
+    const originalGet = FormData.prototype.get;
+    vi.spyOn(FormData.prototype, 'get').mockImplementation(function mockedGet(key) {
+      if (key === 'email' || key === 'password') {
+        return null;
+      }
+      return originalGet.call(this, key);
+    });
+
+    // Act
+    fireEvent.submit(form);
+
+    // Assert
+    await waitFor(() => {
+      expect(login).toHaveBeenCalledWith('', '');
+      expect(navigateMock).toHaveBeenCalledWith('/projects');
+    });
   });
 });

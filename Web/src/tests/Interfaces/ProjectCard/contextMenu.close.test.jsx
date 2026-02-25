@@ -57,4 +57,37 @@ describe('ProjectCard.jsx', () => {
     expect(screen.queryByText('Abrir')).not.toBeInTheDocument();
   });
 
+  it('mantiene el menú abierto al hacer click dentro del contenedor', () => {
+    const { container } = render(
+      <MemoryRouter>
+        <ProjectCard id={1} title="Demo" lastUpdated="hoy" />
+      </MemoryRouter>,
+    );
+
+    const shell = container.querySelector('.project-card-shell');
+    expect(shell).toBeTruthy();
+
+    fireEvent.contextMenu(shell, { clientX: 10, clientY: 20 });
+    expect(screen.getByText('Abrir')).toBeInTheDocument();
+
+    fireEvent.mouseDown(shell);
+    expect(screen.getByText('Abrir')).toBeInTheDocument();
+  });
+
+  it('ignora teclas distintas de Escape y mantiene menú abierto', () => {
+    const { container } = render(
+      <MemoryRouter>
+        <ProjectCard id={1} title="Demo" lastUpdated="hoy" />
+      </MemoryRouter>,
+    );
+
+    const shell = container.querySelector('.project-card-shell');
+    expect(shell).toBeTruthy();
+
+    fireEvent.contextMenu(shell, { clientX: 10, clientY: 20 });
+    expect(screen.getByText('Abrir')).toBeInTheDocument();
+
+    fireEvent.keyDown(document, { key: 'Enter' });
+    expect(screen.getByText('Abrir')).toBeInTheDocument();
+  });
 });

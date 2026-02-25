@@ -120,6 +120,96 @@ describe('AuthProvider - login flow', () => {
     });
   });
 
+  it('login usa fullName cuando name no viene en payload', async () => {
+    // Arrange
+    api.post.mockResolvedValueOnce({
+      data: {
+        id: 34,
+        fullName: 'Usuario Solo FullName',
+        email: 'solo.fullname@energy.com',
+        admin: false,
+      },
+    });
+
+    mountProvider();
+    await waitFor(() => expect(auth.loading).toBe(false));
+
+    // Act
+    let result;
+    await act(async () => {
+      result = await auth.login('solo.fullname@energy.com', 'pass');
+    });
+
+    // Assert
+    expect(result).toEqual({
+      id: 34,
+      name: 'Usuario Solo FullName',
+      role: 'user',
+    });
+    await waitFor(() => {
+      expect(auth.user).toMatchObject({
+        id: 34,
+        name: 'Usuario Solo FullName',
+      });
+    });
+  });
+
+  it('login usa name vacío cuando backend no envía name ni fullName', async () => {
+    // Arrange
+    api.post.mockResolvedValueOnce({
+      data: {
+        id: 35,
+        email: 'noname@energy.com',
+        admin: false,
+      },
+    });
+
+    mountProvider();
+    await waitFor(() => expect(auth.loading).toBe(false));
+
+    // Act
+    let result;
+    await act(async () => {
+      result = await auth.login('noname@energy.com', 'pass');
+    });
+
+    // Assert
+    expect(result).toEqual({
+      id: 35,
+      name: '',
+      role: 'user',
+    });
+    await waitFor(() => {
+      expect(auth.user).toMatchObject({
+        id: 35,
+        name: '',
+      });
+    });
+  });
+
+  it('hidrata usando fullName cuando name no existe y aplica fallback vacío', async () => {
+    // Arrange
+    localStorage.setItem('auth:user', JSON.stringify({
+      id: 6,
+      fullName: 'Nombre Desde FullName',
+      role: 'user',
+    }));
+
+    // Act
+    mountProvider();
+
+    // Assert
+    await waitFor(() => {
+      expect(auth.loading).toBe(false);
+      expect(auth.user).toMatchObject({
+        id: 6,
+        name: 'Nombre Desde FullName',
+        email: '',
+        role: 'user',
+      });
+    });
+  });
+
   it('login exitoso mapea admin=true a role admin', async () => {
     api.post.mockResolvedValueOnce({
       data: {
