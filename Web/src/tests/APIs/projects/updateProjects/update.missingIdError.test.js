@@ -1,32 +1,31 @@
-
-import { describe, expect, it, vi } from 'vitest';
-import { updateProject } from '@/apis/projects/updateProject'
+import { describe, it, expect, vi, afterEach } from 'vitest';
+import { updateProject } from '@/api/projects'; // Asegúrate que updateProject esté exportado
+import api from '@/api/api';
 
 afterEach(() => {
-  vi.restoreAllMocks()
-})
+  vi.restoreAllMocks(); // Limpia los mocks después de cada test
+});
 
 describe('updateProject - missing ID error handling', () => {
-  it('should throw error when project ID is missing', async () => {
-    // Arrange
-    const invalidPayload = { name: 'Updated Project' }
 
-    // Act & Assert
-    await expect(updateProject(invalidPayload)).rejects.toThrow()
-  })
+  it('should throw error when project ID is missing', async () => {
+    // Llamamos updateProject con null para id
+    await expect(updateProject(null, { name: 'Updated Project' }))
+      .rejects
+      .toThrow('updateProject requiere un id');
+  });
 
   it('should successfully update when ID is provided', async () => {
-    // Arrange
-    const validPayload = { id: 'p1', name: 'Updated' }
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => ({ success: true, ...validPayload })
-    }))
+    const id = 'p1';
+    const payload = { name: 'Updated' };
+    const mockResponse = { success: true };
 
-    // Act
-    const result = await updateProject(validPayload)
+    // Mockeamos api.put para no hacer request real
+    vi.spyOn(api, 'put').mockResolvedValue({ data: mockResponse });
 
-    // Assert
-    expect(result.success).toBe(true)
-  })
-})
+    const result = await updateProject(id, payload);
+
+    expect(api.put).toHaveBeenCalledWith(`/projects/${id}`, payload);
+    expect(result).toEqual(mockResponse);
+  });
+});

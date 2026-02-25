@@ -1,17 +1,36 @@
-import api from './api';
+import { describe, it, expect, vi, afterEach } from 'vitest'
+import { updateProject, getAllProjects } from '@/api/projects'
+import api from '@/api/api'
 
-const RESOURCE = '/projects';
+afterEach(() => vi.restoreAllMocks())
 
-export async function updateProject(id, projectData = {}) {
-  if (!id) {
-    throw new Error('updateProject requiere un id');
-  }
+describe('updateProject - missing ID error handling', () => {
 
-  try {
-    const { data } = await api.put(`${RESOURCE}/${id}`, projectData);
-    return data;
-  } catch (error) {
-    console.error('Error actualizando el proyecto', error);
-    throw error;
-  }
-}
+  it('should throw error when project ID is missing', async () => {
+    await expect(updateProject(null, { name: 'Updated' }))
+      .rejects
+      .toThrow('updateProject requiere un id')
+  })
+
+  it('should successfully update when ID is provided', async () => {
+    const mockResponse = { success: true }
+
+    vi.spyOn(api, 'put').mockResolvedValue({ data: mockResponse })
+
+    const result = await updateProject('p1', { name: 'Updated' })
+
+    expect(api.put).toHaveBeenCalledWith('/projects/p1', { name: 'Updated' })
+    expect(result).toEqual(mockResponse)
+  })
+})
+
+describe('getAllProjects', () => {
+  it('devuelve [] si falla la API', async () => {
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(api, 'get').mockRejectedValueOnce(new Error('boom'))
+
+    await expect(getAllProjects()).resolves.toEqual([])
+
+    consoleError.mockRestore()
+  })
+})
