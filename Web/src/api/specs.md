@@ -8,4 +8,7 @@
 - `receiverApi.js`: CRUD de receivers con manejo de errores.
 
 ## Notas
-- `DEFAULT_BASE_URL` usa `https://damt-project.yarcrasy.com/api` en build (production) y `http://localhost:8080/api` en desarrollo.
+- `api.js` resuelve `baseURL` por prioridad:
+  1. `import.meta.env.VITE_API_URL` (override).
+  2. `https://damt-project.yarcrasy.com/api` en `production`.
+  3. `http://localhost:8080/api` en `development`.

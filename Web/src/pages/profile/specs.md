@@ -8,7 +8,7 @@
 
 ## Dependencias
 - `useAuth`, `api`.
-- `RegisterForm` (el path actual apunta a `pages/register/RegisterForm`, revisar si corresponde).
+- `RegisterForm` desde `src/components/registerForm/RegisterForm`.
 
 ## Archivos
 - `Profile.jsx`.

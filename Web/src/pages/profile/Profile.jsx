@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../api/api";
-import RegisterForm from "../register/RegisterForm";
+import RegisterForm from "../../components/registerForm/RegisterForm";
 import { useAuth } from "@/hooks/auth";
 
 export default function ProfilePage() {
@@ -24,7 +24,6 @@ export default function ProfilePage() {
         editingUser={profileData}
         onSuccess={() => alert("Perfil actualizado")}
         onCancel={() => window.location.reload()}
-        forceEditMode={true}   // habilita el botón actualizar
       />
     </div>
   );

@@ -3,4 +3,4 @@
 
 ## Contenido
 - `projects/`: pruebas de `getAllProjects` y `updateProject`.
-- `receiverApi/`: pruebas de manejo de errores en CRUD.
+- `receiverApi/`: pruebas de manejo de errores en `create`.

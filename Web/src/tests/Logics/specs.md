@@ -1,5 +1,7 @@
 ## Resumen
-- Pruebas de utilidades y logica del simulador.
+- Pruebas de logica de autenticacion, seguridad y utilidades del simulador.
 
 ## Contenido
-- `WorkspaceUtils/`: pruebas de normalizacion, payloads y helpers.
+- `Login/`: flujos de autenticacion y navegacion de login.
+- `Security/`: hardening de sesion, sanitizacion y role tampering.
+- `WorkspaceUtils/`: normalizacion, payloads y helpers del diagrama.

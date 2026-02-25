@@ -4,7 +4,7 @@
 ## Contenido
 - `APIs/`: tests de capa API.
 - `Interfaces/`: tests de componentes UI.
-- `Logics/`: tests de utilidades del simulador.
+- `Logics/`: tests de login, seguridad y utilidades del simulador.
 
 ## Setup
 - `setupTests.js` registra matchers de `@testing-library/jest-dom/vitest`.

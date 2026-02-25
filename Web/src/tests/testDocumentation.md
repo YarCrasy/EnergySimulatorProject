@@ -1,249 +1,253 @@
-# Testing del proyecto 
+# Testing del proyecto
 
 ## 1. Requisitos / Setup
 
-- Vitest: se usa vitest como runner para correr los test del proyecto. Con esto podemos hacer pruebas, coger APIs de mocking, aserciones y soporta modos de watch y coverage. Para correr los test los ejecutamos con `vitest` (scripts en `package.json`) y la configuración se integra con `jsdom` para simular el DOM.
-- Libreria de React Testing : es la biblioteca que se usa para testear componentes React desde la perspectiva del usuario. Con ello testeamos el comportamiento, la accesibilidad pero no tanto la implantacion interna. 
-- jsdom: es el entorno que emula el DOM en Node, es necesario para renderizar componentes React en tests sin hacer uso de un navegador real. Vitest ejecuta el runner en un entorno similar a jsdom para poder usar `@testing-library/react`.
-- `@testing-library/jest-dom`: aporta matchers adicionales (`toBeInTheDocument`, `toHaveStyle`, etc.). En este proyecto por ejemplo se importa en `src/tests/setupTests.js` con `import '@testing-library/jest-dom/vitest';`.
-- `@testing-library/user-event`: simula interacciones que se acercan mas a las que un usuario real haria como click, tipeo, etc. Se utiliza en tests como `contextMenu.close.test.jsx` para acciones asíncronas y flujos de usuario.
-- Ubicación de los tests: se crea especificamente una carpeta especifica para los test en `src/tests`. Para optimizar la organizacion ademas hay subcarpetas por dominio que organizan los tests por responsabilidad (API, Lógica, Interfaces). Esta separación facilita localizar tests relacionados con una capa concreta, permitiendo  el aislamiento entre responsabilidades.
+- Vitest: se usa como test runner principal para ejecutar la suite, hacer mocking, aserciones y modos watch/coverage.
+- React Testing Library: permite testear componentes desde la perspectiva del usuario.
+- jsdom: entorno de navegador simulado para poder renderizar React en tests sin navegador real.
+- `@testing-library/jest-dom`: añade matchers como `toBeInTheDocument` y `toHaveStyle`.
+- `@testing-library/user-event`: simula interacciones más realistas que `fireEvent`.
+- Ubicación: toda la suite está en `Web/src/tests`, separada por dominios (`APIs`, `Logics`, `Interfaces`).
+
+`setupTests.js` actual:
+
+```js
+import '@testing-library/jest-dom/vitest';
+```
 
 ---
 
 ## 2. Comandos disponibles
 
-- `npm run test`: ejecuta la suite de tests una sola vez (usualmente mapea a `vitest run`).
-- `npm run test:watch`: ejecuta Vitest en modo watch para desarrollo iterativo y aporta feeback inmediato
-- `npm run test:coverage`: ejecuta los tests y genera reportes de cobertura (usa el collector configurado, aquí `@vitest/coverage-v8`).
-Cómo ejecutar casos especificos:
-
-En ocasiones se vuelve tedioso tener toda la informacion de todos los test corridos, en ese caso podemos correr los test de una carpeta determinada o de un archivo determinado:
-
-- Ejecutar los test de 1 carpeta: `npm vitest run + ruta `: para ejecutar solo los test de determinada carpeta o un terminado test hacemos uso de se ruta relativa por ejemplo: 
-```
-npx vitest run src/tests/Logics/WorkspaceUtils/
-```
-- Ejecutar un archivo específico: lo usaremos cuando sabemos es test que esta fallando o queremos aislar la informacion recivida del test 
-
-```
-npx vitest src/tests/APIs/receiverApi/create/backendMessage.test.js
-```
-
-- Ejecutar por nombre o patrón:`-t` ejecutar tests que coincidan con el texto (útil para ejecutar una sola suite cuando varios tests están en un mismo archivo).
-
-```
-npx vitest -t "texto del test"
-```
+- `npm run test`: ejecuta la suite.
+- `npm run test:watch`: ejecuta en modo watch.
+- `npm run test:coverage`: genera cobertura.
+- `npx vitest run src/tests/Logics/WorkspaceUtils/`: corre una carpeta concreta, WorkspaceUtils en este caso.
+- `npx vitest run src/tests/APIs/receiverApi/create/backendMessage.test.js`: corre un archivo.
+- `npx vitest -t "texto del test"`: filtra por nombre.
 
 ---
 
 ## 3. Cobertura (Coverage)
 
-- Vitest analiza las métricas habituales:
-  - `lines`: porcentaje de líneas de código ejecutadas por los tests, loque indica si el codigo fue recorrido por los test o no 
-  - `branches`: cobertura de ramificaciones (if/else, ternarios) lo cual es importante en casos de logica condicional que nos sirve por ejemplo para cubrir los caminos true/false 
-  - `functions`: porcentaje de funciones invocadas en tests, que ayuda a entender si las unidades funcionales fueron llamadas o no 
-  - `statements`: similar a `lines`, cantidad de sentencias ejecutadas.
+Métricas relevantes:
 
-Cómo se genera la cobertura:
-- Ejecutar `npx vitest --coverage` y revisar el reporte generado por `@vitest/coverage-v8`.
+- `lines`: líneas ejecutadas.
+- `branches`: caminos condicionales (`if/else`, ternarios).
+- `functions`: funciones cubiertas.
+- `statements`: sentencias ejecutadas.
 
-Qué hacer si baja la cobertura:
-- Revisar qué módulo ha bajado y añadir tests que cubran los caminos no ejercitados.
-- Regla de equipo: “No se acepta un PR si baja la cobertura del módulo afectado”. Asegurarse de añadir tests que cubran los casos faltantes.
+Flujo recomendado:
+
+- Ejecutar `npx vitest --coverage`.
+- Revisar módulos con caída de cobertura y añadir casos de borde.
 
 ---
 
-## 4. Qué se está testeando en este proyecto
+## 4. Estado actual del inventario de tests
 
-En `src/tests` los tests se organizan por carpetas (APIs, Logics e Interfaces):
+Inventario detectado en `Web/src/tests`:
 
-### Tests de API (carpeta `APIs/`)
-- Qué validan: manejo de respuestas y errores de las funciones que llaman al backend.
-- Mocking: la mayoría mockea el módulo `@api/api` usando `vi.mock` o `vi.spyOn` para evitar requests reales.
-- Gestión de respuestas: se prueban tanto respuestas exitosas (mockResolvedValue) como rechazos (mockRejectedValue / mockRejectedValueOnce) y la forma en que la función wrapper transforma o maneja esos errores.
+- Archivos de test (`*.test.*`): `17`
+- Suites (`describe`): `17`
+- Casos ejecutables (`it(...)`): `51`
+- Casos pendientes (`it.todo(...)`): `8`
 
-Archivos y qué cubren (implementación real):
-- `src/tests/APIs/receiverApi/create/backendMessage.test.js`:
-  - Mock de `@api/api` (se redefine `post` con `vi.fn()`).
-  - Test: `receiverApi.create lanza error con mensaje del backend`.
-  - Comprueba que si `api.post` rechaza con `response.data.message`, la función `receiverApi.create` propaga ese mensaje como excepción.
-  - Uso real de `vi.spyOn(console, 'error')` para silenciar logs en test.
+Distribución:
 
-- `src/tests/APIs/projects/getAllProjects/fallbackEmpty.test.js`:
-  - Mock de `api.get` que rechaza y se espera que `getAllProjects()` resuelva a `[]`.
+- APIs: `3` archivos
+- Logics/Login: `3` archivos
+- Logics/Security: `1` archivo
+- Logics/WorkspaceUtils: `6` archivos
+- Interfaces: `4` archivos
 
-- `src/tests/APIs/projects/updateProjects/update.missingIdError.test.js`:
-  - Comprueba validaciones de `updateProject`: lanza error si falta `id`, y cuando `id` existe mockea `api.put` y verifica la llamada y el resultado.
+---
 
+## 5. Qué se está testeando (detalle completo por archivo)
 
-### Tests de Lógica (carpeta `Logics/`)
-- Qué validan: funciones puras y utilidades del workspace — transformaciones, normalizaciones y cálculos.
-- Casos: validaciones, transformaciones de datos y casos límite.
+### 5.1 Tests de API (`src/tests/APIs`)
 
-Archivos y qué cubren (implementación real):
-- `buildNodeSignature.test.js`:
-  - `buildNodeSignature` devuelve `null` si `elementId` es `undefined`.
+- `src/tests/APIs/receiverApi/create/backendMessage.test.js`
+  - `receiverApi.create lanza error con mensaje del backend`
+  - Mock de `@api/api` (`post`) y validación de propagación de `response.data.message`.
 
-- `AttachBackendIdentifiers/bySignature.test.js`:
-  - `attachBackendIdentifiers` asigna `backendId` a nodos UI que coincidan con nodos API por `element.id` y posición.
-  - Verifica nodos con coincidencia y nodos sin coincidencia quedan sin `backendId`.
+- `src/tests/APIs/projects/getAllProjects/fallbackEmpty.test.js`
+  - `getAllProjects devuelve [] si falla la API`
+  - Mock de `api.get` rechazado y validación de fallback a `[]`.
 
-- `normalizeProject/fallbacks.test.js`:
-  - `normalizeProject` aplica palette, posiciones fallback y genera ids prefijados (`node-...`).
-  - Usa `vi.spyOn(Math, 'random')` para controlar valores aleatorios en el test.
+- `src/tests/APIs/projects/updateProjects/update.missingIdError.test.js`
+  - `updateProject lanza error si falta id (undefined)`
+  - `updateProject lanza error si falta id (null)`
+  - `updateProject hace PUT y devuelve data cuando recibe id`
+  - `updateProject relanza el error del API`
+  - Cubre guard clause, happy path y propagación de error.
 
-- `HydrateNodesFromCatalog/conditionalUpdate.test.js`:
-  - `hydrateNodesFromCatalog` actualiza propiedades cuando hay match en el catálogo y retorna inalterado si el catálogo es `null`.
+### 5.2 Tests de Lógica - Login (`src/tests/Logics/Login`)
 
-- `RoundCoord/normalizeValues.test.js`:
-  - `roundCoord` redondea a 2 decimales, maneja `null` y strings numéricos.
+- `src/tests/Logics/Login/authContext.behavior.test.jsx`
+  - `inicia con loading false y user null cuando no hay sesión`
+  - `hidrata usuario desde localStorage cuando la sesión es válida`
+  - `descarta sesión corrupta en localStorage`
+  - `login exitoso mapea admin=false a role user y persiste sesión`
+  - `login exitoso mapea admin=true a role admin`
+  - `login fallido usa el mensaje del backend cuando existe`
+  - `login fallido usa mensaje genérico cuando backend no devuelve detalle`
+  - `logout limpia usuario y remueve sesión persistida`
 
-- `buildProjectPayload/skips.test.js`:
-  - `buildProjectPayload` calcula `skippedNodes` y `skippedConnections`, normaliza posiciones a 2 decimales y arma `payload` final con nodos/conexiones transformados.
+- `src/tests/Logics/Login/login.flow.test.jsx`
+  - `redirige a administración cuando login devuelve rol admin`
+  - `redirige a proyectos cuando login devuelve rol user`
+  - `si viene de CTA del simulador crea proyecto y navega por id`
+  - `si createProject no devuelve id navega a /simulator`
+  - `si createProject falla muestra alerta y redirige al fallback por rol`
+  - `si login falla muestra alerta con el mensaje y no redirige`
+  - `bloquea doble submit mientras isSubmitting está activo`
+  - `el botón "Crear cuenta" navega a /register`
 
+- `src/tests/Logics/Login/jwt.auth.todo.test.js`
+  - `guarda accessToken y refreshToken de forma segura al hacer login` (`todo`)
+  - `inyecta Authorization: Bearer <token> en requests autenticados` (`todo`)
+  - `valida expiración (exp) del JWT antes de usarlo` (`todo`)
+  - `renueva accessToken automáticamente con refreshToken al expirar` (`todo`)
+  - `hace logout automático cuando refresh token es inválido o expira` (`todo`)
+  - `restaura sesión desde token válido al recargar la aplicación` (`todo`)
+  - `rechaza tokens malformados o con firma inválida` (`todo`)
+  - `limpia tokens y headers de auth al ejecutar logout` (`todo`)
 
-### Tests de Interfaces (carpeta `Interfaces/`)
-- Qué validan: renderizado de componentes, interacción del usuario, apertura/cierre de menús, redirecciones y envío de formularios.
+### 5.3 Tests de Lógica - Security (`src/tests/Logics/Security`)
 
-Archivos y qué cubren (implementación real):
-- `Interfaces/ProjectCard/contextMenu.test.jsx`:
-  - Test que abre el menú vía `fireEvent.contextMenu` en el `shell` del componente y verifica que las opciones `Abrir` y `Eliminar` estén presentes y que el `ul` con el menú tenga estilos de posición adecuados (top/left) basados en `clientX/clientY`.
+- `src/tests/Logics/Security/authContext.security.test.jsx`
+  - `sanitiza payload con script al hidratar sesión desde localStorage`
+  - `login exitoso sanitiza campos para evitar inyección de scripts`
+  - `normaliza rol manipulado en localStorage para evitar escalación por role tampering`
+  - `elimina prefijos javascript: y tags HTML al hidratar sesión`
+  - `descarta sesión manipulada sin id y limpia persistencia`
+  - `si backend responde login sin id no persiste sesión y falla de forma controlada`
 
-- `Interfaces/ProjectCard/contextMenu.close.test.jsx`:
-  - Tests que usan `user-event` para abrir el menú y después cierres: clic fuera del componente y pulsación de `Escape`. Verifica aparición y desaparición del elemento con `data-testid="menu"`.
+### 5.4 Tests de Lógica - WorkspaceUtils (`src/tests/Logics/WorkspaceUtils`)
 
-- `Interfaces/PrivateRoute/redirectUnautenticated.test.jsx`:
-  - Mock del hook `useAuth` para devolver `user: null` y `loading: false`.
-  - Verifica que `PrivateRoute` redirige a `/login` (renderiza el texto `LOGIN PAGE`).
+- `src/tests/Logics/WorkspaceUtils/buildNodeSignature.test.js`
+  - `buildNodeSignature devuelve null sin elementId`
 
-- `Interfaces/FormReceiver/submitNumbersKeepsId.test.jsx`:
-  - Renderiza `FormReceiver` con `receiverToEdit` y simula cambios en campos (textbox y `spinbutton`).
-  - Verifica que `onSave` se llama con valores numéricos convertidos y que el `id` original se mantiene.
+- `src/tests/Logics/WorkspaceUtils/buildProjectPayload/skips.test.js`
+  - `buildProjectPayload cuenta skippedNodes/skippedConnections`
+  - Valida payload final, redondeo y filtrado de nodos/conexiones inválidos.
 
+- `src/tests/Logics/WorkspaceUtils/AttachBackendIdentifiers/bySignature.test.js`
+  - `assigns backendId to nodes matching catalog by signature`
+  - `assigns backendId when signature matches with rounded coordinates`
+  - `attachBackendIdentifiers mantiene la referencia original si apiNodes está vacío`
+  - `attachBackendIdentifiers no altera nodos sin firma válida o sin match`
 
-## 5. Guía para escribir tests en este proyecto
+- `src/tests/Logics/WorkspaceUtils/RoundCoord/normalizeValues.test.js`
+  - `rounds numbers to 2 decimals`
+  - `converts and rounds numeric strings`
+  - `falls back to 0 for invalid values`
 
-Patrón AAA (Arrange – Act – Assert) adaptado a React:
+- `src/tests/Logics/WorkspaceUtils/HydrateNodesFromCatalog/conditionalUpdate.test.js`
+  - `does not mutate when node already matches catalog`
+  - `updates label/type/wattage/meta when catalog match exists`
+  - `supports plain Map catalogs`
+  - `returns same array when catalog is invalid`
+
+- `src/tests/Logics/WorkspaceUtils/normalizeProject/fallbacks.test.js`
+  - `normalizeProject crea nodos con palette y posiciones fallback`
+  - Usa `vi.spyOn(Math, 'random')` para resultados deterministas.
+
+### 5.5 Tests de Interfaces (`src/tests/Interfaces`)
+
+- `src/tests/Interfaces/FormReceiver/submitNumbersKeepsId.test.jsx`
+  - `envía powerConsumption/x/y como number y respeta id al editar`
+
+- `src/tests/Interfaces/PrivateRoute/redirectUnautenticated.test.jsx`
+  - `redirige a /login si no hay usuario autenticado`
+  - `renderiza el contenido privado cuando hay usuario autenticado`
+  - `redirige a / cuando el rol requerido no coincide`
+  - `no renderiza children mientras loading es true`
+
+- `src/tests/Interfaces/ProjectCard/contextMenu.test.jsx`
+  - `abre menú con contextmenu y renderiza opciones`
+  - Valida aparición de opciones y posición (`top/left`).
+
+- `src/tests/Interfaces/ProjectCard/contextMenu.close.test.jsx`
+  - `cierra el menú contextual al hacer click fuera`
+  - `cierra el menú contextual al presionar Escape`
+  - `cierra el menú contextual al hacer scroll`
+
+---
+
+## 6. Seguridad: cobertura anti inyección de scripts
+
+Actualmente la cobertura de seguridad de autenticación está centralizada en `src/tests/Logics/Security/authContext.security.test.jsx` y contempla:
+
+- Sanitización de `<script>` al hidratar sesión desde `localStorage`.
+- Sanitización de `<script>` al recibir datos de login desde backend.
+- Mitigación de role tampering (`role` inválido se normaliza a `user`).
+- Limpieza de prefijos `javascript:` y tags HTML en campos de usuario.
+- Rechazo de sesiones manipuladas sin `id`.
+- Rechazo controlado de respuesta de login inválida sin persistir sesión.
+
+Objetivo:
+
+- Evitar persistir o propagar payloads con `<script>...</script>` en `name/email`.
+
+---
+
+## 7. Guía para escribir tests en este proyecto
+
+Patrón AAA:
 
 ```js
-describe("Nombre del componente o función", () => {
-  it("describe comportamiento esperado", async () => {
+describe('Módulo o componente', () => {
+  it('describe el comportamiento esperado', async () => {
     // Arrange
-    // Preparar datos, mocks o render
-
     // Act
-    // Ejecutar acción (userEvent, fireEvent, llamada a la función)
-
     // Assert
-    // Verificar resultado (toBeInTheDocument, toEqual, toHaveBeenCalledWith)
   });
 });
 ```
 
-Buenas prácticas observadas en el proyecto:
-- Preferir `@testing-library/react` y buscar elementos por roles o texto (`getByRole`, `getByText`) para acercarse al comportamiento del usuario.
-- Usar `user-event` para interacciones que impliquen asincronía o comportamiento realista.
-- Mockear módulos de red (`@api/api`) con `vi.mock` o `vi.spyOn` para evitar requests reales.
-- Restaurar mocks después de cada test con `vi.restoreAllMocks()` o `afterEach(() => vi.restoreAllMocks())`.
-- Silenciar logs en tests cuando sea necesario (`vi.spyOn(console, 'error').mockImplementation(() => {})`) y restaurarlos después.
+Buenas prácticas observadas:
+
+- Priorizar queries accesibles (`getByRole`, `findByText`).
+- Mockear red (`@api/api`) para evitar requests reales.
+- Restaurar mocks con `vi.restoreAllMocks()` en `afterEach`.
+- Silenciar `console.error` solo cuando sea necesario y restaurarlo.
+- Usar `waitFor`/`findBy*` para flujos asíncronos.
 
 ---
 
-## 6. Ejemplo real del proyecto
+## 8. Mocks y aislamiento
 
-Test seleccionado: `Interfaces/ProjectCard/contextMenu.test.jsx` (representativo de tests de UI que ejercitan render e interacción con el DOM).
+Patrones usados en el repo:
 
-Código real (extracto):
+- `vi.mock(modulePath, factory)` para módulos completos.
+- `vi.spyOn(obj, 'method')` para observación puntual.
+- `mockResolvedValue`, `mockRejectedValue`, `mockRejectedValueOnce`.
+- Limpieza por caso con `afterEach`.
 
-```jsx
-import { describe, expect, it } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+Dependencias mockeadas habitualmente:
 
-import ProjectCard from '@/components/projectCard/ProjectCard.jsx';
-
-describe('ProjectCard.jsx', () => {
-  it('abre menú con contextmenu y renderiza opciones', () => {
-    const { container } = render(
-      <MemoryRouter>
-        <ProjectCard id={1} title="Demo" lastUpdated="hoy" />
-      </MemoryRouter>,
-    );
-
-    const shell = container.querySelector('.project-card-shell');
-    expect(shell).toBeTruthy();
-
-    fireEvent.contextMenu(shell, { clientX: 123, clientY: 456 });
-
-    expect(screen.getByText('Abrir')).toBeInTheDocument();
-    expect(screen.getByText('Eliminar')).toBeInTheDocument();
-
-    const menu = screen.getByText('Abrir').closest('ul');
-    expect(menu).toBeTruthy();
-    expect(menu).toHaveStyle({ top: '456px', left: '123px' });
-  });
-});
-```
-
-Qué valida:
-- Que el componente renderice su `shell` base.
-- Que al disparar `contextmenu` con coordenadas, aparezca un menú con opciones `Abrir` y `Eliminar`.
-- Que la posición del menú dependa de `clientX` / `clientY` (estilos `top` y `left`).
-
-Arrange / Act / Assert:
-- Arrange: renderizado del `ProjectCard` dentro de un `MemoryRouter`.
-- Act: `fireEvent.contextMenu(shell, { clientX, clientY })`.
-- Assert: comprobaciones `getByText`, `toBeInTheDocument` y `toHaveStyle`.
-
-Por qué es importante:
-- Verifica interacción de usuario natural (click derecho/context menu) y la correcta respuesta de UI, incluyendo posicionamiento (UX). Detecta regresiones sobre comportamiento de menús contextuales.
+- `@api/api` para capa HTTP.
+- `@/hooks/auth` para estados de autenticación.
+- `react-router-dom` (`useNavigate`, `useLocation`) para rutas.
 
 ---
 
-## 7. Mocks y aislamiento
+## 9. Troubleshooting
 
-Patrones observados en los tests reales:
-- `vi.mock(modulePath, ...)`: sustituye implementaciones de módulos completos, por ejemplo `vi.mock('@api/api', () => ({ default: { post: vi.fn() } }));`.
-- `vi.spyOn(object, 'method')`: es usado para espiar o sustituir funciones concretas (ej.: `vi.spyOn(api, 'put').mockResolvedValue(...)`).
-- `mockResolvedValue` / `mockRejectedValue` / `mockRejectedValueOnce`: para simular respuestas exitosas o errores en llamadas de red.
-- `afterEach(() => vi.restoreAllMocks())`: restauración de mocks entre tests (aislamiento).
-- `vi.restoreAllMocks()` y `console` spies: cuando se interceptan logs se restauran con `mockRestore()`.
+- `spawn EPERM` al correr Vitest en entornos restringidos:
+  - Correr tests con permisos fuera del sandbox.
 
-Cómo se mockean dependencias externas:
-- Módulos de API se mockean por completo para asegurar que no haya requests reales y se pueda controlar la respuesta (errores y datos).
-- Hooks (por ejemplo `useAuth`) se mockean con `vi.mock` para forzar estados de autenticación durante tests de rutas privadas.
+- Errores de entorno DOM (jsdom):
+  - Preferir aserciones observables.
+  - Mockear/polyfillear APIs faltantes cuando aplique.
 
-Por qué es importante el aislamiento:
-- Evita efectos laterales (requests reales, modificación de `Math.random`, listeners globales).
-- Permite reproducibilidad: cada test debe poder ejecutarse de forma independiente y prever su comportamiento usando mocks.
+- Flakiness async:
+  - Usar `await` con `waitFor`, `findBy*` y promesas.
 
-Si en alguna sección no se usan mocks: en los tests de lógica (funciones puras) no se usan mocks externos salvo espiar `Math.random` para determinismo.
+- Matchers de jest-dom ausentes:
+  - Verificar import en `src/tests/setupTests.js`.
 
----
-
-## 8. Troubleshooting
-
-Problemas comunes y soluciones concretas para este stack:
-
-- ReferenceError: fetch is not defined
-  - Causa: código o tests usan `fetch` en Node sin polyfill.
-  - Solución: instalar y configurar un polyfill (`whatwg-fetch`) o usar `globalThis.fetch = require('node-fetch')` en `src/tests/setupTests.js`. Alternativamente mockear las funciones de red (`vi.mock('@api/api', ...)`) como ya es práctica en este repo.
-
-- Problemas con jsdom (elementos no encontrados / estilos no aplicados)
-  - Causa: diferencias entre entorno real y jsdom (CSS no aplicado, APIs del navegador no implementadas).
-  - Solución: limitar las aserciones a comportamientos observables (texto, atributos, estilos inline). Para APIs faltantes (IntersectionObserver, ResizeObserver) añadir polyfills o mocks en `setupTests.js`.
-
-- Tests async sin await (falsos positivos/falsos negativos)
-  - Causa: no esperar resoluciones asíncronas (user-event o promesas internas).
-  - Solución: usar `await` con `userEvent` (`const user = userEvent.setup(); await user.click(...)`) y/o usar `findBy*` en vez de `getBy*` cuando se espera aparición asíncrona.
-
-- `jest-dom` no configurado (matchers no disponibles)
-  - Causa: no importar `@testing-library/jest-dom/vitest` en setup.
-  - Solución: revisar `src/tests/setupTests.js` — en este repo ya contiene `import '@testing-library/jest-dom/vitest';`.
-
-- Estado compartido entre tests
-  - Causa: objetos mutados o listeners globales sin limpiar (por ejemplo `Math.random` mockeado, spies de `console` no restaurados).
-  - Solución: en `afterEach` restaurar mocks (`vi.restoreAllMocks()`), y evitar mutaciones globales; cuando se mockee `Math.random`, restaurar con `mockRestore()`.
-
+- Fugas de estado entre tests:
+  - Restaurar spies/mocks y limpiar `localStorage` en `afterEach`.

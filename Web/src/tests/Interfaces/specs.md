@@ -3,5 +3,5 @@
 
 ## Contenido
 - `FormReceiver/`: submit de formulario.
-- `PrivateRoute/`: redireccion segun auth (placeholder).
-- `ProjectCard/`: menu contextual.
+- `PrivateRoute/`: redireccion por auth, rol y loading.
+- `ProjectCard/`: apertura y cierre de menu contextual.

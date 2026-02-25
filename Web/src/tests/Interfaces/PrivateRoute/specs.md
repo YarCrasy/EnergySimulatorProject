@@ -1,5 +1,9 @@
 ## Resumen
-- Placeholder para pruebas de `PrivateRoute`.
+- Pruebas de comportamiento de `PrivateRoute`.
 
-## Estado
-- `redirectUnautenticated.test.jsx` esta vacio: falta implementar casos de redireccion.
+## Tests
+- `redirectUnautenticated.test.jsx`:
+  - Redirige a `/login` cuando no hay usuario autenticado.
+  - Renderiza contenido protegido cuando hay usuario.
+  - Redirige a `/` cuando el rol requerido no coincide.
+  - No renderiza `children` mientras `loading` es `true`.
