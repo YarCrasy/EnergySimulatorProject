@@ -29,8 +29,9 @@ function Login() {
     e.preventDefault();
     if (isSubmitting) return;
 
-    const email = e.target.email.value;
-    const password = e.target.password.value;
+    const formData = new FormData(e.currentTarget);
+    const email = String(formData.get("email") ?? "");
+    const password = String(formData.get("password") ?? "");
 
     try {
       setIsSubmitting(true);
