@@ -46,6 +46,12 @@ public class ProjectNode {
     @Column(name = "position_y")
     private Float positionY = 0f;
 
+    @Column(name = "node_type", length = 120)
+    private String type;
+
+    @Column(name = "node_data", columnDefinition = "TEXT")
+    private String data;
+
     public ProjectNode() {
     }
 
@@ -125,6 +131,22 @@ public class ProjectNode {
         this.positionY = positionY;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
     private Long parseElementId(Object value) {
         if (value == null) {
             return null;
@@ -150,6 +172,7 @@ public class ProjectNode {
         return "{" +
             "positionX='" + getPositionX() + "'" +
                 ", positionY='" + getPositionY() + "'" +
+                ", type='" + getType() + "'" +
                 "}";
     }
 }

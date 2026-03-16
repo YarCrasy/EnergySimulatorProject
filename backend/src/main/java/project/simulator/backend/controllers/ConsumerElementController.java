@@ -81,7 +81,11 @@ public class ConsumerElementController {
         return consumerElementRepository.findById(id)
                 .map(element -> {
                     element.setName(details.getName());
+                    element.setCategory(details.getCategory());
+                    element.setDescription(details.getDescription());
+                    element.setImageUrl(details.getImageUrl());
                     element.setPowerConsumption(details.getPowerConsumption());
+                    element.setBaseConsumption(details.getBaseConsumption());
                     return consumerElementRepository.save(element);
                 })
                 .orElseThrow(() -> new RuntimeException("ConsumerElement not found with id " + id));

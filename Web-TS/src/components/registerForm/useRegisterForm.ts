@@ -65,12 +65,12 @@ export default function useRegisterForm(
     return newErrors;
   };
 
-  const handleCreate = async (e?: PreventableEvent) => {
+  const handleCreate = async (e?: PreventableEvent): Promise<boolean> => {
     e?.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length) {
       setErrors(validationErrors);
-      return;
+      return false;
     }
 
     setSubmitting(true);
@@ -79,6 +79,7 @@ export default function useRegisterForm(
       alert("Usuario creado");
       onSuccess?.();
       setForm({ fullName: "", dateOfBirth: "", email: "", passwordHash: "" });
+      return true;
     } catch (err) {
       console.error(err);
       alert(
@@ -86,6 +87,7 @@ export default function useRegisterForm(
           ? err.response?.data?.message || "Error creando usuario"
           : "Error creando usuario"
       );
+      return false;
     } finally {
       setSubmitting(false);
    }

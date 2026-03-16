@@ -31,6 +31,11 @@ public class Project {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(length = 50)
+    private String season = "verano";
+
+    private Double latitude = 28.1;
+
     @Column(name = "is_energy_enough")
     private boolean energyEnough;
 
@@ -86,6 +91,22 @@ public class Project {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getSeason() {
+        return season;
+    }
+
+    public void setSeason(String season) {
+        this.season = season;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 
     public boolean isEnergyEnough() {

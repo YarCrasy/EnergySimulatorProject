@@ -17,6 +17,7 @@ export interface DiagramNode extends LooseRecord {
   color: string;
   position: DiagramPosition;
   meta?: LooseRecord;
+  simulationData?: LooseRecord | null;
 }
 
 export interface DiagramConnection extends LooseRecord {

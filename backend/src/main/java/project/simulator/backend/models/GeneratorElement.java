@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 @DiscriminatorValue("GENERATOR_ELEMENT")
 public class GeneratorElement extends Element {
     private String brand;
+    private Double area;
     private Double efficiency;
     private Double powerWatt;
 
@@ -28,6 +29,10 @@ public class GeneratorElement extends Element {
         return this.brand;
     }
 
+    public Double getArea() {
+        return this.area;
+    }
+
     public Double getEfficiency() {
         return this.efficiency;
     }
@@ -38,6 +43,10 @@ public class GeneratorElement extends Element {
 
     public void setBrand(String brand) {
         this.brand = brand;
+    }
+
+    public void setArea(Double area) {
+        this.area = area;
     }
 
     public void setEfficiency(Double efficiency) {

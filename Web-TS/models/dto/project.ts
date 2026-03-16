@@ -9,6 +9,8 @@ export interface ProjectNodeApi extends LooseRecord {
   id?: Identifier | null;
   positionX?: number | null;
   positionY?: number | null;
+  type?: string;
+  data?: string | LooseRecord | null;
   element?: EnergyElement | null;
   elementIdReference?: Identifier | null;
   elementId?: Identifier | null;

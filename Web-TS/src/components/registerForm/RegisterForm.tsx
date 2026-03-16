@@ -18,12 +18,19 @@ export default function RegisterForm({ editingUser, onSuccess, onCancel }: Regis
   const { form, errors, submitting, handleChange, handleCreate, handleUpdate } =
     useRegisterForm(editingUser, onSuccess);
 
+  const handleSelfRegistration = async (e) => {
+    const created = await handleCreate(e);
+    if (created) {
+      navigate("/login");
+    }
+  };
+
   if (loading) return null;
 
   return (
     <form
       className="register-form"
-      onSubmit={!isAdmin ? handleCreate : (e) => e.preventDefault()}
+      onSubmit={!isAdmin ? handleSelfRegistration : (e) => e.preventDefault()}
     >
       <div className="form-field">
         <label htmlFor="register-fullName">Nombre completo</label>
@@ -84,13 +91,10 @@ export default function RegisterForm({ editingUser, onSuccess, onCancel }: Regis
         {!isAdmin && (
           <button
             type="button"
-            onClick={async (e) => {
-              e.preventDefault(); // Esto evita el submit del form
-              await handleCreate(e);
-              navigate("/projects");
-            }}
+            onClick={handleSelfRegistration}
+            disabled={submitting}
           >
-            Crear
+            {submitting ? "Creando..." : "Crear"}
           </button>
         )}
 

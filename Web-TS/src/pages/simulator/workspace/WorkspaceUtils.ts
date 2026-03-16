@@ -15,6 +15,58 @@ const generateConnectionId = () => `conn-${Math.random().toString(36).slice(2, 9
 
 const roundCoord = (value: unknown) => Math.round((Number(value) || 0) * 100) / 100;
 
+const cleanRecord = (value: LooseRecord = {}) => Object.fromEntries(
+	Object.entries(value).filter(([, entry]) => entry != null && entry !== "")
+) as LooseRecord;
+
+const parseNodeData = (value: unknown): LooseRecord => {
+	if (!value) {
+		return {};
+	}
+	if (typeof value === "string") {
+		try {
+			const parsed = JSON.parse(value);
+			return parsed && typeof parsed === "object" ? parsed : {};
+		} catch {
+			return {};
+		}
+	}
+	return typeof value === "object" ? value as LooseRecord : {};
+};
+
+const pickSimulationFields = (value: LooseRecord = {}) => cleanRecord({
+	label: value.label,
+	area: value.area,
+	efficiency: value.efficiency,
+	capacity: value.capacity,
+	initialCharge: value.initialCharge,
+	chargeRate: value.chargeRate,
+	dischargeRate: value.dischargeRate,
+	baseConsumption: value.baseConsumption ?? value.powerConsumption,
+	powerConsumption: value.powerConsumption,
+	powerWatt: value.powerWatt,
+	notes: value.notes ?? value.description
+});
+
+const pickCatalogSimulationDefaults = (value: LooseRecord = {}) => cleanRecord({
+	area: value.area,
+	efficiency: value.efficiency,
+	capacity: value.capacity,
+	initialCharge: value.initialCharge,
+	chargeRate: value.chargeRate,
+	dischargeRate: value.dischargeRate,
+	baseConsumption: value.baseConsumption ?? value.powerConsumption
+});
+
+const buildNodeSimulationData = (node: DiagramNode) => cleanRecord({
+	...pickSimulationFields({
+		...(node.meta ?? {}),
+		...(node.simulationData ?? {})
+	}),
+	label: node.label,
+	notes: node.notes
+});
+
 const resolveElementIdFromApiNode = (node: LooseRecord = {}) => (
 	node?.element?.id ??
 	node?.elementIdReference ??
@@ -89,7 +141,9 @@ const serializeDiagram = (nodes: DiagramNode[], connections: DiagramConnection[]
 		backendId: node.backendId ?? null,
 		elementId: resolveElementIdFromUiNode(node),
 		positionX: roundCoord(node.position.x),
-		positionY: roundCoord(node.position.y)
+		positionY: roundCoord(node.position.y),
+		...(node.type ? { type: node.type } : {}),
+		...(Object.keys(buildNodeSimulationData(node)).length > 0 ? { data: buildNodeSimulationData(node) } : {})
 	})),
 	connections: connections.map((connection) => ({
 		backendId: connection.backendId ?? null,
@@ -104,20 +158,26 @@ const normalizeProject = (project: DiagramProjectData) => {
 	const uiNodes = apiNodes.map((node, index) => {
 		const uiId = node.id ? `node-${node.id}` : generateNodeId();
 		const elementId = resolveElementIdFromApiNode(node);
+		const simulationData = pickSimulationFields(parseNodeData(node.data));
+		const nodeMeta = {
+			...(node.element ?? (elementId ? { id: elementId } : {})),
+			...simulationData
+		};
 		return {
 			id: uiId,
 			backendId: node.id ?? null,
 			elementId,
-			label: node.element?.name ?? `Nodo ${index + 1}`,
-			type: node.element?.elementType ?? "catálogo",
-			wattage: node.element?.powerWatt ?? node.element?.powerConsumption ?? null,
-			notes: "",
+			label: simulationData.label ?? node.element?.name ?? `Nodo ${index + 1}`,
+			type: node.type ?? node.element?.elementType ?? "catálogo",
+			wattage: simulationData.powerWatt ?? simulationData.powerConsumption ?? simulationData.baseConsumption ?? node.element?.powerWatt ?? node.element?.powerConsumption ?? null,
+			notes: String(simulationData.notes ?? ""),
 			color: palette[index % palette.length],
 			position: {
 				x: node.positionX ?? 200 + index * 30,
 				y: node.positionY ?? 160 + index * 24
 			},
-			meta: node.element ?? (elementId ? { id: elementId } : {})
+			meta: nodeMeta,
+			simulationData
 		};
 	});
 
@@ -164,7 +224,9 @@ const buildProjectPayload = (project: DiagramProjectData, nodes: DiagramNode[], 
 			id: node.backendId ?? null,
 			element: { id: elementId },
 			positionX: roundCoord(node.position.x),
-			positionY: roundCoord(node.position.y)
+			positionY: roundCoord(node.position.y),
+			type: node.type ?? "",
+			data: JSON.stringify(buildNodeSimulationData(node))
 		};
 		persistableNodes.push(payloadNode);
 		uiToBackend.set(node.id, node.backendId ?? null);
@@ -191,6 +253,8 @@ const buildProjectPayload = (project: DiagramProjectData, nodes: DiagramNode[], 
 	const payload = {
 		id: project.id,
 		name: project.name,
+		season: project.season,
+		latitude: project.latitude,
 		energyNeeded: project.energyNeeded,
 		energyEnough: project.energyEnough,
 		userId: project.userId,
@@ -225,7 +289,8 @@ const buildElementMetadataCache = (nodes: DiagramNode[] = []) => {
 			wattage: node.wattage,
 			notes: node.notes,
 			color: node.color,
-			meta: node.meta ?? {}
+			meta: node.meta ?? {},
+			simulationData: node.simulationData ?? {}
 		});
 	});
 	return cache;
@@ -252,7 +317,8 @@ const hydrateNodesWithMetadata = (nodes: DiagramNode[] = [], cache?: Map<Identif
 			wattage: metadata.wattage ?? node.wattage,
 			notes: metadata.notes ?? node.notes,
 			color: metadata.color ?? node.color,
-			meta: hasMeta ? node.meta : metadata.meta ?? {}
+			meta: hasMeta ? node.meta : metadata.meta ?? {},
+			simulationData: node.simulationData ?? metadata.simulationData ?? {}
 		};
 	});
 };
@@ -272,19 +338,31 @@ const hydrateNodesFromCatalog = (nodes: DiagramNode[] = [], catalog?: Map<Identi
 			return node;
 		}
 
+		const simulationDefaults = pickCatalogSimulationDefaults(catalogEntry);
+		const hasSimulationDefaults = Object.keys(simulationDefaults).length > 0;
+		const nextMeta = Object.keys(node.meta ?? {}).length > 0
+			? {
+				...catalogEntry,
+				...(node.meta ?? {})
+			}
+			: catalogEntry;
+		const nextSimulationData = node.simulationData ?? (hasSimulationDefaults ? simulationDefaults : node.simulationData);
+
 		const nextNode = {
 			...node,
 			label: catalogEntry.name ?? node.label,
 			type: catalogEntry.elementType ?? catalogEntry.category ?? node.type,
 			wattage: catalogEntry.powerWatt ?? catalogEntry.powerConsumption ?? node.wattage,
-			meta: catalogEntry
+			meta: nextMeta,
+			simulationData: nextSimulationData
 		};
 
 		if (
 			nextNode.label === node.label &&
 			nextNode.type === node.type &&
 			nextNode.wattage === node.wattage &&
-			nextNode.meta === node.meta
+			JSON.stringify(nextNode.meta ?? {}) === JSON.stringify(node.meta ?? {}) &&
+			JSON.stringify(nextNode.simulationData ?? {}) === JSON.stringify(node.simulationData ?? {})
 		) {
 			return node;
 		}

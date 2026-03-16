@@ -5,6 +5,8 @@ export interface ProjectSummary extends LooseRecord {
   id?: Identifier | null;
   name?: string;
   title?: string;
+  season?: string;
+  latitude?: number | null;
   energyNeeded?: number;
   energyEnough?: boolean;
   userId?: Identifier | null;

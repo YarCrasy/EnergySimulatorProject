@@ -144,7 +144,8 @@ function DiagramWorkspace({ projectId }: DiagramWorkspaceProps) {
                 notes: partialNode.notes ?? "",
                 color: partialNode.color ?? palette[prev.length % palette.length],
                 position: nextPosition,
-                meta: partialNode.meta ?? {}
+                meta: partialNode.meta ?? {},
+                simulationData: partialNode.simulationData ?? {}
             };
 
             return [...prev, node];
@@ -175,6 +176,7 @@ function DiagramWorkspace({ projectId }: DiagramWorkspaceProps) {
             notes: payload.description ?? "",
             color: "#FDE68A",
             meta: payload,
+            simulationData: payload,
             elementId: payload.id ?? null
         }, position);
     }, [addNode]);

@@ -82,6 +82,12 @@ public class ProjectController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Proyecto no encontrado con id " + id));
 
         existingProject.setName(project.getName());
+        if (project.getSeason() != null) {
+            existingProject.setSeason(project.getSeason());
+        }
+        if (project.getLatitude() != null) {
+            existingProject.setLatitude(project.getLatitude());
+        }
         existingProject.setEnergyNeeded(project.getEnergyNeeded());
         existingProject.setEnergyEnough(project.isEnergyEnough());
 

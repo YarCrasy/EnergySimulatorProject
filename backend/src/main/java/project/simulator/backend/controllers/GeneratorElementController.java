@@ -84,7 +84,11 @@ public class GeneratorElementController {
         return generatorElementRepository.findById(id)
                 .map(generatorElement -> {
                     generatorElement.setName(generatorElementDetails.getName());
+                    generatorElement.setCategory(generatorElementDetails.getCategory());
+                    generatorElement.setDescription(generatorElementDetails.getDescription());
+                    generatorElement.setImageUrl(generatorElementDetails.getImageUrl());
                     generatorElement.setBrand(generatorElementDetails.getBrand());
+                    generatorElement.setArea(generatorElementDetails.getArea());
                     generatorElement.setEfficiency(generatorElementDetails.getEfficiency());
                     generatorElement.setPowerWatt(generatorElementDetails.getPowerWatt());
                     return generatorElementRepository.save(generatorElement);
