@@ -9,10 +9,11 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +38,13 @@ public class ProjectsActivity extends AppCompatActivity {
     private GridLayout projectsGrid;
     private User sessionUser;
     private TextView errMsg;
+    private TextView emptyState;
+    private TextView metricTotalValue;
+    private TextView metricBalancedValue;
+    private TextView metricPendingValue;
+    private TextView metricDemandValue;
+    private TextView projectsTitle;
+    private TextView projectsSubtitle;
     private ActivityResultLauncher<Intent> projectLauncher;
 
     @Override
@@ -51,6 +59,13 @@ public class ProjectsActivity extends AppCompatActivity {
         });
 
         errMsg = findViewById(R.id.projectsActErrMsg);
+        emptyState = findViewById(R.id.projectsEmptyState);
+        metricTotalValue = findViewById(R.id.metricTotalValue);
+        metricBalancedValue = findViewById(R.id.metricBalancedValue);
+        metricPendingValue = findViewById(R.id.metricPendingValue);
+        metricDemandValue = findViewById(R.id.metricDemandValue);
+        projectsTitle = findViewById(R.id.projectsTitle);
+        projectsSubtitle = findViewById(R.id.projectsSubtitle);
 
         Button createBtn = findViewById(R.id.createProjectBtn);
         createBtn.setOnClickListener(v -> createNewProject());
@@ -69,9 +84,16 @@ public class ProjectsActivity extends AppCompatActivity {
         if (projectsGrid != null) {
             projectsGrid.removeAllViews();
         }
+        updateDashboardStats(projects);
         if (projects == null || projects.isEmpty()) {
-            errMsg.setText("No hay proyectos disponibles.");
+            errMsg.setText("");
+            if (emptyState != null) {
+                emptyState.setVisibility(View.VISIBLE);
+            }
             return;
+        }
+        if (emptyState != null) {
+            emptyState.setVisibility(View.GONE);
         }
         errMsg.setText("");
 
@@ -91,6 +113,16 @@ public class ProjectsActivity extends AppCompatActivity {
         if (sessionUser == null) {
             errMsg.setText("Error al cargar el perfil, intente de nuevo o póngase en contacto con el soporte.");
             return;
+        }
+
+        String displayName = sessionUser.getFullName() != null && !sessionUser.getFullName().isBlank()
+                ? sessionUser.getFullName()
+                : sessionUser.getEmail();
+        if (projectsTitle != null) {
+            projectsTitle.setText("Panel de " + displayName);
+        }
+        if (projectsSubtitle != null) {
+            projectsSubtitle.setText(getString(R.string.projects_subtitle));
         }
 
         if (sessionUser.getProjects() == null || sessionUser.getProjects().isEmpty()) {
@@ -137,7 +169,9 @@ public class ProjectsActivity extends AppCompatActivity {
                                 if (p.getId() != null && p.getId().equals(updated.getId())) {
                                     p.setName(updated.getName());
                                     p.setUpdatedAt(updated.getUpdatedAt());
-                                    //any other fields needed here
+                                    p.setEnergyNeeded(updated.getEnergyNeeded());
+                                    p.setEnergyEnough(updated.isEnergyEnough());
+                                    p.setProjectNodes(updated.getProjectNodes());
                                     break;
                                 }
                             }
@@ -177,6 +211,30 @@ public class ProjectsActivity extends AppCompatActivity {
         if (projectsGrid != null) {
             projectsGrid.addView(cardView);
         }
+    }
+
+    private void updateDashboardStats(List<Project> projects) {
+        int totalProjects = projects != null ? projects.size() : 0;
+        int balancedProjects = 0;
+        double totalDemand = 0d;
+
+        if (projects != null) {
+            for (Project project : projects) {
+                if (project == null) {
+                    continue;
+                }
+                if (project.isEnergyEnough()) {
+                    balancedProjects++;
+                }
+                totalDemand += project.getEnergyNeeded();
+            }
+        }
+
+        int pendingProjects = Math.max(totalProjects - balancedProjects, 0);
+        metricTotalValue.setText(String.valueOf(totalProjects));
+        metricBalancedValue.setText(String.valueOf(balancedProjects));
+        metricPendingValue.setText(String.valueOf(pendingProjects));
+        metricDemandValue.setText(String.format(java.util.Locale.US, "%.1f kWh", totalDemand));
     }
 
     private void setupRenameProject(Project p) {

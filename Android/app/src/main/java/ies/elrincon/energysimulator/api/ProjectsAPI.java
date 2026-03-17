@@ -23,6 +23,12 @@ public class ProjectsAPI {
         return Project.fromJsonArray(projectsArray);
     }
 
+    public static Project getProjectById(Long projectId) throws JSONException, IOException {
+        if (projectId == null) throw new IllegalArgumentException("projectId requerido");
+        JSONObject projectObject = ApiConnection.getObject("projects/" + projectId);
+        return new Project(projectObject);
+    }
+
     // Actualiza un proyecto (por ejemplo, cambiar el nombre). Devuelve el proyecto actualizado.
     public static Project updateProject(Long projectId, JSONObject data) throws IOException, JSONException {
         if (projectId == null) throw new IllegalArgumentException("projectId requerido");

@@ -69,6 +69,7 @@ public class User implements Parcelable {
     public boolean isAdmin() { return admin; }
 
     public void setEmail(String email) { this.email = email; }
+    public void setDateOfBirth(String dateOfBirth) { this.dateOfBirth = dateOfBirth; }
     public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
 
     public JSONObject toJSON() throws JSONException {

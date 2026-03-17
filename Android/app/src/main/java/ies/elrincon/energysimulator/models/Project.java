@@ -21,7 +21,9 @@ public class Project implements Parcelable {
     private boolean isEnergyEnough;
     private float energyNeeded;
     private Long userId;
-    private List<ProjectElement> projectElements = new ArrayList<>();
+    private String season = "verano";
+    private Double latitude = 28.1;
+    private List<ProjectNode> projectNodes = new ArrayList<>();
 
     public Project() {
         name = "Nuevo Proyecto";
@@ -40,12 +42,27 @@ public class Project implements Parcelable {
             String updatedAtStr = projectObject.getString("updatedAt");
             this.updatedAt = LocalDateTime.parse(updatedAtStr);
         }
+        if (projectObject.has("energyEnough") && !projectObject.isNull("energyEnough"))
+            this.isEnergyEnough = projectObject.getBoolean("energyEnough");
         if (projectObject.has("isEnergyEnough") && !projectObject.isNull("isEnergyEnough"))
             this.isEnergyEnough = projectObject.getBoolean("isEnergyEnough");
         if (projectObject.has("energyNeeded") && !projectObject.isNull("energyNeeded"))
             this.energyNeeded = (float) projectObject.getDouble("energyNeeded");
         if (projectObject.has("userId") && !projectObject.isNull("userId"))
             this.userId = projectObject.getLong("userId");
+        if (projectObject.has("season") && !projectObject.isNull("season"))
+            this.season = projectObject.getString("season");
+        if (projectObject.has("latitude") && !projectObject.isNull("latitude"))
+            this.latitude = projectObject.getDouble("latitude");
+        JSONArray nodesArray = projectObject.optJSONArray("projectNodes");
+        if (nodesArray != null) {
+            for (int i = 0; i < nodesArray.length(); i++) {
+                JSONObject nodeObject = nodesArray.optJSONObject(i);
+                if (nodeObject != null) {
+                    this.projectNodes.add(new ProjectNode(nodeObject));
+                }
+            }
+        }
     }
 
     // Parcelable
@@ -63,7 +80,14 @@ public class Project implements Parcelable {
         } else {
             userId = in.readLong();
         }
-        // not parceling updatedAt or projectElements for simplicity
+        String updatedAtRaw = in.readString();
+        updatedAt = updatedAtRaw != null && !updatedAtRaw.isBlank() ? LocalDateTime.parse(updatedAtRaw) : null;
+        season = in.readString();
+        if (in.readByte() == 0) {
+            latitude = null;
+        } else {
+            latitude = in.readDouble();
+        }
     }
 
     public static final Creator<Project> CREATOR = new Creator<Project>() {
@@ -92,33 +116,27 @@ public class Project implements Parcelable {
         return projects;
     }
 
-    public void addElement(Element element, int unidades) {
-        ProjectElement pe = new ProjectElement(this, element, unidades);
-        projectElements.add(pe);
-    }
-
-    public void removeElement(ProjectElement pe) {
-        projectElements.remove(pe);
-        pe.setProject(null);
-        pe.setElement(null);
-    }
-
     public JSONObject toJSON() throws JSONException {
         JSONObject obj = new JSONObject();
         if (this.id != null) obj.put("id", this.id);
         if (this.name != null) obj.put("name", this.name);
         if (this.userId != null) obj.put("userId", this.userId);
-        // omitimos projectElements y updatedAt en el payload mínimo
+        obj.put("energyNeeded", this.energyNeeded);
+        obj.put("energyEnough", this.isEnergyEnough);
+        obj.put("season", this.season != null ? this.season : "verano");
+        if (this.latitude != null) {
+            obj.put("latitude", this.latitude);
+        }
+        JSONArray nodes = new JSONArray();
+        for (ProjectNode node : projectNodes) {
+            if (node == null || node.getElementId() == null) {
+                continue;
+            }
+            nodes.put(node.toJson());
+        }
+        obj.put("projectNodes", nodes);
+        obj.put("nodeConnections", new JSONArray());
         return obj;
-    }
-
-    // Getters y Setters
-    public List<ProjectElement> getElements() {
-        return projectElements;
-    }
-
-    public void setElements(List<ProjectElement> projectElements) {
-        this.projectElements = projectElements;
     }
 
     public Long getId() {
@@ -169,6 +187,30 @@ public class Project implements Parcelable {
         this.energyNeeded = energyNeeded;
     }
 
+    public String getSeason() {
+        return season;
+    }
+
+    public void setSeason(String season) {
+        this.season = season;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public List<ProjectNode> getProjectNodes() {
+        return projectNodes;
+    }
+
+    public void setProjectNodes(List<ProjectNode> projectNodes) {
+        this.projectNodes = projectNodes != null ? projectNodes : new ArrayList<>();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -190,6 +232,14 @@ public class Project implements Parcelable {
         } else {
             dest.writeByte((byte) 1);
             dest.writeLong(userId);
+        }
+        dest.writeString(updatedAt != null ? updatedAt.toString() : null);
+        dest.writeString(season);
+        if (latitude == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(latitude);
         }
     }
 

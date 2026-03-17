@@ -30,27 +30,20 @@ public class UsersAPI {
         ApiConnection.delete("users/" + userId);
     }
 
-    public static User register(String email, String password) throws JSONException, IOException {
+    public static User register(String fullName, String dateOfBirth, String email, String password) throws JSONException, IOException {
         if (email == null || email.isBlank()) throw new IllegalArgumentException("email requerido");
         if (password == null || password.isBlank()) throw new IllegalArgumentException("password requerido");
+        if (fullName == null || fullName.isBlank()) throw new IllegalArgumentException("nombre requerido");
 
         JSONObject payload = new JSONObject();
-        payload.put("fullName", "User");
+        payload.put("fullName", fullName);
         payload.put("email", email);
         payload.put("passwordHash", password);
-        payload.put("dateOfBirth", JSONObject.NULL);
+        payload.put("dateOfBirth", dateOfBirth == null || dateOfBirth.isBlank() ? JSONObject.NULL : dateOfBirth);
         payload.put("admin", false);
 
         JSONObject response = ApiConnection.post("users", payload);
-        User createdUser = new User(response);
-        if (createdUser.getId() != null) {
-            String generatedName = "User" + createdUser.getId();
-            if (!generatedName.equals(createdUser.getFullName())) {
-                createdUser.setFullName(generatedName);
-                updateUser(createdUser);
-            }
-        }
-        return createdUser;
+        return new User(response);
     }
 
     public static User login(String email, String password) throws JSONException, IOException {

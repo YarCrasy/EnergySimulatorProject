@@ -1,6 +1,7 @@
 package ies.elrincon.energysimulator;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,6 +23,12 @@ public class ProfileActivity extends AppCompatActivity {
     public static final String EXTRA_USER = "user";
     private User currentUser;
 
+    private EditText fullNameInput;
+    private EditText birthDateInput;
+    private EditText emailInput;
+    private EditText newPasswordInput;
+    private TextView userTypeView;
+    private TextView errorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,125 +40,103 @@ public class ProfileActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        currentUser = getIntent().getParcelableExtra(EXTRA_USER);
-        if (currentUser != null) {
-            populateProfile(currentUser);
-            setupPasswordChange();
-            setupEmailChange();
-            setupDeleteAccount();
-            setupBackBtn();
-        } else {
+
+        bindViews();
+        loadUserFromIntent();
+        if (currentUser == null) {
             finish();
+            return;
+        }
+
+        populateProfile(currentUser);
+        setupSaveProfile();
+        setupDeleteAccount();
+        setupBackBtn();
+    }
+
+    private void bindViews() {
+        fullNameInput = findViewById(R.id.profileName);
+        birthDateInput = findViewById(R.id.profileBirthday);
+        emailInput = findViewById(R.id.profileEmail);
+        newPasswordInput = findViewById(R.id.newPassword);
+        userTypeView = findViewById(R.id.profileUserType);
+        errorView = findViewById(R.id.profileErrMsg);
+    }
+
+    private void loadUserFromIntent() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            currentUser = getIntent().getParcelableExtra(EXTRA_USER, User.class);
+        } else {
+            currentUser = getIntent().getParcelableExtra(EXTRA_USER);
         }
     }
-    private void populateProfile(User user) {
-        TextView name = findViewById(R.id.profileName);
-        TextView birthday = findViewById(R.id.profileBirthday);
-        TextView userType = findViewById(R.id.profileUserType);
 
-        name.setText(user.getFullName());
-        birthday.setText(user.getDateOfBirth());
-        userType.setText(user.isAdmin() ? "Administrador" : "Usuario");
+    private void populateProfile(User user) {
+        fullNameInput.setText(user.getFullName());
+        birthDateInput.setText(user.getDateOfBirth());
+        emailInput.setText(user.getEmail());
+        userTypeView.setText(user.isAdmin() ? "Administrador" : "Usuario");
     }
 
-    private void setupPasswordChange() {
-        Button changeBtn = findViewById(R.id.changePasswordBtn);
-        EditText oldPassword = findViewById(R.id.oldPassword);
-        EditText newPassword = findViewById(R.id.newPassword);
-        TextView errMsg = findViewById(R.id.passwordErrMsg);
+    private void setupSaveProfile() {
+        Button saveButton = findViewById(R.id.saveProfileBtn);
+        saveButton.setOnClickListener(v -> {
+            errorView.setText("");
 
-        changeBtn.setOnClickListener(v -> {
-            errMsg.setText("");
-            String oldPwd = oldPassword.getText().toString();
-            String newPwd = newPassword.getText().toString();
+            String fullName = valueOf(fullNameInput);
+            String birthDate = valueOf(birthDateInput);
+            String email = valueOf(emailInput);
+            String newPassword = valueOf(newPasswordInput);
 
-            String validation = validatePasswords(oldPwd, newPwd);
+            String validation = validateProfile(fullName, birthDate, email, newPassword);
             if (!TextUtils.isEmpty(validation)) {
-                errMsg.setText(validation);
+                errorView.setText(validation);
                 return;
+            }
+
+            currentUser.setFullName(fullName);
+            currentUser.setDateOfBirth(birthDate);
+            currentUser.setEmail(email);
+            if (!newPassword.isEmpty()) {
+                currentUser.setPasswordHash(newPassword);
             }
 
             v.setEnabled(false);
             new Thread(() -> {
                 try {
-                    currentUser.setPasswordHash(newPwd);
                     UsersAPI.updateUser(currentUser);
                     runOnUiThread(() -> {
-                        Toast.makeText(this, "Contraseña actualizada", Toast.LENGTH_SHORT).show();
-                        oldPassword.setText("");
-                        newPassword.setText("");
+                        newPasswordInput.setText("");
+                        Toast.makeText(this, "Perfil actualizado", Toast.LENGTH_SHORT).show();
                     });
                 } catch (Exception e) {
-                    runOnUiThread(() -> errMsg.setText("Error al actualizar: " + e.getMessage()));
+                    runOnUiThread(() -> errorView.setText("Error al actualizar: " + e.getMessage()));
                 } finally {
                     runOnUiThread(() -> v.setEnabled(true));
                 }
             }).start();
         });
+    }
+
+    private String validateProfile(String fullName, String birthDate, String email, String newPassword) {
+        if (fullName.isEmpty()) {
+            return "Introduce tu nombre completo";
+        }
+        if (birthDate.isEmpty()) {
+            return "Introduce una fecha de nacimiento";
+        }
+        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            return "Introduce un correo electr\u00f3nico v\u00e1lido";
+        }
+        if (!newPassword.isEmpty() && newPassword.length() < 8) {
+            return "La nueva contrase\u00f1a debe tener al menos 8 caracteres";
+        }
+        return "";
     }
 
     private void setupBackBtn() {
         Button backBtn = findViewById(R.id.backToProjectsBtn);
-        if (backBtn != null) backBtn.setOnClickListener(v -> finish());
-    }
-
-    private String validatePasswords(String oldPwd, String newPwd) {
-        if (TextUtils.isEmpty(oldPwd) || TextUtils.isEmpty(newPwd)) {
-            return "Completa todos los campos";
-        }
-        if (newPwd.length() < 6) {
-            return "La contraseña debe tener al menos 6 caracteres";
-        }
-        return "";
-    }
-
-    private void setupEmailChange() {
-        Button changeEmailBtn = findViewById(R.id.changeEmailBtn);
-        EditText oldEmailInput = findViewById(R.id.oldEmail);
-        EditText newEmailInput = findViewById(R.id.newEmail);
-        TextView errMsg = findViewById(R.id.emailErrMsg);
-
-        changeEmailBtn.setOnClickListener(v -> {
-            errMsg.setText("");
-            String oldEmail = oldEmailInput.getText().toString().trim();
-            String newEmail = newEmailInput.getText().toString().trim();
-
-            String validation = validateEmails(oldEmail, newEmail);
-            if (!TextUtils.isEmpty(validation)) {
-                errMsg.setText(validation);
-                return;
-            }
-
-            v.setEnabled(false);
-            new Thread(() -> {
-                try {
-                    currentUser.setEmail(newEmail);
-                    UsersAPI.updateUser(currentUser);
-                    runOnUiThread(() -> {
-                        Toast.makeText(this, "Correo actualizado", Toast.LENGTH_SHORT).show();
-                        oldEmailInput.setText("");
-                        newEmailInput.setText("");
-                    });
-                } catch (Exception e) {
-                    runOnUiThread(() -> errMsg.setText("Error al actualizar: " + e.getMessage()));
-                } finally {
-                    runOnUiThread(() -> v.setEnabled(true));
-                }
-            }).start();
-        });
-    }
-
-    private String validateEmails(String oldEmail, String newEmail) {
-        if (TextUtils.isEmpty(oldEmail) || TextUtils.isEmpty(newEmail)) {
-            return "Completa todos los campos";
-        }
-        if (!oldEmail.equalsIgnoreCase(currentUser.getEmail())) {
-            return "El correo actual no coincide";
-        }
-        if (newEmail.equalsIgnoreCase(oldEmail)) {
-            return "El nuevo correo debe ser diferente";
-        }
-        return "";
+        backBtn.setOnClickListener(v -> finish());
     }
 
     private void setupDeleteAccount() {
@@ -174,6 +159,9 @@ public class ProfileActivity extends AppCompatActivity {
                 UsersAPI.deleteUser(currentUser.getId());
                 runOnUiThread(() -> {
                     Toast.makeText(this, "Cuenta eliminada", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                     finish();
                 });
             } catch (Exception e) {
@@ -183,5 +171,8 @@ public class ProfileActivity extends AppCompatActivity {
             }
         }).start();
     }
-}
 
+    private String valueOf(EditText input) {
+        return input.getText().toString().trim();
+    }
+}

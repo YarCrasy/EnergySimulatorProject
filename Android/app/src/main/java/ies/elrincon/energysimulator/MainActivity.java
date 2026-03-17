@@ -23,6 +23,8 @@ import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
+    EditText fullName;
+    EditText dateOfBirth;
     EditText username;
     EditText password;
     Button loginBtn;
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        fullName = findViewById(R.id.fullName);
+        dateOfBirth = findViewById(R.id.dateOfBirth);
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         loginBtn = findViewById(R.id.login);
@@ -80,17 +84,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
+        String name = fullName.getText().toString().trim();
+        String birthDate = dateOfBirth.getText().toString().trim();
         String email = username.getText().toString().trim();
         String pass = password.getText().toString().trim();
-        if (email.isEmpty() || pass.isEmpty()) {
-            errorMessage.setText(R.string.login_missing_credentials);
+        String validationError = validateRegistration(name, birthDate, email, pass);
+        if (validationError != null) {
+            errorMessage.setText(validationError);
             return;
         }
         errorMessage.setText("");
         setLoading(true);
         loginExecutor.execute(() -> {
             try {
-                User user = UsersAPI.register(email, pass);
+                User user = UsersAPI.register(name, birthDate, email, pass);
                 user.setProjects((ArrayList<Project>) ProjectsAPI.getProjectsFromUser(user.getId()));
                 runOnUiThread(() -> navigateToProject(user));
             } catch (Exception e) {
@@ -110,6 +117,29 @@ public class MainActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    private String validateRegistration(String name, String birthDate, String email, String pass) {
+        if (name.isEmpty()) {
+            return getString(R.string.full_name_required);
+        }
+        if (birthDate.isEmpty()) {
+            return "Introduce una fecha de nacimiento";
+        }
+        if (email.isEmpty() || pass.isEmpty()) {
+            return getString(R.string.login_missing_credentials);
+        }
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            return "Introduce un correo electr\u00f3nico v\u00e1lido";
+        }
+        boolean strongPassword = pass.length() >= 8
+                && pass.matches(".*[A-Z].*")
+                && pass.matches(".*[a-z].*")
+                && pass.matches(".*\\d.*");
+        if (!strongPassword) {
+            return "La contrase\u00f1a debe tener 8 caracteres, may\u00fascula, min\u00fascula y n\u00famero";
+        }
+        return null;
     }
 
     private void setLoading(boolean loading) {
