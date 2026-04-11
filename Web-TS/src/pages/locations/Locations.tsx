@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Locations.css";
+import "./Locations.scss";
 import Spiner from "../../components/spiner/Spiner";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";

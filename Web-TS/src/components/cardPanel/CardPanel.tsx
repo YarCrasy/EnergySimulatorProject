@@ -1,5 +1,5 @@
 import type { DragEvent, MouseEventHandler } from "react";
-import "./CardPanel.css";
+import "./CardPanel.scss";
 import placeholderImg from "@svg/image.svg";
 
 interface CardPanelProps {

@@ -21,7 +21,7 @@ import {
     hydrateNodesFromCatalog
 } from "./WorkspaceUtils";
 
-import "./DiagramWorkspace.css";
+import "./DiagramWorkspace.scss";
 
 interface DiagramWorkspaceProps {
     projectId?: string | null;

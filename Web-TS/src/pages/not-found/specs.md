@@ -7,8 +7,8 @@
 
 ## Diseno UI
 - Tarjeta central con sombra profunda, botones tipo pill y grid de sugerencias.
-- Tipografia y colores toman variables globales de `App.css`.
+- Tipografia y colores toman variables globales de `App.scss`.
 
 ## Archivos
 - `NotFound.jsx`: contenido y links.
-- `NotFound.css`: layout, tarjetas y botones.
+- `NotFound.scss`: layout, tarjetas y botones.

@@ -13,4 +13,4 @@
 - `getAllElements`, `CardPanel`.
 
 ## Archivos
-- `SideMenu.jsx`, `SideMenu.css`.
+- `SideMenu.jsx`, `SideMenu.scss`.

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./ForceOrientation.css";
+import "./ForceOrientation.scss";
 
 import rotate from "@svg/rotate.svg";
 

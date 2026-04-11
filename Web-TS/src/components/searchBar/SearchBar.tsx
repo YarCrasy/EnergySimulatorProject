@@ -1,4 +1,4 @@
-import "./SearchBar.css";
+import "./SearchBar.scss";
 
 import menuBtn from "@svg/burger-menu.svg";
 import searchIcon from "@svg/search-icon.svg";

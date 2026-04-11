@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./About.css";
+import "./About.scss";
 import domestic from "@jpg/domestic.jpg";
 import comunity from "@jpg/comunity.jpg";
 import industrial from "@jpg/industrial.jpg";

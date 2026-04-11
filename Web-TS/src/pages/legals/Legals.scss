@@ -6,22 +6,22 @@
     color: var(--legals-text);
     position: relative;
     overflow: hidden;
-}
 
-.legals-page::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: linear-gradient(120deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(0deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 160px 160px;
-    opacity: 0.5;
-    pointer-events: none;
-}
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(120deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+            linear-gradient(0deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 160px 160px;
+        opacity: 0.5;
+        pointer-events: none;
+    }
 
-.legals-page > * {
-    position: relative;
-    z-index: 1;
+    > * {
+        position: relative;
+        z-index: 1;
+    }
 }
 
 .legals-hero {
@@ -40,10 +40,12 @@
     margin-bottom: 1rem;
 }
 
-.legals-hero h1 {
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
-    margin-bottom: 1rem;
-    line-height: 1.1;
+.legals-hero {
+    h1 {
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        margin-bottom: 1rem;
+        line-height: 1.1;
+    }
 }
 
 .legals-lede {
@@ -57,17 +59,17 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-}
 
-.legals-badges span {
-    border: 1px solid rgba(162, 255, 134, 0.4);
-    color: var(--legals-accent);
-    padding: 0.5rem 1.25rem;
-    border-radius: 999px;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    animation: floatBadge 6s ease-in-out infinite;
+    span {
+        border: 1px solid rgba(162, 255, 134, 0.4);
+        color: var(--legals-accent);
+        padding: 0.5rem 1.25rem;
+        border-radius: 999px;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        animation: floatBadge 6s ease-in-out infinite;
+    }
 }
 
 .legals-grid {
@@ -87,39 +89,39 @@
     flex-direction: column;
     gap: 1rem;
     min-height: 320px;
-}
 
-.legal-card header p {
-    color: var(--legals-muted);
-    font-size: 0.95rem;
-}
+    header p {
+        color: var(--legals-muted);
+        font-size: 0.95rem;
+    }
 
-.legal-card ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
 
-.legal-card li {
-    position: relative;
-    padding-left: 1.5rem;
-    color: rgba(245, 247, 251, 0.85);
-    line-height: 1.4;
-}
+    li {
+        position: relative;
+        padding-left: 1.5rem;
+        color: rgba(245, 247, 251, 0.85);
+        line-height: 1.4;
 
-.legal-card li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.55rem;
-    width: 0.65rem;
-    height: 0.65rem;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--legals-accent), var(--legals-accent-2));
-    box-shadow: 0 0 12px rgba(92, 225, 230, 0.7);
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.55rem;
+            width: 0.65rem;
+            height: 0.65rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--legals-accent), var(--legals-accent-2));
+            box-shadow: 0 0 12px rgba(92, 225, 230, 0.7);
+        }
+    }
 }
 
 .legals-compliance {
@@ -134,13 +136,19 @@
     border-radius: 30px;
     border: 1px solid var(--legals-line);
     padding: 2rem;
+
+    h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
 }
 
-.timeline h3,
-.contact-card h3,
-.legals-cta h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+.contact-card,
+.legals-cta {
+    h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
 }
 
 .timeline-track {
@@ -195,42 +203,42 @@
     flex-direction: column;
     gap: 1rem;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
-}
 
-.contact-card p {
-    color: var(--legals-muted);
-    line-height: 1.4;
-}
+    p {
+        color: var(--legals-muted);
+        line-height: 1.4;
+    }
 
-.contact-card ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-}
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+    }
 
-.contact-card li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    padding-bottom: 0.5rem;
-}
+    li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        padding-bottom: 0.5rem;
 
-.contact-card li:last-child {
-    border-bottom: none;
-}
+        &:last-child {
+            border-bottom: none;
+        }
+    }
 
-.contact-card span {
-    color: var(--legals-muted);
-    font-size: 0.85rem;
-}
+    span {
+        color: var(--legals-muted);
+        font-size: 0.85rem;
+    }
 
-.contact-card strong {
-    font-size: 1rem;
-    letter-spacing: 0.02em;
+    strong {
+        font-size: 1rem;
+        letter-spacing: 0.02em;
+    }
 }
 
 .legals-cta {
@@ -244,29 +252,29 @@
     justify-content: space-between;
     gap: 1.5rem;
     flex-wrap: wrap;
-}
 
-.legals-cta p {
-    max-width: 600px;
-    color: rgba(4, 11, 24, 0.78);
-}
+    p {
+        max-width: 600px;
+        color: rgba(4, 11, 24, 0.78);
+    }
 
-.legals-cta button {
-    background: linear-gradient(120deg, #a2ff86, #5ce1e6);
-    color: #061028;
-    border: none;
-    border-radius: 999px;
-    padding: 0.95rem 2.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 12px 25px rgba(92, 225, 230, 0.45);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
+    button {
+        background: linear-gradient(120deg, #a2ff86, #5ce1e6);
+        color: #061028;
+        border: none;
+        border-radius: 999px;
+        padding: 0.95rem 2.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 12px 25px rgba(92, 225, 230, 0.45);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
 
-.legals-cta button:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 18px 40px rgba(92, 225, 230, 0.55);
+        &:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 18px 40px rgba(92, 225, 230, 0.55);
+        }
+    }
 }
 
 @keyframes floatBadge {

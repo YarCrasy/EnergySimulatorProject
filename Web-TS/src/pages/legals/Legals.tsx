@@ -1,4 +1,4 @@
-import "./Legals.css";
+import "./Legals.scss";
 
 const legalSections = [
     {

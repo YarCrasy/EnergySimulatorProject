@@ -1,4 +1,4 @@
-import "./AdminElements.css";
+import "./AdminElements.scss";
 import NavBar from "../../../components/adminComponents/navBar/NavBar";
 
 import { useState, useEffect } from "react";

@@ -13,7 +13,7 @@
 
 ## Diseno UI
 - Estetica neon / tech con gradientes, tarjetas de vidrio y bordes suaves.
-- Variables globales de color viven en `App.css`.
+- Variables globales de color viven en `App.scss`.
 
 ## Dependencias clave
 - `react-router-dom` para rutas y navegacion.

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./Register.css";
+import "./Register.scss";
 import registerImg from "@jpg/registerImg.jpg";
 import RegisterForm from "../../components/registerForm/RegisterForm";
 

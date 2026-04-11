@@ -13,4 +13,4 @@
 - Imagenes de `@jpg/*` para hero y segmentos.
 
 ## Archivos
-- `About.jsx`, `About.css`.
+- `About.jsx`, `About.scss`.

@@ -4,7 +4,7 @@ import TableUsers from "../../../components/adminComponents/tableUsers/TableUser
 import NavBar from "../../../components/adminComponents/navBar/NavBar";
 import api from "../../../api/api";
 import { useAuth } from "@/hooks/auth";
-import "./AdminUsers.css";
+import "./AdminUsers.scss";
 
 export default function AdminUsers() {
   const { user: currentUser } = useAuth();

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Identifier } from "@models/common";
 import type { ProjectMutation, ProjectSummary } from "@models/domain/project";
-import "./Projects.css";
+import "./Projects.scss";
 
 import ProjectCard from "../../components/projectCard/ProjectCard";
 import placeHorderImg from "@svg/image.svg";

@@ -1,6 +1,6 @@
 import { useMemo, useRef } from "react";
 
-import "./DiagramCanvas.css";
+import "./DiagramCanvas.scss";
 
 const clampZoom = (value) => Math.min(1.6, Math.max(0.4, value));
 

@@ -19,6 +19,12 @@
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
+
+	h1 {
+		font-size: clamp(2rem, 5vw, 3rem);
+		color: var(--legals-text);
+		line-height: 1.15;
+	}
 }
 
 .notfound-eyebrow {
@@ -26,12 +32,6 @@
 	letter-spacing: 0.5em;
 	font-size: 2rem;
 	color: var(--text-muted);
-}
-
-.notfound-card h1 {
-	font-size: clamp(2rem, 5vw, 3rem);
-	color: var(--legals-text);
-	line-height: 1.15;
 }
 
 .notfound-lede {
@@ -43,52 +43,52 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.75rem;
-}
 
-.notfound-actions a {
-	border-radius: 999px;
-	padding: 0.9rem 1.7rem;
-	font-weight: 600;
-	letter-spacing: 0.04em;
-}
+	a {
+		border-radius: 999px;
+		padding: 0.9rem 1.7rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+	}
 
-.notfound-actions .btn-primary {
-	background: linear-gradient(120deg, var(--accent-main), var(--accent-alt));
-	color: #051028;
-	text-decoration: none;
-	box-shadow: 0 18px 40px rgba(92, 225, 230, 0.45);
-}
+	.btn-primary {
+		background: linear-gradient(120deg, var(--accent-main), var(--accent-alt));
+		color: #051028;
+		text-decoration: none;
+		box-shadow: 0 18px 40px rgba(92, 225, 230, 0.45);
+	}
 
-.notfound-actions .btn-ghost {
-	border: 1px solid var(--surface-line);
-	color: var(--legals-text);
-	text-decoration: none;
+	.btn-ghost {
+		border: 1px solid var(--surface-line);
+		color: var(--legals-text);
+		text-decoration: none;
+	}
 }
 
 .notfound-suggestions {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 	gap: 0.75rem;
-}
 
-.notfound-suggestions a {
-	border: 1px solid rgba(255, 255, 255, 0.08);
-	border-radius: 20px;
-	padding: 0.9rem 1rem;
-	display: inline-flex;
-	align-items: center;
-	gap: 0.4rem;
-	color: var(--legals-text);
-	text-decoration: none;
-	transition: border-color 0.2s ease;
-}
+	a {
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: 20px;
+		padding: 0.9rem 1rem;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		color: var(--legals-text);
+		text-decoration: none;
+		transition: border-color 0.2s ease;
 
-.notfound-suggestions span {
-	color: var(--accent-main);
-}
+		&:hover {
+			border-color: var(--accent-alt);
+		}
+	}
 
-.notfound-suggestions a:hover {
-	border-color: var(--accent-alt);
+	span {
+		color: var(--accent-main);
+	}
 }
 
 .notfound-visual {
@@ -126,9 +126,9 @@
 @media (max-width: 640px) {
 	.notfound-actions {
 		flex-direction: column;
-	}
 
-	.notfound-actions a {
-		text-align: center;
+		a {
+			text-align: center;
+		}
 	}
 }

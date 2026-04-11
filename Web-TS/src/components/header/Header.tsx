@@ -1,7 +1,7 @@
 import { useAuth } from "@/hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import "./Header.css";
+import "./Header.scss";
 import Logo from "../logo/Logo";
 
 function Header() {

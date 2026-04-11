@@ -2,7 +2,7 @@ import { useEffect, useState, type DragEvent } from "react";
 import type { EnergyElement } from "@models/domain/element";
 import { Link } from "react-router-dom";
 
-import "./SideMenu.css";
+import "./SideMenu.scss";
 
 import CardPanel from "../../../components/cardPanel/CardPanel";
 import { getAllElements } from "../../../api/elements";

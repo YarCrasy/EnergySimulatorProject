@@ -1,4 +1,4 @@
-import "./TableUsers.css";
+import "./TableUsers.scss";
 
 export default function TableUsers({ users, onEdit, onDelete, currentUser }) {
   return (

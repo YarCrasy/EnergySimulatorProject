@@ -22,13 +22,13 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-}
 
-.diagram-connections path {
-    fill: none;
-    stroke: rgba(92, 225, 230, 0.85);
-    stroke-width: 3px;
-    opacity: 0.85;
+    path {
+        fill: none;
+        stroke: rgba(92, 225, 230, 0.85);
+        stroke-width: 3px;
+        opacity: 0.85;
+    }
 }
 
 .diagram-node {
@@ -47,28 +47,28 @@
     color: #061025;
     cursor: grab;
     backdrop-filter: blur(6px);
-}
 
-.diagram-node.selected {
-    border-color: rgba(162, 255, 134, 0.9);
-}
+    &.selected {
+        border-color: rgba(162, 255, 134, 0.9);
+    }
 
-.diagram-node.pending {
-    border-style: dashed;
-}
+    &.pending {
+        border-style: dashed;
+    }
 
-.diagram-node .node-label {
-    font-weight: 700;
-    font-size: 1rem;
-}
+    .node-label {
+        font-weight: 700;
+        font-size: 1rem;
+    }
 
-.diagram-node .node-wattage {
-    font-size: 0.95rem;
-    color: #061025;
-    font-weight: 600;
-}
+    .node-wattage {
+        font-size: 0.95rem;
+        color: #061025;
+        font-weight: 600;
+    }
 
-.diagram-node .node-meta {
-    font-size: 0.8rem;
-    color: rgba(0, 0, 0, 0.55);
+    .node-meta {
+        font-size: 0.8rem;
+        color: rgba(0, 0, 0, 0.55);
+    }
 }

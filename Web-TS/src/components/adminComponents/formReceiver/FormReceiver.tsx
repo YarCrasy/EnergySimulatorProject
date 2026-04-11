@@ -1,6 +1,6 @@
 import { useState, useEffect, type ChangeEvent, type FormEvent, type InvalidEvent } from "react";
 import type { FormReceiverProps } from "@models/props/receiver";
-import "./FormReceiver.css";
+import "./FormReceiver.scss";
 
 export default function FormReceiver({ receiverToEdit, onSave, onCancel }: FormReceiverProps) {
   const [nombre, setNombre] = useState("");

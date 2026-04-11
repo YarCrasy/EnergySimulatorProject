@@ -1,7 +1,7 @@
 import { useAuth } from "@/hooks/auth";
 import type { EditableUser } from "@models/domain/register";
 import useRegisterForm from "./useRegisterForm";
-import "./RegisterForm.css";
+import "./RegisterForm.scss";
 import { useNavigate } from "react-router-dom";
 
 interface RegisterFormProps {

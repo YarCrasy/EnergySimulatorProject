@@ -10,4 +10,4 @@
 - Layout en dos columnas con boton flotante.
 
 ## Archivos
-- `Simulator.jsx`, `Simulator.css`.
+- `Simulator.jsx`, `Simulator.scss`.

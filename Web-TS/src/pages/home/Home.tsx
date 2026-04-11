@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/auth";
-import "./Home.css";
+import "./Home.scss";
 import home from "@jpg/home.jpg";
 
 const stats = [

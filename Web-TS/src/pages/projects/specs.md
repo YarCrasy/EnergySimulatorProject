@@ -16,4 +16,4 @@
 - `ProjectCard` y placeholder `@svg/image.svg`.
 
 ## Archivos
-- `Projects.jsx`, `Projects.css`.
+- `Projects.jsx`, `Projects.scss`.

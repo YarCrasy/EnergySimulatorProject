@@ -1,4 +1,4 @@
-import "./Simulator.css";
+import "./Simulator.scss";
 import { useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 

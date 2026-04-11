@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/auth";
 import { createProject } from "../../api/projects";
-import "./Login.css";
+import "./Login.scss";
 import loginImg from "@jpg/loginImg.jpg";
 
 const trustIndicators = [

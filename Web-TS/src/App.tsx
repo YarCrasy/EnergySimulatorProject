@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import usePortraitOrientation from "./hooks/usePortraitOrientation";
-import "./App.css";
+import "./App.scss";
 
 import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";

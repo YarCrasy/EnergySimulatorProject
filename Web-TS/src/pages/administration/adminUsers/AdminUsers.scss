@@ -15,6 +15,18 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+
+  h1 {
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    color: var(--legals-text);
+    line-height: 1.15;
+  }
+
+  p {
+    color: var(--text-muted);
+    max-width: 640px;
+    line-height: 1.5;
+  }
 }
 
 .admin-users-eyebrow {
@@ -24,42 +36,30 @@
   color: var(--text-muted);
 }
 
-.admin-users-hero h1 {
-  font-size: clamp(2rem, 3.5vw, 3rem);
-  color: var(--legals-text);
-  line-height: 1.15;
-}
-
-.admin-users-hero p {
-  color: var(--text-muted);
-  max-width: 640px;
-  line-height: 1.5;
-}
-
 .admin-users-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 1rem;
-}
 
-.admin-users-stats article {
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 1rem 1.25rem;
-  background: rgba(6, 15, 36, 0.75);
-}
+  article {
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1rem 1.25rem;
+    background: rgba(6, 15, 36, 0.75);
+  }
 
-.admin-users-stats span {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--accent-main);
-}
+  span {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent-main);
+  }
 
-.admin-users-stats p {
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-size: 0.8rem;
-  color: var(--text-muted);
+  p {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
 }
 
 .admin-users-content {
@@ -71,25 +71,25 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-}
 
-.admin-users-content header {
-  display: flex;
-  justify-content: space-between;
-  gap: 1.25rem;
-  flex-wrap: wrap;
-  align-items: center;
-}
+  header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
 
-.admin-users-content h2 {
-  margin: 0;
-  font-size: 1.6rem;
-  color: var(--legals-text);
-}
+  h2 {
+    margin: 0;
+    font-size: 1.6rem;
+    color: var(--legals-text);
+  }
 
-.admin-users-content p {
-  margin: 0.35rem 0 0;
-  color: var(--text-muted);
+  p {
+    margin: 0.35rem 0 0;
+    color: var(--text-muted);
+  }
 }
 
 .btn-new-user {
@@ -102,10 +102,10 @@
   cursor: pointer;
   box-shadow: 0 18px 35px rgba(92, 225, 230, 0.45);
   transition: transform 0.2s ease;
-}
 
-.btn-new-user:hover {
-  transform: translateY(-2px);
+  &:hover {
+    transform: translateY(-2px);
+  }
 }
 
 .admin-users-table {
@@ -145,11 +145,11 @@
   font-size: 0.85rem;
   cursor: pointer;
   margin-bottom: 1rem;
-}
 
-.btn-cancel-modal:hover {
-  border-color: var(--accent-main);
-  color: var(--accent-main);
+  &:hover {
+    border-color: var(--accent-main);
+    color: var(--accent-main);
+  }
 }
 
 @media (max-width: 640px) {

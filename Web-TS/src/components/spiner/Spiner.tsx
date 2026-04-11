@@ -1,4 +1,4 @@
-import "./Spiner.css";
+import "./Spiner.scss";
 
 const Spinner = ({ text = "Loading..." }) => {
   return (

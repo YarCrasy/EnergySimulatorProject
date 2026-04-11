@@ -1,4 +1,4 @@
-import "./DiagramToolbar.css";
+import "./DiagramToolbar.scss";
 
 const clampZoom = (value) => Math.min(1.6, Math.max(0.4, value));
 

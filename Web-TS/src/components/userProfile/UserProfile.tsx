@@ -1,4 +1,4 @@
-import "./UserProfile.css";
+import "./UserProfile.scss";
 
 import userProfile from "@svg/user-profile.svg";
 

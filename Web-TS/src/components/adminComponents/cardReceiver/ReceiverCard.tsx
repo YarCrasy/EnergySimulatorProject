@@ -1,5 +1,5 @@
 import type { ReceiverCardProps } from "@models/props/receiver";
-import "./ReceiverCard.css";
+import "./ReceiverCard.scss";
 
 export default function ReceiverCard({ receiver, onEdit, onDelete }: ReceiverCardProps) {
   const hasPosition = Number.isFinite(receiver?.x) && Number.isFinite(receiver?.y);
