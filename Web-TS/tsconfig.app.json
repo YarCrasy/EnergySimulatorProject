@@ -5,14 +5,13 @@
     "useDefineForClassFields": true,
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@api/*": ["src/api/*"],
-      "@models/*": ["models/*"],
-      "@svg/*": ["src/assets/images/svg/*"],
-      "@jpg/*": ["src/assets/images/jpg/*"],
-      "@png/*": ["src/assets/images/png/*"]
+      "@/*": ["./src/*"],
+      "@api/*": ["./src/api/*"],
+      "@models/*": ["./models/*"],
+      "@svg/*": ["./src/assets/images/svg/*"],
+      "@jpg/*": ["./src/assets/images/jpg/*"],
+      "@png/*": ["./src/assets/images/png/*"]
     },
     "types": ["vite/client", "vitest/globals", "@testing-library/jest-dom"],
     "skipLibCheck": true,
