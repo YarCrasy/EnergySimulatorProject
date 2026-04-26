@@ -20,6 +20,7 @@ import ies.elrincon.backend.models.Project;
 import ies.elrincon.backend.models.User;
 import ies.elrincon.backend.repositories.ProjectRepository;
 import ies.elrincon.backend.repositories.UserRepository;
+import ies.elrincon.backend.security.JwtUtil;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -28,10 +29,12 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
+    private final JwtUtil jwtUtil;
 
-    public UserController(UserRepository userRepository, ProjectRepository projectRepository) {
+    public UserController(UserRepository userRepository, ProjectRepository projectRepository, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.projectRepository = projectRepository;
+        this.jwtUtil = jwtUtil;
     }
 
     // Obtener todos los usuarios con filtros opcionales por nombre o email
@@ -95,7 +98,7 @@ public class UserController {
 
     // Login sencillo por email/password hash (pendiente de hashing real)
     @PostMapping("/login")
-    public User login(@RequestBody LoginRequest credentials) {
+    public AuthResponse login(@RequestBody LoginRequest credentials) {
         User user = userRepository.findByEmailIgnoreCase(credentials.email())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED,
                         "Usuario o contraseña incorrectos"));
@@ -104,7 +107,7 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario o contraseña incorrectos");
         }
 
-        return user;
+        return new AuthResponse(jwtUtil.generateToken(user), user);
     }
 
     @GetMapping("/{id}/projects")
@@ -129,5 +132,9 @@ public class UserController {
 
     public record LoginRequest(String email, String password){
         
+    }
+
+    public record AuthResponse(String token, User user) {
+
     }
 }
