@@ -15,4 +15,4 @@
 - Imagen `@jpg/loginImg.jpg`.
 
 ## Archivos
-- `Login.jsx`, `Login.css`.
+- `Login.jsx`, `Login.scss`.

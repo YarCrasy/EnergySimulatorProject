@@ -10,4 +10,4 @@
 - Fondo con grilla sutil y tarjetas glass.
 
 ## Archivos
-- `Legals.jsx`, `Legals.css`.
+- `Legals.jsx`, `Legals.scss`.

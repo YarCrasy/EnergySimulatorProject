@@ -15,4 +15,4 @@
 - Icono custom `@png/marker.png`.
 
 ## Archivos
-- `Locations.jsx`, `Locations.css`.
+- `Locations.jsx`, `Locations.scss`.

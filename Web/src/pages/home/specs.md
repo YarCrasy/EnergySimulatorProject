@@ -15,4 +15,4 @@
 - Imagen `@jpg/home.jpg` para el hero.
 
 ## Archivos
-- `Home.jsx`, `Home.css`.
+- `Home.jsx`, `Home.scss`.

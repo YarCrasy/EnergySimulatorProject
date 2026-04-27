@@ -15,4 +15,4 @@
 - Imagen `@jpg/registerImg.jpg`.
 
 ## Archivos
-- `Register.jsx`, `Register.css`.
+- `Register.jsx`, `Register.scss`.
