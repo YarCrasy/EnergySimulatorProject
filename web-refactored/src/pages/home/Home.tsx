@@ -39,7 +39,7 @@ function Home() {
           </p>
           <div className="hero-cta">
             <button type="button" className="cta-primary" onClick={() => navigate("/simulator")}>
-              Comenzar simulacion
+              Comenzar simulación
             </button>
             <button type="button" className="cta-ghost" onClick={() => navigate("/projects")}>
               Explorar proyectos

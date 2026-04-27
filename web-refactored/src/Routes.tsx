@@ -1,30 +1,21 @@
 import Home from "./pages/home/Home";
 
-const routePage = (title: string, description?: string) => (
-  <main className="route-page">
-    <div>
-      <h1>{title}</h1>
-      {description && <p>{description}</p>}
-    </div>
-  </main>
-);
-
 export const publicRoutes = [
   { path: "/", element: <Home /> },
   { path: "/home", element: <Home /> },
-  { path: "/about", element: routePage("Sobre nosotros", "Conoce la propuesta y el equipo del simulador.") },
-  { path: "/legals", element: routePage("Aviso legal", "Información legal y condiciones de uso.") },
-  { path: "/locations", element: routePage("Ubicaciones", "Explora los puntos de interés de tus proyectos.") },
-  { path: "/login", element: routePage("Iniciar sesión", "Accede para gestionar proyectos y simulaciones.") },
-  { path: "/register", element: routePage("Registro", "Crea tu cuenta para empezar a simular.") },
+  { path: "/about", element: <h1>Sobre nosotros</h1> },
+  { path: "/legals", element: <h1>Aviso legal</h1> },
+  { path: "/locations", element: <h1>Ubicaciones</h1> },
+  { path: "/login", element: <h1>Iniciar sesión</h1> },
+  { path: "/register", element: <h1>Registro</h1> },
 ] as const;
 
 export const protectedRoutes = [
-  { path: "/dashboard", element: routePage("Dashboard", "Resumen general de tu actividad.") },
-  { path: "/projects", element: routePage("Proyectos", "Lista y gestión de proyectos activos.") },
-  { path: "/simulator", element: routePage("Simulador", "Espacio de trabajo principal.") },
-  { path: "/simulator/:projectId", element: routePage("Proyecto del simulador", "Detalle de una simulación concreta.") },
-  { path: "/profile", element: routePage("Perfil", "Datos de tu usuario y preferencias.") },
-  { path: "/administration/users", element: routePage("Administración de usuarios", "Gestión de cuentas y permisos.") },
-  { path: "/administration/elements", element: routePage("Administración de elementos", "Configuración de catálogos y recursos.") },
+  { path: "/dashboard", element: <h1>Dashboard</h1> },
+  { path: "/projects", element: <h1>Proyectos</h1> },
+  { path: "/simulator", element: <h1>Simulador</h1> },
+  { path: "/simulator/:projectId", element: <h1>Proyecto del simulador</h1> },
+  { path: "/profile", element: <h1>Perfil</h1> },
+  { path: "/administration/users", element: <h1>Administración de usuarios</h1> },
+  { path: "/administration/elements", element: <h1>Administración de elementos</h1> },
 ] as const;

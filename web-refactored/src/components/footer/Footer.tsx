@@ -1,32 +1,24 @@
 import { Link } from "react-router-dom";
+import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
 
 import "./Footer.css";
 
-const socialLinks = [
-  { href: "https://facebook.com", label: "Facebook", short: "f" },
-  { href: "https://twitter.com", label: "X", short: "x" },
-  { href: "https://instagram.com", label: "Instagram", short: "ig" },
-] as const;
-
 function Footer() {
   return (
-    <footer className="app-footer">
-      <div className="footer-brand">
-        <strong>Energy Simulator</strong>
-        <p>Diseno, simulacion y seguimiento para proyectos energeticos.</p>
+    <footer className="footer-container">
+      <div className="social-media-container">
+        <a href="https://facebook.com" target="_blank" rel="noreferrer" className="facebook" data-label="Facebook">
+          <FaFacebook size={24} />
+        </a>
+        <a href="https://twitter.com" target="_blank" rel="noreferrer" className="twitter" data-label="Twitter">
+          <FaTwitter size={24} />
+        </a>
+        <a href="https://instagram.com" target="_blank" rel="noreferrer" className="instagram" data-label="Instagram">
+          <FaInstagram size={24} />
+        </a>
       </div>
-
-      <div className="footer-social">
-        {socialLinks.map((social) => (
-          <a key={social.label} href={social.href} target="_blank" rel="noreferrer" aria-label={social.label}>
-            <span aria-hidden="true">{social.short}</span>
-          </a>
-        ))}
-      </div>
-
-      <div className="footer-links">
-        <Link to="/about">Sobre nosotros</Link>
-        <Link to="/legals">Legales</Link>
+      <div className="footer-legals">
+        <Link to="/legals">Legals</Link>
       </div>
     </footer>
   );

@@ -1,4 +1,4 @@
- :root {
+:root {
   --color-bg-deep: #040b18;
   --color-gradient: radial-gradient(circle at 20% 20%, #14274e 0%, transparent 45%),
     radial-gradient(circle at 80% 0%, #1c4448 0%, transparent 50%),
@@ -8,7 +8,7 @@
   --accent-main: #a2ff86;
   --accent-alt: #5ce1e6;
   --text-high: #f5f7fb;
-  
+
   --text-muted: rgba(245, 247, 251, 0.85);
   --primary-color: var(--accent-main);
   --secondary-color: var(--accent-alt);
@@ -31,11 +31,18 @@
   padding: 0;
 }
 
+html {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   background: var(--app-gradient, var(--background-color));
   color: var(--text-color);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 :focus-visible {
@@ -49,20 +56,18 @@ body {
   background: transparent;
   color: inherit;
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
-}
-
-body,
-#root,
-.app-layout {
-  min-height: 100vh;
 }
 
 .app-layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .sr-only {
@@ -83,18 +88,20 @@ body,
   flex-direction: column;
 }
 
-.route-page {
-  flex: 1;
-  display: grid;
-  place-items: center;
-  min-height: 100vh;
-  padding: 24px;
-  text-align: center;
-}
 
-.route-page h1 {
-  font-size: clamp(2.5rem, 7vw, 5.5rem);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  text-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+button {
+  background: linear-gradient(120deg, var(--accent-main), var(--accent-alt));
+  border: none;
+  border-radius: 999px;
+  padding: 0.85rem 1.8rem;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    color: #041126;
+    box-shadow: 0 0 20px rgba(92, 225, 230, 0.5);
+    transform: translateY(-2px);
+  }
 }
