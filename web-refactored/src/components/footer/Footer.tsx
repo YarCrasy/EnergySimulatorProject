@@ -18,7 +18,10 @@ function Footer() {
         </a>
       </div>
       <div className="footer-legals">
-        <Link to="/legals">Legals</Link>
+        <Link to="/locations">Nuestras Ubicaciones</Link>
+      </div>
+      <div className="footer-legals">
+        <Link to="/legals">Terminos y Condiciones</Link>
       </div>
     </footer>
   );

@@ -1,11 +1,14 @@
 import Home from "./pages/home/Home";
+import About from "./pages/about/About";
+import Legals from "./pages/legals/Legals";
+import Locations from "./pages/locations/Locations";
 
 export const publicRoutes = [
   { path: "/", element: <Home /> },
   { path: "/home", element: <Home /> },
-  { path: "/about", element: <h1>Sobre nosotros</h1> },
-  { path: "/legals", element: <h1>Aviso legal</h1> },
-  { path: "/locations", element: <h1>Ubicaciones</h1> },
+  { path: "/about", element: <About /> },
+  { path: "/legals", element: <Legals /> },
+  { path: "/locations", element: <Locations /> },
   { path: "/login", element: <h1>Iniciar sesión</h1> },
   { path: "/register", element: <h1>Registro</h1> },
 ] as const;

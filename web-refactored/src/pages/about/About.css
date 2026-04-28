@@ -1,0 +1,309 @@
+.about-page {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: clamp(2rem, 4vw, 4rem) clamp(1rem, 5vw, 3.5rem) 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 4vw, 3rem);
+
+  .about-hero {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    background: rgba(5, 14, 32, 0.7);
+    border: 1px solid var(--surface-line);
+    border-radius: 36px;
+    box-shadow: 0 35px 80px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(24px);
+  }
+
+  .about-eyebrow {
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .about-hero_layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(1.5rem, 3vw, 3rem);
+    align-items: start;
+
+    h1 {
+      font-size: clamp(2.2rem, 4vw, 3.6rem);
+      line-height: 1.1;
+      color: var(--legals-text);
+    }
+
+    p {
+      color: var(--text-muted);
+      max-width: 540px;
+      line-height: 1.5;
+    }
+  }
+
+  .about-stats {
+    margin-top: 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+
+    article {
+      background: rgba(6, 15, 36, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 1rem 1.25rem;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+    }
+
+    span {
+      display: block;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent-main);
+    }
+
+    p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+  }
+
+  .about-hero_visual {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 100%;
+      object-fit: cover;
+      border-radius: inherit;
+      display: block;
+      border-radius: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+  }
+
+  .about-pillars {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+
+    article {
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(5, 14, 32, 0.75);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      box-shadow: 0 25px 55px rgba(0, 0, 0, 0.35);
+    }
+
+    h3 {
+      color: var(--legals-text);
+      font-size: 1.2rem;
+    }
+
+    p {
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+  }
+
+  .pillar-image {
+    width: 100%;
+    height: 160px;
+    border-radius: 22px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .about-segments,
+  .about-milestones {
+    border-radius: 36px;
+    border: 1px solid var(--surface-line);
+    padding: clamp(1.5rem, 4vw, 3rem);
+    background: rgba(5, 12, 27, 0.85);
+    box-shadow: 0 35px 75px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(20px);
+
+    header {
+      p {
+        text-transform: uppercase;
+        letter-spacing: 0.45em;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+      }
+
+      h2 {
+        font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+        color: var(--legals-text);
+        margin-bottom: 1.5rem;
+      }
+    }
+  }
+
+  .segment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+
+    article {
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 1rem;
+      background: rgba(6, 15, 36, 0.75);
+    }
+  }
+
+  .segment-image {
+    border-radius: 24px;
+    min-height: 220px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1rem;
+    color: var(--legals-text);
+
+    span {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent-main);
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .segment-copy {
+    margin-top: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+
+  .milestone-track {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+
+    article {
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 1.25rem;
+      background: rgba(6, 14, 33, 0.75);
+    }
+
+    span {
+      font-size: 0.85rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    h3 {
+      margin: 0.4rem 0;
+      color: var(--legals-text);
+    }
+
+    p {
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+  }
+
+  .about-cta {
+    border-radius: 36px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    background: linear-gradient(135deg, rgba(162, 255, 134, 0.18), rgba(92, 225, 230, 0.15));
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    h3 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: #a3ffe0;
+    }
+
+    p {
+      color: rgba(207, 255, 247, 0.8);
+      max-width: 520px;
+      line-height: 1.5;
+    }
+  }
+
+  .about-cta_actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+
+    a {
+      border-radius: 999px;
+      padding: 0.9rem 1.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(120deg, var(--accent-main), var(--accent-alt));
+      color: #041126;
+    }
+
+    .btn-ghost {
+      border: 1px solid rgba(4, 17, 38, 0.2);
+      color: #97d9ff;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(92, 225, 230, 0.35);
+    }
+  }
+
+  @media (max-width: 960px) {
+    .about-hero_layout {
+      grid-template-columns: 1fr;
+    }
+
+    .about-hero_visual {
+      max-width: 560px;
+      margin-inline: auto;
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  @media (max-width: 640px) {
+
+    .about-hero,
+    .about-pillars article,
+    .about-segments,
+    .about-milestones,
+    .about-cta {
+      border-radius: 28px;
+    }
+
+    .about-cta_actions {
+      flex-direction: column;
+
+      a {
+        text-align: center;
+      }
+    }
+  }
+
+}

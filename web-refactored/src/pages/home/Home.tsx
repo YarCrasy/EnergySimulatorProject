@@ -11,11 +11,11 @@ const stats = [
 
 const highlights = [
   {
-    title: "Modelos de precision",
-    detail: "Integramos parametros climaticos y de consumo reales para aproximaciones confiables.",
+    title: "Modelos de precisión",
+    detail: "Integramos parámetros climáticos y de consumo reales para aproximaciones confiables.",
   },
   {
-    title: "Escenarios instantaneos",
+    title: "Escenarios instantáneos",
     detail: "Crea variantes ilimitadas y compara CAPEX / OPEX en segundos.",
   },
   {
@@ -32,10 +32,10 @@ function Home() {
       <section className="home-hero">
         <div className="hero-copy">
           <p className="hero-eyebrow">Simulador integral</p>
-          <h1>Disena tu proxima planta de energia renovable con datos visibles y accionables</h1>
+          <h1>Diseña tu próxima planta de energía renovable con datos visibles y accionables</h1>
           <p className="hero-lede">
-            Carga consumos reales, evalua escenarios solares y eolicos y comparte resultados con tu equipo
-            en un entorno seguro respaldado por analitica avanzada.
+            Carga consumos reales, evalúa escenarios solares y eólicos y comparte resultados con tu equipo
+            en un entorno seguro respaldado por analítica avanzada.
           </p>
           <div className="hero-cta">
             <button type="button" className="cta-primary" onClick={() => navigate("/simulator")}>
@@ -61,16 +61,16 @@ function Home() {
               backgroundImage: `radial-gradient(circle at 20% 20%, rgba(162, 255, 134, 0.2), transparent 55%), url(${hero})`,
             }}
           >
-            <div className="hero-visual__glow" />
+            <div className="hero-visual_glow" />
           </div>
         </div>
       </section>
 
       <section className="home-highlights">
         <div className="section-head">
-          <p>Workflow estrategico</p>
-          <h2>Unifica descubrimiento, simulacion y ejecucion</h2>
-          <span>Potencia tus decisiones energeticas con herramientas disenadas para equipos modernos.</span>
+          <p>Workflow estratégico</p>
+          <h2>Unifica descubrimiento, simulación y ejecución</h2>
+          <span>Potencia tus decisiones energéticas con herramientas diseñadas para equipos modernos.</span>
         </div>
         <div className="highlight-grid">
           {highlights.map((item) => (
