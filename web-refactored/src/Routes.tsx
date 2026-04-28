@@ -2,6 +2,7 @@ import Home from "./pages/home/Home";
 import About from "./pages/about/About";
 import Legals from "./pages/legals/Legals";
 import Locations from "./pages/locations/Locations";
+import Login from "./pages/login/Login";
 
 export const publicRoutes = [
   { path: "/", element: <Home /> },
@@ -9,7 +10,7 @@ export const publicRoutes = [
   { path: "/about", element: <About /> },
   { path: "/legals", element: <Legals /> },
   { path: "/locations", element: <Locations /> },
-  { path: "/login", element: <h1>Iniciar sesión</h1> },
+  { path: "/login", element: <Login /> },
   { path: "/register", element: <h1>Registro</h1> },
 ] as const;
 
