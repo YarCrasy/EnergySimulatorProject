@@ -43,7 +43,12 @@ public class UsersAPI {
         payload.put("admin", false);
 
         JSONObject response = ApiConnection.post("users", payload);
-        return new User(response);
+        String token = readToken(response);
+        ApiConnection.setBearerToken(token);
+        JSONObject userPayload = response.has("user") ? response.getJSONObject("user") : response;
+        User user = new User(userPayload);
+        user.setAuthToken(token);
+        return user;
     }
 
     public static User login(String email, String password) throws JSONException, IOException {
@@ -51,8 +56,23 @@ public class UsersAPI {
         loginObject.put("email", email);
         loginObject.put("password", password);
         JSONObject response = ApiConnection.post("users/login", loginObject);
+        String token = readToken(response);
+        ApiConnection.setBearerToken(token);
         JSONObject userPayload = response.has("user") ? response.getJSONObject("user") : response;
-        return new User(userPayload);
+        User user = new User(userPayload);
+        user.setAuthToken(token);
+        return user;
+    }
+
+    private static String readToken(JSONObject response) {
+        if (response == null) return null;
+        String[] keys = {"token", "accessToken", "jwt"};
+        for (String key : keys) {
+            if (response.has(key) && !response.isNull(key)) {
+                return response.optString(key, null);
+            }
+        }
+        return null;
     }
 }
 

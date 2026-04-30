@@ -11,6 +11,8 @@ public class ConsumerElement extends Element {
 
     private Double powerConsumption;
     private Double baseConsumption;
+    private Double peakConsumption;
+    private String profileType = "CONSTANT";
 
     public ConsumerElement() {
     }
@@ -40,5 +42,21 @@ public class ConsumerElement extends Element {
         if (this.powerConsumption == null) {
             this.powerConsumption = baseConsumption;
         }
+    }
+
+    public Double getPeakConsumption() {
+        return peakConsumption;
+    }
+
+    public void setPeakConsumption(Double peakConsumption) {
+        this.peakConsumption = peakConsumption;
+    }
+
+    public String getProfileType() {
+        return profileType;
+    }
+
+    public void setProfileType(String profileType) {
+        this.profileType = profileType;
     }
 }

@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ies.elrincon.energysimulator.api.ApiConnection;
 import ies.elrincon.energysimulator.api.ProjectsAPI;
 import ies.elrincon.energysimulator.components.ProjectCardView;
 import ies.elrincon.energysimulator.models.Project;
@@ -114,6 +115,7 @@ public class ProjectsActivity extends AppCompatActivity {
             errMsg.setText("Error al cargar el perfil, intente de nuevo o póngase en contacto con el soporte.");
             return;
         }
+        ApiConnection.setBearerToken(sessionUser.getAuthToken());
 
         String displayName = sessionUser.getFullName() != null && !sessionUser.getFullName().isBlank()
                 ? sessionUser.getFullName()

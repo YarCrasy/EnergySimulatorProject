@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 import ies.elrincon.energysimulator.models.Project;
+import ies.elrincon.energysimulator.models.SimulationRun;
 
 public class ProjectsAPI {
 
@@ -45,6 +46,18 @@ public class ProjectsAPI {
         // ApiConnection.delete devuelve un JSONObject con la respuesta; si no lanza excepción, consideramos éxito
         ApiConnection.delete("projects/" + projectId);
         return true;
+    }
+
+    public static SimulationRun runOpenMeteoSimulation(Long projectId) throws JSONException, IOException {
+        if (projectId == null) throw new IllegalArgumentException("projectId requerido");
+        JSONObject response = ApiConnection.post("projects/" + projectId + "/simulations", new JSONObject());
+        return new SimulationRun(response);
+    }
+
+    public static SimulationRun getLatestSimulation(Long projectId) throws JSONException, IOException {
+        if (projectId == null) throw new IllegalArgumentException("projectId requerido");
+        JSONObject response = ApiConnection.getObject("projects/" + projectId + "/simulations/latest");
+        return new SimulationRun(response);
     }
 }
 

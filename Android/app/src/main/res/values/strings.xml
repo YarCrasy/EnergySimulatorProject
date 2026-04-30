@@ -45,4 +45,7 @@
     <string name="simulator_workspace_empty">Todav&#237;a no has a&#241;adido elementos. Usa el cat&#225;logo lateral para empezar.</string>
     <string name="simulator_menu_toggle">Men&#250;</string>
     <string name="simulator_back">Volver</string>
+    <string name="simulator_run_simulation">Simular</string>
+    <string name="simulator_results_title">Resultados Open-Meteo</string>
+    <string name="simulator_results_empty">Ejecuta una simulaci&#243;n para ver el resumen horario.</string>
 </resources>

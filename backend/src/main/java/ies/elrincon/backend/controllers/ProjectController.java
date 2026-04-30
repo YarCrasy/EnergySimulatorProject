@@ -88,6 +88,27 @@ public class ProjectController {
         if (project.getLatitude() != null) {
             existingProject.setLatitude(project.getLatitude());
         }
+        if (project.getLongitude() != null) {
+            existingProject.setLongitude(project.getLongitude());
+        }
+        if (project.getTimezone() != null) {
+            existingProject.setTimezone(project.getTimezone());
+        }
+        if (project.getTiltAngle() != null) {
+            existingProject.setTiltAngle(project.getTiltAngle());
+        }
+        if (project.getAzimuth() != null) {
+            existingProject.setAzimuth(project.getAzimuth());
+        }
+        if (project.getDurationDays() != null) {
+            existingProject.setDurationDays(project.getDurationDays());
+        }
+        if (project.getSimulationMode() != null) {
+            existingProject.setSimulationMode(project.getSimulationMode());
+        }
+        if (project.getSystemLossPercent() != null) {
+            existingProject.setSystemLossPercent(project.getSystemLossPercent());
+        }
         existingProject.setEnergyNeeded(project.getEnergyNeeded());
         existingProject.setEnergyEnough(project.isEnergyEnough());
 

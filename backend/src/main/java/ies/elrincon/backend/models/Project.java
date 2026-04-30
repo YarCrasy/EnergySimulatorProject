@@ -36,6 +36,25 @@ public class Project {
 
     private Double latitude = 28.1;
 
+    private Double longitude = -15.4;
+
+    @Column(length = 80)
+    private String timezone = "auto";
+
+    @Column(name = "tilt_angle")
+    private Double tiltAngle = 30.0;
+
+    private Double azimuth = 0.0;
+
+    @Column(name = "duration_days")
+    private Integer durationDays = 1;
+
+    @Column(name = "simulation_mode", length = 80)
+    private String simulationMode = "open-meteo";
+
+    @Column(name = "system_loss_percent")
+    private Double systemLossPercent = 14.0;
+
     @Column(name = "is_energy_enough")
     private boolean energyEnough;
 
@@ -107,6 +126,62 @@ public class Project {
 
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getTimezone() {
+        return timezone;
+    }
+
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
+    }
+
+    public Double getTiltAngle() {
+        return tiltAngle;
+    }
+
+    public void setTiltAngle(Double tiltAngle) {
+        this.tiltAngle = tiltAngle;
+    }
+
+    public Double getAzimuth() {
+        return azimuth;
+    }
+
+    public void setAzimuth(Double azimuth) {
+        this.azimuth = azimuth;
+    }
+
+    public Integer getDurationDays() {
+        return durationDays;
+    }
+
+    public void setDurationDays(Integer durationDays) {
+        this.durationDays = durationDays;
+    }
+
+    public String getSimulationMode() {
+        return simulationMode;
+    }
+
+    public void setSimulationMode(String simulationMode) {
+        this.simulationMode = simulationMode;
+    }
+
+    public Double getSystemLossPercent() {
+        return systemLossPercent;
+    }
+
+    public void setSystemLossPercent(Double systemLossPercent) {
+        this.systemLossPercent = systemLossPercent;
     }
 
     public boolean isEnergyEnough() {

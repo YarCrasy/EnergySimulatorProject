@@ -36,6 +36,8 @@ import ies.elrincon.energysimulator.api.ProjectsAPI;
 import ies.elrincon.energysimulator.models.EnergyElement;
 import ies.elrincon.energysimulator.models.Project;
 import ies.elrincon.energysimulator.models.ProjectNode;
+import ies.elrincon.energysimulator.models.SimulationPoint;
+import ies.elrincon.energysimulator.models.SimulationRun;
 
 public class SimulatorActivity extends AppCompatActivity {
     public static final String EXTRA_PROJECT = "project";
@@ -55,8 +57,12 @@ public class SimulatorActivity extends AppCompatActivity {
     private TextView generationMetricView;
     private TextView consumptionMetricView;
     private TextView balanceMetricView;
+    private TextView simulationSummaryView;
+    private TextView simulationEmptyStateView;
+    private LinearLayout simulationPointsList;
     private ToggleButton menuToggleBtn;
     private Button saveProjectBtn;
+    private Button runSimulationBtn;
 
     private volatile boolean isSaving = false;
     private boolean isDirty = false;
@@ -102,8 +108,12 @@ public class SimulatorActivity extends AppCompatActivity {
         generationMetricView = findViewById(R.id.simulatorMetricGeneration);
         consumptionMetricView = findViewById(R.id.simulatorMetricConsumption);
         balanceMetricView = findViewById(R.id.simulatorMetricBalance);
+        simulationSummaryView = findViewById(R.id.simulationSummary);
+        simulationEmptyStateView = findViewById(R.id.simulationEmptyState);
+        simulationPointsList = findViewById(R.id.simulationPointsList);
         menuToggleBtn = findViewById(R.id.menuToggleBtn);
         saveProjectBtn = findViewById(R.id.saveProjectBtn);
+        runSimulationBtn = findViewById(R.id.runSimulationBtn);
     }
 
     private void bindProjectFromIntent() {
@@ -123,6 +133,7 @@ public class SimulatorActivity extends AppCompatActivity {
         backBtn.setOnClickListener(v -> returnProjectAndFinish());
 
         saveProjectBtn.setOnClickListener(v -> saveProject(true));
+        runSimulationBtn.setOnClickListener(v -> runOpenMeteoSimulation());
 
         menuToggleBtn.setOnCheckedChangeListener((buttonView, isChecked) ->
                 sideMenu.setVisibility(isChecked ? View.GONE : View.VISIBLE));
@@ -189,6 +200,7 @@ public class SimulatorActivity extends AppCompatActivity {
                     recalculateProjectMetrics();
                     setStatus("Proyecto listo para editar.");
                     isDirty = false;
+                    loadLatestSimulation();
                 });
             } catch (Exception e) {
                 runOnUiThread(() -> setStatus("No se pudo cargar el simulador: " + e.getMessage()));
@@ -413,6 +425,117 @@ public class SimulatorActivity extends AppCompatActivity {
                 }
             }
         }).start();
+    }
+
+    private void runOpenMeteoSimulation() {
+        if (currentProject == null || currentProject.getId() == null) {
+            Toast.makeText(this, "Guarda el proyecto antes de simular", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        recalculateProjectMetrics();
+        currentProject.setName(titleEdit.getText().toString().trim().isEmpty()
+                ? "Proyecto sin nombre"
+                : titleEdit.getText().toString().trim());
+        currentProject.setSimulationMode("open-meteo");
+
+        runSimulationBtn.setEnabled(false);
+        saveProjectBtn.setEnabled(false);
+        setStatus("Ejecutando simulación Open-Meteo...");
+
+        new Thread(() -> {
+            try {
+                Project updated = ProjectsAPI.updateProject(currentProject.getId(), currentProject.toJSON());
+                SimulationRun run = ProjectsAPI.runOpenMeteoSimulation(updated.getId());
+                runOnUiThread(() -> {
+                    currentProject = updated;
+                    renderSimulationRun(run);
+                    setStatus("Simulación Open-Meteo completada.");
+                    isDirty = false;
+                });
+            } catch (Exception e) {
+                runOnUiThread(() -> {
+                    setStatus("No se pudo ejecutar la simulación: " + e.getMessage());
+                    Toast.makeText(this, "Error al simular", Toast.LENGTH_SHORT).show();
+                });
+            } finally {
+                runOnUiThread(() -> {
+                    runSimulationBtn.setEnabled(true);
+                    saveProjectBtn.setEnabled(true);
+                });
+            }
+        }).start();
+    }
+
+    private void loadLatestSimulation() {
+        if (currentProject == null || currentProject.getId() == null) {
+            renderSimulationRun(null);
+            return;
+        }
+
+        new Thread(() -> {
+            try {
+                SimulationRun run = ProjectsAPI.getLatestSimulation(currentProject.getId());
+                runOnUiThread(() -> renderSimulationRun(run));
+            } catch (Exception ignored) {
+                runOnUiThread(() -> renderSimulationRun(null));
+            }
+        }).start();
+    }
+
+    private void renderSimulationRun(SimulationRun run) {
+        simulationPointsList.removeAllViews();
+        if (run == null) {
+            simulationSummaryView.setText("Sin simulaciones Open-Meteo todavía.");
+            simulationEmptyStateView.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        simulationSummaryView.setText(String.format(Locale.US,
+                "Generación %.2f kWh · Consumo %.2f kWh · Déficit %.2f kWh · Excedente %.2f kWh · Autosuficiencia %.0f%%",
+                safe(run.getTotalGenerationKwh()),
+                safe(run.getTotalConsumptionKwh()),
+                safe(run.getDeficitKwh()),
+                safe(run.getSurplusKwh()),
+                safe(run.getSelfSufficiencyPercent())));
+
+        List<SimulationPoint> points = run.getPoints();
+        if (points == null || points.isEmpty()) {
+            simulationEmptyStateView.setVisibility(View.VISIBLE);
+            return;
+        }
+        simulationEmptyStateView.setVisibility(View.GONE);
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        int maxRows = Math.min(points.size(), 24);
+        for (int i = 0; i < maxRows; i++) {
+            SimulationPoint point = points.get(i);
+            View row = inflater.inflate(R.layout.view_simulation_point, simulationPointsList, false);
+            ((TextView) row.findViewById(R.id.simulationPointTime)).setText(formatHour(point.getTimestamp()));
+            ((TextView) row.findViewById(R.id.simulationPointGeneration)).setText(formatWatts(point.getGenerationW()));
+            ((TextView) row.findViewById(R.id.simulationPointConsumption)).setText(formatWatts(point.getConsumptionW()));
+            ((TextView) row.findViewById(R.id.simulationPointBalance)).setText(formatWatts(point.getBalanceW()));
+            ((TextView) row.findViewById(R.id.simulationPointClouds)).setText(String.format(Locale.US, "%.0f%%", safe(point.getCloudCover())));
+            ((TextView) row.findViewById(R.id.simulationPointIrradiance)).setText(String.format(Locale.US, "%.0f W/m²", safe(point.getIrradiance())));
+            simulationPointsList.addView(row);
+        }
+    }
+
+    private double safe(Double value) {
+        return value != null ? value : 0d;
+    }
+
+    private String formatWatts(Double watts) {
+        return String.format(Locale.US, "%.0f W", safe(watts));
+    }
+
+    private String formatHour(String timestamp) {
+        if (timestamp == null || timestamp.isBlank()) return "--:--";
+        int t = timestamp.indexOf('T');
+        if (t >= 0 && timestamp.length() >= t + 6) {
+            return timestamp.substring(t + 1, t + 6);
+        }
+        return timestamp.length() > 16 ? timestamp.substring(0, 16) : timestamp;
     }
 
     private void returnProjectAndFinish() {

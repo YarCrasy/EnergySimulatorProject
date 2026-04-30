@@ -4,6 +4,10 @@ import Legals from "./pages/legals/Legals";
 import Locations from "./pages/locations/Locations";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
+import AdminBasic from "./pages/admin/AdminBasic";
+import Profile from "./pages/profile/Profile";
+import Projects from "./pages/projects/Projects";
+import Simulator from "./pages/simulator/Simulator";
 
 export const publicRoutes = [
   { path: "/", element: <Home /> },
@@ -13,14 +17,14 @@ export const publicRoutes = [
   { path: "/locations", element: <Locations /> },
   { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
+  { path: "/simulator", element: <Simulator /> },
+  { path: "/simulator/:projectId", element: <Simulator /> },
 ] as const;
 
 export const protectedRoutes = [
-  { path: "/dashboard", element: <h1>Dashboard</h1> },
-  { path: "/projects", element: <h1>Proyectos</h1> },
-  { path: "/simulator", element: <h1>Simulador</h1> },
-  { path: "/simulator/:projectId", element: <h1>Proyecto del simulador</h1> },
-  { path: "/profile", element: <h1>Perfil</h1> },
-  { path: "/administration/users", element: <h1>Administración de usuarios</h1> },
-  { path: "/administration/elements", element: <h1>Administración de elementos</h1> },
+  { path: "/dashboard", element: <Projects /> },
+  { path: "/projects", element: <Projects /> },
+  { path: "/profile", element: <Profile /> },
+  { path: "/administration/users", element: <AdminBasic view="users" /> },
+  { path: "/administration/elements", element: <AdminBasic view="elements" /> },
 ] as const;

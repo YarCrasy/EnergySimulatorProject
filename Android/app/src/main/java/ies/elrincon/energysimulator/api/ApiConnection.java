@@ -16,6 +16,19 @@ import org.json.JSONObject;
 
 public class ApiConnection {
     public final static String BASE_URL = "https://dam.yarcrasy.com/api/";
+    private static String bearerToken;
+
+    public static void setBearerToken(String token) {
+        if (token == null || token.isBlank()) {
+            bearerToken = null;
+            return;
+        }
+        bearerToken = token.startsWith("Bearer ") ? token.substring("Bearer ".length()) : token;
+    }
+
+    public static String getBearerToken() {
+        return bearerToken;
+    }
 
     private static String buildUrl(String endpoint) {
         String normalized = endpoint == null ? "" : endpoint.trim();
@@ -29,6 +42,9 @@ public class ApiConnection {
         conn.setRequestMethod(method);
         conn.setRequestProperty("Accept", "application/json");
         conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+        if (bearerToken != null && !bearerToken.isBlank()) {
+            conn.setRequestProperty("Authorization", "Bearer " + bearerToken);
+        }
         conn.setConnectTimeout(10000);
         conn.setReadTimeout(10000);
         if (payload != null) {

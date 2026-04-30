@@ -86,6 +86,8 @@ public class ConsumerElementController {
                     element.setImageUrl(details.getImageUrl());
                     element.setPowerConsumption(details.getPowerConsumption());
                     element.setBaseConsumption(details.getBaseConsumption());
+                    element.setPeakConsumption(details.getPeakConsumption());
+                    element.setProfileType(details.getProfileType());
                     return consumerElementRepository.save(element);
                 })
                 .orElseThrow(() -> new RuntimeException("ConsumerElement not found with id " + id));

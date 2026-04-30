@@ -49,6 +49,8 @@ public class ProjectNode {
     @Column(name = "node_type", length = 120)
     private String type;
 
+    private Integer quantity = 1;
+
     @Column(name = "node_data", columnDefinition = "TEXT")
     private String data;
 
@@ -137,6 +139,14 @@ public class ProjectNode {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public String getData() {
