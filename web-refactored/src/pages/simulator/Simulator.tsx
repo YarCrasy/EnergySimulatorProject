@@ -19,7 +19,8 @@ import {
 import "@xyflow/react/dist/style.css";
 import { useNavigate, useParams } from "react-router-dom";
 import type { IconType } from "react-icons";
-import { FaBatteryHalf, FaBolt, FaChartLine, FaIndustry, FaPlay, FaSave, FaSearch, FaSolarPanel, FaTrash } from "react-icons/fa";
+import { FaBatteryHalf, FaChartLine, FaIndustry, FaPlay, FaSave, FaSearch, FaSolarPanel, FaTrash } from "react-icons/fa";
+import { IoChevronBack } from "react-icons/io5";
 
 import { getAllElements } from "../../api/elements";
 import { createProject, getProjectById, runProjectSimulation, updateProject } from "../../api/projects";
@@ -224,11 +225,11 @@ function buildEdges(project: ProjectDetail, nodes: EnergyNode[]): EnergyEdge[] {
       return;
     }
     result.push({
-        id: connection.id ? `edge-${connection.id}` : `edge-${source}-${target}`,
-        source,
-        target,
-        label: connection.connectionType ?? "",
-        data: { backendId: connection.id ?? null, connectionType: connection.connectionType ?? "" },
+      id: connection.id ? `edge-${connection.id}` : `edge-${source}-${target}`,
+      source,
+      target,
+      label: connection.connectionType ?? "",
+      data: { backendId: connection.id ?? null, connectionType: connection.connectionType ?? "" },
     });
   });
   return result;
@@ -632,19 +633,18 @@ function SimulatorInner() {
           />
         </label>
         <div className="catalog-list-header">
-          <strong>{catalogModeTitle}</strong>
           {(selectedCatalogKind || catalogSearchTerm) && (
             <button
               type="button"
-              className="catalog-back-button"
               onClick={() => {
                 setCatalogSearch("");
                 setSelectedCatalogKind(null);
               }}
             >
-              Volver
+              <IoChevronBack />  
             </button>
           )}
+          <strong>{catalogModeTitle}</strong>
         </div>
         <div className="catalog-list">
           {!catalogSearchTerm && !selectedCatalogKind && catalogKinds.map(({ kind, label, icon: Icon }) => (
@@ -653,7 +653,7 @@ function SimulatorInner() {
               <strong>{label}</strong>
               <span>{catalogCounts[kind]} elementos</span>
             </button>
-          ))}
+          ))} 
 
           {(catalogSearchTerm || selectedCatalogKind) && visibleCatalog.map((element) => (
             <button type="button" key={String(element.id ?? element.name)} onClick={() => addElement(element)}>
@@ -714,7 +714,6 @@ function SimulatorInner() {
           <h2>Proyecto</h2>
           <div className="mini-stats">
             <article>
-              <FaBolt aria-hidden="true" />
               <span>{numberFormat.format(totals.generation)} W</span>
               <small>Generacion</small>
             </article>

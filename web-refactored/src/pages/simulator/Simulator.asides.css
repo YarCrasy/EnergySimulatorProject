@@ -1,0 +1,209 @@
+.simulator-page {
+  .catalog-panel {
+    border-right: 1px solid var(--sim-line);
+    gap: 10px;
+
+    .catalog-search {
+      display: grid;
+      gap: 5px;
+      margin-bottom: 16px;
+      color: var(--sim-muted);
+
+      span {
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+        gap: 5px;
+      }
+    }
+
+    .catalog-list-header {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 10px;
+
+      button {
+        background: none;
+        color: white;
+        padding: 0;
+        font-size: medium;
+        display: flex;
+        cursor: pointer;
+        border: 1px solid;
+
+        &:hover {
+          border-color: var(--sim-accent);
+          color: var(--sim-text);
+        }
+      }
+
+    }
+
+    .catalog-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      button {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--sim-line);
+        border-radius: 8px;
+        background: var(--sim-field);
+        color: var(--sim-text);
+        padding: 10px;
+        text-align: left;
+        cursor: pointer;
+        box-shadow: none;
+        transform: none;
+
+        &:hover {
+          border-color: var(--sim-accent);
+          box-shadow: 0 0 20px rgba(92, 225, 230, 0.18);
+          color: var(--sim-text);
+          transform: translateY(-1px);
+        }
+      }
+
+      .catalog-type-button {
+        padding: 5px;
+        min-width: none;
+
+        svg {
+          color: var(--sim-accent);
+        }
+      }
+
+    }
+  }
+
+  .properties-panel {
+    display: flex;
+    flex-direction: column;
+    align-content: start;
+    border: 1px solid var(--sim-line);
+
+    section {
+      border: 1px solid var(--sim-line);
+      border-radius: 8px;
+      background: var(--sim-field);
+      padding: 10px;
+    }
+
+    .mini-stats,
+    .result-summary {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      article {
+        border: 1px solid var(--sim-line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.07);
+        padding: 10px;
+      }
+    }
+
+    .mini-stats {
+      span {
+        font-weight: bold;
+      }
+
+      small {
+        display: block;
+        margin-top: 4px;
+        color: var(--sim-muted);
+      }
+    }
+
+    .result-summary {
+      span {
+        display: block;
+        margin-top: 4px;
+        color: var(--sim-muted);
+      }
+    }
+
+    .danger-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      min-height: 42px;
+      margin-top: 14px;
+      border: 1px solid rgba(255, 143, 124, 0.35);
+      border-radius: 8px;
+      background: rgba(255, 143, 124, 0.1);
+      color: var(--sim-danger);
+      padding: 0 14px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: none;
+
+      &:hover {
+        border-color: var(--sim-accent);
+        box-shadow: 0 0 20px rgba(92, 225, 230, 0.22);
+        color: var(--sim-text);
+        transform: translateY(-1px);
+      }
+    }
+
+    .simulation-chart {
+      width: 100%;
+      height: 150px;
+      margin-top: 14px;
+      border: 1px solid var(--sim-line);
+      border-radius: 8px;
+      background: rgba(4, 11, 24, 0.46);
+
+      .line {
+        fill: none;
+        stroke-width: 3;
+
+        .generation {
+          stroke: var(--sim-accent);
+        }
+
+        .consumption {
+          stroke: #ffb86b;
+        }
+
+        .balance {
+          stroke: var(--sim-accent-2);
+        }
+      }
+    }
+
+    .simulation-table-wrap {
+      max-height: 280px;
+      margin-top: 14px;
+      overflow: auto;
+      border: 1px solid var(--sim-line);
+      border-radius: 8px;
+    }
+
+    .simulation-table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th,
+      td {
+        padding: 8px;
+        border-bottom: 1px solid var(--sim-line);
+        text-align: right;
+        white-space: nowrap;
+      }
+
+      th {
+        color: var(--sim-accent);
+      }
+
+      th:first-child,
+      td:first-child {
+        text-align: left;
+      }
+    }
+  }
+}
