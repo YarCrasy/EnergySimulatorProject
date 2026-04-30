@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
@@ -14,7 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ApiConnection {
-    public final static String BASE_URL = "https://damt-project.yarcrasy.com/api/";
+    public final static String BASE_URL = "https://dam.yarcrasy.com/api/";
 
     private static String buildUrl(String endpoint) {
         String normalized = endpoint == null ? "" : endpoint.trim();
@@ -23,7 +24,8 @@ public class ApiConnection {
     }
 
     private static String request(String method, String endpoint, JSONObject payload) throws IOException {
-        HttpURLConnection conn = (HttpURLConnection) new URL(buildUrl(endpoint)).openConnection();
+        URL url = URI.create(buildUrl(endpoint)).toURL();
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod(method);
         conn.setRequestProperty("Accept", "application/json");
         conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");

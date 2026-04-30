@@ -3,6 +3,7 @@ import About from "./pages/about/About";
 import Legals from "./pages/legals/Legals";
 import Locations from "./pages/locations/Locations";
 import Login from "./pages/login/Login";
+import Register from "./pages/register/Register";
 
 export const publicRoutes = [
   { path: "/", element: <Home /> },
@@ -11,7 +12,7 @@ export const publicRoutes = [
   { path: "/legals", element: <Legals /> },
   { path: "/locations", element: <Locations /> },
   { path: "/login", element: <Login /> },
-  { path: "/register", element: <h1>Registro</h1> },
+  { path: "/register", element: <Register /> },
 ] as const;
 
 export const protectedRoutes = [

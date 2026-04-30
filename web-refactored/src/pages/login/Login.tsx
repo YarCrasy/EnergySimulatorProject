@@ -1,4 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { createProject } from "../../api/projects";
+import { useAuth, type AuthLoginResult } from "../../auth/auth";
 import "./Login.css";
 import loginImg from "@jpg/loginImg.jpg";
 
@@ -14,8 +18,66 @@ const assurancePoints = [
   "Backups diarios y monitorización continua",
 ];
 
+type LoginSubmitEvent = React.SyntheticEvent<HTMLFormElement, SubmitEvent>;
+
+function getCredentials(form: HTMLFormElement) {
+  const formData = new FormData(form);
+
+  return {
+    email: String(formData.get("email") ?? ""),
+    password: String(formData.get("password") ?? ""),
+  };
+}
+
+function getFallbackPath(user: AuthLoginResult) {
+  return user.role === "admin" ? "/administration/users" : "/projects";
+}
+
 function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const redirectToSimulator = Boolean((location.state as { redirectToSimulator?: boolean } | null)?.redirectToSimulator);
+
+  const prepareSimulator = async (user: AuthLoginResult, fallbackPath: string) => {
+    try {
+      const project = await createProject({
+        name: "Nuevo Proyecto",
+        energyEnough: false,
+        energyNeeded: 0,
+        userId: user.id,
+      });
+
+      navigate(project.id ? `/simulator/${project.id}` : "/simulator");
+    } catch (error) {
+      console.error("No se pudo preparar el simulador", error);
+      alert("No se pudo iniciar el simulador. Intenta nuevamente.");
+      navigate(fallbackPath);
+    }
+  };
+
+  const handleSubmit = async (event: LoginSubmitEvent) => {
+    event.preventDefault();
+    if (isSubmitting) return;
+
+    try {
+      setIsSubmitting(true);
+      const { email, password } = getCredentials(event.currentTarget);
+      const loggedUser = await login(email, password);
+      const fallbackPath = getFallbackPath(loggedUser);
+
+      if (redirectToSimulator) {
+        await prepareSimulator(loggedUser, fallbackPath);
+      } else {
+        navigate(fallbackPath);
+      }
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "Usuario o contrasena incorrectos");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <main className="login-page">
@@ -27,7 +89,7 @@ function Login() {
             Consolida escenarios, comparte resultados y mantén trazabilidad completa de cada decisión energética en una sola plataforma.
           </p>
 
-          <form className="login-form" onSubmit={(e) => e.preventDefault()}>
+          <form className="login-form" onSubmit={handleSubmit}>
             <div className="form-control">
               <label htmlFor="email">Email corporativo</label>
               <input type="email" id="email" name="email" placeholder="nombre@empresa.com" required />
@@ -39,8 +101,8 @@ function Login() {
             </div>
 
             <div className="login-actions">
-              <button type="submit" className="btn-primary" disabled={false}>
-                {"Iniciar sesión"}
+              <button type="submit" className="btn-primary" disabled={isSubmitting}>
+                {isSubmitting ? "Ingresando..." : "Iniciar sesión"}
               </button>
               <button type="button" className="btn-ghost" onClick={() => navigate("/register")}>Crear cuenta</button>
             </div>

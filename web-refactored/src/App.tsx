@@ -3,15 +3,16 @@ import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { useAuth } from "./auth/auth";
 import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
+import Spinner from "./components/spiner/Spiner";
 import { protectedRoutes, publicRoutes } from "./Routes";
 import "./App.css";
 
 function App() {
   const location = useLocation();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
   const hiddenHeaderPaths = ["/login", "/register", "/simulator", "/administration"];
   const hiddenFooterPaths = ["/login", "/register", "/simulator", "/administration"];
-  const protectedRouteElement = isAuthenticated ? <Outlet /> : <Navigate to="/login" replace state={{ from: location }} />;
+  const protectedRouteElement = loading ? (<Spinner text="Cargando sesion..." />) : isAuthenticated ? ( <Outlet /> ) : ( <Navigate to="/login" replace state={{ from: location }} /> );
   const hideHeader = hiddenHeaderPaths.some((path) => location.pathname.startsWith(path));
   const hideFooter = hiddenFooterPaths.some((path) => location.pathname.startsWith(path));
 
@@ -20,6 +21,7 @@ function App() {
       {!hideHeader && <Header />}
 
       <Routes>
+
         {publicRoutes.map((route) => (
           <Route key={route.path} path={route.path} element={route.element} />
         ))}
@@ -31,6 +33,7 @@ function App() {
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
+
       </Routes>
 
       {!hideFooter && <Footer />}
