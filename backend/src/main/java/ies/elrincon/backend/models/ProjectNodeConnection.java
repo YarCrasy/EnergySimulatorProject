@@ -12,6 +12,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+import ies.elrincon.backend.dto.ProjectNodeConnectionSeed;
+
 @Entity
 @Table(name = "project_node_connections")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
@@ -39,11 +41,11 @@ public class ProjectNodeConnection {
     public ProjectNodeConnection() {
     }
 
-    public ProjectNodeConnection(Project project, ProjectNode source, ProjectNode target, String connectionType) {
-        this.project = project;
-        this.source = source;
-        this.target = target;
-        this.connectionType = connectionType;
+    public ProjectNodeConnection(ProjectNodeConnectionSeed seed) {
+        this.project = seed.project();
+        this.source = seed.source();
+        this.target = seed.target();
+        this.connectionType = seed.connectionType();
     }
 
     public Long getId() {

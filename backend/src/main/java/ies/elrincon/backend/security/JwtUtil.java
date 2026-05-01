@@ -50,9 +50,7 @@ public class JwtUtil {
     public boolean isTokenValid(String token) {
         try {
             String[] parts = token.split("\\.");
-            if (parts.length != 3) {
-                return false;
-            }
+            if (parts.length != 3) return false;
 
             String unsignedToken = parts[0] + "." + parts[1];
             if (!MessageDigest.isEqual(sign(unsignedToken).getBytes(StandardCharsets.UTF_8),
@@ -86,23 +84,17 @@ public class JwtUtil {
     private String extractStringClaim(String payload, String claim) {
         String marker = "\"" + claim + "\":\"";
         int start = payload.indexOf(marker);
-        if (start == -1) {
-            throw new IllegalArgumentException("Missing JWT claim: " + claim);
-        }
+        if (start == -1) throw new IllegalArgumentException("Missing JWT claim: " + claim);
         start += marker.length();
         int end = payload.indexOf('"', start);
-        if (end == -1) {
-            throw new IllegalArgumentException("Invalid JWT claim: " + claim);
-        }
+        if (end == -1) throw new IllegalArgumentException("Invalid JWT claim: " + claim);
         return payload.substring(start, end);
     }
 
     private long extractLongClaim(String payload, String claim) {
         String marker = "\"" + claim + "\":";
         int start = payload.indexOf(marker);
-        if (start == -1) {
-            throw new IllegalArgumentException("Missing JWT claim: " + claim);
-        }
+        if (start == -1) throw new IllegalArgumentException("Missing JWT claim: " + claim);
         start += marker.length();
         int end = start;
         while (end < payload.length() && Character.isDigit(payload.charAt(end))) {

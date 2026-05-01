@@ -81,9 +81,7 @@ public class SimulationRun {
 
     @PrePersist
     private void touchCreatedAt() {
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
+        if (createdAt == null) createdAt = LocalDateTime.now();
     }
 
     public Long getId() {

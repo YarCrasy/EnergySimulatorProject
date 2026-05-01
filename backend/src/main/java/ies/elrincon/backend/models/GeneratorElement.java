@@ -4,6 +4,8 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
+import ies.elrincon.backend.dto.GeneratorElementSeed;
+
 @Entity
 @Table(name = "generator_elements")
 @DiscriminatorValue("GENERATOR_ELEMENT")
@@ -17,11 +19,11 @@ public class GeneratorElement extends Element {
     public GeneratorElement() {
     }
 
-    public GeneratorElement(String name, String brand, Double efficiency, Double powerWatt) {
-        super(name);
-        this.brand = brand;
-        this.efficiency = efficiency;
-        this.powerWatt = powerWatt;
+    public GeneratorElement(GeneratorElementSeed seed) {
+        super(seed.name());
+        this.brand = seed.brand();
+        this.efficiency = seed.efficiency();
+        this.powerWatt = seed.powerWatt();
     }
 
     // getters y setters

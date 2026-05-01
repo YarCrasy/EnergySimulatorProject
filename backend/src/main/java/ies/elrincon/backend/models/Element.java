@@ -81,16 +81,12 @@ public abstract class Element {
 
     @Transient
     public String getElementType() {
-        if (this.category != null && !this.category.isBlank()) {
-            return this.category;
-        }
+        if (this.category != null && !this.category.isBlank()) return this.category;
         return this.getClass().getSimpleName();
     }
 
     public void setElementType(String elementType) {
-        if (this.category == null || this.category.isBlank()) {
-            this.category = elementType;
-        }
+        if (this.category == null || this.category.isBlank()) this.category = elementType;
     }
 
     @Override

@@ -69,9 +69,7 @@ public class ProjectNodeController {
             @PathVariable Long nodeId,
             @RequestBody ProjectNodeRequest request) {
         ProjectNode node = findProjectNode(projectId, nodeId);
-        if (request.elementId() != null) {
-            node.setElement(findElement(request.elementId()));
-        }
+        if (request.elementId() != null) node.setElement(findElement(request.elementId()));
         applyRequest(node, request);
         return projectNodeRepository.save(node);
     }
@@ -95,29 +93,17 @@ public class ProjectNodeController {
     }
 
     private Element findElement(Long elementId) {
-        if (elementId == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo elementId es obligatorio");
-        }
+        if (elementId == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo elementId es obligatorio");
         return elementRepository.findById(elementId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Elemento no encontrado con id " + elementId));
     }
 
     private void applyRequest(ProjectNode node, ProjectNodeRequest request) {
-        if (request.positionX() != null) {
-            node.setPositionX(request.positionX());
-        }
-        if (request.positionY() != null) {
-            node.setPositionY(request.positionY());
-        }
-        if (request.type() != null) {
-            node.setType(request.type());
-        }
-        if (request.quantity() != null) {
-            node.setQuantity(Math.max(1, request.quantity()));
-        }
-        if (request.data() != null) {
-            node.setData(request.data());
-        }
+        if (request.positionX() != null) node.setPositionX(request.positionX());
+        if (request.positionY() != null) node.setPositionY(request.positionY());
+        if (request.type() != null) node.setType(request.type());
+        if (request.quantity() != null) node.setQuantity(Math.max(1, request.quantity()));
+        if (request.data() != null) node.setData(request.data());
     }
 }

@@ -95,9 +95,7 @@ public class ConsumerElementController {
 
     @DeleteMapping("/{id}")
     public void deleteConsumerElement(@PathVariable Long id) {
-        if (!consumerElementRepository.existsById(id)) {
-            throw new RuntimeException("ConsumerElement not found with id " + id);
-        }
+        if (!consumerElementRepository.existsById(id)) throw new RuntimeException("ConsumerElement not found with id " + id);
         consumerElementRepository.deleteById(id);
     }
 }

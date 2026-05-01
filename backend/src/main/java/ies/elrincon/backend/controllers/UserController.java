@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +33,9 @@ public class UserController {
     private final ProjectRepository projectRepository;
     private final JwtUtil jwtUtil;
 
+    public record LoginRequest(String email, String password) {}
+    public record AuthResponse(String token, User user) {}
+
     public UserController(UserRepository userRepository, ProjectRepository projectRepository, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.projectRepository = projectRepository;
@@ -43,12 +48,8 @@ public class UserController {
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "email", required = false) String email) {
 
-        if (name != null && !name.isBlank()) {
-            return userRepository.findByFullNameContainingIgnoreCase(name.trim());
-        }
-        if (email != null && !email.isBlank()) {
-            return userRepository.findByEmailContainingIgnoreCase(email.trim());
-        }
+        if (name != null && !name.isBlank()) return userRepository.findByFullNameContainingIgnoreCase(name.trim());
+        if (email != null && !email.isBlank()) return userRepository.findByEmailContainingIgnoreCase(email.trim());
         return userRepository.findAll();
     }
 
@@ -62,6 +63,7 @@ public class UserController {
     @PostMapping
     public User createUser(@RequestBody User user) {
         ensureEmailAvailable(user.getEmail(), null);
+        if (!currentUserIsAdmin()) user.setAdmin(false);
         return userRepository.save(user);
     }
 
@@ -74,9 +76,7 @@ public class UserController {
         user.setFullName(userDetails.getFullName());
         user.setEmail(userDetails.getEmail());
         user.setDateOfBirth(userDetails.getDateOfBirth());
-        if (userDetails.getPasswordHash() != null && !userDetails.getPasswordHash().isBlank()) {
-            user.setPasswordHash(userDetails.getPasswordHash());
-        }
+        if (userDetails.getPasswordHash() != null && !userDetails.getPasswordHash().isBlank()) user.setPasswordHash(userDetails.getPasswordHash());
         user.setAdmin(userDetails.isAdmin());
 
         return userRepository.save(user);
@@ -103,9 +103,7 @@ public class UserController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED,
                         "Usuario o contraseña incorrectos"));
 
-        if (!user.getPasswordHash().equals(credentials.password())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario o contraseña incorrectos");
-        }
+        if (!user.getPasswordHash().equals(credentials.password())) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario o contraseña incorrectos");
 
         return new AuthResponse(jwtUtil.generateToken(user), user);
     }
@@ -118,9 +116,7 @@ public class UserController {
 
     private void ensureEmailAvailable(String email, Long currentUserId) {
         Optional<User> existing = userRepository.findByEmailIgnoreCase(email);
-        if (existing.isPresent() && !existing.get().getId().equals(currentUserId)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "El email ya está registrado");
-        }
+        if (existing.isPresent() && !existing.get().getId().equals(currentUserId)) throw new ResponseStatusException(HttpStatus.CONFLICT, "El email ya está registrado");
     }
 
     private User findUserOrThrow(Long id) {
@@ -130,11 +126,9 @@ public class UserController {
                 );
     }
 
-    public record LoginRequest(String email, String password){
-        
-    }
-
-    public record AuthResponse(String token, User user) {
-
+    private boolean currentUserIsAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(authority -> "ROLE_ADMIN".equals(authority.getAuthority()));
     }
 }

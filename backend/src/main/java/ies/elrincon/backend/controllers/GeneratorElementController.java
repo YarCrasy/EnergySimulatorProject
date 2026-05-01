@@ -67,8 +67,7 @@ public class GeneratorElementController {
     @PostMapping("/project/{projectId}")
     public GeneratorElement createGeneratorElementInProject(@PathVariable Long projectId, @RequestBody GeneratorElement generatorElement) {
 
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new RuntimeException("Project not found"));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Project not found"));
 
         GeneratorElement saved = generatorElementRepository.save(generatorElement);
 
@@ -99,9 +98,7 @@ public class GeneratorElementController {
     // Delete Method
     @DeleteMapping("/{id}")
     public void deleteGeneratorElement(@PathVariable Long id) {
-        if (!generatorElementRepository.existsById(id)) {
-            throw new RuntimeException("GeneratorElement not found with id " + id);
-        }
+        if (!generatorElementRepository.existsById(id)) throw new RuntimeException("GeneratorElement not found with id " + id);
         generatorElementRepository.deleteById(id);
     }
 

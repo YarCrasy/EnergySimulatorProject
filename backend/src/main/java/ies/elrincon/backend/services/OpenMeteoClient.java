@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
+import ies.elrincon.backend.dto.OpenMeteoForecastRequest;
+
 @Service
 public class OpenMeteoClient {
 
@@ -31,22 +33,18 @@ public class OpenMeteoClient {
         this.objectMapper = objectMapper;
     }
 
-    public OpenMeteoForecast fetchHourlyForecast(
-            double latitude,
-            double longitude,
-            String timezone,
-            int forecastDays,
-            double tiltAngle,
-            double azimuth) {
-        String resolvedTimezone = (timezone == null || timezone.isBlank()) ? "auto" : timezone;
-        int resolvedDays = Math.max(1, Math.min(forecastDays, 16));
+    public OpenMeteoForecast fetchHourlyForecast(OpenMeteoForecastRequest forecastRequest) {
+        String resolvedTimezone = (forecastRequest.timezone() == null || forecastRequest.timezone().isBlank())
+                ? "auto"
+                : forecastRequest.timezone();
+        int resolvedDays = Math.max(1, Math.min(forecastRequest.forecastDays(), 16));
         URI uri = URI.create(FORECAST_URL
-                + "?latitude=" + latitude
-                + "&longitude=" + longitude
+                + "?latitude=" + forecastRequest.latitude()
+                + "&longitude=" + forecastRequest.longitude()
                 + "&hourly=shortwave_radiation,direct_radiation,diffuse_radiation,direct_normal_irradiance,global_tilted_irradiance,cloud_cover,is_day"
                 + "&forecast_days=" + resolvedDays
-                + "&tilt=" + tiltAngle
-                + "&azimuth=" + azimuth
+                + "&tilt=" + forecastRequest.tiltAngle()
+                + "&azimuth=" + forecastRequest.azimuth()
                 + "&timezone=" + encode(resolvedTimezone));
 
         HttpRequest request = HttpRequest.newBuilder(uri)
@@ -56,9 +54,7 @@ public class OpenMeteoClient {
 
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() < 200 || response.statusCode() >= 300) {
-                throw new OpenMeteoException("Open-Meteo devolvio estado " + response.statusCode());
-            }
+            if (response.statusCode() < 200 || response.statusCode() >= 300) throw new OpenMeteoException("Open-Meteo devolvio estado " + response.statusCode());
             return parseForecast(response.body());
         } catch (IOException exception) {
             throw new OpenMeteoException("No se pudo contactar con Open-Meteo", exception);
@@ -91,25 +87,21 @@ public class OpenMeteoClient {
 
     private List<String> toStringList(JsonNode node) {
         List<String> values = new ArrayList<>();
-        if (node.isArray()) {
-            node.forEach(value -> values.add(value.asText()));
-        }
+        if (node.isArray())
+            node.forEach(value -> values.add(value.asString()));
         return values;
     }
 
     private List<Double> toDoubleList(JsonNode node) {
         List<Double> values = new ArrayList<>();
-        if (node.isArray()) {
+        if (node.isArray())
             node.forEach(value -> values.add(value.isNumber() ? value.asDouble() : 0d));
-        }
         return values;
     }
 
     private List<Boolean> toBooleanList(JsonNode node) {
         List<Boolean> values = new ArrayList<>();
-        if (node.isArray()) {
-            node.forEach(value -> values.add(value.asInt(0) == 1 || value.asBoolean(false)));
-        }
+        if (node.isArray()) node.forEach(value -> values.add(value.asInt(0) == 1 || value.asBoolean(false)));
         return values;
     }
 

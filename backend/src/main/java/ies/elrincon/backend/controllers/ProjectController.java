@@ -64,9 +64,7 @@ public class ProjectController {
     @PostMapping()
     public Project createProject(@RequestBody Project project) {
         Long userId = project.getUserId();
-        if (userId == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo userId es obligatorio");
-        }
+        if (userId == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo userId es obligatorio");
         validateUserExists(userId);
 
         project.setUserId(userId);
@@ -82,33 +80,15 @@ public class ProjectController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Proyecto no encontrado con id " + id));
 
         existingProject.setName(project.getName());
-        if (project.getSeason() != null) {
-            existingProject.setSeason(project.getSeason());
-        }
-        if (project.getLatitude() != null) {
-            existingProject.setLatitude(project.getLatitude());
-        }
-        if (project.getLongitude() != null) {
-            existingProject.setLongitude(project.getLongitude());
-        }
-        if (project.getTimezone() != null) {
-            existingProject.setTimezone(project.getTimezone());
-        }
-        if (project.getTiltAngle() != null) {
-            existingProject.setTiltAngle(project.getTiltAngle());
-        }
-        if (project.getAzimuth() != null) {
-            existingProject.setAzimuth(project.getAzimuth());
-        }
-        if (project.getDurationDays() != null) {
-            existingProject.setDurationDays(project.getDurationDays());
-        }
-        if (project.getSimulationMode() != null) {
-            existingProject.setSimulationMode(project.getSimulationMode());
-        }
-        if (project.getSystemLossPercent() != null) {
-            existingProject.setSystemLossPercent(project.getSystemLossPercent());
-        }
+        if (project.getSeason() != null) existingProject.setSeason(project.getSeason());
+        if (project.getLatitude() != null) existingProject.setLatitude(project.getLatitude());
+        if (project.getLongitude() != null) existingProject.setLongitude(project.getLongitude());
+        if (project.getTimezone() != null) existingProject.setTimezone(project.getTimezone());
+        if (project.getTiltAngle() != null) existingProject.setTiltAngle(project.getTiltAngle());
+        if (project.getAzimuth() != null) existingProject.setAzimuth(project.getAzimuth());
+        if (project.getDurationDays() != null) existingProject.setDurationDays(project.getDurationDays());
+        if (project.getSimulationMode() != null) existingProject.setSimulationMode(project.getSimulationMode());
+        if (project.getSystemLossPercent() != null) existingProject.setSystemLossPercent(project.getSystemLossPercent());
         existingProject.setEnergyNeeded(project.getEnergyNeeded());
         existingProject.setEnergyEnough(project.isEnergyEnough());
 
@@ -146,12 +126,8 @@ public class ProjectController {
     }
 
     private void bindProjectStructure(Project project) {
-        if (project.getProjectNodes() == null) {
-            project.setProjectNodes(new java.util.ArrayList<>());
-        }
-        if (project.getNodeConnections() == null) {
-            project.setNodeConnections(new java.util.ArrayList<>());
-        }
+        if (project.getProjectNodes() == null) project.setProjectNodes(new java.util.ArrayList<>());
+        if (project.getNodeConnections() == null) project.setNodeConnections(new java.util.ArrayList<>());
 
         project.getProjectNodes().forEach(node -> {
             node.setProject(project);
@@ -162,9 +138,7 @@ public class ProjectController {
 
     private void replaceProjectNodes(Project project, List<ProjectNode> nodes) {
         project.getProjectNodes().clear();
-        if (nodes == null) {
-            return;
-        }
+        if (nodes == null) return;
         nodes.forEach(node -> {
             node.setProject(project);
             ensureElementAssigned(node);
@@ -174,9 +148,7 @@ public class ProjectController {
 
     private void replaceNodeConnections(Project project, List<ProjectNodeConnection> connections) {
         project.getNodeConnections().clear();
-        if (connections == null) {
-            return;
-        }
+        if (connections == null) return;
         connections.forEach(connection -> {
             connection.setProject(project);
             project.getNodeConnections().add(connection);
@@ -184,14 +156,10 @@ public class ProjectController {
     }
 
     private void ensureElementAssigned(ProjectNode node) {
-        if (node.getElement() != null && node.getElement().getId() != null) {
-            return;
-        }
+        if (node.getElement() != null && node.getElement().getId() != null) return;
 
         Long elementId = node.getElementIdReference();
-        if (elementId == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cada nodo debe incluir element.id");
-        }
+        if (elementId == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cada nodo debe incluir element.id");
 
         Element element = elementRepository.findById(elementId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,

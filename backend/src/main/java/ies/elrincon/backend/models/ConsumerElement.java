@@ -32,16 +32,12 @@ public class ConsumerElement extends Element {
 
     public void setPowerConsumption(Double powerConsumption) {
         this.powerConsumption = powerConsumption;
-        if (this.baseConsumption == null) {
-            this.baseConsumption = powerConsumption;
-        }
+        if (this.baseConsumption == null) this.baseConsumption = powerConsumption;
     }
 
     public void setBaseConsumption(Double baseConsumption) {
         this.baseConsumption = baseConsumption;
-        if (this.powerConsumption == null) {
-            this.powerConsumption = baseConsumption;
-        }
+        if (this.powerConsumption == null) this.powerConsumption = baseConsumption;
     }
 
     public Double getPeakConsumption() {

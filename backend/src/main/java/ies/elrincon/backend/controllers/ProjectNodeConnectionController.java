@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import ies.elrincon.backend.dto.ProjectNodeConnectionRequest;
+import ies.elrincon.backend.dto.ProjectNodeConnectionSeed;
 import ies.elrincon.backend.models.Project;
 import ies.elrincon.backend.models.ProjectNode;
 import ies.elrincon.backend.models.ProjectNodeConnection;
@@ -59,29 +60,23 @@ public class ProjectNodeConnectionController {
         ProjectNode source = findProjectNode(projectId, request.sourceNodeId(), "sourceNodeId");
         ProjectNode target = findProjectNode(projectId, request.targetNodeId(), "targetNodeId");
 
-        ProjectNodeConnection connection = new ProjectNodeConnection(
+        ProjectNodeConnection connection = new ProjectNodeConnection(new ProjectNodeConnectionSeed(
                 project,
                 source,
                 target,
-                request.connectionType());
+                request.connectionType()));
         return connectionRepository.save(connection);
     }
 
     @PutMapping("/{connectionId}")
-    public ProjectNodeConnection updateConnection(
-            @PathVariable Long projectId,
-            @PathVariable Long connectionId,
-            @RequestBody ProjectNodeConnectionRequest request) {
+    public ProjectNodeConnection updateConnection(@PathVariable Long projectId, @PathVariable Long connectionId, @RequestBody ProjectNodeConnectionRequest request) {
         ProjectNodeConnection connection = findConnection(projectId, connectionId);
-        if (request.sourceNodeId() != null) {
+        if (request.sourceNodeId() != null) 
             connection.setSource(findProjectNode(projectId, request.sourceNodeId(), "sourceNodeId"));
-        }
-        if (request.targetNodeId() != null) {
+        if (request.targetNodeId() != null) 
             connection.setTarget(findProjectNode(projectId, request.targetNodeId(), "targetNodeId"));
-        }
-        if (request.connectionType() != null) {
+        if (request.connectionType() != null) 
             connection.setConnectionType(request.connectionType());
-        }
         return connectionRepository.save(connection);
     }
 
@@ -104,9 +99,7 @@ public class ProjectNodeConnectionController {
     }
 
     private ProjectNode findProjectNode(Long projectId, Long nodeId, String fieldName) {
-        if (nodeId == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo " + fieldName + " es obligatorio");
-        }
+        if (nodeId == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo " + fieldName + " es obligatorio");
         return projectNodeRepository.findByProjectIdAndId(projectId, nodeId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Nodo no encontrado con id " + nodeId + " en proyecto " + projectId));

@@ -9,6 +9,8 @@ import org.springframework.web.server.ResponseStatusException;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
+import ies.elrincon.backend.dto.GenerationCalculationRequest;
+import ies.elrincon.backend.dto.OpenMeteoForecastRequest;
 import ies.elrincon.backend.dto.SimulationRequest;
 import ies.elrincon.backend.models.ConsumerElement;
 import ies.elrincon.backend.models.GeneratorElement;
@@ -59,13 +61,13 @@ public class SimulationService {
                 0d,
                 95d);
 
-        OpenMeteoForecast forecast = openMeteoClient.fetchHourlyForecast(
+        OpenMeteoForecast forecast = openMeteoClient.fetchHourlyForecast(new OpenMeteoForecastRequest(
                 latitude,
                 longitude,
                 timezone,
                 durationDays,
                 tiltAngle,
-                azimuth);
+                azimuth));
         List<ProjectNode> nodes = projectNodeRepository.findByProjectId(projectId);
 
         SimulationRun run = new SimulationRun();
@@ -129,9 +131,7 @@ public class SimulationService {
     }
 
     public SimulationRun getLatest(Long projectId) {
-        if (!projectRepository.existsById(projectId)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Proyecto no encontrado con id " + projectId);
-        }
+        if (!projectRepository.existsById(projectId)) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Proyecto no encontrado con id " + projectId);
         return simulationRunRepository.findFirstByProjectIdOrderByCreatedAtDesc(projectId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "No hay simulaciones para el proyecto " + projectId));
@@ -141,20 +141,24 @@ public class SimulationService {
         double lossFactor = 1d - (systemLossPercent / 100d);
         return nodes.stream()
                 .filter(node -> node.getElement() instanceof GeneratorElement)
-                .mapToDouble(node -> generationForNode(node, (GeneratorElement) node.getElement(), irradiance, lossFactor))
+                .mapToDouble(node -> generationForNode(new GenerationCalculationRequest(
+                        node,
+                        (GeneratorElement) node.getElement(),
+                        irradiance,
+                        lossFactor)))
                 .sum();
     }
 
-    private double generationForNode(ProjectNode node, GeneratorElement generator, double irradiance, double lossFactor) {
+    private double generationForNode(GenerationCalculationRequest request) {
+        ProjectNode node = request.node();
+        GeneratorElement generator = request.generator();
         JsonNode data = parseNodeData(node);
         int quantity = nodeQuantity(node, data);
         double area = firstNonNull(readNumber(data, "area"), generator.getArea(), 0d);
         double efficiency = normalizeEfficiency(firstNonNull(readNumber(data, "efficiency"), generator.getEfficiency(), 0d));
-        if (area > 0d && efficiency > 0d) {
-            return irradiance * area * efficiency * quantity * lossFactor;
-        }
+        if (area > 0d && efficiency > 0d) return request.irradiance() * area * efficiency * quantity * request.lossFactor();
         double peakPower = firstNonNull(readNumber(data, "powerWatt"), generator.getPowerWatt(), 0d);
-        return peakPower * (irradiance / 1000d) * quantity * lossFactor;
+        return peakPower * (request.irradiance() / 1000d) * quantity * request.lossFactor();
     }
 
     private double calculateConsumptionW(List<ProjectNode> nodes, int hourIndex) {
@@ -197,25 +201,19 @@ public class SimulationService {
 
     private double resolveIrradiance(OpenMeteoForecast forecast, int index) {
         double tilted = valueAt(forecast.tiltedIrradiance(), index);
-        if (tilted > 0d) {
-            return tilted;
-        }
+        if (tilted > 0d) return tilted;
         return valueAt(forecast.shortwaveRadiation(), index);
     }
 
     private int nodeQuantity(ProjectNode node, JsonNode data) {
         Double dataQuantity = readNumber(data, "quantity");
         int quantity = node.getQuantity() == null ? 0 : node.getQuantity();
-        if (quantity <= 0 && dataQuantity != null) {
-            quantity = dataQuantity.intValue();
-        }
+        if (quantity <= 0 && dataQuantity != null) quantity = dataQuantity.intValue();
         return Math.max(1, quantity <= 0 ? 1 : quantity);
     }
 
     private double normalizeEfficiency(Double efficiency) {
-        if (efficiency == null) {
-            return 0d;
-        }
+        if (efficiency == null) return 0d;
         return efficiency > 1d ? efficiency / 100d : efficiency;
     }
 
@@ -224,9 +222,7 @@ public class SimulationService {
     }
 
     private JsonNode parseNodeData(ProjectNode node) {
-        if (node.getData() == null || node.getData().isBlank()) {
-            return objectMapper.createObjectNode();
-        }
+        if (node.getData() == null || node.getData().isBlank()) return objectMapper.createObjectNode();
         try {
             return objectMapper.readTree(node.getData());
         } catch (Exception ignored) {
@@ -236,12 +232,10 @@ public class SimulationService {
 
     private Double readNumber(JsonNode node, String fieldName) {
         JsonNode value = node.path(fieldName);
-        if (value.isNumber()) {
-            return value.asDouble();
-        }
-        if (value.isTextual()) {
+        if (value.isNumber()) return value.asDouble();
+        if (value.isString()) {
             try {
-                return Double.parseDouble(value.asText());
+                return Double.parseDouble(value.stringValue());
             } catch (NumberFormatException ignored) {
                 return null;
             }
@@ -251,7 +245,7 @@ public class SimulationService {
 
     private String readText(JsonNode node, String fieldName) {
         JsonNode value = node.path(fieldName);
-        return value.isTextual() ? value.asText() : null;
+        return value.isString() ? value.stringValue() : null;
     }
 
     private boolean booleanAt(List<Boolean> values, int index) {
@@ -261,18 +255,14 @@ public class SimulationService {
     @SafeVarargs
     private final <T> T firstNonNull(T... values) {
         for (T value : values) {
-            if (value != null) {
-                return value;
-            }
+            if (value != null) return value;
         }
         return null;
     }
 
     private String firstNonBlank(String... values) {
         for (String value : values) {
-            if (value != null && !value.isBlank()) {
-                return value;
-            }
+            if (value != null && !value.isBlank()) return value;
         }
         return "auto";
     }

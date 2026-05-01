@@ -111,9 +111,7 @@ public class ProjectNode {
     }
 
     public Long getElementIdReference() {
-        if (element != null && element.getId() != null) {
-            return element.getId();
-        }
+        if (element != null && element.getId() != null) return element.getId();
         return elementIdReference;
     }
 
@@ -158,16 +156,10 @@ public class ProjectNode {
     }
 
     private Long parseElementId(Object value) {
-        if (value == null) {
-            return null;
-        }
-        if (value instanceof Number number) {
-            return number.longValue();
-        }
+        if (value == null) return null;
+        if (value instanceof Number number) return number.longValue();
         if (value instanceof String text) {
-            if (text.isBlank()) {
-                return null;
-            }
+            if (text.isBlank()) return null;
             try {
                 return Long.parseLong(text);
             } catch (NumberFormatException ignored) {

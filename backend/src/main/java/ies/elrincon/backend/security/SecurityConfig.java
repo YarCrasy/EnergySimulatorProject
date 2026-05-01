@@ -14,6 +14,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
+    private static final String ADMIN = "ADMIN";
+    private static final String[] PUBLIC_ENDPOINTS = {
+            "/error",
+            "/api/users/login"
+    };
+    private static final String[] ADMIN_USER_READ_ENDPOINTS = {
+            "/api/users",
+            "/api/users/search"
+    };
+    private static final String[] ADMIN_CATALOG_ENDPOINTS = {
+            "/api/elements",
+            "/api/generator-elements/**",
+            "/api/consumer-element/**",
+            "/api/battery-elements/**"
+    };
+
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
@@ -26,8 +42,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/login").permitAll()
+                        .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, ADMIN_USER_READ_ENDPOINTS).hasRole(ADMIN)
+                        .requestMatchers(HttpMethod.PUT, "/api/users/**").hasRole(ADMIN)
+                        .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole(ADMIN)
+                        .requestMatchers(HttpMethod.POST, ADMIN_CATALOG_ENDPOINTS).hasRole(ADMIN)
+                        .requestMatchers(HttpMethod.PUT, ADMIN_CATALOG_ENDPOINTS).hasRole(ADMIN)
+                        .requestMatchers(HttpMethod.DELETE, ADMIN_CATALOG_ENDPOINTS).hasRole(ADMIN)
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

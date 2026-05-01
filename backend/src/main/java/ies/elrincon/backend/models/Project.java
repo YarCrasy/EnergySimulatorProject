@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import ies.elrincon.backend.dto.ProjectSeed;
+
 @Entity
 @Table(name = "projects")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
@@ -56,10 +58,10 @@ public class Project {
     private Double systemLossPercent = 14.0;
 
     @Column(name = "is_energy_enough")
-    private boolean energyEnough;
+    private Boolean energyEnough = false;
 
     @Column(name = "energy_needed")
-    private float energyNeeded;
+    private Float energyNeeded = 0f;
 
     @Column(name = "user_id", nullable = false)
     private Long userId;
@@ -75,11 +77,11 @@ public class Project {
     public Project() {
     }
 
-    public Project(String name, float energyNeeded, boolean energyEnough, Long userId) {
-        this.name = name;
-        this.energyNeeded = energyNeeded;
-        this.energyEnough = energyEnough;
-        this.userId = userId;
+    public Project(ProjectSeed seed) {
+        this.name = seed.name();
+        this.energyNeeded = seed.energyNeeded() == null ? 0f : seed.energyNeeded();
+        this.energyEnough = seed.energyEnough() != null && seed.energyEnough();
+        this.userId = seed.userId();
     }
 
     @PrePersist
@@ -185,19 +187,19 @@ public class Project {
     }
 
     public boolean isEnergyEnough() {
-        return energyEnough;
+        return Boolean.TRUE.equals(energyEnough);
     }
 
-    public void setEnergyEnough(boolean energyEnough) {
-        this.energyEnough = energyEnough;
+    public void setEnergyEnough(Boolean energyEnough) {
+        this.energyEnough = energyEnough != null && energyEnough;
     }
 
-    public float getEnergyNeeded() {
+    public Float getEnergyNeeded() {
         return energyNeeded;
     }
 
-    public void setEnergyNeeded(float energyNeeded) {
-        this.energyNeeded = energyNeeded;
+    public void setEnergyNeeded(Float energyNeeded) {
+        this.energyNeeded = energyNeeded == null ? 0f : energyNeeded;
     }
 
     public Long getUserId() {
