@@ -4,6 +4,7 @@ import { useAuth } from "./auth/auth";
 import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
 import Spinner from "./components/spiner/Spiner";
+import NotFound from "./pages/not-found/NotFound";
 import { protectedRoutes, publicRoutes } from "./Routes";
 import "./App.css";
 
@@ -32,7 +33,7 @@ function App() {
           ))}
         </Route>
 
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFound />} />
 
       </Routes>
 

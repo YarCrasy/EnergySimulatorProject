@@ -107,7 +107,7 @@ function Login() {
               <button type="button" className="btn-ghost" onClick={() => navigate("/register")}>Crear cuenta</button>
             </div>
             <p className="login-hint">
-              ¿Olvidaste tu contraseña? Escríbenos para reestablecer tu acceso.
+              ¿Olvidaste tu contraseña? Contactenos para reestablecer tu acceso.
             </p>
           </form>
 
