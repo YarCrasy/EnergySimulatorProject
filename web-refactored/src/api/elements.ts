@@ -53,3 +53,12 @@ export async function createElement(elementData: Partial<EnergyElement> = {}): P
   const { data } = await api.post<EnergyElement>(resource, elementData);
   return data;
 }
+
+export async function updateElement(id: Identifier, elementData: Partial<EnergyElement> = {}): Promise<EnergyElement> {
+  const { data } = await api.put<EnergyElement>(`${resource}/${id}`, elementData);
+  return data;
+}
+
+export async function deleteElement(id: Identifier): Promise<void> {
+  await api.delete(`${resource}/${id}`);
+}

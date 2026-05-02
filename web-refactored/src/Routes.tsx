@@ -4,7 +4,7 @@ import Legals from "./pages/legals/Legals";
 import Locations from "./pages/locations/Locations";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
-import AdminBasic from "./pages/admin/AdminBasic";
+import AdminBasic from "./pages/admin/AdminBase";
 import Profile from "./pages/profile/Profile";
 import Projects from "./pages/projects/Projects";
 import Simulator from "./pages/simulator/Simulator";

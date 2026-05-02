@@ -13,8 +13,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import ies.elrincon.backend.dto.OpenMeteoForecastRequest;
 
@@ -24,13 +26,11 @@ public class OpenMeteoClient {
     private static final String FORECAST_URL = "https://api.open-meteo.com/v1/forecast";
 
     private final HttpClient httpClient;
-    private final ObjectMapper objectMapper;
 
-    public OpenMeteoClient(ObjectMapper objectMapper) {
+    public OpenMeteoClient() {
         this.httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(8))
                 .build();
-        this.objectMapper = objectMapper;
     }
 
     public OpenMeteoForecast fetchHourlyForecast(OpenMeteoForecastRequest forecastRequest) {
@@ -65,15 +65,16 @@ public class OpenMeteoClient {
     }
 
     private OpenMeteoForecast parseForecast(String body) throws IOException {
-        JsonNode hourly = objectMapper.readTree(body).path("hourly");
-        List<String> times = toStringList(hourly.path("time"));
-        List<Double> shortwaveRadiation = toDoubleList(hourly.path("shortwave_radiation"));
-        List<Double> tiltedIrradiance = toDoubleList(hourly.path("global_tilted_irradiance"));
-        List<Double> directRadiation = toDoubleList(hourly.path("direct_radiation"));
-        List<Double> diffuseRadiation = toDoubleList(hourly.path("diffuse_radiation"));
-        List<Double> directNormalIrradiance = toDoubleList(hourly.path("direct_normal_irradiance"));
-        List<Double> cloudCover = toDoubleList(hourly.path("cloud_cover"));
-        List<Boolean> day = toBooleanList(hourly.path("is_day"));
+        JsonObject root = JsonParser.parseString(body).getAsJsonObject();
+        JsonObject hourly = getObject(root, "hourly");
+        List<String> times = toStringList(getArray(hourly, "time"));
+        List<Double> shortwaveRadiation = toDoubleList(getArray(hourly, "shortwave_radiation"));
+        List<Double> tiltedIrradiance = toDoubleList(getArray(hourly, "global_tilted_irradiance"));
+        List<Double> directRadiation = toDoubleList(getArray(hourly, "direct_radiation"));
+        List<Double> diffuseRadiation = toDoubleList(getArray(hourly, "diffuse_radiation"));
+        List<Double> directNormalIrradiance = toDoubleList(getArray(hourly, "direct_normal_irradiance"));
+        List<Double> cloudCover = toDoubleList(getArray(hourly, "cloud_cover"));
+        List<Boolean> day = toBooleanList(getArray(hourly, "is_day"));
         return new OpenMeteoForecast(
                 times,
                 shortwaveRadiation,
@@ -85,23 +86,39 @@ public class OpenMeteoClient {
                 day);
     }
 
-    private List<String> toStringList(JsonNode node) {
+    private JsonObject getObject(JsonObject parent, String fieldName) {
+        JsonElement value = parent.get(fieldName);
+        return value != null && value.isJsonObject() ? value.getAsJsonObject() : new JsonObject();
+    }
+
+    private JsonArray getArray(JsonObject parent, String fieldName) {
+        JsonElement value = parent.get(fieldName);
+        return value != null && value.isJsonArray() ? value.getAsJsonArray() : new JsonArray();
+    }
+
+    private List<String> toStringList(JsonArray node) {
         List<String> values = new ArrayList<>();
-        if (node.isArray())
-            node.forEach(value -> values.add(value.asString()));
+        node.forEach(value -> values.add(value.isJsonNull() ? "" : value.getAsString()));
         return values;
     }
 
-    private List<Double> toDoubleList(JsonNode node) {
+    private List<Double> toDoubleList(JsonArray node) {
         List<Double> values = new ArrayList<>();
-        if (node.isArray())
-            node.forEach(value -> values.add(value.isNumber() ? value.asDouble() : 0d));
+        node.forEach(value -> values.add(value.isJsonPrimitive() && value.getAsJsonPrimitive().isNumber() ? value.getAsDouble() : 0d));
         return values;
     }
 
-    private List<Boolean> toBooleanList(JsonNode node) {
+    private List<Boolean> toBooleanList(JsonArray node) {
         List<Boolean> values = new ArrayList<>();
-        if (node.isArray()) node.forEach(value -> values.add(value.asInt(0) == 1 || value.asBoolean(false)));
+        node.forEach(value -> {
+            if (value.isJsonPrimitive() && value.getAsJsonPrimitive().isNumber()) {
+                values.add(value.getAsInt() == 1);
+            } else if (value.isJsonPrimitive() && value.getAsJsonPrimitive().isBoolean()) {
+                values.add(value.getAsBoolean());
+            } else {
+                values.add(false);
+            }
+        });
         return values;
     }
 
