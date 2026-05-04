@@ -168,7 +168,7 @@ it('updateProject lanza error si falta id', async () => {
 
 ### Requisitos previos
 - Android Studio Giraffe o superior.
-- JDK 21 y Gradle wrapper del proyecto (`Android/gradlew`).
+- JDK 25 y Gradle wrapper del proyecto (`Android/gradlew`).
 - Dispositivo físico o emulador con Android 7.0+.
 
 ### Configuración
