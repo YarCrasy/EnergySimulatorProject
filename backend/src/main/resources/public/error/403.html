@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Energy Simulator | Acceso denegado</title>
+  <style>
+    :root {
+      --color-bg-deep: #040b18;
+      --color-gradient:
+        radial-gradient(circle at 20% 20%, #14274e 0%, transparent 45%),
+        radial-gradient(circle at 80% 0%, #1c4448 0%, transparent 50%),
+        linear-gradient(135deg, #02040a 0%, #060f23 60%, #040b18 100%);
+      --surface-card: rgba(10, 18, 38, 0.9);
+      --surface-line: rgba(255, 255, 255, 0.08);
+      --accent-main: #a2ff86;
+      --accent-alt: #5ce1e6;
+      --text-high: #f5f7fb;
+      --text-muted: rgba(245, 247, 251, 0.85);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      background: var(--color-gradient);
+      background-color: var(--color-bg-deep);
+      color: var(--text-high);
+      padding: 24px;
+    }
+
+    .panel {
+      width: min(760px, 100%);
+      background: var(--surface-card);
+      border: 1px solid var(--surface-line);
+      border-radius: 16px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+      padding: 32px;
+      backdrop-filter: blur(2px);
+      animation: rise 350ms ease-out;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .badge {
+      display: inline-block;
+      color: #03140f;
+      background: var(--accent-main);
+      font-weight: 700;
+      letter-spacing: .04em;
+      padding: 6px 12px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+      font-size: .85rem;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.6rem, 3.8vw, 2.4rem);
+      line-height: 1.2;
+    }
+
+    p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin: 16px 0 0;
+    }
+
+    .code {
+      margin-top: 20px;
+      font-family: Consolas, Menlo, monospace;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: var(--accent-alt);
+      overflow-x: auto;
+    }
+
+    .actions {
+      margin-top: 24px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    a {
+      color: #03140f;
+      background: var(--accent-main);
+      text-decoration: none;
+      font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 10px;
+      transition: transform .15s ease, box-shadow .15s ease;
+      box-shadow: 0 6px 16px rgba(162, 255, 134, 0.32);
+    }
+
+    a:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(162, 255, 134, 0.4);
+    }
+
+    .secondary {
+      background: transparent;
+      color: var(--accent-alt);
+      border: 1px solid var(--surface-line);
+      box-shadow: none;
+    }
+  </style>
+</head>
+<body>
+  <main class="panel" role="main" aria-labelledby="title">
+    <span class="badge">Energy Simulator</span>
+    <h1 id="title">No tienes permiso para acceder a este recurso</h1>
+    <p>
+      El endpoint que intentas consultar requiere autenticación o permisos de administrador.
+      Inicia sesión con una cuenta válida y vuelve a intentarlo.
+    </p>
+    <div class="code">HTTP 403 · Forbidden</div>
+    <div class="actions">
+      <a href="/">Ir al inicio</a>
+      <a class="secondary" href="javascript:history.back()">Volver atrás</a>
+    </div>
+  </main>
+</body>
+</html>

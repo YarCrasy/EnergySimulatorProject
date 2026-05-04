@@ -36,5 +36,3 @@ BEGIN
         );
     END IF;
 END $$;
-
-

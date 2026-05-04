@@ -1,178 +1,252 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { FaBolt, FaPlus, FaTrash } from "react-icons/fa";
-
-import { createProject, deleteProject, getProjectsByUser } from "../../api/projects";
-import { useAuth } from "../../auth/auth";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { Identifier } from "../../models/common";
-import type { ProjectSummary } from "../../models/project";
+import type { ProjectMutation, ProjectSummary } from "../../models/project";
 import "./Projects.css";
 
-const numberFormat = new Intl.NumberFormat("es-ES", { maximumFractionDigits: 1 });
+import ProjectCard from "../../components/projectCard/ProjectCard";
+import placeHorderImg from "../../assets/images/svg/image.svg";
+import { createProject, deleteProject, getProjectsByUser } from "../../api/projects";
+import { useAuth } from "../../auth/auth";
 
 function Projects() {
-  const { user } = useAuth();
-  const navigate = useNavigate();
-  const [projects, setProjects] = useState<ProjectSummary[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [creating, setCreating] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    let mounted = true;
+    const [projects, setProjects] = useState<ProjectSummary[]>([]);
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [creatingProject, setCreatingProject] = useState(false);
+    const navigate = useNavigate();
+    const { user } = useAuth();
 
-    async function loadProjects() {
-      if (!user?.id) {
-        setLoading(false);
-        return;
-      }
+    useEffect(() => {
+        let isMounted = true;
+        const fetchProjects = async () => {
+            try {
+                if (!user?.id) {
+                    if (isMounted) setLoading(false);
+                    return;
+                }
+                const data = await getProjectsByUser(user.id);
+                if (isMounted) {
+                    setProjects(Array.isArray(data) ? data : []);
+                    setError(null);
+                }
+            } catch (err) {
+                console.error('No se pudieron cargar los proyectos', err);
+                if (isMounted) setError('No se pudieron cargar los proyectos');
+            } finally {
+                if (isMounted) setLoading(false);
+            }
+        };
+        fetchProjects();
+        return () => {
+            isMounted = false;
+        };
+    }, [user?.id]);
 
-      setLoading(true);
-      const data = await getProjectsByUser(user.id);
-      if (mounted) {
-        setProjects(data);
-        setLoading(false);
-      }
-    }
+    // const SortAlphabeticAscendente = () => {
+    //     return(
+    //         <button onClick={() => alert("Ordenar A-Z")}>
+    //             Ordenar A-Z
+    //         </button>
+    //     );
+    // }
 
-    void loadProjects();
-    return () => {
-      mounted = false;
+    // const SortAlphabeticDescendente = () => {
+    //     return(
+    //         <button onClick={() => alert("Ordenar Z-A")}>
+    //             Ordenar Z-A
+    //         </button>
+    //     );
+    // }
+
+    // const SortLastUpdatedAscendente = () => {
+    //     return(
+    //         <button onClick={() => alert("Ordenar por mas reciente")}>
+    //             Ordenar por mas reciente
+    //         </button>
+    //     );
+    // } 
+
+    // const SortLastUpdatedDescendente = () => {
+    //     return(
+    //         <button onClick={() => alert("Ordenar por mas antiguo")}>
+    //             Ordenar por mas antiguo
+    //         </button>
+    //     );
+    // }
+
+    // const filterOptions = [
+    //     <SortAlphabeticAscendente />,
+    //     <SortAlphabeticDescendente />,
+    //     <SortLastUpdatedAscendente />,
+    //     <SortLastUpdatedDescendente />
+    // ];
+
+    const showCreateGuide = !loading && !error && projects.length === 0;
+
+    const totalProjects = projects.length;
+    const balancedProjects = projects.filter((project) => project?.energyEnough).length;
+    const pendingProjects = totalProjects - balancedProjects;
+    const totalDemand = projects.reduce(
+        (acc, project) => acc + (Number(project?.energyNeeded) || 0),
+        0
+    );
+
+    const formatNumber = (value: number) =>
+        new Intl.NumberFormat("es-ES", { maximumFractionDigits: 0 }).format(value);
+
+    const formatEnergy = (value: number) =>
+        new Intl.NumberFormat("es-ES", { maximumFractionDigits: 1 }).format(value / 1000);
+
+    const handleCreateProject = async () => {
+        if (creatingProject) return;
+        if (!user?.id) {
+            setError("Debes iniciar sesión para crear un proyecto");
+            return;
+        }
+        setCreatingProject(true);
+        setError(null);
+        try {
+            // Crear un proyecto básico antes de abrir el simulador.
+            const newProjectPayload: ProjectMutation = {
+                name: "Nuevo Proyecto",
+                energyEnough: false,
+                energyNeeded: 0,
+                userId: user.id
+            };
+            const createdProject = await createProject(newProjectPayload);
+            setProjects((prev) => [...prev, createdProject]);
+            navigate(`/simulator/${createdProject?.id}`);
+        } catch (creationError) {
+            console.error("No se pudo crear el proyecto", creationError);
+            setError("No se pudo crear el proyecto");
+        } finally {
+            setCreatingProject(false);
+        }
     };
-  }, [user?.id]);
 
-  const stats = useMemo(() => {
-    const balanced = projects.filter((project) => project.energyEnough).length;
-    const demand = projects.reduce((acc, project) => acc + Number(project.energyNeeded ?? 0), 0);
-    return { balanced, demand };
-  }, [projects]);
+    const handleDeleteProject = async (projectId: Identifier | null | undefined, projectName: string) => {
+        if (!projectId) return;
+        const confirmed = window.confirm(`¿Eliminar "${projectName}"? Esta acción no se puede deshacer.`);
+        if (!confirmed) return;
 
-  async function handleCreateProject() {
-    if (!user?.id || creating) {
-      return;
-    }
+        try {
+            setError(null);
+            await deleteProject(projectId);
+            setProjects((prev) => prev.filter((project) => project.id !== projectId));
+        } catch (deleteError) {
+            console.error("No se pudo eliminar el proyecto", deleteError);
+            setError("No se pudo eliminar el proyecto");
+        }
+    };
 
-    setCreating(true);
-    setError(null);
-    try {
-      const created = await createProject({
-        name: `Proyecto ${projects.length + 1}`,
-        season: "verano",
-        latitude: 28.1,
-        longitude: -15.4,
-        timezone: "auto",
-        tiltAngle: 30,
-        azimuth: 0,
-        durationDays: 1,
-        simulationMode: "open-meteo",
-        systemLossPercent: 14,
-        energyEnough: false,
-        energyNeeded: 0,
-        userId: user.id,
-        projectNodes: [],
-        nodeConnections: [],
-      });
-      navigate(`/simulator/${created.id}`);
-    } catch (creationError) {
-      console.error("No se pudo crear el proyecto", creationError);
-      setError("No se pudo crear el proyecto.");
-    } finally {
-      setCreating(false);
-    }
-  }
-
-  async function handleDeleteProject(id: Identifier | null | undefined) {
-    if (id == null || !window.confirm("Eliminar este proyecto de forma permanente?")) {
-      return;
-    }
-
-    try {
-      await deleteProject(id);
-      setProjects((current) => current.filter((project) => project.id !== id));
-    } catch (deleteError) {
-      console.error("No se pudo eliminar el proyecto", deleteError);
-      setError("No se pudo eliminar el proyecto.");
-    }
-  }
-
-  return (
-    <main className="projects-page">
-      <section className="projects-hero">
-        <div>
-          <p className="eyebrow">Panel de proyectos</p>
-          <h1>Proyectos energéticos</h1>
-          <p>Organiza instalaciones, abre el simulador y revisa rapidamente el estado de cada red.</p>
-        </div>
-        <button type="button" className="primary-action" onClick={handleCreateProject} disabled={creating}>
-          <FaPlus aria-hidden="true" />
-          {creating ? "Creando..." : "Nuevo proyecto"}
-        </button>
-      </section>
-
-      <section className="projects-summary" aria-label="Resumen de proyectos">
-        <article>
-          <span>{projects.length}</span>
-          <p>Activos</p>
-        </article>
-        <article>
-          <span>{stats.balanced}</span>
-          <p>Balanceados</p>
-        </article>
-        <article>
-          <span>{numberFormat.format(stats.demand / 1000)} kWh</span>
-          <p>Demanda</p>
-        </article>
-      </section>
-
-      {error && <p className="page-alert">{error}</p>}
-      {loading && <p className="page-status">Cargando proyectos...</p>}
-
-      {!loading && projects.length === 0 && (
-        <section className="empty-state">
-          <FaBolt aria-hidden="true" />
-          <h2>Aun no hay proyectos</h2>
-          <p>Crea el primer escenario para empezar a colocar elementos y simular su comportamiento.</p>
-          <button type="button" className="primary-action" onClick={handleCreateProject} disabled={creating}>
-            <FaPlus aria-hidden="true" />
-            Crear proyecto
-          </button>
-        </section>
-      )}
-
-      {!loading && projects.length > 0 && (
-        <section className="projects-grid" aria-label="Listado de proyectos">
-          {projects.map((project) => {
-            const title = project.name || project.title || `Proyecto ${project.id}`;
-            return (
-              <article className="project-card" key={project.id}>
-                <div>
-                  <p className={project.energyEnough ? "status-pill ok" : "status-pill"}>{project.energyEnough ? "Balanceado" : "Pendiente"}</p>
-                  <h2>{title}</h2>
-                  <p>Actualizado {project.updatedAt ? new Date(project.updatedAt).toLocaleDateString("es-ES") : "recientemente"}</p>
+    return (
+        <main className="projects-page">
+            <section className="projects-hero">
+                <p className="projects-eyebrow">Panel de proyectos</p>
+                <div className="projects-hero-header">
+                    <div>
+                        <h1>Diseña, simula y equilibra tus instalaciones energéticas</h1>
+                        <p>
+                            Visualiza el estado de cada proyecto, revisa su consumo objetivo
+                            y entra al simulador con un solo clic para seguir iterando.
+                        </p>
+                    </div>
+                    <button
+                        className={`projects-cta${showCreateGuide ? " guide" : ""}`}
+                        onClick={handleCreateProject}
+                        disabled={creatingProject}
+                    >
+                        {creatingProject ? "Creando..." : "Nuevo Proyecto"}
+                    </button>
                 </div>
-                <dl>
-                  <div>
-                    <dt>Temporada</dt>
-                    <dd>{project.season ?? "verano"}</dd>
-                  </div>
-                  <div>
-                    <dt>Demanda</dt>
-                    <dd>{numberFormat.format(Number(project.energyNeeded ?? 0) / 1000)} kWh</dd>
-                  </div>
-                </dl>
-                <div className="project-card-actions">
-                  <Link to={`/simulator/${project.id}`}>Abrir simulador</Link>
-                  <button type="button" aria-label="Eliminar proyecto" onClick={() => handleDeleteProject(project.id)}>
-                    <FaTrash aria-hidden="true" />
-                  </button>
+
+                <div className="projects-stats">
+                    <article>
+                        <span>{formatNumber(totalProjects)}</span>
+                        <p>Proyectos activos</p>
+                    </article>
+                    <article>
+                        <span>{formatNumber(balancedProjects)}</span>
+                        <p>Balanceados</p>
+                    </article>
+                    <article>
+                        <span>{formatNumber(pendingProjects)}</span>
+                        <p>Pendientes</p>
+                    </article>
+                    <article>
+                        <span>{formatEnergy(totalDemand)} MWh</span>
+                        <p>Demanda planificada</p>
+                    </article>
                 </div>
-              </article>
-            );
-          })}
-        </section>
-      )}
-    </main>
-  );
+            </section>
+
+            <section className="projects-board">
+                <header>
+                    <div>
+                        <h2>Tu inventario energético</h2>
+                        <p>
+                            Administra proyectos guardados, elimina los que ya no necesitas
+                            y retoma cualquier simulación en progreso.
+                        </p>
+                    </div>
+                    {/* <SearchBar
+                        placeholder="Buscar proyectos..."
+                        headingButton={HeadingButton.FILTER}
+                        filterOptions={filterOptions}
+                    /> */}
+                </header>
+
+                {loading && <p className="projects-status">Cargando proyectos...</p>}
+                {error && !loading && (
+                    <p className="projects-status error">{error}</p>
+                )}
+
+                {!loading && !error && (
+                    <>
+                        {projects.length === 0 ? (
+                            <div className="projects-empty-state">
+                                <h3>Aún no tienes proyectos</h3>
+                                <p>
+                                    Crea tu primer escenario para comenzar a simular necesidades
+                                    y excedentes energéticos.
+                                </p>
+                                <button onClick={handleCreateProject} disabled={creatingProject}>
+                                    {creatingProject ? "Creando..." : "Crear proyecto"}
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="projects-grid">
+                                {projects.map((project) => {
+                                    if (project.id == null) {
+                                        return null;
+                                    }
+
+                                    const title = project.name || project.title || `Proyecto ${project.id}`;
+                                    const updated = project.updatedAt || project.lastUpdated;
+                                    return (
+                                        <ProjectCard
+                                            key={project.id}
+                                            id={project.id}
+                                            title={title}
+                                            lastUpdated={
+                                                updated
+                                                    ? new Date(updated).toLocaleDateString()
+                                                    : new Date().toLocaleDateString()
+                                            }
+                                            imageUrl={project.imageUrl || placeHorderImg}
+                                            onDelete={(cardId) => handleDeleteProject(cardId, title)}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </>
+                )}
+            </section>
+        </main>
+    );
 }
 
 export default Projects;
