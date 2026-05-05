@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: clamp(1.5rem, 4vw, 3rem);
-  padding: clamp(1.5rem, 4vw, 3.5rem) clamp(1rem, 5vw, 3.5rem) 4rem;
+  --page-padding: clamp(1.5rem, 4vw, 3.5rem) clamp(1rem, 5vw, 3.5rem) 4rem;
 }
 
 .register-shell {

@@ -1,6 +1,7 @@
 .projects-page {
     min-height: 100vh;
-    padding: clamp(1.5rem, 4vw, 3.5rem);
+    --page-padding: clamp(1.5rem, 4vw, 3.5rem);
+    --page-padding-mobile: 1.5rem 1rem;
     display: flex;
     flex-direction: column;
     gap: clamp(1.5rem, 4vw, 3rem);

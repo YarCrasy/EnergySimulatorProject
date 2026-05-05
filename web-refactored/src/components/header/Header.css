@@ -152,6 +152,9 @@
     overflow-x: hidden;
     pointer-events: none;
     visibility: hidden;
+    
+    width: min(290px, 86vw);
+    padding-inline: 1.25rem;
     transform: translateX(calc(100% + 1rem));
     transition: transform 0.28s ease, visibility 0s linear 0.28s;
 
@@ -201,13 +204,6 @@
       width: 100%;
       text-align: center;
     }
-  }
-}
-
-@media (max-width: 520px) {
-  .header-menu {
-    width: min(290px, 86vw);
-    padding-inline: 1.25rem;
   }
 }
 

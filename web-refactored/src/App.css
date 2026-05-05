@@ -33,7 +33,6 @@
 
 html {
   width: 100%;
-  overflow-x: hidden;
 }
 
 body {
@@ -42,7 +41,6 @@ body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   min-height: 100vh;
   width: 100%;
-  overflow-x: hidden;
 }
 
 :focus-visible {
@@ -57,9 +55,12 @@ body {
   color: inherit;
   min-height: 100vh;
   width: 100%;
-  overflow-x: hidden;
   display: flex;
   flex-direction: column;
+}
+
+main {
+  padding: var(--page-padding, clamp(2rem, 4vw, 4rem) clamp(1rem, 5vw, 3.5rem) 4rem);
 }
 
 .app-layout {
@@ -67,7 +68,6 @@ body {
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
-  overflow-x: hidden;
 }
 
 .sr-only {
@@ -76,7 +76,6 @@ body {
   height: 1px;
   padding: 0;
   margin: -1px;
-  overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
@@ -87,7 +86,6 @@ body {
   display: flex;
   flex-direction: column;
 }
-
 
 button {
   background: linear-gradient(120deg, var(--accent-main), var(--accent-alt));
@@ -103,5 +101,11 @@ button {
     color: #041126;
     box-shadow: 0 0 20px rgba(92, 225, 230, 0.5);
     transform: translateY(-2px);
+  }
+}
+
+@media (max-width: 640px) {
+  main {
+    padding: var(--page-padding-mobile, 1.5rem 1rem 3rem);
   }
 }

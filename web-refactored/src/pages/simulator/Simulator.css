@@ -1,6 +1,8 @@
 @import "./Simulator.asides.css";
 
 .simulator-page {
+  --page-padding: 0;
+  --page-padding-mobile: 0;
   --sim-bg: var(--app-gradient, var(--color-gradient));
   --sim-panel: var(--surface-card, rgba(10, 18, 38, 0.9));
   --sim-panel-soft: color-mix(in srgb, var(--surface-card, rgba(10, 18, 38, 0.9)) 78%, transparent);

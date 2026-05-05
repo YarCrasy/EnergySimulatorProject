@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 
@@ -17,13 +17,15 @@ function Header() {
   const navigate = useNavigate();
   const { isAuthenticated, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLElement | null>(null);
+  const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     document.body.classList.toggle("menu-open", isMenuOpen);
 
-    return () => {
-      document.body.classList.remove("menu-open");
-    };
+    if (!isMenuOpen && menuRef.current?.contains(document.activeElement)) toggleButtonRef.current?.focus();
+
+    return () => document.body.classList.remove("menu-open");
   }, [isMenuOpen]);
 
   const handleAuthClick = () => {
@@ -38,9 +40,7 @@ function Header() {
     navigate("/login");
   };
 
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
+  const closeMenu = () => setIsMenuOpen(false);
 
   return (
     <>
@@ -63,6 +63,7 @@ function Header() {
         <button
           type="button"
           className="menu-toggle"
+          ref={toggleButtonRef}
           aria-label={isMenuOpen ? "Cerrar menu" : "Abrir menu"}
           aria-expanded={isMenuOpen}
           aria-controls="header-menu"
@@ -79,7 +80,12 @@ function Header() {
         onClick={closeMenu}
       />
 
-      <aside className={`header-menu ${isMenuOpen ? "is-open" : ""}`} id="header-menu" aria-hidden={!isMenuOpen}>
+      <aside
+        className={`header-menu ${isMenuOpen ? "is-open" : ""}`}
+        id="header-menu"
+        ref={menuRef}
+        aria-hidden={!isMenuOpen}
+      >
         <button type="button" className="menu-close" aria-label="Cerrar menu" onClick={closeMenu}>
           <FaTimes size={20} />
         </button>
