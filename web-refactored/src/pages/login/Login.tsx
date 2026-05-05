@@ -30,7 +30,7 @@ function getCredentials(form: HTMLFormElement) {
 }
 
 function getFallbackPath(user: AuthLoginResult) {
-  return user.role === "admin" ? "/administration/users" : "/projects";
+  return user.role === "admin" ? "/administration" : "/projects";
 }
 
 function Login() {
