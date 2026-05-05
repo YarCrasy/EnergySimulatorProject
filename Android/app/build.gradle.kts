@@ -30,6 +30,7 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "BACKEND_BASE_URL", "\"https://dam.yarcrasy.com/api/\"")
+            buildConfigField("String", "WEB_BASE_URL", "\"https://dam-project.yarcrasy.com\"")
         }
     }
 }

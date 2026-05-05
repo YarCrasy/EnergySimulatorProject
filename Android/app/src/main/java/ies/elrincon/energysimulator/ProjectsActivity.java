@@ -333,11 +333,33 @@ public class ProjectsActivity extends AppCompatActivity {
         intent.putExtra(ProfileActivity.EXTRA_USER, sessionUser);
         startActivity(intent);
     }
-
     private void createNewProject() {
         errMsg.setText("");
-        Intent intent = new Intent(this, WebSimulatorActivity.class);
-        startActivity(intent);
+
+        new Thread(() -> {
+            try {
+                JSONObject newProjectPayload = new JSONObject();
+                newProjectPayload.put("name", "Nuevo Proyecto");
+                newProjectPayload.put("energyNeeded", 0);
+                newProjectPayload.put("energyEnough", false);
+                newProjectPayload.put("userId", sessionUser.getId());
+
+                JSONObject response = ApiConnection.post("projects", newProjectPayload);
+                Project newProject = new Project(response);
+
+                runOnUiThread(() -> {
+                    Intent intent = new Intent(ProjectsActivity.this, WebSimulatorActivity.class);
+                    intent.putExtra("projectId", newProject.getId());
+                    intent.putExtra("userToken", sessionUser.getAuthToken());  // ← Pasar token
+                    startActivity(intent);
+                });
+
+            } catch (Exception e) {
+                runOnUiThread(() -> {
+                    errMsg.setText("Error al crear proyecto: " + e.getMessage());
+                });
+            }
+        }).start();
     }
 
     private void logout() {
