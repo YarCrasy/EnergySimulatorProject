@@ -93,6 +93,14 @@ function numericLike(value: unknown) {
   return typeof value === "string" || typeof value === "number" ? value : null;
 }
 
+function isBackendElementId(value: Identifier | null | undefined): value is Identifier {
+  if (typeof value === "number") {
+    return Number.isFinite(value);
+  }
+
+  return typeof value === "string" && /^\d+$/.test(value);
+}
+
 export function isGenerator(element?: EnergyElement | null, data?: EnergyNodeData) {
   const text = `${element?.elementType ?? ""} ${element?.category ?? ""} ${data?.typeLabel ?? ""}`.toLowerCase();
   return text.includes("generator") || text.includes("generacion") || text.includes("solar") || text.includes("panel");
@@ -177,7 +185,7 @@ export function buildEdges(project: ProjectDetail, nodes: EnergyNode[]): EnergyE
 
 export function buildProjectPayload(project: ProjectDetail, nodes: EnergyNode[], edges: EnergyEdge[]): ProjectMutation {
   const projectNodes = nodes
-    .filter((node) => node.data.elementId != null)
+    .filter((node) => isBackendElementId(node.data.elementId))
     .map((node) => ({
       id: node.data.backendId ?? null,
       element: { id: node.data.elementId },

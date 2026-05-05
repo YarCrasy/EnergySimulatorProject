@@ -28,7 +28,8 @@ api.interceptors.response.use(
     const status = axios.isAxiosError(error) ? error.response?.status : undefined;
 
     if (status !== 401 && status !== 403) {
-      console.error("API request failed", error);
+      const details = axios.isAxiosError(error) ? error.response?.data : undefined;
+      console.error("API request failed", details ?? error);
     }
 
     return Promise.reject(error);

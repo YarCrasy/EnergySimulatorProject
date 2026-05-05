@@ -14,7 +14,7 @@ function App() {
   const { isAuthenticated, loading } = useAuth();
   const hiddenHeaderPaths = ["/login", "/register", "/simulator", "/administration"];
   const hiddenFooterPaths = ["/login", "/register", "/simulator", "/administration"];
-  const protectedRouteElement = loading ? (<Spinner text="Cargando sesion..." />) : isAuthenticated ? ( <Outlet /> ) : ( <Navigate to="/login" replace state={{ from: location }} /> );
+  const protectedRouteElement = loading ? (<Spinner text="Cargando sesión..." />) : isAuthenticated ? ( <Outlet /> ) : ( <Navigate to="/login" replace state={{ from: location }} /> );
   const hideHeader = hiddenHeaderPaths.some((path) => location.pathname.startsWith(path));
   const hideFooter = hiddenFooterPaths.some((path) => location.pathname.startsWith(path));
 
