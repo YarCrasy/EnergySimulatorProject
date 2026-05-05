@@ -11,7 +11,8 @@
       "@models/*": ["./src/models/*"],
       "@svg/*": ["./src/assets/images/svg/*"],
       "@jpg/*": ["./src/assets/images/jpg/*"],
-      "@png/*": ["./src/assets/images/png/*"]
+      "@png/*": ["./src/assets/images/png/*"],
+      "@components/*": ["./src/components/*"]
     },
     "skipLibCheck": true,
 

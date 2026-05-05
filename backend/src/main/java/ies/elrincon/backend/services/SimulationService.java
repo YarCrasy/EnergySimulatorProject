@@ -6,9 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ies.elrincon.backend.dto.GenerationCalculationRequest;
 import ies.elrincon.backend.dto.OpenMeteoForecastRequest;
@@ -31,6 +30,7 @@ public class SimulationService {
     private final ProjectNodeRepository projectNodeRepository;
     private final SimulationRunRepository simulationRunRepository;
     private final OpenMeteoClient openMeteoClient;
+    private final ObjectMapper objectMapper;
 
     public SimulationService(
             ProjectRepository projectRepository,
@@ -41,6 +41,7 @@ public class SimulationService {
         this.projectNodeRepository = projectNodeRepository;
         this.simulationRunRepository = simulationRunRepository;
         this.openMeteoClient = openMeteoClient;
+        this.objectMapper = new ObjectMapper();
     }
 
     public SimulationRun simulate(Long projectId, SimulationRequest request) {
@@ -150,7 +151,7 @@ public class SimulationService {
     private double generationForNode(GenerationCalculationRequest request) {
         ProjectNode node = request.node();
         GeneratorElement generator = request.generator();
-        JsonObject data = parseNodeData(node);
+        JsonNode data = parseNodeData(node);
         int quantity = nodeQuantity(node, data);
         double area = firstNonNull(readNumber(data, "area"), generator.getArea(), 0d);
         double efficiency = normalizeEfficiency(firstNonNull(readNumber(data, "efficiency"), generator.getEfficiency(), 0d));
@@ -168,7 +169,7 @@ public class SimulationService {
     }
 
     private double consumptionForNode(ProjectNode node, ConsumerElement consumer, int hourOfDay) {
-        JsonObject data = parseNodeData(node);
+        JsonNode data = parseNodeData(node);
         int quantity = nodeQuantity(node, data);
         double base = firstNonNull(
                 readNumber(data, "baseConsumption"),
@@ -203,7 +204,7 @@ public class SimulationService {
         return valueAt(forecast.shortwaveRadiation(), index);
     }
 
-    private int nodeQuantity(ProjectNode node, JsonObject data) {
+    private int nodeQuantity(ProjectNode node, JsonNode data) {
         Double dataQuantity = readNumber(data, "quantity");
         int quantity = node.getQuantity() == null ? 0 : node.getQuantity();
         if (quantity <= 0 && dataQuantity != null) quantity = dataQuantity.intValue();
@@ -219,23 +220,23 @@ public class SimulationService {
         return index < values.size() ? values.get(index) : 0d;
     }
 
-    private JsonObject parseNodeData(ProjectNode node) {
-        if (node.getData() == null || node.getData().isBlank()) return new JsonObject();
+    private JsonNode parseNodeData(ProjectNode node) {
+        if (node.getData() == null || node.getData().isBlank()) return objectMapper.createObjectNode();
         try {
-            JsonElement parsed = JsonParser.parseString(node.getData());
-            return parsed.isJsonObject() ? parsed.getAsJsonObject() : new JsonObject();
+            JsonNode parsed = objectMapper.readTree(node.getData());
+            return parsed != null && parsed.isObject() ? parsed : objectMapper.createObjectNode();
         } catch (Exception ignored) {
-            return new JsonObject();
+            return objectMapper.createObjectNode();
         }
     }
 
-    private Double readNumber(JsonObject node, String fieldName) {
-        JsonElement value = node.get(fieldName);
-        if (value == null || value.isJsonNull()) return null;
-        if (value.isJsonPrimitive() && value.getAsJsonPrimitive().isNumber()) return value.getAsDouble();
-        if (value.isJsonPrimitive() && value.getAsJsonPrimitive().isString()) {
+    private Double readNumber(JsonNode node, String fieldName) {
+        JsonNode value = node == null ? null : node.get(fieldName);
+        if (value == null || value.isNull()) return null;
+        if (value.isNumber()) return value.asDouble();
+        if (value.isTextual()) {
             try {
-                return Double.parseDouble(value.getAsString());
+                return Double.parseDouble(value.asText());
             } catch (NumberFormatException ignored) {
                 return null;
             }
@@ -243,10 +244,10 @@ public class SimulationService {
         return null;
     }
 
-    private String readText(JsonObject node, String fieldName) {
-        JsonElement value = node.get(fieldName);
-        if (value == null || value.isJsonNull()) return null;
-        return value.isJsonPrimitive() && value.getAsJsonPrimitive().isString() ? value.getAsString() : null;
+    private String readText(JsonNode node, String fieldName) {
+        JsonNode value = node == null ? null : node.get(fieldName);
+        if (value == null || value.isNull()) return null;
+        return value.isTextual() ? value.asText() : null;
     }
 
     private boolean booleanAt(List<Boolean> values, int index) {

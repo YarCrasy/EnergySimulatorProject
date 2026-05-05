@@ -133,7 +133,10 @@ public class ProjectController {
             node.setProject(project);
             ensureElementAssigned(node);
         });
-        project.getNodeConnections().forEach(connection -> connection.setProject(project));
+        project.getNodeConnections().forEach(connection -> {
+            connection.setProject(project);
+            ensureConnectionNodesAssigned(project, connection);
+        });
     }
 
     private void replaceProjectNodes(Project project, List<ProjectNode> nodes) {
@@ -151,6 +154,7 @@ public class ProjectController {
         if (connections == null) return;
         connections.forEach(connection -> {
             connection.setProject(project);
+            ensureConnectionNodesAssigned(project, connection);
             project.getNodeConnections().add(connection);
         });
     }
@@ -165,5 +169,23 @@ public class ProjectController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Elemento no encontrado con id " + elementId));
         node.setElement(element);
+    }
+
+    private void ensureConnectionNodesAssigned(Project project, ProjectNodeConnection connection) {
+        ProjectNode source = resolveConnectionNode(project, connection.getSource(), connection.getSourceNodeIdReference(), "source.id");
+        ProjectNode target = resolveConnectionNode(project, connection.getTarget(), connection.getTargetNodeIdReference(), "target.id");
+        connection.setSource(source);
+        connection.setTarget(target);
+    }
+
+    private ProjectNode resolveConnectionNode(Project project, ProjectNode currentNode, Long nodeId, String fieldName) {
+        if (currentNode != null && currentNode.getProject() == project) return currentNode;
+        if (nodeId == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cada conexion debe incluir " + fieldName);
+
+        return project.getProjectNodes().stream()
+                .filter(node -> nodeId.equals(node.getId()))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "No se encontro el nodo " + nodeId + " dentro del proyecto actualizado"));
     }
 }

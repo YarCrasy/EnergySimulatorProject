@@ -24,6 +24,8 @@ export interface ProjectSummary extends LooseRecord {
   name?: string;
   title?: string;
   season?: string;
+  dayPeriodPreset?: string;
+  weatherPreset?: string;
   latitude?: number | null;
   longitude?: number | null;
   timezone?: string | null;

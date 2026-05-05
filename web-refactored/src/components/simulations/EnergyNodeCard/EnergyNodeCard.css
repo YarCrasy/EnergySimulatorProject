@@ -1,0 +1,27 @@
+.simulator-page {
+  .energy-node-card {
+    border: 1px solid var(--sim-line-strong);
+    border-radius: 8px;
+    background: var(--node-bg, color-mix(in srgb, var(--sim-accent) 18%, var(--sim-panel)));
+    color: var(--sim-text);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
+    padding: 12px;
+    backdrop-filter: blur(20px);
+    transition: 1s;
+
+    &.selected {
+      border-color: var(--sim-accent);
+      box-shadow:
+        0 0 0 1px color-mix(in srgb, var(--sim-accent) 55%, transparent),
+        0 0 16px color-mix(in srgb, var(--sim-accent) 34%, transparent),
+        0 0 28px color-mix(in srgb, var(--sim-accent) 18%, transparent);
+    }
+
+    strong,
+    span,
+    small {
+      display: flex;
+    }
+  }
+}
+

@@ -47,6 +47,8 @@ public class SecurityConfig {
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, ADMIN_CATALOG_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/projects/**").permitAll()
                         .requestMatchers(HttpMethod.GET, ADMIN_USER_READ_ENDPOINTS).hasRole(ADMIN)
                         .requestMatchers(HttpMethod.PUT, "/api/users/**").hasRole(ADMIN)
                         .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole(ADMIN)
@@ -64,3 +66,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+

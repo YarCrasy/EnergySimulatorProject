@@ -9,10 +9,11 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@api': fileURLToPath(new URL('./src/api', import.meta.url)),
-      '@models': fileURLToPath(new URL('./models', import.meta.url)),
+      '@models': fileURLToPath(new URL('./src/models', import.meta.url)),
       '@svg': fileURLToPath(new URL('./src/assets/images/svg', import.meta.url)),
       '@jpg': fileURLToPath(new URL('./src/assets/images/jpg', import.meta.url)),
       '@png': fileURLToPath(new URL('./src/assets/images/png', import.meta.url)),
+      '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
     },
   },
   test: {

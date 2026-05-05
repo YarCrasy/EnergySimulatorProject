@@ -5,6 +5,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 import jakarta.persistence.Column;
@@ -34,7 +35,7 @@ public class ProjectNode {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "element_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnore
     private Element element;
 
     @Transient
@@ -78,6 +79,7 @@ public class ProjectNode {
         this.project = project;
     }
 
+    @JsonIgnore
     public Element getElement() {
         return element;
     }
@@ -111,8 +113,17 @@ public class ProjectNode {
     }
 
     public Long getElementIdReference() {
-        if (element != null && element.getId() != null) return element.getId();
+        if (element != null && element.getId() != null)
+            return element.getId();
         return elementIdReference;
+    }
+
+    @JsonProperty("element")
+    public Map<String, Long> getElementReferencePayload() {
+        Long id = getElementIdReference();
+        if (id == null)
+            return null;
+        return Map.of("id", id);
     }
 
     public Float getPositionX() {
@@ -156,10 +167,13 @@ public class ProjectNode {
     }
 
     private Long parseElementId(Object value) {
-        if (value == null) return null;
-        if (value instanceof Number number) return number.longValue();
+        if (value == null)
+            return null;
+        if (value instanceof Number number)
+            return number.longValue();
         if (value instanceof String text) {
-            if (text.isBlank()) return null;
+            if (text.isBlank())
+                return null;
             try {
                 return Long.parseLong(text);
             } catch (NumberFormatException ignored) {
@@ -172,7 +186,7 @@ public class ProjectNode {
     @Override
     public String toString() {
         return "{" +
-            "positionX='" + getPositionX() + "'" +
+                "positionX='" + getPositionX() + "'" +
                 ", positionY='" + getPositionY() + "'" +
                 ", type='" + getType() + "'" +
                 "}";
