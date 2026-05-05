@@ -25,7 +25,12 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error: unknown) => {
-    console.error("API request failed", error);
+    const status = axios.isAxiosError(error) ? error.response?.status : undefined;
+
+    if (status !== 401 && status !== 403) {
+      console.error("API request failed", error);
+    }
+
     return Promise.reject(error);
   },
 );

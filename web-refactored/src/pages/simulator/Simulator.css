@@ -1,6 +1,6 @@
-@import "./Simulator.asides.css";
-
 .simulator-page {
+  --page-padding: 0;
+  --page-padding-mobile: 0;
   --sim-bg: var(--app-gradient, var(--color-gradient));
   --sim-panel: var(--surface-card, rgba(10, 18, 38, 0.9));
   --sim-panel-soft: color-mix(in srgb, var(--surface-card, rgba(10, 18, 38, 0.9)) 78%, transparent);
@@ -52,7 +52,8 @@
   }
 
   input,
-  textarea {
+  textarea,
+  select {
     width: 100%;
     border: 1px solid var(--sim-line);
     padding-left: 5px;
@@ -107,6 +108,7 @@
 
     .toolbar-actions {
       display: flex;
+      flex-wrap: nowrap;
       gap: 5px;
 
       button {
@@ -114,10 +116,12 @@
         align-items: center;
         justify-content: center;
         gap: 8px;
+        flex: 0 0 auto;
         border: 1px solid var(--sim-line);
         border-radius: 8px;
         background: var(--sim-field);
         color: var(--sim-text);
+        white-space: nowrap;
         padding: 5px 10px;
         cursor: pointer;
         box-shadow: none;
@@ -207,31 +211,62 @@
     color: var(--sim-muted);
   }
 
-  .energy-node-card {
-    border: 1px solid var(--sim-line-strong);
-    border-radius: 8px;
-    background: var(--node-bg, color-mix(in srgb, var(--sim-accent) 18%, var(--sim-panel)));
-    color: var(--sim-text);
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
-    padding: 12px;
-    backdrop-filter: blur(20px);
-    transition: 1s;
-
-    &.selected {
-      border-color: var(--sim-accent);
-      box-shadow:
-        0 0 0 1px color-mix(in srgb, var(--sim-accent) 55%, transparent),
-        0 0 16px color-mix(in srgb, var(--sim-accent) 34%, transparent),
-        0 0 28px color-mix(in srgb, var(--sim-accent) 18%, transparent);
-    }
-
-    strong,
-    span,
-    small {
-      display: flex;
-    }
-
+  .simulation-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    display: grid;
+    place-items: center;
+    padding: 24px;
   }
+
+  .simulation-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(4, 11, 24, 0.7);
+    backdrop-filter: blur(6px);
+    cursor: pointer;
+  }
+
+  .simulation-modal-content {
+    position: relative;
+    z-index: 1;
+    width: min(1100px, calc(100vw - 48px));
+    max-height: calc(100vh - 48px);
+    overflow: auto;
+    border: 1px solid var(--sim-line-strong);
+    border-radius: 18px;
+    background: var(--sim-panel);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+    padding: 20px;
+  }
+
+  .simulation-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .simulation-modal-close {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--sim-line);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--sim-text);
+    padding: 8px 12px;
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--sim-accent);
+      box-shadow: 0 0 20px rgba(92, 225, 230, 0.22);
+      transform: translateY(-1px);
+    }
+  }
+
 }
 
 @media (orientation: portrait) {
@@ -245,5 +280,24 @@
     min-height: 0;
     transform: rotate(-90deg);
     transform-origin: top left;
+  }
+}
+
+@media (max-width: 768px) {
+  .simulator-page {
+    .simulation-modal {
+      padding: 12px;
+    }
+
+    .simulation-modal-content {
+      width: calc(100vw - 24px);
+      max-height: calc(100vh - 24px);
+      padding: 16px;
+    }
+
+    .simulation-modal-header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
   }
 }

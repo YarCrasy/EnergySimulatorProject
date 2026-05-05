@@ -7,16 +7,15 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ies.elrincon.backend.dto.OpenMeteoForecastRequest;
 
@@ -26,11 +25,13 @@ public class OpenMeteoClient {
     private static final String FORECAST_URL = "https://api.open-meteo.com/v1/forecast";
 
     private final HttpClient httpClient;
+    private final ObjectMapper objectMapper;
 
     public OpenMeteoClient() {
         this.httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(8))
                 .build();
+        this.objectMapper = new ObjectMapper();
     }
 
     public OpenMeteoForecast fetchHourlyForecast(OpenMeteoForecastRequest forecastRequest) {
@@ -38,11 +39,14 @@ public class OpenMeteoClient {
                 ? "auto"
                 : forecastRequest.timezone();
         int resolvedDays = Math.max(1, Math.min(forecastRequest.forecastDays(), 16));
+        LocalDate startDate = forecastRequest.startDate() == null ? LocalDate.now() : forecastRequest.startDate();
+        LocalDate endDate = startDate.plusDays(resolvedDays - 1L);
         URI uri = URI.create(FORECAST_URL
                 + "?latitude=" + forecastRequest.latitude()
                 + "&longitude=" + forecastRequest.longitude()
                 + "&hourly=shortwave_radiation,direct_radiation,diffuse_radiation,direct_normal_irradiance,global_tilted_irradiance,cloud_cover,is_day"
-                + "&forecast_days=" + resolvedDays
+                + "&start_date=" + startDate
+                + "&end_date=" + endDate
                 + "&tilt=" + forecastRequest.tiltAngle()
                 + "&azimuth=" + forecastRequest.azimuth()
                 + "&timezone=" + encode(resolvedTimezone));
@@ -65,16 +69,16 @@ public class OpenMeteoClient {
     }
 
     private OpenMeteoForecast parseForecast(String body) throws IOException {
-        JsonObject root = JsonParser.parseString(body).getAsJsonObject();
-        JsonObject hourly = getObject(root, "hourly");
-        List<String> times = toStringList(getArray(hourly, "time"));
-        List<Double> shortwaveRadiation = toDoubleList(getArray(hourly, "shortwave_radiation"));
-        List<Double> tiltedIrradiance = toDoubleList(getArray(hourly, "global_tilted_irradiance"));
-        List<Double> directRadiation = toDoubleList(getArray(hourly, "direct_radiation"));
-        List<Double> diffuseRadiation = toDoubleList(getArray(hourly, "diffuse_radiation"));
-        List<Double> directNormalIrradiance = toDoubleList(getArray(hourly, "direct_normal_irradiance"));
-        List<Double> cloudCover = toDoubleList(getArray(hourly, "cloud_cover"));
-        List<Boolean> day = toBooleanList(getArray(hourly, "is_day"));
+        JsonNode root = objectMapper.readTree(body);
+        JsonNode hourly = getNode(root, "hourly");
+        List<String> times = toStringList(getNode(hourly, "time"));
+        List<Double> shortwaveRadiation = toDoubleList(getNode(hourly, "shortwave_radiation"));
+        List<Double> tiltedIrradiance = toDoubleList(getNode(hourly, "global_tilted_irradiance"));
+        List<Double> directRadiation = toDoubleList(getNode(hourly, "direct_radiation"));
+        List<Double> diffuseRadiation = toDoubleList(getNode(hourly, "diffuse_radiation"));
+        List<Double> directNormalIrradiance = toDoubleList(getNode(hourly, "direct_normal_irradiance"));
+        List<Double> cloudCover = toDoubleList(getNode(hourly, "cloud_cover"));
+        List<Boolean> day = toBooleanList(getNode(hourly, "is_day"));
         return new OpenMeteoForecast(
                 times,
                 shortwaveRadiation,
@@ -86,35 +90,33 @@ public class OpenMeteoClient {
                 day);
     }
 
-    private JsonObject getObject(JsonObject parent, String fieldName) {
-        JsonElement value = parent.get(fieldName);
-        return value != null && value.isJsonObject() ? value.getAsJsonObject() : new JsonObject();
+    private JsonNode getNode(JsonNode parent, String fieldName) {
+        JsonNode value = parent == null ? null : parent.get(fieldName);
+        return value == null ? objectMapper.createArrayNode() : value;
     }
 
-    private JsonArray getArray(JsonObject parent, String fieldName) {
-        JsonElement value = parent.get(fieldName);
-        return value != null && value.isJsonArray() ? value.getAsJsonArray() : new JsonArray();
-    }
-
-    private List<String> toStringList(JsonArray node) {
+    private List<String> toStringList(JsonNode node) {
         List<String> values = new ArrayList<>();
-        node.forEach(value -> values.add(value.isJsonNull() ? "" : value.getAsString()));
+        if (!node.isArray()) return values;
+        node.forEach(value -> values.add(value.isNull() ? "" : value.asText("")));
         return values;
     }
 
-    private List<Double> toDoubleList(JsonArray node) {
+    private List<Double> toDoubleList(JsonNode node) {
         List<Double> values = new ArrayList<>();
-        node.forEach(value -> values.add(value.isJsonPrimitive() && value.getAsJsonPrimitive().isNumber() ? value.getAsDouble() : 0d));
+        if (!node.isArray()) return values;
+        node.forEach(value -> values.add(value.isNumber() ? value.asDouble() : 0d));
         return values;
     }
 
-    private List<Boolean> toBooleanList(JsonArray node) {
+    private List<Boolean> toBooleanList(JsonNode node) {
         List<Boolean> values = new ArrayList<>();
+        if (!node.isArray()) return values;
         node.forEach(value -> {
-            if (value.isJsonPrimitive() && value.getAsJsonPrimitive().isNumber()) {
-                values.add(value.getAsInt() == 1);
-            } else if (value.isJsonPrimitive() && value.getAsJsonPrimitive().isBoolean()) {
-                values.add(value.getAsBoolean());
+            if (value.isNumber()) {
+                values.add(value.asInt() == 1);
+            } else if (value.isBoolean()) {
+                values.add(value.asBoolean());
             } else {
                 values.add(false);
             }

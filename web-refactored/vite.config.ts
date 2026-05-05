@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import { fileURLToPath } from 'node:url'
 
@@ -9,10 +9,20 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@api': fileURLToPath(new URL('./src/api', import.meta.url)),
-      '@models': fileURLToPath(new URL('./models', import.meta.url)),
+      '@models': fileURLToPath(new URL('./src/models', import.meta.url)),
       '@svg': fileURLToPath(new URL('./src/assets/images/svg', import.meta.url)),
       '@jpg': fileURLToPath(new URL('./src/assets/images/jpg', import.meta.url)),
       '@png': fileURLToPath(new URL('./src/assets/images/png', import.meta.url)),
+      '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
+      '@auth': fileURLToPath(new URL('./src/auth', import.meta.url)),
     },
+  },
+  test: {
+    environment: "jsdom",
+    globals: false,
+    include: ["tests/**/*.test.ts", "tests/**/*.test.tsx"],
+    setupFiles: ["./tests/setupTests.ts"],
+    clearMocks: true,
+    restoreMocks: true,
   },
 })

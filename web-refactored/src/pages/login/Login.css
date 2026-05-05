@@ -1,9 +1,10 @@
 .login-page {
+  --page-padding: clamp(1.5rem, 4vw, 4rem) 1rem 3rem;
+  --page-padding-mobile: 1.5rem 1rem 3rem;
   min-height: calc(100vh - 80px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(1.5rem, 4vw, 4rem) 1rem 3rem;
 
   .login-shell {
     width: min(1100px, 100%);

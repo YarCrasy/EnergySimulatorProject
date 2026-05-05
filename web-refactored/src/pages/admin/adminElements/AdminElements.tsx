@@ -1,30 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
-import { FaCubes, FaPencilAlt, FaPlus, FaTrash, FaUsers } from "react-icons/fa";
+import { FaCubes, FaPencilAlt, FaPlus, FaTrash } from "react-icons/fa";
 import { Navigate } from "react-router-dom";
 
-import { createElement, deleteElement, getAllElements, updateElement } from "../../api/elements";
-import { deleteUser, getAllUsers, type UserProfile } from "../../api/users";
-import { useAuth } from "../../auth/auth";
-import RegisterForm from "../../components/registerForm/RegisterForm";
-import type { EditableUser } from "../../components/registerForm/types";
-import type { Identifier } from "../../models/common";
-import type { EnergyElement } from "../../models/element";
-import "./AdminBase.css";
+import { createElement, deleteElement, getAllElements, updateElement } from "@api/elements";
+import { useAuth } from "@auth/auth";
+import type { Identifier } from "@models/common";
+import type { EnergyElement } from "@models/element";
+import "../AdminBase.css";
 
-interface AdminBaseProps {
-  view: "users" | "elements";
-}
-
-function AdminBase({ view }: AdminBaseProps) {
+function AdminElements() {
   const { user } = useAuth();
-  const [users, setUsers] = useState<UserProfile[]>([]);
   const [elements, setElements] = useState<EnergyElement[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const [showUserForm, setShowUserForm] = useState(false);
-  const [editingUser, setEditingUser] = useState<EditableUser | null>(null);
-
   const [showElementForm, setShowElementForm] = useState(false);
   const [savingElement, setSavingElement] = useState(false);
   const [editingElement, setEditingElement] = useState<EnergyElement | null>(null);
@@ -36,94 +24,35 @@ function AdminBase({ view }: AdminBaseProps) {
     powerWatt: "",
   });
 
-  const userStats = useMemo(() => {
-    const adminCount = users.filter((item) => item.admin || item.role === "admin").length;
-    return { total: users.length, admins: adminCount, operators: users.length - adminCount };
-  }, [users]);
-
   const elementStats = useMemo(() => {
     const totalPower = elements.reduce((accumulator, item) => accumulator + Number(item.powerWatt ?? item.powerConsumption ?? 0), 0);
     return { total: elements.length, totalPower };
   }, [elements]);
 
-  const isAdminUser = user?.role === "admin";
-
   useEffect(() => {
     let mounted = true;
-
-    async function load() {
+    async function loadElements() {
       setLoading(true);
       setError(null);
       try {
-        const [userData, elementData] = await Promise.all([getAllUsers(), getAllElements()]);
-        if (mounted) {
-          setUsers(userData);
-          setElements(elementData);
-        }
+        const elementData = await getAllElements();
+        if (mounted) setElements(elementData);
       } catch (loadError) {
-        console.error("No se pudieron cargar los datos de administracion", loadError);
-        if (mounted) {
-          setError("No se pudieron cargar los datos de administracion.");
-        }
+        console.error("No se pudieron cargar los elementos", loadError);
+        if (mounted) setError("No se pudieron cargar los elementos.");
       } finally {
-        if (mounted) {
-          setLoading(false);
-        }
+        if (mounted) setLoading(false);
       }
     }
-
-    void load();
+    void loadElements();
     return () => {
       mounted = false;
     };
   }, []);
 
-  if (!isAdminUser) {
+  if (user?.role !== "admin") {
     return <Navigate to="/projects" replace />;
   }
-
-  const closeUserModal = () => {
-    setShowUserForm(false);
-    setEditingUser(null);
-  };
-
-  const openCreateUser = () => {
-    setEditingUser(null);
-    setShowUserForm(true);
-  };
-
-  const openEditUser = (selected: UserProfile) => {
-    setEditingUser({
-      id: selected.id ?? undefined,
-      fullName: selected.fullName ?? selected.name ?? "",
-      dateOfBirth: selected.dateOfBirth ?? "",
-      email: selected.email ?? "",
-    });
-    setShowUserForm(true);
-  };
-
-  const refreshUsers = async () => {
-    const next = await getAllUsers();
-    setUsers(next);
-    closeUserModal();
-  };
-
-  const handleDeleteUser = async (id: Identifier | null | undefined) => {
-    if (id == null) return;
-    if (String(user?.id ?? "") === String(id)) {
-      window.alert("No puedes eliminar tu propio usuario desde este panel.");
-      return;
-    }
-    if (!window.confirm("Eliminar este usuario?")) return;
-
-    try {
-      await deleteUser(id);
-      setUsers((current) => current.filter((item) => String(item.id) !== String(id)));
-    } catch (deleteError) {
-      console.error("No se pudo eliminar el usuario", deleteError);
-      window.alert("No se pudo eliminar el usuario.");
-    }
-  };
 
   const resetElementForm = () => {
     setElementForm({ name: "", elementType: "consumer", category: "", description: "", powerWatt: "" });
@@ -158,7 +87,6 @@ function AdminBase({ view }: AdminBaseProps) {
       window.alert("El nombre es obligatorio.");
       return;
     }
-
     setSavingElement(true);
     try {
       const payload: Partial<EnergyElement> = {
@@ -167,12 +95,10 @@ function AdminBase({ view }: AdminBaseProps) {
         category: elementForm.category.trim() || elementForm.elementType.trim() || "consumer",
         description: elementForm.description.trim(),
       };
-
       if (elementForm.powerWatt.trim() !== "") {
         payload.powerWatt = Number(elementForm.powerWatt);
         payload.powerConsumption = Number(elementForm.powerWatt);
       }
-
       if (editingElement?.id != null) {
         const updated = await updateElement(editingElement.id, payload);
         setElements((current) => current.map((item) => (String(item.id) === String(updated.id ?? editingElement.id) ? { ...item, ...updated } : item)));
@@ -180,7 +106,6 @@ function AdminBase({ view }: AdminBaseProps) {
         const created = await createElement(payload);
         setElements((current) => [created, ...current]);
       }
-
       closeElementModal();
     } catch (saveError) {
       console.error("No se pudo guardar el elemento", saveError);
@@ -193,9 +118,9 @@ function AdminBase({ view }: AdminBaseProps) {
   const handleDeleteElement = async (id: Identifier | null | undefined) => {
     if (id == null) return;
     if (!window.confirm("Eliminar este elemento?")) return;
-
     try {
-      await deleteElement(id);
+      const element = elements.find((item) => String(item.id) === String(id));
+      await deleteElement(id, element);
       setElements((current) => current.filter((item) => String(item.id) !== String(id)));
     } catch (deleteError) {
       console.error("No se pudo eliminar el elemento", deleteError);
@@ -206,71 +131,11 @@ function AdminBase({ view }: AdminBaseProps) {
   return (
     <main className="admin-page">
       <section className="admin-panel">
-        <p className="eyebrow">Administracion</p>
-        <h1>{view === "users" ? "Usuarios" : "Elementos"}</h1>
+        <p className="eyebrow">administración</p>
+        <h1>Elementos</h1>
         {error && <p className="admin-error">{error}</p>}
         {loading ? (
           <p>Cargando datos...</p>
-        ) : view === "users" ? (
-          <>
-            <section className="admin-stats">
-              <article>
-                <span>{userStats.total}</span>
-                <p>Usuarios</p>
-              </article>
-              <article>
-                <span>{userStats.admins}</span>
-                <p>Admins</p>
-              </article>
-              <article>
-                <span>{userStats.operators}</span>
-                <p>Operadores</p>
-              </article>
-            </section>
-
-            <div className="admin-toolbar">
-              <h2>Gestión de usuarios</h2>
-              <button type="button" className="admin-btn primary" onClick={openCreateUser}>
-                <FaPlus aria-hidden="true" />
-                Nuevo usuario
-              </button>
-            </div>
-
-            <div className="admin-table-wrap">
-              <table className="admin-table">
-                <thead>
-                  <tr>
-                    <th>Usuario</th>
-                    <th>Email</th>
-                    <th>Rol</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((item) => (
-                    <tr key={String(item.id ?? item.email)}>
-                      <td>
-                        <FaUsers aria-hidden="true" />
-                        {item.fullName || item.name || "Sin nombre"}
-                      </td>
-                      <td>{item.email ?? "Sin correo"}</td>
-                      <td>{item.admin ? "Admin" : item.role ?? "Usuario"}</td>
-                      <td className="admin-actions">
-                        <button type="button" className="admin-btn" onClick={() => openEditUser(item)}>
-                          <FaPencilAlt aria-hidden="true" />
-                          Editar
-                        </button>
-                        <button type="button" className="admin-btn danger" onClick={() => handleDeleteUser(item.id)}>
-                          <FaTrash aria-hidden="true" />
-                          Eliminar
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </>
         ) : (
           <>
             <section className="admin-stats">
@@ -318,20 +183,6 @@ function AdminBase({ view }: AdminBaseProps) {
           </>
         )}
       </section>
-
-      {showUserForm && (
-        <div className="admin-modal-overlay">
-          <div className="admin-modal">
-            <header>
-              <h3>{editingUser ? "Editar usuario" : "Nuevo usuario"}</h3>
-              <button type="button" className="admin-btn" onClick={closeUserModal}>
-                Cerrar
-              </button>
-            </header>
-            <RegisterForm editingUser={editingUser} onSuccess={refreshUsers} onCancel={closeUserModal} />
-          </div>
-        </div>
-      )}
 
       {showElementForm && (
         <div className="admin-modal-overlay">
@@ -409,4 +260,4 @@ function AdminBase({ view }: AdminBaseProps) {
   );
 }
 
-export default AdminBase;
+export default AdminElements;

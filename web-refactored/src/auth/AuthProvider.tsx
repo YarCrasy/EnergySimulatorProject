@@ -11,6 +11,31 @@ type AuthApiLoginResponse = {
 
 type UserLike = Record<string, unknown>;
 
+function readJwtExpiration(token: string): number | null {
+  try {
+    const [, payload] = token.split(".");
+    if (!payload) {
+      return null;
+    }
+
+    const normalizedPayload = payload.replace(/-/g, "+").replace(/_/g, "/");
+    const decodedPayload = atob(normalizedPayload.padEnd(normalizedPayload.length + ((4 - normalizedPayload.length % 4) % 4), "="));
+    const parsed = JSON.parse(decodedPayload) as { exp?: unknown };
+    return typeof parsed.exp === "number" ? parsed.exp : null;
+  } catch {
+    return null;
+  }
+}
+
+function isTokenUsable(token: string): boolean {
+  const expiration = readJwtExpiration(token);
+  if (expiration == null) {
+    return false;
+  }
+
+  return expiration > Math.floor(Date.now() / 1000);
+}
+
 function sanitizeText(value: unknown): string {
   if (typeof value !== "string") {
     return "";
@@ -63,6 +88,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const storedToken = localStorage.getItem("auth:token");
 
     if (rawUser && storedToken) {
+      if (!isTokenUsable(storedToken)) {
+        localStorage.removeItem("auth:user");
+        localStorage.removeItem("auth:token");
+        setUser(null);
+        setToken(null);
+        setLoading(false);
+        return;
+      }
+
       try {
         const safeUser = normalizeSafeUser(JSON.parse(rawUser));
         setUser(safeUser);

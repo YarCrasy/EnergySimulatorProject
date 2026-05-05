@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./Locations.css";
 import Spiner from "../../components/spiner/Spiner";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import { latLngBounds } from "leaflet";
 
 type MapCoords = [number, number];
 
@@ -51,13 +52,42 @@ const solarSpots = [
   },
 ];
 
+function MapViewportController({ bounds }: { bounds: ReturnType<typeof latLngBounds> }) {
+  const map = useMap();
+
+  useEffect(() => {
+    const syncMapViewport = () => {
+      map.invalidateSize();
+      map.fitBounds(bounds, {
+        padding: [32, 32],
+        maxZoom: 10,
+      });
+    };
+
+    syncMapViewport();
+
+    window.addEventListener("resize", syncMapViewport);
+    window.addEventListener("orientationchange", syncMapViewport);
+
+    return () => {
+      window.removeEventListener("resize", syncMapViewport);
+      window.removeEventListener("orientationchange", syncMapViewport);
+    };
+  }, [bounds, map]);
+
+  return null;
+}
+
 export default function Locations() {
   const [loading, setLoading] = useState(true);
+  const islandBounds = useMemo(
+    () => latLngBounds(solarSpots.map((spot) => spot.coords)),
+    []
+  );
 
   return (
     <main className="locations-page">
       <section className="locations-panel">
-        <p className="locations-eyebrow">Atlas solar</p>
         <h1>Localiza zonas de alta irradiancia para tu próximo proyecto</h1>
         <p className="locations-lede">
           Los mapas se actualizan con datos satelitales y climatológicos para ayudarte a priorizar cubiertas,
@@ -94,15 +124,17 @@ export default function Locations() {
         <div className="map-wrapper">
           {loading && <Spiner text="Cargando mapa..." />}
           <MapContainer
-            center={[27.915, -15.5713] as MapCoords}
-            zoom={10}
             className="leaflet-map"
             whenReady={() => setLoading(false)}
+            bounds={islandBounds}
+            boundsOptions={{ padding: [32, 32] }}
+            scrollWheelZoom={false}
           >
             <TileLayer
               url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
               attribution='&copy; <a href="https://carto.com/">CartoDB</a>'
             />
+            <MapViewportController bounds={islandBounds} />
             {solarSpots.map((spot) => (
               <Marker key={spot.name} position={spot.coords}>
                 <Popup>

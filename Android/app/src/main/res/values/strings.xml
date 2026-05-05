@@ -33,7 +33,7 @@
     <string name="projects_metric_pending">Pendientes</string>
     <string name="projects_metric_demand">Demanda planificada</string>
     <string name="profile_title">Tu perfil</string>
-    <string name="profile_subtitle">Gestiona tus datos, fortalece tus credenciales y mant&#233;n el acceso listo para el simulador.</string>
+    <string name="profile_subtitle">gestióna tus datos, fortalece tus credenciales y mant&#233;n el acceso listo para el simulador.</string>
     <string name="profile_save">Guardar cambios</string>
     <string name="profile_delete">Eliminar cuenta</string>
     <string name="profile_password_optional">Nueva contrase&#241;a (opcional)</string>

@@ -1,0 +1,130 @@
+.simulator-page {
+  .simulation-panel {
+    .simulation-overview {
+      display: grid;
+      grid-template-columns: minmax(240px, 0.95fr) minmax(320px, 1.25fr);
+      align-items: stretch;
+      gap: 14px;
+    }
+
+    .result-summary {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      article {
+        border: 1px solid var(--sim-line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.07);
+        padding: 10px;
+
+        strong {
+          display: block;
+          font-size: 1.15em;
+        }
+
+        &.generation {
+          border-color: color-mix(in srgb, var(--sim-accent) 55%, var(--sim-line));
+          background: color-mix(in srgb, var(--sim-accent) 12%, rgba(255, 255, 255, 0.04));
+
+          strong {
+            color: var(--sim-accent);
+          }
+        }
+
+        &.consumption {
+          border-color: color-mix(in srgb, #ffb86b 55%, var(--sim-line));
+          background: color-mix(in srgb, #ffb86b 12%, rgba(255, 255, 255, 0.04));
+
+          strong {
+            color: #ffb86b;
+          }
+        }
+
+        &.balance {
+          border-color: color-mix(in srgb, var(--sim-accent-2) 55%, var(--sim-line));
+          background: color-mix(in srgb, var(--sim-accent-2) 12%, rgba(255, 255, 255, 0.04));
+
+          strong {
+            color: var(--sim-accent-2);
+          }
+        }
+      }
+
+      span {
+        display: block;
+        margin-top: 4px;
+        color: var(--sim-muted);
+      }
+    }
+
+    .simulation-chart {
+      width: 100%;
+      min-height: 100%;
+      border: 1px solid var(--sim-line);
+      border-radius: 8px;
+      background: rgba(4, 11, 24, 0.46);
+
+      .line {
+        fill: none;
+        stroke-width: 3;
+
+        &.generation {
+          stroke: var(--sim-accent);
+        }
+
+        &.consumption {
+          stroke: #ffb86b;
+        }
+
+        &.balance {
+          stroke: var(--sim-accent-2);
+        }
+      }
+    }
+
+    .simulation-table-wrap {
+      max-height: 280px;
+      margin-top: 14px;
+      overflow: auto;
+      border: 1px solid var(--sim-line);
+      border-radius: 8px;
+    }
+
+    .simulation-table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th,
+      td {
+        padding: 8px;
+        border-bottom: 1px solid var(--sim-line);
+        text-align: right;
+        white-space: nowrap;
+      }
+
+      th {
+        color: var(--sim-accent);
+      }
+
+      th:first-child,
+      td:first-child {
+        text-align: left;
+      }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .simulator-page {
+    .simulation-panel {
+      .simulation-overview {
+        grid-template-columns: 1fr;
+      }
+
+      .simulation-chart {
+        min-height: 150px;
+      }
+    }
+  }
+}

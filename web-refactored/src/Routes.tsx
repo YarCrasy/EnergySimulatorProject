@@ -4,7 +4,9 @@ import Legals from "./pages/legals/Legals";
 import Locations from "./pages/locations/Locations";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
-import AdminBasic from "./pages/admin/AdminBase";
+import AdminHome from "./pages/admin/AdminHome";
+import AdminUsers from "./pages/admin/adminUsers/AdminUsers";
+import AdminElements from "./pages/admin/adminElements/AdminElements";
 import Profile from "./pages/profile/Profile";
 import Projects from "./pages/projects/Projects";
 import Simulator from "./pages/simulator/Simulator";
@@ -25,6 +27,8 @@ export const protectedRoutes = [
   { path: "/dashboard", element: <Projects /> },
   { path: "/projects", element: <Projects /> },
   { path: "/profile", element: <Profile /> },
-  { path: "/administration/users", element: <AdminBasic view="users" /> },
-  { path: "/administration/elements", element: <AdminBasic view="elements" /> },
+  { path: "/administration", element: <AdminHome /> },
+  { path: "/administration/users", element: <AdminUsers /> },
+  { path: "/administration/elements", element: <AdminElements /> },
 ] as const;
+

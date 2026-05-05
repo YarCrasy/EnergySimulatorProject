@@ -35,7 +35,7 @@ derecha del repositorio GitHub y entrar en el apartado de **Releases** o abrir d
 
 ![alt text](./image.png)
 
-Este proyecto es Plataforma integral para simular y gestionar soluciones de energía renovable. El monorepo contiene tres superficies principales: un backend en Spring Boot, una SPA web construida con React/Vite y una app Android nativa que consume las mismas APIs. Realizado como parte del proyecto intermodular en el IES El Rincón en el plan de estudio Desarrollo de Aplicaciones Multiplataforma.
+Este proyecto es Plataforma integral para simular y gestiónar soluciones de energía renovable. El monorepo contiene tres superficies principales: un backend en Spring Boot, una SPA web construida con React/Vite y una app Android nativa que consume las mismas APIs. Realizado como parte del proyecto intermodular en el IES El Rincón en el plan de estudio Desarrollo de Aplicaciones Multiplataforma.
 
 ### Arquitectura general
 - **Backend API (Java/Spring Boot)** expone endpoints REST `/api/*` para usuarios, proyectos y elementos del simulador.

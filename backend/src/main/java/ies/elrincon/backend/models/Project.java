@@ -12,6 +12,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,9 @@ public class Project {
 
     @Column(length = 80)
     private String timezone = "auto";
+
+    @Column(name = "simulation_date")
+    private LocalDate simulationDate;
 
     @Column(name = "tilt_angle")
     private Double tiltAngle = 30.0;
@@ -144,6 +148,14 @@ public class Project {
 
     public void setTimezone(String timezone) {
         this.timezone = timezone;
+    }
+
+    public LocalDate getSimulationDate() {
+        return simulationDate;
+    }
+
+    public void setSimulationDate(LocalDate simulationDate) {
+        this.simulationDate = simulationDate;
     }
 
     public Double getTiltAngle() {

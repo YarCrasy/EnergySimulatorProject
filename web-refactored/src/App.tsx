@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 
 import { useAuth } from "./auth/auth";
@@ -16,6 +17,10 @@ function App() {
   const protectedRouteElement = loading ? (<Spinner text="Cargando sesion..." />) : isAuthenticated ? ( <Outlet /> ) : ( <Navigate to="/login" replace state={{ from: location }} /> );
   const hideHeader = hiddenHeaderPaths.some((path) => location.pathname.startsWith(path));
   const hideFooter = hiddenFooterPaths.some((path) => location.pathname.startsWith(path));
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [location.pathname]);
 
   return (
     <>
