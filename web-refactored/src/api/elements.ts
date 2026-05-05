@@ -34,6 +34,34 @@ const fallbackElements: EnergyElement[] = [
   },
 ];
 
+type ElementTypeValue = EnergyElement["elementType"] | EnergyElement["category"] | string | null | undefined;
+
+function normalizeElementType(type: ElementTypeValue): "generator" | "consumer" | "battery" {
+  const normalized = String(type ?? "")
+    .trim()
+    .toLowerCase();
+
+  if (normalized.includes("generator") || normalized.includes("gener")) return "generator";
+  if (normalized.includes("battery") || normalized.includes("storage") || normalized.includes("almacen")) return "battery";
+  return "consumer";
+}
+
+function resolveScopedResource(type: ElementTypeValue): string {
+  const normalizedType = normalizeElementType(type);
+
+  if (normalizedType === "generator") return "/generator-elements";
+  if (normalizedType === "battery") return "/battery-elements";
+  return "/consumer-element";
+}
+
+function ensureIdentifier(id: Identifier | null | undefined, action: string): Identifier {
+  if (id == null) {
+    throw new Error(`${action} requiere un id`);
+  }
+
+  return id;
+}
+
 export async function getAllElements(): Promise<EnergyElement[]> {
   try {
     const { data } = await api.get<EnergyElement[]>(resource);
@@ -45,20 +73,37 @@ export async function getAllElements(): Promise<EnergyElement[]> {
 }
 
 export async function getElementById(id: Identifier): Promise<EnergyElement> {
-  const { data } = await api.get<EnergyElement>(`${resource}/${id}`);
+  const safeId = ensureIdentifier(id, "getElementById");
+  const { data } = await api.get<EnergyElement>(`/consumer-element/${safeId}`);
   return data;
 }
 
 export async function createElement(elementData: Partial<EnergyElement> = {}): Promise<EnergyElement> {
-  const { data } = await api.post<EnergyElement>(resource, elementData);
+  const payload: Partial<EnergyElement> = {
+    ...elementData,
+    elementType: normalizeElementType(elementData.elementType ?? elementData.category),
+  };
+  const { data } = await api.post<EnergyElement>(resource, payload);
   return data;
 }
 
 export async function updateElement(id: Identifier, elementData: Partial<EnergyElement> = {}): Promise<EnergyElement> {
-  const { data } = await api.put<EnergyElement>(`${resource}/${id}`, elementData);
+  const safeId = ensureIdentifier(id, "updateElement");
+  const scopedResource = resolveScopedResource(elementData.elementType ?? elementData.category);
+  const payload: Partial<EnergyElement> = {
+    ...elementData,
+    elementType: normalizeElementType(elementData.elementType ?? elementData.category),
+  };
+  const { data } = await api.put<EnergyElement>(`${scopedResource}/${safeId}`, payload);
   return data;
 }
 
-export async function deleteElement(id: Identifier): Promise<void> {
-  await api.delete(`${resource}/${id}`);
+export async function deleteElement(id: Identifier, element: Partial<EnergyElement> | ElementTypeValue = "consumer"): Promise<void> {
+  const safeId = ensureIdentifier(id, "deleteElement");
+  const scopedResource =
+    typeof element === "string" || element == null
+      ? resolveScopedResource(element)
+      : resolveScopedResource(element.elementType ?? element.category);
+
+  await api.delete(`${scopedResource}/${safeId}`);
 }

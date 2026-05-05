@@ -195,7 +195,8 @@ function AdminBase({ view }: AdminBaseProps) {
     if (!window.confirm("Eliminar este elemento?")) return;
 
     try {
-      await deleteElement(id);
+      const element = elements.find((item) => String(item.id) === String(id));
+      await deleteElement(id, element);
       setElements((current) => current.filter((item) => String(item.id) !== String(id)));
     } catch (deleteError) {
       console.error("No se pudo eliminar el elemento", deleteError);

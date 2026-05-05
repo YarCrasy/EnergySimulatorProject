@@ -5,6 +5,14 @@
     "lib": ["ES2023", "DOM"],
     "module": "esnext",
     "types": ["vite/client"],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@api/*": ["./src/api/*"],
+      "@models/*": ["./src/models/*"],
+      "@svg/*": ["./src/assets/images/svg/*"],
+      "@jpg/*": ["./src/assets/images/jpg/*"],
+      "@png/*": ["./src/assets/images/png/*"]
+    },
     "skipLibCheck": true,
 
     /* Bundler mode */
@@ -21,5 +29,5 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src", "tests"]
 }

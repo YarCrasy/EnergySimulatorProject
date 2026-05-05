@@ -9,6 +9,12 @@ function ensureArray<T>(data: unknown): T[] {
   return Array.isArray(data) ? (data as T[]) : [];
 }
 
+function ensureIdentifier(id: Identifier | null | undefined, action: string): Identifier {
+  if (id == null) throw new Error(`${action} requiere un id`);
+
+  return id;
+}
+
 export async function getAllProjects(): Promise<ProjectSummary[]> {
   try {
     const { data } = await api.get<ProjectSummary[]>(resource);
@@ -30,7 +36,8 @@ export async function getProjectsByUser(userId: Identifier): Promise<ProjectSumm
 }
 
 export async function getProjectById(id: Identifier): Promise<ProjectDetail> {
-  const { data } = await api.get<ProjectDetail>(`${resource}/${id}`);
+  const safeId = ensureIdentifier(id, "getProjectById");
+  const { data } = await api.get<ProjectDetail>(`${resource}/${safeId}`);
   return data;
 }
 
@@ -45,16 +52,19 @@ export async function createProject(projectData: ProjectMutation = {}): Promise<
 }
 
 export async function updateProject(id: Identifier, projectData: ProjectMutation = {}): Promise<ProjectDetail> {
-  const { data } = await api.put<ProjectDetail>(`${resource}/${id}`, projectData);
+  const safeId = ensureIdentifier(id, "updateProject");
+  const { data } = await api.put<ProjectDetail>(`${resource}/${safeId}`, projectData);
   return data;
 }
 
 export async function deleteProject(id: Identifier): Promise<true> {
-  await api.delete(`${resource}/${id}`);
+  const safeId = ensureIdentifier(id, "deleteProject");
+  await api.delete(`${resource}/${safeId}`);
   return true;
 }
 
 export async function runProjectSimulation(id: Identifier, payload: ProjectMutation = {}): Promise<SimulationRun> {
-  const { data } = await api.post<SimulationRun>(`${resource}/${id}/simulations`, payload);
+  const safeId = ensureIdentifier(id, "runProjectSimulation");
+  const { data } = await api.post<SimulationRun>(`${resource}/${safeId}/simulations`, payload);
   return data;
 }
