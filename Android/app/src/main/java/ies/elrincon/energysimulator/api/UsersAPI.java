@@ -2,6 +2,9 @@ package ies.elrincon.energysimulator.api;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +42,7 @@ public class UsersAPI {
         payload.put("fullName", fullName);
         payload.put("email", email);
         payload.put("passwordHash", password);
-        payload.put("dateOfBirth", dateOfBirth == null || dateOfBirth.isBlank() ? JSONObject.NULL : dateOfBirth);
+        payload.put("dateOfBirth", dateOfBirth == null || dateOfBirth.isBlank() ? JSONObject.NULL : normalizeDateOfBirth(dateOfBirth));
         payload.put("admin", false);
 
         JSONObject response = ApiConnection.post("users", payload);
@@ -73,6 +76,29 @@ public class UsersAPI {
             }
         }
         return null;
+    }
+
+    private static String normalizeDateOfBirth(String rawDate) throws IOException {
+        if (rawDate == null || rawDate.isBlank()) {
+            return null;
+        }
+
+        DateTimeFormatter[] inputFormats = new DateTimeFormatter[] {
+                DateTimeFormatter.ISO_LOCAL_DATE,
+                DateTimeFormatter.ofPattern("d/M/yyyy"),
+                DateTimeFormatter.ofPattern("d-M-yyyy"),
+                DateTimeFormatter.ofPattern("d.M.yyyy")
+        };
+
+        for (DateTimeFormatter formatter : inputFormats) {
+            try {
+                LocalDate parsed = LocalDate.parse(rawDate, formatter);
+                return parsed.format(DateTimeFormatter.ISO_LOCAL_DATE);
+            } catch (DateTimeParseException ignored) {
+            }
+        }
+
+        throw new IOException("Formato de fecha inválido: " + rawDate + ". Use yyyy-MM-dd o dd/MM/yyyy.");
     }
 }
 

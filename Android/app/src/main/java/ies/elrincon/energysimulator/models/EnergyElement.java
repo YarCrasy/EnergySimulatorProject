@@ -113,6 +113,34 @@ public class EnergyElement {
         return String.format(java.util.Locale.US, "%.0f W", power);
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setElementType(String elementType) {
+        this.elementType = elementType;
+    }
+
+    public void setArea(Double area) {
+        this.area = area;
+    }
+
+    public void setEfficiency(Double efficiency) {
+        this.efficiency = efficiency;
+    }
+
+    public void setPowerWatt(Double powerWatt) {
+        this.powerWatt = powerWatt;
+    }
+
+    public void setBaseConsumption(Double baseConsumption) {
+        this.baseConsumption = baseConsumption;
+    }
+
     private static String readString(JSONObject json, String key) {
         if (!json.has(key) || json.isNull(key)) {
             return null;

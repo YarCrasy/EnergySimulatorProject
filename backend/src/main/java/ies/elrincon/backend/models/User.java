@@ -3,6 +3,7 @@ package ies.elrincon.backend.models;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,6 +23,7 @@ public class User {
     @Column(nullable = false)
     private String fullName;
 
+    @JsonDeserialize(using = ies.elrincon.backend.config.LocalDateDeserializer.class)
     private LocalDate dateOfBirth;
 
     @Column(nullable = false)

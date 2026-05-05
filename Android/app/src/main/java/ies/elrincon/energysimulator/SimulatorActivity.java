@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+import android.widget.ToggleButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -132,6 +133,9 @@ public class SimulatorActivity extends AppCompatActivity {
         Button backBtn = findViewById(R.id.backToProjectsBtn);
         backBtn.setOnClickListener(v -> returnProjectAndFinish());
 
+        Button addElementBtn = findViewById(R.id.addElementBtn);
+        addElementBtn.setOnClickListener(v -> showElementSelector());
+
         saveProjectBtn.setOnClickListener(v -> saveProject(true));
         runSimulationBtn.setOnClickListener(v -> runOpenMeteoSimulation());
 
@@ -153,6 +157,30 @@ public class SimulatorActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
+    }
+
+    private void showElementSelector() {
+        if (catalogElements.isEmpty()) {
+            Toast.makeText(this, "Cargando elementos disponibles...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String[] elementNames = new String[catalogElements.size()];
+        for (int i = 0; i < catalogElements.size(); i++) {
+            EnergyElement elem = catalogElements.get(i);
+            String name = elem.getName() != null ? elem.getName() : "Elemento";
+            String type = elem.getElementType() != null ? elem.getElementType() : "?";
+            elementNames[i] = type + ": " + name;
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle("Selecciona un elemento para agregar")
+                .setItems(elementNames, (dialog, which) -> {
+                    EnergyElement selected = catalogElements.get(which);
+                    addElementToProject(selected);
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
     }
 
     private void loadProjectData() {

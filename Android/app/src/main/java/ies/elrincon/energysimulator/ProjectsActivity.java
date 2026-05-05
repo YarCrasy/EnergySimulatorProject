@@ -28,6 +28,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ies.elrincon.energysimulator.api.ProjectsAPI;
+import ies.elrincon.energysimulator.models.EnergyElement;
+import ies.elrincon.energysimulator.models.Project;
+import ies.elrincon.energysimulator.models.ProjectNode;
+import ies.elrincon.energysimulator.models.User;
+
 import ies.elrincon.energysimulator.api.ApiConnection;
 import ies.elrincon.energysimulator.api.ProjectsAPI;
 import ies.elrincon.energysimulator.components.ProjectCardView;
@@ -330,40 +336,8 @@ public class ProjectsActivity extends AppCompatActivity {
 
     private void createNewProject() {
         errMsg.setText("");
-        Intent intent = new Intent(this, SimulatorActivity.class);
-        Project p = new Project();
-        if (sessionUser != null) p.setUserId(sessionUser.getId());
-
-        // Asegurar campos obligatorios que el backend espera (ej. name no nulo)
-        p.setName("Proyecto nuevo");
-        p.setEnergyNeeded(0f);
-        p.setEnergyEnough(false);
-
-        // Ejecutar llamadas de red en hilo de fondo
-        new Thread(() -> {
-            try {
-                Project newProject = ProjectsAPI.createProject(p.getUserId(), p);
-
-                if (sessionUser != null) {
-                    ArrayList<Project> userProjects = sessionUser.getProjects();
-                    if (userProjects == null) {
-                        userProjects = new ArrayList<>();
-                        sessionUser.setProjects(userProjects);
-                    }
-                    userProjects.add(newProject);
-                }
-
-                runOnUiThread(() -> {
-                    intent.putExtra(SimulatorActivity.EXTRA_PROJECT, newProject);
-                    renderProjects(sessionUser != null ? sessionUser.getProjects() : null);
-                    projectLauncher.launch(intent);
-                });
-            } catch (JSONException e) {
-                runOnUiThread(() -> errMsg.setText(e.getMessage()));
-            } catch (IOException e) {
-                runOnUiThread(() -> errMsg.setText("Error de red: " + e.getMessage()));
-            }
-        }).start();
+        Intent intent = new Intent(this, WebSimulatorActivity.class);
+        startActivity(intent);
     }
 
     private void logout() {

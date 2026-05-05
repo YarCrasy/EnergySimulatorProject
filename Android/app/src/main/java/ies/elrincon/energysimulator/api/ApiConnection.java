@@ -1,5 +1,6 @@
 package ies.elrincon.energysimulator.api;
 
+import ies.elrincon.energysimulator.BuildConfig;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ApiConnection {
-    public final static String BASE_URL = "https://dam.yarcrasy.com/api/";
+    public final static String BASE_URL = BuildConfig.BACKEND_BASE_URL; //conexion base 
     private static String bearerToken;
 
     public static void setBearerToken(String token) {

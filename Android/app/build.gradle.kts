@@ -14,6 +14,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // Use the host machine IP on the local network so physical devices can reach the backend.
+        buildConfigField("String", "BACKEND_BASE_URL", "\"http://192.168.1.248:8080/api/\"")
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -23,6 +29,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "BACKEND_BASE_URL", "\"https://dam.yarcrasy.com/api/\"")
         }
     }
 }
