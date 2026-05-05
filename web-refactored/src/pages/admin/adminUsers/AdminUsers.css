@@ -1,0 +1,37 @@
+.admin-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--surface-line);
+  border-radius: 18px;
+  background: rgba(6, 15, 36, 0.72);
+  .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 0.95rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: left;
+    }
+
+    th {
+      color: var(--text-muted);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    td:first-child {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 700;
+    }
+  }
+}
+
+.admin-actions {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}

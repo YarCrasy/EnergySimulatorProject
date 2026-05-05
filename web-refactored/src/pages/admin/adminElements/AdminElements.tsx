@@ -6,7 +6,8 @@ import { createElement, deleteElement, getAllElements, updateElement } from "@ap
 import { useAuth } from "@auth/auth";
 import type { Identifier } from "@models/common";
 import type { EnergyElement } from "@models/element";
-import "../AdminBase.css";
+import "../AdminHome.css";
+import "./AdminElements.css";
 
 function AdminElements() {
   const { user } = useAuth();

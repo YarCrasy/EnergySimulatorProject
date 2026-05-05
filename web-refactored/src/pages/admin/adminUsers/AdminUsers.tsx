@@ -7,7 +7,8 @@ import { useAuth } from "@auth/auth";
 import RegisterForm from "@components/registerForm/RegisterForm";
 import type { EditableUser } from "@components/registerForm/types";
 import type { Identifier } from "@models/common";
-import "../AdminBase.css";
+import "../AdminHome.css";
+import "./AdminUsers.css";
 
 function AdminUsers() {
   const { user } = useAuth();

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { createProject } from "../../api/projects";
 import { useAuth, type AuthLoginResult } from "@auth/auth";
@@ -36,9 +36,13 @@ function getFallbackPath(user: AuthLoginResult) {
 function Login() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuth();
+  const { login, user, isAuthenticated, loading } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const redirectToSimulator = Boolean((location.state as { redirectToSimulator?: boolean } | null)?.redirectToSimulator);
+
+  if (!loading && isAuthenticated && user) {
+    return <Navigate to={getFallbackPath(user)} replace />;
+  }
 
   const prepareSimulator = async (user: AuthLoginResult, fallbackPath: string) => {
     try {
