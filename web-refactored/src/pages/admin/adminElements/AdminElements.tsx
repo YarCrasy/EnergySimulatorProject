@@ -2,10 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import { FaCubes, FaPencilAlt, FaPlus, FaTrash } from "react-icons/fa";
 import { Navigate } from "react-router-dom";
 
-import { createElement, deleteElement, getAllElements, updateElement } from "../../../api/elements";
-import { useAuth } from "../../../auth/auth";
-import type { Identifier } from "../../../models/common";
-import type { EnergyElement } from "../../../models/element";
+import { createElement, deleteElement, getAllElements, updateElement } from "@api/elements";
+import { useAuth } from "@auth/auth";
+import type { Identifier } from "@models/common";
+import type { EnergyElement } from "@models/element";
 import "../AdminBase.css";
 
 function AdminElements() {
@@ -131,7 +131,7 @@ function AdminElements() {
   return (
     <main className="admin-page">
       <section className="admin-panel">
-        <p className="eyebrow">Administracion</p>
+        <p className="eyebrow">administración</p>
         <h1>Elementos</h1>
         {error && <p className="admin-error">{error}</p>}
         {loading ? (

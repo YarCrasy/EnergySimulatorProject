@@ -38,7 +38,7 @@ export const dayPeriodOptions: Array<{
   irradianceFactor: number;
 }> = [
   { value: "madrugada", label: "Madrugada", generationFactor: 0.08, consumptionFactor: 0.82, irradianceFactor: 0.12 },
-  { value: "manana", label: "Manana", generationFactor: 0.72, consumptionFactor: 0.96, irradianceFactor: 0.7 },
+  { value: "mañana", label: "mañana", generationFactor: 0.72, consumptionFactor: 0.96, irradianceFactor: 0.7 },
   { value: "mediodia", label: "Mediodia", generationFactor: 1, consumptionFactor: 1.08, irradianceFactor: 1 },
   { value: "tarde", label: "Tarde", generationFactor: 0.62, consumptionFactor: 1.02, irradianceFactor: 0.58 },
   { value: "noche", label: "Noche", generationFactor: 0.14, consumptionFactor: 1.15, irradianceFactor: 0.18 },

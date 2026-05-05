@@ -71,7 +71,7 @@ describe("tests/Logics/Login/Login", () => {
     setLocation({ state: undefined });
   });
 
-  it("redirige a administracion cuando login devuelve rol admin", async () => {
+  it("redirige a administración cuando login devuelve rol admin", async () => {
     // Arrange
     const login = vi.fn().mockResolvedValue({ id: 1, name: "Admin", role: "admin" });
     renderLoginPage({ loginMock: login });
@@ -217,7 +217,7 @@ describe("tests/Logics/Login/Login", () => {
     });
   });
 
-  it("si createProject falla para admin, navega al fallback de administracion", async () => {
+  it("si createProject falla para admin, navega al fallback de administración", async () => {
     // Arrange
     const alertSpy = vi.spyOn(window, "alert").mockImplementation(() => {});
     const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});

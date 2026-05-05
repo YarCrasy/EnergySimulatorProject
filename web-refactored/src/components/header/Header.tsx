@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 
-import { useAuth } from "../../auth/auth";
+import { useAuth } from "@auth/auth";
 import Logo from "../logo/Logo";
 import "./Header.css";
 

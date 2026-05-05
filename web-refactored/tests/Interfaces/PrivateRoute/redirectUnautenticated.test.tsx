@@ -42,7 +42,7 @@ vi.mock("@/api/elements", () => ({
 
 import App from "@/App";
 import { AuthContext, type AuthContextValue } from "@/auth/auth";
-import AdminBase from "@/pages/admin/AdminBase";
+import AdminUsers from "@/pages/admin/adminUsers/AdminUsers";
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -65,7 +65,7 @@ function renderAdmin(authState: AuthContextValue, initialPath = "/administration
       <MemoryRouter initialEntries={[initialPath]}>
         <Routes>
           <Route path="/projects" element={<div>Projects</div>} />
-          <Route path="/administration/users" element={<AdminBase view="users" />} />
+          <Route path="/administration/users" element={<AdminUsers />} />
         </Routes>
       </MemoryRouter>
     </AuthContext.Provider>,

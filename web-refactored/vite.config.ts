@@ -14,6 +14,7 @@ export default defineConfig({
       '@jpg': fileURLToPath(new URL('./src/assets/images/jpg', import.meta.url)),
       '@png': fileURLToPath(new URL('./src/assets/images/png', import.meta.url)),
       '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
+      '@auth': fileURLToPath(new URL('./src/auth', import.meta.url)),
     },
   },
   test: {

@@ -12,7 +12,8 @@
       "@svg/*": ["./src/assets/images/svg/*"],
       "@jpg/*": ["./src/assets/images/jpg/*"],
       "@png/*": ["./src/assets/images/png/*"],
-      "@components/*": ["./src/components/*"]
+      "@components/*": ["./src/components/*"],
+      "@auth/*": ["./src/auth/*"],
     },
     "skipLibCheck": true,
 

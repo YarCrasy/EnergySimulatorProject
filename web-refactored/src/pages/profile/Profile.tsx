@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaEnvelope, FaIdBadge, FaShieldAlt } from "react-icons/fa";
 
 import { getUserById, type UserProfile } from "../../api/users";
-import { useAuth } from "../../auth/auth";
+import { useAuth } from "@auth/auth";
 import "./Profile.css";
 
 function Profile() {

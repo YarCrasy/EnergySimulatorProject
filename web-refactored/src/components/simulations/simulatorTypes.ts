@@ -23,5 +23,5 @@ export type EnergyNodeData = {
 export type EnergyNode = Node<EnergyNodeData>;
 export type EnergyEdge = Edge<{ backendId?: Identifier | null; connectionType?: string }>;
 export type CatalogKind = "generator" | "consumer" | "storage";
-export type DayPeriodPreset = "madrugada" | "manana" | "mediodia" | "tarde" | "noche";
+export type DayPeriodPreset = "madrugada" | "mañana" | "mediodia" | "tarde" | "noche";
 export type WeatherPreset = "soleado" | "parcial" | "nublado" | "lluvia" | "borrasca";

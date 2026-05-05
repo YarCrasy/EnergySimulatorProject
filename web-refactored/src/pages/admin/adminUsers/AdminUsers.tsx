@@ -2,11 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { FaPencilAlt, FaPlus, FaTrash, FaUsers } from "react-icons/fa";
 import { Navigate } from "react-router-dom";
 
-import { deleteUser, getAllUsers, type UserProfile } from "../../../api/users";
-import { useAuth } from "../../../auth/auth";
-import RegisterForm from "../../../components/registerForm/RegisterForm";
-import type { EditableUser } from "../../../components/registerForm/types";
-import type { Identifier } from "../../../models/common";
+import { deleteUser, getAllUsers, type UserProfile } from "@api/users";
+import { useAuth } from "@auth/auth";
+import RegisterForm from "@components/registerForm/RegisterForm";
+import type { EditableUser } from "@components/registerForm/types";
+import type { Identifier } from "@models/common";
 import "../AdminBase.css";
 
 function AdminUsers() {
@@ -92,7 +92,7 @@ function AdminUsers() {
   return (
     <main className="admin-page">
       <section className="admin-panel">
-        <p className="eyebrow">Administracion</p>
+        <p className="eyebrow">administración</p>
         <h1>Usuarios</h1>
         {error && <p className="admin-error">{error}</p>}
         {loading ? (

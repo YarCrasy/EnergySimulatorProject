@@ -7,7 +7,7 @@ import "./Projects.css";
 import ProjectCard from "../../components/projectCard/ProjectCard";
 import placeHorderImg from "../../assets/images/svg/image.svg";
 import { createProject, deleteProject, getProjectsByUser } from "../../api/projects";
-import { useAuth } from "../../auth/auth";
+import { useAuth } from "@auth/auth";
 
 function Projects() {
 

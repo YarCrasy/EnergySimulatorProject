@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { createProject } from "../../api/projects";
-import { useAuth, type AuthLoginResult } from "../../auth/auth";
+import { useAuth, type AuthLoginResult } from "@auth/auth";
 import "./Login.css";
 import loginImg from "@jpg/loginImg.jpg";
 
