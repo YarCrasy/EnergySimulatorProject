@@ -15,9 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-import android.widget.ToggleButton;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -82,20 +82,14 @@ public class SimulatorActivity extends AppCompatActivity {
         bindViews();
         bindProjectFromIntent();
         setupInteractions();
+        setupBackNavigation();
         loadProjectData();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (isDirty) {
-            saveProject(false);
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        returnProjectAndFinish();
+        if (isDirty) saveProject(false);
     }
 
     private void bindViews() {
@@ -155,6 +149,15 @@ public class SimulatorActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    private void setupBackNavigation() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                returnProjectAndFinish();
             }
         });
     }

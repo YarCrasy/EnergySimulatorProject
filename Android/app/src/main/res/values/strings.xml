@@ -48,4 +48,6 @@
     <string name="simulator_run_simulation">Simular</string>
     <string name="simulator_results_title">Resultados Open-Meteo</string>
     <string name="simulator_results_empty">Ejecuta una simulaci&#243;n para ver el resumen horario.</string>
+    <string name="web_status_connected">Conectado a %1$s</string>
+    <string name="web_status_error">Error: %1$s</string>
 </resources>

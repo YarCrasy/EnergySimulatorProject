@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "ies.elrincon.energysimulator"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "ies.elrincon.energysimulator"
@@ -16,6 +16,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // Use the host machine IP on the local network so physical devices can reach the backend.
         buildConfigField("String", "BACKEND_BASE_URL", "\"http://192.168.1.248:8080/api/\"")
+        buildConfigField("String", "WEB_BASE_URL", "\"http://192.168.1.248:5173\"")
     }
 
     buildFeatures {

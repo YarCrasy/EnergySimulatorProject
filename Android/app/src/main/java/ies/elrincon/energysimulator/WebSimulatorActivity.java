@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.webkit.CookieManager;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import ies.elrincon.energysimulator.api.ApiConnection;
@@ -37,15 +40,13 @@ public class WebSimulatorActivity extends AppCompatActivity {
         statusView = findViewById(R.id.statusView);
 
         // Obtener datos del intent
-        if (getIntent().hasExtra("projectId")) {
-            projectId = getIntent().getLongExtra("projectId", -1);
-        }
-        if (getIntent().hasExtra("userToken")) {
-            userToken = getIntent().getStringExtra("userToken");
-        }
+        if (getIntent().hasExtra("projectId")) projectId = getIntent().getLongExtra("projectId", -1);
+        if (getIntent().hasExtra("userToken")) userToken = getIntent().getStringExtra("userToken");
 
         setupWebView();
         loadSimulatorWithAuth();
+        setupBackNavigation();
+        logMessage("Intentando conectar a: " + WEB_BASE_URL);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -57,24 +58,34 @@ public class WebSimulatorActivity extends AppCompatActivity {
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
 
-        // Permitir mixed content
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
+        // Permitir mixed content (HTTP en emulador)
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
 
         // Configurar WebViewClient
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                statusView.setText("Conectado al simulador");
+                logMessage("Cargado: " + url);
+                statusView.setText(getString(R.string.web_status_connected, WEB_BASE_URL));
             }
 
             @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                super.onReceivedError(view, errorCode, description, failingUrl);
-                statusView.setText("Error: " + description);
-                Toast.makeText(WebSimulatorActivity.this, "Error de conexión: " + description, Toast.LENGTH_LONG).show();
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+                if (!request.isForMainFrame()) return;
+
+                int errorCode = error.getErrorCode();
+                CharSequence description = error.getDescription();
+                String errorMsg = "Error " + errorCode + ": " + description;
+                logMessage(errorMsg);
+                Toast.makeText(WebSimulatorActivity.this, errorMsg, Toast.LENGTH_LONG).show();
+                statusView.setText(getString(R.string.web_status_error, description));
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return false;
             }
         });
     }
@@ -137,17 +148,21 @@ public class WebSimulatorActivity extends AppCompatActivity {
 
     private void logMessage(String message) {
         android.util.Log.d(TAG, message);
-        if (statusView != null) {
-            runOnUiThread(() -> statusView.append("\n" + message));
-        }
+        if (statusView != null) runOnUiThread(() -> statusView.append("\n" + message));
     }
 
-    @Override
-    public void onBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack();
-        } else {
-            super.onBackPressed();
-        }
+    private void setupBackNavigation() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (webView.canGoBack()) {
+                    webView.goBack();
+                } else {
+                    setEnabled(false);
+                    getOnBackPressedDispatcher().onBackPressed();
+                    setEnabled(true);
+                }
+            }
+        });
     }
 }

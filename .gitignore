@@ -78,4 +78,5 @@ out/
 .externalNativeBuild
 .cxx
 local.properties
+Android/gradle/gradle-daemon-jvm.properties
 
