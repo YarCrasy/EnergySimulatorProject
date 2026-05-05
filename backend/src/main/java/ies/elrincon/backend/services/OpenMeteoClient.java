@@ -7,6 +7,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +39,14 @@ public class OpenMeteoClient {
                 ? "auto"
                 : forecastRequest.timezone();
         int resolvedDays = Math.max(1, Math.min(forecastRequest.forecastDays(), 16));
+        LocalDate startDate = forecastRequest.startDate() == null ? LocalDate.now() : forecastRequest.startDate();
+        LocalDate endDate = startDate.plusDays(resolvedDays - 1L);
         URI uri = URI.create(FORECAST_URL
                 + "?latitude=" + forecastRequest.latitude()
                 + "&longitude=" + forecastRequest.longitude()
                 + "&hourly=shortwave_radiation,direct_radiation,diffuse_radiation,direct_normal_irradiance,global_tilted_irradiance,cloud_cover,is_day"
-                + "&forecast_days=" + resolvedDays
+                + "&start_date=" + startDate
+                + "&end_date=" + endDate
                 + "&tilt=" + forecastRequest.tiltAngle()
                 + "&azimuth=" + forecastRequest.azimuth()
                 + "&timezone=" + encode(resolvedTimezone));

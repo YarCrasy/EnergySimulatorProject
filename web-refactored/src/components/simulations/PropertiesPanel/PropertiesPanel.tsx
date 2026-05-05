@@ -1,13 +1,8 @@
 import type { ProjectDetail } from "@models/project";
-import type { SimulationRun } from "@models/simulation";
 
-import { SimulationPanel } from "@components/simulations/SimulationPanel/SimulationPanel";
-import { dayPeriodOptions, numberFormat, weatherOptions } from "@components/simulations/simulatorConfig";
+import { numberFormat } from "@components/simulations/simulatorConfig";
 import type { EnergyNode, EnergyNodeData } from "@components/simulations/simulatorTypes";
 import "./PropertiesPanel.css";
-
-type DayPeriodOption = typeof dayPeriodOptions[number];
-type WeatherOption = typeof weatherOptions[number];
 
 type PropertiesPanelProps = {
   project: ProjectDetail | null;
@@ -16,10 +11,7 @@ type PropertiesPanelProps = {
     consumption: number;
     balance: number;
   };
-  environmentDayPeriod: DayPeriodOption;
-  environmentWeather: WeatherOption;
   selectedNode: EnergyNode | null;
-  simulation: SimulationRun | null;
   onUpdateProjectField: (name: keyof ProjectDetail, value: string | number | boolean | null) => void;
   onUpdateSelectedNode: (patch: Partial<EnergyNodeData>) => void;
   onDeleteSelected: () => void;
@@ -28,10 +20,7 @@ type PropertiesPanelProps = {
 export function PropertiesPanel({
   project,
   totals,
-  environmentDayPeriod,
-  environmentWeather,
   selectedNode,
-  simulation,
   onUpdateProjectField,
   onUpdateSelectedNode,
   onDeleteSelected,
@@ -55,36 +44,9 @@ export function PropertiesPanel({
           </article>
         </div>
         <label>
-          Momento del dia
-          <select
-            value={project?.dayPeriodPreset ?? "mediodia"}
-            onChange={(event) => onUpdateProjectField("dayPeriodPreset", event.target.value)}
-          >
-            {dayPeriodOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+          Dia a simular
+          <input type="date" value={project?.simulationDate ?? ""} onChange={(event) => onUpdateProjectField("simulationDate", event.target.value)} />
         </label>
-        <label>
-          Clima
-          <select
-            value={project?.weatherPreset ?? "soleado"}
-            onChange={(event) => onUpdateProjectField("weatherPreset", event.target.value)}
-          >
-            {weatherOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <p className="environment-hint">
-          Generacion x{numberFormat.format(environmentDayPeriod.generationFactor * environmentWeather.generationFactor)}.
-          Consumo x{numberFormat.format(environmentDayPeriod.consumptionFactor * environmentWeather.consumptionFactor)}.
-          Nubes estimadas {environmentWeather.cloudCover}%.
-        </p>
         <label>
           Latitud
           <input type="number" value={project?.latitude ?? 28.1} onChange={(event) => onUpdateProjectField("latitude", Number(event.target.value))} />
@@ -131,8 +93,6 @@ export function PropertiesPanel({
           <p>Selecciona un nodo para editarlo.</p>
         )}
       </section>
-
-      <SimulationPanel simulation={simulation} />
     </aside>
   );
 }

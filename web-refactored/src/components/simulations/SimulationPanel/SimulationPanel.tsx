@@ -6,6 +6,14 @@ import type { SimulationPoint, SimulationRun } from "@models/simulation";
 import { numberFormat } from "@components/simulations/simulatorConfig";
 import "./SimulationPanel.css";
 
+function formatTimestamp(value: string | null | undefined, fallback: number) {
+  if (!value) {
+    return String(fallback);
+  }
+
+  return value.replace("T", " ");
+}
+
 export function SimulationPanel({ simulation }: { simulation: SimulationRun | null }) {
   const points = simulation?.points ?? [];
   const chartPoints = points.slice(0, 72);
@@ -30,41 +38,43 @@ export function SimulationPanel({ simulation }: { simulation: SimulationRun | nu
         <p>Ejecuta una simulacion para ver curvas y tabla.</p>
       ) : (
         <>
-          <div className="result-summary">
-            <article>
-              <strong>{numberFormat.format(simulation.totalGenerationKwh ?? 0)}</strong>
-              <span>kWh generados</span>
-            </article>
-            <article>
-              <strong>{numberFormat.format(simulation.totalConsumptionKwh ?? 0)}</strong>
-              <span>kWh consumidos</span>
-            </article>
-            <article>
-              <strong>{numberFormat.format(simulation.selfSufficiencyPercent ?? 0)}%</strong>
-              <span>Autosuficiencia</span>
-            </article>
+          <div className="simulation-overview">
+            <div className="result-summary">
+              <article className="generation">
+                <strong>{numberFormat.format(simulation.totalGenerationKwh ?? 0)}</strong>
+                <span>kWh generados</span>
+              </article>
+              <article className="consumption">
+                <strong>{numberFormat.format(simulation.totalConsumptionKwh ?? 0)}</strong>
+                <span>kWh consumidos</span>
+              </article>
+              <article className="balance">
+                <strong>{numberFormat.format(simulation.selfSufficiencyPercent ?? 0)}%</strong>
+                <span>Autosuficiencia</span>
+              </article>
+            </div>
+            <svg className="simulation-chart" viewBox="0 0 280 128" role="img" aria-label="Curvas de simulacion">
+              <polyline points={polyline("generationW")} className="line generation" />
+              <polyline points={polyline("consumptionW")} className="line consumption" />
+              <polyline points={polyline("balanceW")} className="line balance" />
+            </svg>
           </div>
-          <svg className="simulation-chart" viewBox="0 0 280 128" role="img" aria-label="Curvas de simulacion">
-            <polyline points={polyline("generationW")} className="line generation" />
-            <polyline points={polyline("consumptionW")} className="line consumption" />
-            <polyline points={polyline("balanceW")} className="line balance" />
-          </svg>
           <div className="simulation-table-wrap">
             <table className="simulation-table">
               <thead>
                 <tr>
                   <th>Hora</th>
-                  <th>Gen.</th>
-                  <th>Cons.</th>
+                  <th>Generados</th>
+                  <th>Consumidos</th>
                   <th>Balance</th>
                   <th>Nubes</th>
-                  <th>Irrad.</th>
+                  <th>Irradiacion</th>
                 </tr>
               </thead>
               <tbody>
                 {points.slice(0, 48).map((point, index) => (
                   <tr key={point.id ?? `${point.timestamp}-${index}`}>
-                    <td>{point.timestamp ?? index}</td>
+                    <td>{formatTimestamp(point.timestamp, index)}</td>
                     <td>{numberFormat.format(point.generationW ?? 0)}</td>
                     <td>{numberFormat.format(point.consumptionW ?? 0)}</td>
                     <td>{numberFormat.format(point.balanceW ?? 0)}</td>

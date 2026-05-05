@@ -1,5 +1,12 @@
 .simulator-page {
   .simulation-panel {
+    .simulation-overview {
+      display: grid;
+      grid-template-columns: minmax(240px, 0.95fr) minmax(320px, 1.25fr);
+      align-items: stretch;
+      gap: 14px;
+    }
+
     .result-summary {
       display: flex;
       flex-direction: column;
@@ -10,6 +17,38 @@
         border-radius: 8px;
         background: rgba(255, 255, 255, 0.07);
         padding: 10px;
+
+        strong {
+          display: block;
+          font-size: 1.15em;
+        }
+
+        &.generation {
+          border-color: color-mix(in srgb, var(--sim-accent) 55%, var(--sim-line));
+          background: color-mix(in srgb, var(--sim-accent) 12%, rgba(255, 255, 255, 0.04));
+
+          strong {
+            color: var(--sim-accent);
+          }
+        }
+
+        &.consumption {
+          border-color: color-mix(in srgb, #ffb86b 55%, var(--sim-line));
+          background: color-mix(in srgb, #ffb86b 12%, rgba(255, 255, 255, 0.04));
+
+          strong {
+            color: #ffb86b;
+          }
+        }
+
+        &.balance {
+          border-color: color-mix(in srgb, var(--sim-accent-2) 55%, var(--sim-line));
+          background: color-mix(in srgb, var(--sim-accent-2) 12%, rgba(255, 255, 255, 0.04));
+
+          strong {
+            color: var(--sim-accent-2);
+          }
+        }
       }
 
       span {
@@ -21,8 +60,7 @@
 
     .simulation-chart {
       width: 100%;
-      height: 150px;
-      margin-top: 14px;
+      min-height: 100%;
       border: 1px solid var(--sim-line);
       border-radius: 8px;
       background: rgba(4, 11, 24, 0.46);
@@ -77,3 +115,16 @@
   }
 }
 
+@media (max-width: 900px) {
+  .simulator-page {
+    .simulation-panel {
+      .simulation-overview {
+        grid-template-columns: 1fr;
+      }
+
+      .simulation-chart {
+        min-height: 150px;
+      }
+    }
+  }
+}

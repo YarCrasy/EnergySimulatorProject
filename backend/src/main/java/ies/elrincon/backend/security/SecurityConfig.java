@@ -47,7 +47,7 @@ public class SecurityConfig {
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, ADMIN_CATALOG_ENDPOINTS).authenticated()
+                        .requestMatchers(HttpMethod.GET, ADMIN_CATALOG_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, ADMIN_CATALOG_ENDPOINTS).hasRole(ADMIN)
                         .requestMatchers(HttpMethod.PUT, ADMIN_CATALOG_ENDPOINTS).hasRole(ADMIN)
                         .requestMatchers(HttpMethod.DELETE, ADMIN_CATALOG_ENDPOINTS).hasRole(ADMIN)

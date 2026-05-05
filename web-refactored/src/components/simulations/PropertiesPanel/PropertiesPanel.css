@@ -35,13 +35,6 @@
       }
     }
 
-    .environment-hint {
-      margin: 12px 0 0;
-      color: var(--sim-muted);
-      font-size: 0.92em;
-      line-height: 1.4;
-    }
-
     .danger-button {
       display: inline-flex;
       align-items: center;
@@ -50,14 +43,17 @@
       width: 100%;
       min-height: 42px;
       margin-top: 14px;
-      border: 1px solid rgba(255, 143, 124, 0.35);
       border-radius: 8px;
-      background: rgba(255, 143, 124, 0.1);
-      color: var(--sim-danger);
       padding: 0 14px;
       font-weight: bold;
       cursor: pointer;
       box-shadow: none;
+    }
+
+    .danger-button {
+      border: 1px solid rgba(255, 143, 124, 0.35);
+      background: rgba(255, 143, 124, 0.1);
+      color: var(--sim-danger);
 
       &:hover {
         border-color: var(--sim-accent);
@@ -68,4 +64,3 @@
     }
   }
 }
-

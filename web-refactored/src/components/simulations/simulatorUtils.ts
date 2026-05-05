@@ -3,8 +3,8 @@ import type { EnergyElement } from "@models/element";
 import type { ProjectDetail, ProjectMutation, ProjectNodeApi } from "@models/project";
 import type { SimulationRun } from "@models/simulation";
 
-import { dayPeriodOptions, nodeStyle, tempDraftKey, weatherOptions } from "@components/simulations/simulatorConfig";
-import type { CatalogKind, DayPeriodPreset, EnergyEdge, EnergyNode, EnergyNodeData, WeatherPreset } from "@components/simulations/simulatorTypes";
+import { nodeStyle, tempDraftKey } from "@components/simulations/simulatorConfig";
+import type { CatalogKind, EnergyEdge, EnergyNode, EnergyNodeData } from "@components/simulations/simulatorTypes";
 
 export type SimulatorDraft = {
   project: ProjectDetail;
@@ -12,12 +12,15 @@ export type SimulatorDraft = {
   edges: EnergyEdge[];
 };
 
+function todayIsoDate() {
+  return new Date().toISOString().slice(0, 10);
+}
+
 export function createTemporaryProject(): ProjectDetail {
   return {
     name: "Simulacion temporal",
     season: "verano",
-    dayPeriodPreset: "mediodia",
-    weatherPreset: "soleado",
+    simulationDate: todayIsoDate(),
     latitude: 28.1,
     longitude: -15.4,
     timezone: "auto",
@@ -36,8 +39,9 @@ export function createTemporaryProject(): ProjectDetail {
 export function withEnvironmentDefaults(project: ProjectDetail): ProjectDetail {
   return {
     ...project,
-    dayPeriodPreset: (project.dayPeriodPreset as DayPeriodPreset | undefined) ?? "mediodia",
-    weatherPreset: (project.weatherPreset as WeatherPreset | undefined) ?? "soleado",
+    simulationDate: typeof project.simulationDate === "string" && project.simulationDate
+      ? project.simulationDate
+      : todayIsoDate(),
   };
 }
 
@@ -82,6 +86,10 @@ export function resolveElementId(node: ProjectNodeApi | EnergyNode): Identifier 
 
 export function nodePower(element?: EnergyElement | null, data?: LooseRecord) {
   const value = data?.powerWatt ?? data?.powerConsumption ?? data?.baseConsumption ?? element?.powerWatt ?? element?.powerConsumption ?? element?.capacity ?? null;
+  return typeof value === "string" || typeof value === "number" ? value : null;
+}
+
+function numericLike(value: unknown) {
   return typeof value === "string" || typeof value === "number" ? value : null;
 }
 
@@ -134,6 +142,12 @@ export function buildNodes(project: ProjectDetail, catalog: EnergyElement[]): En
         label: String(data.label ?? element?.name ?? `Nodo ${index + 1}`),
         typeLabel: String(node.type ?? element?.elementType ?? element?.category ?? "Elemento"),
         wattage: nodePower(element, data),
+        area: numericLike(data.area) ?? element?.area ?? null,
+        efficiency: numericLike(data.efficiency) ?? element?.efficiency ?? null,
+        capacity: numericLike(data.capacity) ?? element?.capacity ?? null,
+        baseConsumption: numericLike(data.baseConsumption) ?? element?.baseConsumption ?? null,
+        peakConsumption: numericLike(data.peakConsumption) ?? element?.peakConsumption ?? null,
+        profileType: typeof data.profileType === "string" ? data.profileType : (element?.profileType ?? null),
         quantity: Math.max(1, asNumber(node.quantity ?? data.quantity, 1)),
         notes: String(data.notes ?? ""),
         element,
@@ -175,6 +189,12 @@ export function buildProjectPayload(project: ProjectDetail, nodes: EnergyNode[],
         label: node.data.label,
         notes: node.data.notes ?? "",
         powerWatt: node.data.wattage,
+        area: node.data.area ?? undefined,
+        efficiency: node.data.efficiency ?? undefined,
+        capacity: node.data.capacity ?? undefined,
+        baseConsumption: node.data.baseConsumption ?? undefined,
+        peakConsumption: node.data.peakConsumption ?? undefined,
+        profileType: node.data.profileType ?? undefined,
         quantity: Math.max(1, asNumber(node.data.quantity, 1)),
       }),
     }));
@@ -203,6 +223,7 @@ export function buildProjectPayload(project: ProjectDetail, nodes: EnergyNode[],
     latitude: project.latitude,
     longitude: project.longitude,
     timezone: project.timezone,
+    simulationDate: project.simulationDate,
     tiltAngle: project.tiltAngle,
     azimuth: project.azimuth,
     durationDays: project.durationDays,
@@ -228,53 +249,6 @@ export function attachBackendIds(nodes: EnergyNode[], updated: ProjectDetail) {
   });
 }
 
-export function getDayPeriodConfig(value?: string | null) {
-  return dayPeriodOptions.find((option) => option.value === value) ?? dayPeriodOptions[2];
-}
-
-export function getWeatherConfig(value?: string | null) {
-  return weatherOptions.find((option) => option.value === value) ?? weatherOptions[0];
-}
-
-export function applyEnvironmentToSimulation(simulation: SimulationRun | null, project: ProjectDetail | null): SimulationRun | null {
-  if (!simulation || !project) {
-    return simulation;
-  }
-
-  const dayPeriod = getDayPeriodConfig(project.dayPeriodPreset);
-  const weather = getWeatherConfig(project.weatherPreset);
-  const generationFactor = dayPeriod.generationFactor * weather.generationFactor;
-  const consumptionFactor = dayPeriod.consumptionFactor * weather.consumptionFactor;
-  const irradianceFactor = dayPeriod.irradianceFactor * weather.irradianceFactor;
-
-  const points = (simulation.points ?? []).map((point) => {
-    const generationW = asNumber(point.generationW) * generationFactor;
-    const consumptionW = asNumber(point.consumptionW) * consumptionFactor;
-    return {
-      ...point,
-      generationW,
-      consumptionW,
-      balanceW: generationW - consumptionW,
-      cloudCover: weather.cloudCover,
-      irradiance: Math.round(asNumber(point.irradiance, 1000) * irradianceFactor * 100) / 100,
-      day: generationFactor > 0.18,
-    };
-  });
-
-  const totalGenerationKwh = points.reduce((sum, point) => sum + asNumber(point.generationW) / 1000, 0);
-  const totalConsumptionKwh = points.reduce((sum, point) => sum + asNumber(point.consumptionW) / 1000, 0);
-  const deficitKwh = Math.max(0, totalConsumptionKwh - totalGenerationKwh);
-  const surplusKwh = Math.max(0, totalGenerationKwh - totalConsumptionKwh);
-  const selfSufficiencyPercent = totalConsumptionKwh > 0 ? Math.min(100, (totalGenerationKwh / totalConsumptionKwh) * 100) : 100;
-
-  return {
-    ...simulation,
-    totalGenerationKwh: Math.round(totalGenerationKwh * 100) / 100,
-    totalConsumptionKwh: Math.round(totalConsumptionKwh * 100) / 100,
-    deficitKwh: Math.round(deficitKwh * 100) / 100,
-    surplusKwh: Math.round(surplusKwh * 100) / 100,
-    selfSufficiencyPercent: Math.round(selfSufficiencyPercent * 100) / 100,
-    energyEnough: totalGenerationKwh >= totalConsumptionKwh,
-    points,
-  };
+export function applyEnvironmentToSimulation(simulation: SimulationRun | null): SimulationRun | null {
+  return simulation;
 }

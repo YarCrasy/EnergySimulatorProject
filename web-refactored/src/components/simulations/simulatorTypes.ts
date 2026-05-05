@@ -9,6 +9,12 @@ export type EnergyNodeData = {
   label: string;
   typeLabel: string;
   wattage?: number | string | null;
+  area?: number | string | null;
+  efficiency?: number | string | null;
+  capacity?: number | string | null;
+  baseConsumption?: number | string | null;
+  peakConsumption?: number | string | null;
+  profileType?: string | null;
   quantity?: number;
   notes?: string;
   element?: EnergyElement | null;

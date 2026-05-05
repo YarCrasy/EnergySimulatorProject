@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Background,
   Controls,
@@ -6,9 +7,9 @@ import {
   ReactFlowProvider,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { FaPlay, FaSave } from "react-icons/fa";
+import { FaChartLine, FaPlay, FaSave, FaTimes } from "react-icons/fa";
 
-import { CatalogPanel, EnergyNodeCard, PropertiesPanel, useSimulatorPage } from "@components/simulations";
+import { CatalogPanel, EnergyNodeCard, PropertiesPanel, SimulationPanel, useSimulatorPage } from "@components/simulations";
 import "./Simulator.css";
 
 const nodeTypes = {
@@ -16,6 +17,7 @@ const nodeTypes = {
 };
 
 function SimulatorInner() {
+  const [isResultsModalOpen, setIsResultsModalOpen] = useState(false);
   const {
     addElement,
     adjustedSimulation,
@@ -26,8 +28,6 @@ function SimulatorInner() {
     catalogSearchTerm,
     deleteSelected,
     edges,
-    environmentDayPeriod,
-    environmentWeather,
     loading,
     nodes,
     onConnect,
@@ -49,6 +49,21 @@ function SimulatorInner() {
     updateSelectedNode,
     visibleCatalog,
   } = useSimulatorPage();
+
+  useEffect(() => {
+    if (!isResultsModalOpen) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsResultsModalOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isResultsModalOpen]);
 
   return (
     <main className="simulator-page">
@@ -76,6 +91,10 @@ function SimulatorInner() {
             <button type="button" className="simulate-button" onClick={simulate} disabled={simulating || loading}>
               <FaPlay aria-hidden="true" />
               {simulating ? "Simulando" : "Simular"}
+            </button>
+            <button type="button" onClick={() => setIsResultsModalOpen(true)} disabled={!adjustedSimulation || loading}>
+              <FaChartLine aria-hidden="true" />
+              {adjustedSimulation ? "Resultados" : "Sin resultados"}
             </button>
           </div>
         </div>
@@ -109,14 +128,27 @@ function SimulatorInner() {
       <PropertiesPanel
         project={project}
         totals={totals}
-        environmentDayPeriod={environmentDayPeriod}
-        environmentWeather={environmentWeather}
         selectedNode={selectedNode}
-        simulation={adjustedSimulation}
         onUpdateProjectField={updateProjectField}
         onUpdateSelectedNode={updateSelectedNode}
         onDeleteSelected={deleteSelected}
       />
+
+      {isResultsModalOpen && adjustedSimulation ? (
+        <div className="simulation-modal" role="dialog" aria-modal="true" aria-labelledby="simulation-results-title">
+          <div className="simulation-modal-backdrop" aria-hidden="true" onClick={() => setIsResultsModalOpen(false)} />
+          <div className="simulation-modal-content">
+            <div className="simulation-modal-header">
+              <h2 id="simulation-results-title">Resultados de la simulacion</h2>
+              <button type="button" className="simulation-modal-close" onClick={() => setIsResultsModalOpen(false)}>
+                <FaTimes aria-hidden="true" />
+                Cerrar
+              </button>
+            </div>
+            <SimulationPanel simulation={adjustedSimulation} />
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }

@@ -21,8 +21,6 @@ import {
   createTemporaryProject,
   elementKind,
   elementSearchText,
-  getDayPeriodConfig,
-  getWeatherConfig,
   isGenerator,
   nodePower,
   readTemporaryDraft,
@@ -55,8 +53,6 @@ export function useSimulatorPage() {
   const [catalogSearch, setCatalogSearch] = useState("");
   const [selectedCatalogKind, setSelectedCatalogKind] = useState<CatalogKind | null>(null);
   const autosaveTimer = useRef<number | null>(null);
-  const environmentDayPeriod = getDayPeriodConfig(project?.dayPeriodPreset);
-  const environmentWeather = getWeatherConfig(project?.weatherPreset);
 
   const selectedNode = useMemo(() => nodes.find((node) => node.id === selectedNodeId) ?? null, [nodes, selectedNodeId]);
   const catalogSearchTerm = catalogSearch.trim().toLowerCase();
@@ -127,6 +123,23 @@ export function useSimulatorPage() {
         return;
       }
 
+      if (!isAuthenticated || !userId) {
+        const draft = readTemporaryDraft();
+        if (mounted) {
+          const localFallback = withEnvironmentDefaults(draft?.project ?? createTemporaryProject());
+          setProject({
+            ...localFallback,
+            id: null,
+          });
+          setNodes(draft?.nodes ?? []);
+          setEdges(draft?.edges ?? []);
+          setStatus("Inicia sesion para abrir proyectos guardados del backend. Se ha cargado un borrador local.");
+          setDirty(false);
+          setLoading(false);
+        }
+        return;
+      }
+
       setLoading(true);
       try {
         const data = withEnvironmentDefaults(await getProjectById(projectId));
@@ -167,7 +180,7 @@ export function useSimulatorPage() {
     return () => {
       mounted = false;
     };
-  }, [catalog, projectId]);
+  }, [catalog, isAuthenticated, projectId, userId]);
 
   const markDirty = useCallback(() => setDirty(true), []);
 
@@ -253,16 +266,14 @@ export function useSimulatorPage() {
         : await createProject(firstPayload);
       const firstSave = withEnvironmentDefaults({
         ...firstSaveResponse,
-        dayPeriodPreset: firstSaveResponse.dayPeriodPreset ?? projectForBackend.dayPeriodPreset,
-        weatherPreset: firstSaveResponse.weatherPreset ?? projectForBackend.weatherPreset,
+        simulationDate: firstSaveResponse.simulationDate ?? projectForBackend.simulationDate,
       });
       const nodesWithIds = attachBackendIds(nodes, firstSave);
       const secondPayload = buildProjectPayload(firstSave, nodesWithIds, edges);
       const savedResponse = edges.length > 0 && firstSave.id ? await updateProject(firstSave.id, secondPayload) : firstSave;
       const saved = withEnvironmentDefaults({
         ...savedResponse,
-        dayPeriodPreset: savedResponse.dayPeriodPreset ?? firstSave.dayPeriodPreset,
-        weatherPreset: savedResponse.weatherPreset ?? firstSave.weatherPreset,
+        simulationDate: savedResponse.simulationDate ?? firstSave.simulationDate,
       });
       const finalNodes = buildNodes(saved, catalog);
       const finalEdges = buildEdges(saved, finalNodes);
@@ -371,21 +382,19 @@ export function useSimulatorPage() {
   const totals = useMemo(() => {
     let generation = 0;
     let consumption = 0;
-    const generationFactor = environmentDayPeriod.generationFactor * environmentWeather.generationFactor;
-    const consumptionFactor = environmentDayPeriod.consumptionFactor * environmentWeather.consumptionFactor;
     nodes.forEach((node) => {
       const power = asNumber(node.data.wattage);
       const quantity = Math.max(1, asNumber(node.data.quantity, 1));
       if (isGenerator(node.data.element, node.data)) {
-        generation += power * quantity * generationFactor;
+        generation += power * quantity;
       } else {
-        consumption += power * quantity * consumptionFactor;
+        consumption += power * quantity;
       }
     });
     return { generation, consumption, balance: generation - consumption };
-  }, [environmentDayPeriod.consumptionFactor, environmentDayPeriod.generationFactor, environmentWeather.consumptionFactor, environmentWeather.generationFactor, nodes]);
+  }, [nodes]);
 
-  const adjustedSimulation = useMemo(() => applyEnvironmentToSimulation(simulation, project), [project, simulation]);
+  const adjustedSimulation = useMemo(() => applyEnvironmentToSimulation(simulation), [simulation]);
 
   return {
     adjustedSimulation,
@@ -396,8 +405,6 @@ export function useSimulatorPage() {
     catalogSearchTerm,
     deleteSelected,
     edges,
-    environmentDayPeriod,
-    environmentWeather,
     loading,
     nodes,
     onConnect,
