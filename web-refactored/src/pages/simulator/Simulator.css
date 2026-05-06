@@ -8,8 +8,11 @@
   --sim-accent: var(--accent-main, #a2ff86);
   --sim-accent-2: var(--accent-alt, #5ce1e6);
   --sim-danger: #ff8f7c;
+  --sim-danger-bg: rgba(255, 143, 124, 0.12);
   --sim-warning-bg: rgba(162, 255, 134, 0.12);
   --sim-warning-text: var(--accent-main, #a2ff86);
+  --sim-success-bg: rgba(92, 225, 230, 0.12);
+  --sim-success-text: #8df0f2;
 
   height: 100dvh;
   max-height: 100dvh;
@@ -147,6 +150,16 @@
     background: var(--sim-warning-bg);
     color: var(--sim-warning-text);
     padding: 10px 18px;
+  }
+
+  .simulator-status--error {
+    background: var(--sim-danger-bg);
+    color: var(--sim-danger);
+  }
+
+  .simulator-status--success {
+    background: var(--sim-success-bg);
+    color: var(--sim-success-text);
   }
 
   .flow-canvas {

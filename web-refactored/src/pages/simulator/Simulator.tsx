@@ -44,6 +44,7 @@ function SimulatorInner() {
     simulating,
     simulate,
     status,
+    statusTone,
     totals,
     updateProjectField,
     updateSelectedNode,
@@ -95,7 +96,7 @@ function SimulatorInner() {
           </div>
         </div>
 
-        {status && <p className="simulator-status">{status}</p>}
+        {status && <p className={`simulator-status simulator-status--${statusTone}`}>{status}</p>}
 
         <div className="flow-canvas">
           {loading ? (

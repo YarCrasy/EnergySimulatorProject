@@ -45,6 +45,7 @@ export function useSimulatorPage() {
   const [edges, setEdges] = useState<EnergyEdge[]>([]);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [status, setStatus] = useState<string>("");
+  const [statusTone, setStatusTone] = useState<"info" | "success" | "error">("info");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [simulating, setSimulating] = useState(false);
@@ -117,6 +118,7 @@ export function useSimulatorPage() {
           setNodes(draft?.nodes ?? []);
           setEdges(draft?.edges ?? []);
           setStatus("");
+          setStatusTone("info");
           setDirty(false);
           setLoading(false);
         }
@@ -134,6 +136,7 @@ export function useSimulatorPage() {
           setNodes(draft?.nodes ?? []);
           setEdges(draft?.edges ?? []);
           setStatus("Inicia sesion para abrir proyectos guardados del backend. Se ha cargado un borrador local.");
+          setStatusTone("info");
           setDirty(false);
           setLoading(false);
         }
@@ -149,6 +152,7 @@ export function useSimulatorPage() {
           setNodes(nextNodes);
           setEdges(buildEdges(data, nextNodes));
           setStatus("");
+          setStatusTone("info");
           setDirty(false);
         }
       } catch (error) {
@@ -163,10 +167,12 @@ export function useSimulatorPage() {
             setNodes(draft?.nodes ?? []);
             setEdges(draft?.edges ?? []);
             setStatus("No tienes permiso para abrir este proyecto en backend. Se ha cargado un borrador local.");
+            setStatusTone("error");
             setDirty(false);
           } else {
             console.error("No se pudo cargar el proyecto", error);
             setStatus("No se pudo cargar el proyecto seleccionado.");
+            setStatusTone("error");
           }
         }
       } finally {
@@ -247,6 +253,7 @@ export function useSimulatorPage() {
     if (!isAuthenticated || !userId) {
       if (!options.silent) {
         setStatus("Borrador temporal guardado en este navegador. Inicia sesion para guardarlo en backend.");
+        setStatusTone("info");
       }
       return currentProject;
     }
@@ -254,6 +261,7 @@ export function useSimulatorPage() {
     setSaving(true);
     if (!options.silent) {
       setStatus("");
+      setStatusTone("info");
     }
     try {
       const projectForBackend = {
@@ -287,15 +295,18 @@ export function useSimulatorPage() {
       }
       if (!options.silent) {
         setStatus("Proyecto guardado.");
+        setStatusTone("success");
       }
       return saved;
     } catch (error) {
       if (!options.silent) {
         if (isForbiddenError(error)) {
           setStatus("No tienes permiso para guardar este proyecto en backend. Se ha conservado el borrador local.");
+          setStatusTone("error");
         } else {
           console.error("No se pudo guardar el proyecto", error);
           setStatus("No se pudo guardar el proyecto.");
+          setStatusTone("error");
         }
       }
       return null;
@@ -344,27 +355,33 @@ export function useSimulatorPage() {
   const simulate = useCallback(async () => {
     if (!project?.id && !isAuthenticated) {
       setStatus("Puedes montar el esquema sin sesion; para ejecutar la simulacion Open-Meteo necesitas guardar el proyecto con una sesion iniciada.");
+      setStatusTone("info");
       return;
     }
 
     setSimulating(true);
     setStatus("Guardando antes de simular...");
+    setStatusTone("info");
     try {
       const saved = await saveDiagram();
       if (!saved?.id) {
         return;
       }
       setStatus("Ejecutando simulacion...");
+      setStatusTone("info");
       const result = await runProjectSimulation(saved.id, saved);
       setSimulation(result);
       setProject((current) => current ? { ...current, energyEnough: result.energyEnough ?? current.energyEnough } : current);
       setStatus("Simulacion completada.");
+      setStatusTone("success");
     } catch (error) {
       if (isForbiddenError(error)) {
         setStatus("No tienes permiso para ejecutar la simulacion de este proyecto.");
+        setStatusTone("error");
       } else {
         console.error("No se pudo simular", error);
         setStatus("No se pudo ejecutar POST /projects/{id}/simulations.");
+        setStatusTone("error");
       }
     } finally {
       setSimulating(false);
@@ -421,6 +438,7 @@ export function useSimulatorPage() {
     simulating,
     simulate,
     status,
+    statusTone,
     totals,
     updateProjectField,
     updateSelectedNode,
