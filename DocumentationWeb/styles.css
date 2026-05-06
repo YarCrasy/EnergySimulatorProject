@@ -482,7 +482,7 @@ figcaption {
 
   .cover {
     min-height: calc(420mm - 40mm);
-    padding: 0 22mm;
+    padding: 0;
     border: 0;
     display: flex;
     flex-direction: column;
@@ -502,14 +502,14 @@ figcaption {
 
   .cover h1 {
     align-self: stretch;
-    max-width: 230mm;
+    max-width: 250mm;
     font-size: 42pt;
     line-height: 1.18;
   }
 
   .cover .lead {
     align-self: stretch;
-    max-width: 220mm;
+    max-width: 250mm;
     margin-top: 14mm;
     font-size: 14pt;
   }
