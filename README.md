@@ -46,8 +46,8 @@ Este proyecto es Plataforma integral para simular y gestiónar soluciones de ene
 ---
 
 ## Deployment
-- Backend y frontend web están desplegados en una **Raspberry Pi 5** detrás del dominio principal `https://dam-project.yarcrasy.com`.
-- El backend atiende bajo `https://dam-project.yarcrasy.com/api` y comparte la misma instancia de base de datos utilizada en local.
+- Backend y frontend web están desplegados en una **Raspberry Pi 5** detrás del dominio principal `https://dam.yarcrasy.com`.
+- El backend atiende bajo `https://dam.yarcrasy.com/api` y comparte la misma instancia de base de datos utilizada en local.
 - La SPA web se sirve desde el mismo host y consume la API pública anterior; cualquier cambio en producción debe considerar la capacidad limitada del hardware embebido.
 - Para más detalle de como se hace el deployment, consulte el documento **Manual de Desarrollador (ACCESO A DATOS)** compartido
 

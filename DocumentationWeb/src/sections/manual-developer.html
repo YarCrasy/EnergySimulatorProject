@@ -37,25 +37,30 @@
       activities/    Pantallas
       adapters/      Adaptadores RecyclerView
   DocumentationWeb/  Documentación final navegable e imprimible</code></pre>
+  <h3>Comandos útiles</h3>
+  <p>Estos comandos cubren las tareas habituales durante el desarrollo: arrancar servicios en local, ejecutar pruebas, generar informes de cobertura y crear builds verificables antes de desplegar o entregar una versión.</p>
   <h3>Backend</h3>
+  <p>Permiten arrancar la API REST de Spring Boot, ejecutar la batería de tests, generar el informe de cobertura JaCoCo y comprobar que el backend compila correctamente.</p>
   <pre><code>cd backend
 ./gradlew bootRun
 ./gradlew test
 ./gradlew jacocoTestReport
 ./gradlew build</code></pre>
   <h3>Frontend web</h3>
+  <p>Instalan dependencias, levantan el servidor Vite de desarrollo, generan la versión de producción y ejecutan las pruebas del frontend React.</p>
   <pre><code>cd web
 npm install
 npm run dev
 npm run build
 npm run test</code></pre>
   <h3>Android</h3>
+  <p>Compilan la aplicación Android en modo debug e instalan el APK generado en un emulador o dispositivo conectado.</p>
   <pre><code>cd Android
 ./gradlew :app:assembleDebug
 ./gradlew :app:installDebug</code></pre>
   <h3>Configuración</h3>
   <ul><li>El backend lee la conexión a PostgreSQL desde <code>backend/src/main/resources/application.properties</code>.</li><li>La variable <code>VITE_API_URL</code> permite cambiar la URL del backend. Si no existe, el frontend usa <code>http://localhost:8080/api</code> en desarrollo.</li><li>Android define URLs distintas para debug y release desde <code>Android/app/build.gradle.kts</code>.</li><li>Las claves JWT y credenciales de base de datos deben sustituirse antes de producción.</li></ul>
   <h3>Convenciones</h3>
-  <ul><li>camelCase para variables y métodos.</li><li>PascalCase para clases y componentes.</li><li>JavaDoc obligatorio en métodos públicos relevantes.</li><li>Logs con SLF4J usando niveles DEBUG, INFO, WARN y ERROR.</li><li>Servicios de backend separados de controladores y repositorios.</li><li>Componentes React reutilizables, con llamadas HTTP centralizadas en la capa <code>api</code>.</li><li>Tests con patrón Arrange, Act, Assert y mocks para aislar llamadas externas.</li><li>Cobertura mínima objetivo del 70% en backend.</li></ul>
+  <ul><li>camelCase para variables y métodos.</li><li>PascalCase para clases y componentes.</li><li><code>DocumentationWeb</code> se usa como documentación final navegable, imprimible y mantenida junto al repositorio.</li><li>Logs con SLF4J usando niveles DEBUG, INFO, WARN y ERROR.</li><li>Servicios de backend separados de controladores y repositorios.</li><li>Componentes React reutilizables, con llamadas HTTP centralizadas en la capa <code>api</code>.</li><li>Tests con patrón Arrange, Act, Assert y mocks para aislar llamadas externas.</li><li>Cobertura mínima objetivo del 70% en backend.</li></ul>
   <span class="page-number">Página 12</span>
 </section>

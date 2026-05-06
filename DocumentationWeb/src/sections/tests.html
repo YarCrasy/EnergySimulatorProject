@@ -3,9 +3,10 @@
   <span class="kicker">Testing</span>
   <h2>Tests de prueba</h2>
   <div class="grid two">
-    <div class="card"><h3>Backend</h3><p>El backend usa JUnit Platform y dependencias de testing de Spring Boot.</p><pre><code>cd backend
+      <div class="card"><h3>Backend</h3><p>El apartado de prueba del manual de desarrollo backend valida que la API funcione correctamente antes de integrar cambios en la aplicación web y Android. Las pruebas se ejecutan con Gradle, JUnit Platform y Spring Boot Test, generando además un informe de cobertura con JaCoCo.</p><pre><code>cd backend
 ./gradlew test
-./gradlew jacocoTestReport</code></pre><ul><li>Tests unitarios de servicios y repositorios.</li><li>Tests de integración de controladores y base de datos.</li><li>Pruebas end-to-end de flujos completos.</li><li>Cobertura mínima objetivo del 70%.</li></ul></div>
+./gradlew jacocoTestReport
+./gradlew build</code></pre><ul><li><strong>Pruebas unitarias:</strong> comprueban la lógica aislada de servicios, validaciones y cálculos sin depender de la interfaz.</li><li><strong>Pruebas de integración:</strong> verifican controladores, repositorios, serialización JSON y comunicación con la capa de persistencia.</li><li><strong>Pruebas de API:</strong> revisan endpoints REST, códigos HTTP, autenticación JWT y permisos de usuario/administrador.</li><li><strong>Informe de cobertura:</strong> JaCoCo permite revisar qué partes del backend quedan cubiertas por los tests.</li><li><strong>Resultado esperado:</strong> la tarea `test` debe terminar en verde y el informe HTML debe generarse en `backend/build/reports/jacoco/test/html/index.html`.</li></ul></div>
     <div class="card"><h3>Frontend</h3><p>La web usa Vitest, Testing Library y jsdom.</p><pre><code>cd web
 npm run test
 npm run test:watch

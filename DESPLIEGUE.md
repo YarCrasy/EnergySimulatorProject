@@ -187,7 +187,7 @@ El archivo `Android/app/build.gradle.kts` define URLs específicas:
   - `WEB_BASE_URL = "http://IP_DEL_EQUIPO:5173"`
 - Para `release`:
   - `BACKEND_BASE_URL = "https://dam.yarcrasy.com/api/"`
-  - `WEB_BASE_URL = "https://dam-project.yarcrasy.com"`
+  - `WEB_BASE_URL = "https://dam.yarcrasy.com"`
 
 Esto significa que el APK de debug espera el backend y la web accesibles en la red local. `IP_DEL_EQUIPO` debe sustituirse por la IP del ordenador que ejecuta Spring Boot y Vite; no es una URL estable de despliegue.
 

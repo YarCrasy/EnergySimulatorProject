@@ -262,6 +262,36 @@ td:first-child {
   white-space: nowrap;
 }
 
+.use-case-detail {
+  table-layout: fixed;
+}
+
+.use-case-detail th:first-child,
+.use-case-detail td:first-child {
+  width: 112px;
+  white-space: normal;
+}
+
+.usability-table {
+  table-layout: fixed;
+}
+
+.usability-table th:first-child,
+.usability-table td:first-child {
+  width: 150px;
+  white-space: normal;
+}
+
+.faq-table {
+  table-layout: fixed;
+}
+
+.faq-table th:first-child,
+.faq-table td:first-child {
+  width: 225px;
+  white-space: normal;
+}
+
 th {
   background: var(--soft);
   text-align: left;
@@ -298,6 +328,26 @@ pre {
   background: #fbf8ee;
 }
 
+.manual-guide {
+  margin: 12px 0 8px;
+}
+
+.manual-step-figure {
+  width: min(100%, 760px);
+  margin: 10px auto 18px;
+}
+
+.manual-step-figure img {
+  height: auto;
+  max-height: 420px;
+  object-fit: contain;
+  background: #ffffff;
+}
+
+.manual-step-figure figcaption {
+  text-align: center;
+}
+
 pre code {
   padding: 0;
   background: transparent;
@@ -312,12 +362,6 @@ pre code {
 
 .screenshot-grid.three {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.screenshot-grid.three figure img,
-.evidence-strip figure img {
-  object-fit: contain;
-  background: #f0f4f1;
 }
 
 figure {
@@ -370,8 +414,19 @@ figcaption {
   margin: 18px 0;
 }
 
+.screenshot-grid.three figure,
+.evidence-strip figure {
+  display: grid;
+  grid-template-rows: 160px auto;
+}
+
+.screenshot-grid.three figure img,
 .evidence-strip figure img {
-  aspect-ratio: 4 / 3;
+  width: 100%;
+  height: 160px;
+  aspect-ratio: auto;
+  object-fit: contain;
+  background: #f0f4f1;
 }
 
 .top-actions {
