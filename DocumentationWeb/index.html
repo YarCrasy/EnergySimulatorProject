@@ -1,0 +1,1019 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Documentación Final - Simulador de Energías Renovables</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="doc-shell">
+    <aside class="sidebar">
+      <h1>Simulador de Energías Renovables</h1>
+      <p>Documentación final del Proyecto Intermodular.</p>
+      <nav>
+        <a class="active" href="#cover">Portada</a>
+        <a href="#toc">Índice</a>
+        <a href="#intro">Introducción</a>
+        <a href="#diagrams">Diagramas y modelo</a>
+        <a href="#requirements">Requisitos</a>
+        <a href="#use-cases">Casos de uso</a>
+        <a href="#system">Funcionamiento</a>
+        <a href="#interfaces">Interfaces</a>
+        <a href="#usability">Usabilidad</a>
+        <a href="#manuals">Manuales</a>
+        <a href="#manual-user">Manual de usuario</a>
+        <a href="#manual-developer">Manual desarrollador</a>
+        <a href="#manual-deploy">Manual deploy</a>
+        <a href="#tests">Pruebas</a>
+        <a href="#stack">Pila tecnológica</a>
+        <a href="#comparison">Comparativa</a>
+        <a href="#repositories">Repositorios</a>
+        <a href="#planning">Planificación</a>
+        <a href="#conclusions">Conclusiones</a>
+        <a href="#references">Referencias</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="top-actions">
+        <button class="button secondary" onclick="window.print()">Imprimir documentación completa / guardar PDF</button>
+      </div>
+
+      <section id="cover" class="page cover">
+        <span class="kicker">Proyecto Intermodular - Grupo 6</span>
+        <h1>Documentación final del Simulador de Energías Renovables</h1>
+        <p class="lead">Plataforma multiplataforma para crear proyectos energéticos, configurar componentes renovables y
+          simular escenarios de generación, consumo y autosuficiencia.</p>
+
+        <div class="hero-meta">
+          <div><strong>Autores:</strong><br>Lingcheng Jiang<br>Nataly Alexandra Ipiales Barrigas</div>
+          <div><strong>Centro:</strong><br>IES El Rincón</div>
+          <div><strong>Ciclo:</strong><br>CFGS Desarrollo de Aplicaciones Multiplataforma</div>
+          <div><strong>Curso:</strong><br>2º Curso · 2025-2026</div>
+          <div class="wide-meta"><strong>Docentes Encargados:</strong><br>Juan Antonio Caballero Peñate - Tutor<br>José Francisco Lorenzo Hernández - PGV<br>José Luis Lezcano - CIFP San Cristóbal</div>
+        </div>
+        <span class="page-number">Página 1</span>
+      </section>
+
+      <section id="toc" class="page">
+        <span class="kicker">Índice</span>
+        <h2>Contenido de la documentación</h2>
+        <ol class="toc">
+          <li><a href="#intro">Introducción y descripción</a></li>
+          <li><a href="#diagrams">Diagramas, justificación y modelo de datos</a></li>
+          <li><a href="#requirements">Requisitos de usuario</a></li>
+          <li><a href="#use-cases">Casos de uso</a></li>
+          <li><a href="#system">Funcionamiento del sistema y especificaciones técnicas</a></li>
+          <li><a href="#interfaces">Interfaces, mockups y prototipado</a></li>
+          <li><a href="#usability">Usabilidad y accesibilidad</a></li>
+          <li><a href="#manuals">Manuales</a></li>
+          <li><a href="#manual-user">Manual de usuario</a></li>
+          <li><a href="#manual-developer">Manual de desarrollador</a></li>
+          <li><a href="#manual-deploy">Manual de deploy</a></li>
+          <li><a href="#tests">Tests de backend y frontend</a></li>
+          <li><a href="#stack">Pila tecnológica</a></li>
+          <li><a href="#comparison">Comparación de tecnologías</a></li>
+          <li><a href="#repositories">Repositorios</a></li>
+          <li><a href="#planning">Planificación</a></li>
+          <li><a href="#conclusions">Conclusiones y reflexiones</a></li>
+          <li><a href="#references">Enlaces y referencias</a></li>
+        </ol>
+        <p class="note">Para entregar en PDF, abre esta página en el navegador y usa el botón de imprimir. Cada capítulo
+          mantiene su propia página HTML y su propia hoja CSS para facilitar la refactorización por apartados.</p>
+        <span class="page-number">Página 2</span>
+      </section>
+      <!-- PRINT_ALL_START -->
+
+      <!-- intro -->
+      <section id="intro" class="page">
+        <span class="kicker">Introducción</span>
+        <h2>Descripción del proyecto</h2>
+        <p>El proyecto surge de la necesidad de disponer de una herramienta sencilla para estudiar instalaciones de
+          energías renovables antes de tomar decisiones de diseño. En un contexto donde la eficiencia energética y el
+          autoconsumo tienen cada vez más importancia, el sistema permite representar componentes, configurar consumos y
+          consultar resultados de simulación sin depender de hojas de cálculo externas.</p>
+        <p>La solución se desarrolla como proyecto intermodular de 2º DAM en el IES El Rincón. Está pensada para una
+          empresa o equipo técnico que quiera evaluar proyectos de energía renovable, presentar escenarios a clientes y
+          mantener un catálogo básico de generadores, baterías y elementos consumidores.</p>
+        <p>La idea principal es construir una plataforma compuesta por backend, aplicación web y aplicación Android. La
+          web ofrece el entorno más completo para crear proyectos y simular diagramas; la app móvil acerca las funciones
+          principales a técnicos o usuarios que necesiten consultar proyectos desde un dispositivo Android; el backend
+          centraliza la autenticación, los datos persistentes y el cálculo de simulaciones.</p>
+        <div class="grid three">
+          <div class="metric"><strong>Web</strong><br>React, Vite, diagramas y paneles de administración.</div>
+          <div class="metric"><strong>Servidor</strong><br>Spring Boot, API REST, seguridad JWT y PostgreSQL.</div>
+          <div class="metric"><strong>Móvil</strong><br>Android nativo en Java conectado a la misma API.</div>
+        </div>
+        <span class="page-number">Página 3</span>
+      </section>
+
+      <!-- diagrams -->
+      <section id="diagrams" class="page">
+        <span class="kicker">Modelo de datos</span>
+        <h2>Entidades principales y justificación</h2>
+        <p>El simulador se apoya en un modelo centrado en proyectos. Cada usuario crea escenarios energéticos, añade
+          elementos del catálogo al lienzo y ejecuta simulaciones con datos meteorológicos. El backend persiste estas
+          estructuras con JPA y PostgreSQL.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Entidad</th>
+              <th>Responsabilidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>User</td>
+              <td>Usuarios registrados, credenciales y rol de administración.</td>
+            </tr>
+            <tr>
+              <td>Project</td>
+              <td>Escenario energético con nombre, propietario, localización, fecha, inclinación, azimut, duración y
+                resultados resumidos.</td>
+            </tr>
+            <tr>
+              <td>Element</td>
+              <td>Entidad base del catálogo con nombre, categoría, descripción e imagen.</td>
+            </tr>
+            <tr>
+              <td>GeneratorElement</td>
+              <td>Paneles o generadores con marca, área, eficiencia y potencia nominal.</td>
+            </tr>
+            <tr>
+              <td>ConsumerElement</td>
+              <td>Cargas de consumo con potencia base, pico y perfil.</td>
+            </tr>
+            <tr>
+              <td>BatteryElement</td>
+              <td>Sistemas de almacenamiento con capacidad y límites de carga/descarga.</td>
+            </tr>
+            <tr>
+              <td>ProjectNode</td>
+              <td>Instancia de un elemento dentro de un proyecto, con posición, cantidad y configuración.</td>
+            </tr>
+            <tr>
+              <td>ProjectNodeConnection</td>
+              <td>Relación entre nodos del diagrama.</td>
+            </tr>
+            <tr>
+              <td>SimulationRun</td>
+              <td>Ejecución de simulación con métricas globales.</td>
+            </tr>
+            <tr>
+              <td>SimulationPoint</td>
+              <td>Resultado horario de generación, consumo, balance, irradiancia y nubosidad.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Separar catálogo y nodos evita duplicar datos técnicos: un mismo panel o consumidor puede reutilizarse en
+          varios proyectos, mientras cada nodo guarda su posición y configuración propia. Las conexiones preparan el
+          sistema para ampliar el cálculo energético por ramas, redes o pérdidas específicas.</p>
+        <span class="page-number">Página 4</span>
+      </section>
+
+      <!-- diagrams -->
+      <section id="diagrams-detail" class="page">
+        <span class="kicker">Diagramas</span>
+        <h2>Diagramas propuestos</h2>
+        <h3>Mapa conceptual</h3>
+        <pre><code>Usuario -> Proyecto -> Diagrama -> Nodos -> Elementos
+Proyecto -> Simulación -> Open-Meteo -> Resultados horarios
+Elementos -> Generadores | Consumidores | Baterías</code></pre>
+        <h3>Entidad / relación resumido</h3>
+        <pre><code>USERS 1--N PROJECTS
+PROJECTS 1--N PROJECT_NODES
+ELEMENTS 1--N PROJECT_NODES
+PROJECTS 1--N PROJECT_NODE_CONNECTIONS
+PROJECTS 1--N SIMULATION_RUNS
+SIMULATION_RUNS 1--N SIMULATION_POINTS
+ELEMENTS 1--1 GENERATOR_ELEMENTS / CONSUMER_ELEMENTS / BATTERY_ELEMENTS</code></pre>
+        <h3>Flujo de simulación</h3>
+        <ol>
+          <li>El usuario configura el proyecto desde web o Android.</li>
+          <li>La aplicación envía proyectos, nodos y conexiones al backend.</li>
+          <li>El backend recupera datos meteorológicos mediante Open-Meteo.</li>
+          <li>El servicio calcula generación, consumo, déficit, excedente y autosuficiencia.</li>
+          <li>Los resultados se guardan y se devuelven a la interfaz.</li>
+        </ol>
+        <span class="page-number">Página 5</span>
+      </section>
+
+      <!-- requirements -->
+      <section id="requirements" class="page">
+        <span class="kicker">Requisitos</span>
+        <h2>Requisitos generales del sistema</h2>
+        <p>El objetivo principal es definir una solución que permita gestionar proyectos energéticos renovables y
+          simular si una configuración cubre la demanda prevista. Los requisitos se organizan en funcionales, no
+          funcionales y de información.</p>
+        <div class="grid two">
+          <div class="card">
+            <h3>Funcionales</h3>
+            <ul>
+              <li>Registrar e iniciar sesión de usuarios.</li>
+              <li>Gestionar proyectos propios.</li>
+              <li>Crear diagramas con generadores, consumidores y baterías.</li>
+              <li>Guardar posición, cantidad y configuración de cada nodo.</li>
+              <li>Ejecutar simulaciones energéticas por proyecto.</li>
+              <li>Consultar métricas de generación, consumo, déficit y excedente.</li>
+              <li>Administrar usuarios y elementos del catálogo.</li>
+              <li>Acceder desde aplicación web y Android.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>No funcionales</h3>
+            <ul>
+              <li>API REST clara y reutilizable.</li>
+              <li>Persistencia relacional con PostgreSQL.</li>
+              <li>Autenticación mediante token JWT.</li>
+              <li>Interfaz responsive para escritorio y móvil.</li>
+              <li>Pruebas automatizadas en backend y frontend.</li>
+              <li>Despliegue preparado para entorno local y producción.</li>
+              <li>Mensajes de error comprensibles.</li>
+              <li>Separación entre presentación, lógica y datos.</li>
+            </ul>
+          </div>
+        </div>
+        <h3>Requisitos de información</h3>
+        <p>El sistema debe conservar usuarios, proyectos, catálogo de elementos, nodos del diagrama, conexiones,
+          parámetros de simulación y resultados históricos. También debe mantener la trazabilidad de cada simulación
+          para que los resultados puedan relacionarse con la configuración usada.</p>
+        <span class="page-number">Página 6</span>
+      </section>
+
+      <!-- use-cases -->
+      <section id="use-cases" class="page">
+        <span class="kicker">Casos de uso</span>
+        <h2>Versión inicial</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Actor</th>
+              <th>Descripción</th>
+              <th>Resultado esperado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>CU-01</td>
+              <td>Usuario</td>
+              <td>Registrarse e iniciar sesión.</td>
+              <td>Acceso a proyectos propios con token válido.</td>
+            </tr>
+            <tr>
+              <td>CU-02</td>
+              <td>Usuario</td>
+              <td>Crear, editar y eliminar proyectos.</td>
+              <td>Proyecto persistido y visible en web/móvil.</td>
+            </tr>
+            <tr>
+              <td>CU-03</td>
+              <td>Usuario</td>
+              <td>Añadir elementos al simulador.</td>
+              <td>Nodos colocados en el lienzo con cantidad y posición.</td>
+            </tr>
+            <tr>
+              <td>CU-04</td>
+              <td>Usuario</td>
+              <td>Conectar nodos del diagrama.</td>
+              <td>Relaciones guardadas para representar el sistema energético.</td>
+            </tr>
+            <tr>
+              <td>CU-05</td>
+              <td>Usuario</td>
+              <td>Ejecutar simulación.</td>
+              <td>Resultados de producción, consumo, déficit, excedente y autosuficiencia.</td>
+            </tr>
+            <tr>
+              <td>CU-06</td>
+              <td>Administrador</td>
+              <td>Gestionar usuarios.</td>
+              <td>Consulta y administración de cuentas registradas.</td>
+            </tr>
+            <tr>
+              <td>CU-07</td>
+              <td>Administrador</td>
+              <td>Gestionar catálogo de elementos.</td>
+              <td>Altas, bajas y cambios en generadores, consumidores y baterías.</td>
+            </tr>
+            <tr>
+              <td>CU-08</td>
+              <td>Técnico</td>
+              <td>Instalar y configurar la aplicación en cliente.</td>
+              <td>Sistema operativo en el entorno de destino.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note">Estos casos de uso son iniciales. Durante la evolución del proyecto pueden desglosarse en casos
+          detallados con precondiciones, flujo normal, alternativas y errores.</p>
+        <span class="page-number">Página 7</span>
+      </section>
+
+      <!-- system -->
+      <section id="system" class="page">
+        <span class="kicker">Arquitectura</span>
+        <h2>Funcionamiento y especificaciones técnicas</h2>
+        <p>El sistema se organiza como un monorepo con tres superficies principales. La aplicación web y la app Android
+          consumen la misma API REST. El backend se encarga de seguridad, persistencia, reglas de negocio y simulación.
+        </p>
+        <pre><code>React/Vite Web --------\
+                       -> Spring Boot API -> PostgreSQL
+Android Java ----------/          |
+                                  -> Open-Meteo</code></pre>
+        <div class="grid three">
+          <div class="card">
+            <h3>Servidor</h3>
+            <p>Spring Boot expone endpoints bajo <code>/api</code> para usuarios, proyectos, elementos, nodos,
+              conexiones y simulaciones. Usa Spring Security, JPA y PostgreSQL.</p>
+          </div>
+          <div class="card">
+            <h3>Web</h3>
+            <p>La SPA en React gestiona rutas públicas, rutas protegidas, panel de proyectos, simulador visual y
+              administración.</p>
+          </div>
+          <div class="card">
+            <h3>Android</h3>
+            <p>La app nativa en Java reutiliza la API para login, proyectos, perfil y acceso al simulador.</p>
+          </div>
+        </div>
+        <h3>Relación entre capas</h3>
+        <ol>
+          <li>La interfaz recoge acciones del usuario y construye peticiones JSON.</li>
+          <li>La API valida y persiste los datos mediante repositorios JPA.</li>
+          <li>El servicio de simulación obtiene información meteorológica y calcula balances energéticos.</li>
+          <li>El cliente muestra métricas y permite guardar cambios del proyecto.</li>
+        </ol>
+        <h3>Endpoints destacados</h3>
+        <ul>
+          <li><code>POST /api/users/login</code>: autenticación de usuario.</li>
+          <li><code>GET /api/projects/user/{userId}</code>: proyectos asociados a un usuario.</li>
+          <li><code>PUT /api/projects/{id}</code>: actualización de proyecto, nodos y conexiones.</li>
+          <li><code>GET /api/elements</code>: catálogo energético.</li>
+          <li><code>POST /api/projects/{projectId}/simulations</code>: ejecución de simulación.</li>
+          <li><code>GET /api/projects/{projectId}/simulations/latest</code>: última simulación guardada.</li>
+        </ul>
+        <span class="page-number">Página 8</span>
+      </section>
+
+      <!-- interfaces -->
+      <section id="interfaces" class="page">
+        <span class="kicker">Interfaces</span>
+        <h2>Diseño inicial, mockups y prototipado</h2>
+        <p>El prototipado debe recoger tanto la aplicación web como la móvil. La web prioriza el trabajo con proyectos y
+          diagramas; la app móvil prioriza consulta, autenticación, perfil y acceso a proyectos desde un dispositivo
+          Android.</p>
+        <p><strong>Enlace del prototipo:</strong> pendiente de añadir el enlace compartido de Figma, Penpot, Canva o la
+          herramienta usada.</p>
+        <div class="screenshot-grid">
+          <figure><img src="../screenshots/projects.png" alt="Pantalla de proyectos">
+            <figcaption>Gestión de proyectos en la aplicación web.</figcaption>
+          </figure>
+          <figure><img src="../screenshots/simulator.png" alt="Pantalla del simulador">
+            <figcaption>Simulador visual con elementos energéticos.</figcaption>
+          </figure>
+          <figure><img src="../screenshots/administration.png" alt="Administración de usuarios">
+            <figcaption>Administración de usuarios.</figcaption>
+          </figure>
+          <figure><img src="../screenshots/adminElements.png" alt="Administración de elementos">
+            <figcaption>Catálogo de elementos del simulador.</figcaption>
+          </figure>
+        </div>
+        <h3>Capturas recuperadas de la documentación anterior</h3>
+        <p>Las siguientes imágenes proceden del documento deprecado y sirven para documentar estados adicionales de la
+          interfaz: inicio, login, inventario, simulador y administración.</p>
+        <div class="screenshot-grid three">
+          <figure><img src="assets/docx-screenshots/web-home-hero.png" alt="Página inicial del simulador energético">
+            <figcaption>Página inicial con propuesta de valor y acceso al simulador.</figcaption>
+          </figure>
+          <figure><img src="assets/docx-screenshots/web-login.png" alt="Pantalla de inicio de sesión">
+            <figcaption>Formulario de acceso con métricas de apoyo.</figcaption>
+          </figure>
+          <figure><img src="assets/docx-screenshots/web-projects-grid.png" alt="Listado de proyectos del usuario">
+            <figcaption>Listado de proyectos con acciones de apertura y edición.</figcaption>
+          </figure>
+          <figure><img src="assets/docx-screenshots/web-simulator-workspace.png"
+              alt="Simulador con catálogo, lienzo y propiedades">
+            <figcaption>Vista completa del simulador web.</figcaption>
+          </figure>
+          <figure><img src="assets/docx-screenshots/web-simulator-diagram.png"
+              alt="Diagrama energético con panel, batería y cargas">
+            <figcaption>Ejemplo de diagrama con nodos conectados.</figcaption>
+          </figure>
+          <figure><img src="assets/docx-screenshots/web-users-admin.png" alt="Panel de administración de usuarios">
+            <figcaption>Panel administrativo para usuarios y credenciales.</figcaption>
+          </figure>
+        </div>
+        <h3>Mockups mínimos a incluir</h3>
+        <ul>
+          <li>Web: login, registro, listado de proyectos, simulador, perfil y administración.</li>
+          <li>Android: login, listado de proyectos, detalle/simulador, perfil y ayuda.</li>
+          <li>Estados: carga, error de conexión, usuario sin proyectos y confirmación de borrado.</li>
+        </ul>
+        <span class="page-number">Página 9</span>
+      </section>
+
+      <!-- usability -->
+      <section id="usability" class="page">
+        <span class="kicker">Usabilidad</span>
+        <h2>Criterios aplicados</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Aspecto</th>
+              <th>Decisión de diseño</th>
+              <th>Justificación</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Claridad</td>
+              <td>Textos breves, botones reconocibles y agrupación por tareas.</td>
+              <td>El usuario debe saber qué hacer sin leer instrucciones largas.</td>
+            </tr>
+            <tr>
+              <td>Consistencia</td>
+              <td>Mismo patrón de navegación en web y móvil.</td>
+              <td>Reduce aprendizaje y errores al cambiar de dispositivo.</td>
+            </tr>
+            <tr>
+              <td>Feedback</td>
+              <td>Estados de carga, errores y resultados visibles.</td>
+              <td>Evita incertidumbre durante peticiones a la API.</td>
+            </tr>
+            <tr>
+              <td>Prevención de errores</td>
+              <td>Confirmaciones en acciones destructivas y validación de formularios.</td>
+              <td>Protege proyectos y datos de usuario.</td>
+            </tr>
+            <tr>
+              <td>Accesibilidad</td>
+              <td>Contraste suficiente, etiquetas, foco visible y estructura semántica.</td>
+              <td>Facilita uso con teclado y tecnologías de apoyo.</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Proceso seguido</h3>
+        <ol>
+          <li>Identificación de perfiles: usuario final, técnico instalador y administrador.</li>
+          <li>Definición de tareas frecuentes: login, crear proyecto, simular y consultar resultados.</li>
+          <li>Diseño de pantallas con jerarquía visual y flujo corto.</li>
+          <li>Validación mediante pruebas manuales y tests automatizados de flujos críticos.</li>
+          <li>Revisión posterior con capturas reales de la aplicación.</li>
+        </ol>
+        <h3>Evidencias en la aplicación</h3>
+        <div class="screenshot-grid three">
+          <figure><img src="assets/docx-screenshots/login-with-errors.png" alt="Formulario con mensajes de validación">
+            <figcaption>Feedback de error en autenticación.</figcaption>
+          </figure>
+          <figure><img src="assets/docx-screenshots/confirm-delete-project.png"
+              alt="Diálogo de confirmación de borrado">
+            <figcaption>Prevención de acciones destructivas.</figcaption>
+          </figure>
+          <figure><img src="assets/docx-screenshots/validation-consumption-required.png"
+              alt="Validación de consumo obligatorio">
+            <figcaption>Validación contextual en formularios.</figcaption>
+          </figure>
+        </div>
+        <p class="note">Estas capturas recuperadas muestran decisiones ya aplicadas: mensajes visibles, confirmación
+          antes de borrar y validaciones cercanas al campo afectado.</p>
+        <span class="page-number">Página 10</span>
+      </section>
+
+      <!-- manuals -->
+      <section id="manuals" class="page">
+        <span class="kicker">Manuales</span>
+        <h2>Manuales del proyecto</h2>
+        <p>Este apartado se divide en tres documentos independientes para separar las necesidades de cada perfil: la
+          persona usuaria, el equipo de desarrollo y la persona responsable del despliegue.</p>
+        <div class="grid three">
+          <a class="manual-card" href="#manual-user">
+            <strong>Manual de usuario</strong>
+            <span>Uso de la web, app móvil, proyectos, simulador, perfil y ayuda dentro de la aplicación.</span>
+          </a>
+          <a class="manual-card" href="#manual-developer">
+            <strong>Manual de desarrollador</strong>
+            <span>Entorno local, comandos del backend, frontend, Android, tests y estructura del repositorio.</span>
+          </a>
+          <a class="manual-card" href="#manual-deploy">
+            <strong>Manual de deploy</strong>
+            <span>Preparación de producción, builds, variables, base de datos, servicios y verificación.</span>
+          </a>
+        </div>
+        <p class="note">La separación ayuda a entregar una documentación más clara: quien usa la aplicación no necesita
+          leer comandos técnicos, y quien despliega no tiene que buscar instrucciones entre pantallas de usuario.</p>
+        <span class="page-number">Página 11</span>
+      </section>
+
+      <!-- manual-user -->
+      <section id="manual-user" class="page">
+        <span class="kicker">Manual de usuario</span>
+        <h2>Uso de la aplicación</h2>
+        <p>Este manual está dirigido a la persona que utilizará el simulador para crear proyectos energéticos,
+          configurar componentes renovables y consultar resultados.</p>
+
+        <h3>Inicio de sesión y registro</h3>
+        <div class="evidence-strip">
+          <figure><img src="assets/docx-screenshots/web-login.png"
+              alt="Formulario de inicio de sesión de la aplicación web">
+            <figcaption>Inicio de sesión web.</figcaption>
+          </figure>
+          <figure><img src="assets/docx-screenshots/login-with-errors.png"
+              alt="Formulario de inicio de sesión con mensajes de error">
+            <figcaption>Validación y mensajes de error.</figcaption>
+          </figure>
+          <figure><img src="assets/docx-screenshots/search-consumption.png" alt="Búsqueda de elementos de consumo">
+            <figcaption>Búsqueda dentro del catálogo.</figcaption>
+          </figure>
+        </div>
+        <ol>
+          <li>Accede a la pantalla de login.</li>
+          <li>Introduce correo electrónico y contraseña.</li>
+          <li>Si todavía no tienes cuenta, abre la pantalla de registro y completa los datos obligatorios.</li>
+          <li>Tras iniciar sesión, la aplicación carga tus proyectos o muestra un estado vacío si aún no existen.</li>
+        </ol>
+
+        <h3>Gestión de proyectos</h3>
+        <div class="evidence-strip">
+          <figure><img src="assets/docx-screenshots/web-projects-grid.png" alt="Panel de proyectos con tarjetas">
+            <figcaption>Panel de proyectos.</figcaption>
+          </figure>
+          <figure><img src="assets/docx-screenshots/confirm-delete-project.png"
+              alt="Confirmación antes de eliminar proyecto">
+            <figcaption>Confirmación de eliminación.</figcaption>
+          </figure>
+          <figure><img src="assets/docx-screenshots/web-consumption-inventory.png" alt="Inventario de consumo">
+            <figcaption>Inventario energético.</figcaption>
+          </figure>
+        </div>
+        <ol>
+          <li>Entra en el panel de proyectos.</li>
+          <li>Crea un proyecto nuevo con un nombre reconocible.</li>
+          <li>Abre un proyecto existente para editarlo en el simulador.</li>
+          <li>Usa las acciones de la tarjeta para eliminar o modificar proyectos cuando corresponda.</li>
+        </ol>
+
+        <h3>Simulador energético</h3>
+        <div class="evidence-strip">
+          <figure><img src="assets/docx-screenshots/web-simulator-workspace.png"
+              alt="Vista principal del simulador energético">
+            <figcaption>Vista principal del simulador.</figcaption>
+          </figure>
+          <figure><img src="assets/docx-screenshots/web-simulator-diagram.png"
+              alt="Diagrama del simulador con nodos energéticos">
+            <figcaption>Nodos y relaciones del proyecto.</figcaption>
+          </figure>
+          <figure><img src="assets/docx-screenshots/validation-consumption-required.png"
+              alt="Mensaje de validación del consumo obligatorio">
+            <figcaption>Validación de campos del simulador.</figcaption>
+          </figure>
+        </div>
+        <ol>
+          <li>Añade generadores, consumidores y baterías desde el catálogo.</li>
+          <li>Organiza los elementos en el lienzo de trabajo.</li>
+          <li>Configura cantidad, consumo, generación o almacenamiento según el tipo de elemento.</li>
+          <li>Define localización, fecha, inclinación, azimut, duración y pérdidas del sistema.</li>
+          <li>Ejecuta la simulación y revisa generación, consumo, déficit, excedente y autosuficiencia.</li>
+          <li>Guarda el proyecto para recuperarlo desde la web o desde la app Android.</li>
+        </ol>
+
+        <h3>Perfil y administración</h3>
+        <div class="evidence-strip">
+          <figure><img src="assets/docx-screenshots/web-users-admin.png" alt="Administración de usuarios">
+            <figcaption>Administración de usuarios.</figcaption>
+          </figure>
+          <figure><img src="assets/docx-screenshots/web-consumption-admin.png"
+              alt="Administración de elementos de consumo">
+            <figcaption>Administración de elementos.</figcaption>
+          </figure>
+          <figure><img src="assets/docx-screenshots/web-home-hero.png" alt="Página de inicio de la plataforma">
+            <figcaption>Página de entrada a la plataforma.</figcaption>
+          </figure>
+        </div>
+        <p>Desde el perfil se consulta o modifica la información de la cuenta. Las pantallas de administración solo
+          están disponibles para usuarios con rol administrador y permiten gestionar usuarios y elementos del catálogo.
+        </p>
+
+        <h3>Ayuda dentro de la app</h3>
+        <p>La ayuda debe explicar el significado de cada métrica, cómo interpretar déficit y excedente, qué hacer cuando
+          no aparecen proyectos y cómo corregir una configuración insuficiente.</p>
+
+        <h3>Problemas frecuentes</h3>
+        <ul>
+          <li>Si no aparecen proyectos, revisa que has iniciado sesión con la cuenta correcta.</li>
+          <li>Si no puedes simular, comprueba que el proyecto tiene elementos suficientes.</li>
+          <li>Si no accedes a administración, verifica que tu usuario tiene rol administrador.</li>
+        </ul>
+        <span class="page-number">Página 12</span>
+      </section>
+
+      <!-- manual-developer -->
+      <section id="manual-developer" class="page">
+        <span class="kicker">Manual de desarrollador</span>
+        <h2>Entorno local y trabajo técnico</h2>
+
+        <h3>Requisitos previos</h3>
+        <ul>
+          <li>Git para clonar el repositorio.</li>
+          <li>JDK 25 para el backend.</li>
+          <li>PostgreSQL para la base de datos local.</li>
+          <li>Node.js y npm para los frontends React/Vite.</li>
+          <li>Android Studio y Android SDK para compilar la app móvil.</li>
+        </ul>
+
+        <h3>Clonar el repositorio</h3>
+        <pre><code>git clone https://github.com/YarCrasy/RenewableEnergyProject.git
+cd RenewableEnergyProject</code></pre>
+
+        <h3>Backend</h3>
+        <pre><code>cd backend
+./gradlew bootRun
+./gradlew test
+./gradlew build</code></pre>
+        <p>En Windows usa <code>.\gradlew.bat bootRun</code>, <code>.\gradlew.bat test</code> y
+          <code>.\gradlew.bat build</code>. El backend expone la API bajo <code>http://localhost:8080/api</code>.</p>
+
+        <h3>Frontend web</h3>
+        <pre><code>cd web-refactored
+npm install
+npm run dev
+npm run build
+npm run lint
+npm run test
+npm run test:watch</code></pre>
+        <p>La variable opcional <code>VITE_API_URL</code> permite cambiar la URL del backend. Si no existe, el frontend
+          usa <code>http://localhost:8080/api</code> en desarrollo.</p>
+
+        <h3>Android</h3>
+        <pre><code>cd Android
+./gradlew assembleDebug</code></pre>
+        <p>En Windows usa <code>.\gradlew.bat assembleDebug</code>. Para pruebas manuales, abre la carpeta
+          <code>Android/</code> con Android Studio y revisa las URL de <code>BuildConfig</code>.</p>
+
+        <h3>Estructura del repositorio</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Carpeta</th>
+              <th>Responsabilidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>backend/</code></td>
+              <td>API REST, seguridad, modelo de datos y simulaciones.</td>
+            </tr>
+            <tr>
+              <td><code>web-refactored/</code></td>
+              <td>Frontend actual con React, TypeScript, Vite y simulador visual.</td>
+            </tr>
+            <tr>
+              <td><code>Web/</code></td>
+              <td>Versión web previa y documentación técnica por módulos.</td>
+            </tr>
+            <tr>
+              <td><code>Android/</code></td>
+              <td>Aplicación móvil nativa en Java.</td>
+            </tr>
+            <tr>
+              <td><code>DocumentationWeb/</code></td>
+              <td>Documentación final exportable a PDF.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Flujo recomendado</h3>
+        <ol>
+          <li>Arrancar PostgreSQL.</li>
+          <li>Ejecutar el backend.</li>
+          <li>Ejecutar el frontend.</li>
+          <li>Desarrollar cambios pequeños y probarlos.</li>
+          <li>Ejecutar tests antes de entregar.</li>
+        </ol>
+        <span class="page-number">Página 13</span>
+      </section>
+
+      <!-- manual-deploy -->
+      <section id="manual-deploy" class="page">
+        <span class="kicker">Manual de deploy</span>
+        <h2>Despliegue de la aplicación</h2>
+        <p>Este manual está dirigido a la persona técnica que instala la solución en el entorno del cliente o en
+          producción. El proyecto contempla backend, frontend web, base de datos y APK Android.</p>
+
+        <h3>Preparación de base de datos</h3>
+        <ul>
+          <li>Instalar PostgreSQL y crear la base <code>energysimulatordb</code>.</li>
+          <li>Crear el usuario de aplicación o adaptar <code>backend/InitBD.sql</code>.</li>
+          <li>Configurar credenciales fuera del repositorio cuando el entorno sea producción.</li>
+          <li>Verificar que el backend puede conectarse antes de publicar la web.</li>
+        </ul>
+
+        <h3>Configuración backend</h3>
+        <pre><code>spring.datasource.url=jdbc:postgresql://localhost:5432/energysimulatordb
+spring.datasource.username=SimulatorUser
+spring.datasource.password=SimulatorUserPassword123
+app.jwt.secret=change-this-secret-key-before-production</code></pre>
+        <p>El secreto JWT y las credenciales no deben mantenerse con valores de desarrollo en producción. También
+          conviene ajustar CORS a los dominios reales del cliente.</p>
+
+        <h3>Build del backend</h3>
+        <pre><code>cd backend
+./gradlew build</code></pre>
+        <p>Después del build, el artefacto se puede ejecutar como servicio Java en el servidor elegido. En el README se
+          documenta un despliegue sobre Raspberry Pi 5.</p>
+
+        <h3>Build de la web</h3>
+        <pre><code>cd web-refactored
+npm install
+npm run build</code></pre>
+        <p>Antes de construir, define <code>VITE_API_URL</code> apuntando a la API pública, por ejemplo
+          <code>https://dam.yarcrasy.com/api</code>. Los archivos generados se sirven como estáticos desde el servidor
+          web.</p>
+
+        <h3>Deploy Android</h3>
+        <pre><code>cd Android
+./gradlew assembleDebug</code></pre>
+        <p>Para release, Android usa <code>https://dam.yarcrasy.com/api/</code> como backend y
+          <code>https://dam-project.yarcrasy.com</code> como web base. Se debe generar y distribuir el APK o bundle
+          firmado según el canal elegido.</p>
+
+        <h3>Verificación posterior</h3>
+        <ol>
+          <li>Comprobar que la API responde bajo <code>/api</code>.</li>
+          <li>Iniciar sesión desde la web.</li>
+          <li>Crear un proyecto de prueba.</li>
+          <li>Añadir elementos al simulador y guardar.</li>
+          <li>Ejecutar una simulación y validar resultados.</li>
+          <li>Probar la conexión desde Android.</li>
+        </ol>
+        <span class="page-number">Página 14</span>
+      </section>
+
+      <!-- tests -->
+      <section id="tests" class="page">
+        <span class="kicker">Testing</span>
+        <h2>Tests de prueba</h2>
+        <div class="grid two">
+          <div class="card">
+            <h3>Backend</h3>
+            <p>El backend usa JUnit Platform y dependencias de testing de Spring Boot.</p>
+            <pre><code>cd backend
+./gradlew test</code></pre>
+            <ul>
+              <li>Arranque del contexto Spring.</li>
+              <li>Validación de utilidades de seguridad JWT.</li>
+              <li>Pruebas ampliables para controladores y servicios.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Frontend</h3>
+            <p>La web usa Vitest, Testing Library y jsdom.</p>
+            <pre><code>cd web-refactored
+npm run test
+npm run test:watch</code></pre>
+            <ul>
+              <li>Flujos de login y autenticación.</li>
+              <li>CRUD de proyectos y elementos con mocks de API.</li>
+              <li>Comportamiento de tarjetas, rutas privadas y utilidades del simulador.</li>
+            </ul>
+          </div>
+        </div>
+        <h3>Criterio de aceptación</h3>
+        <p>Las pruebas deben cubrir los flujos críticos: autenticación, creación de proyectos, actualización de
+          diagramas, ejecución de simulación y errores de API. Para nuevas funcionalidades, se recomienda seguir el
+          patrón AAA: preparar datos, ejecutar acción y comprobar resultado.</p>
+        <h3>Áreas revisadas en el repositorio</h3>
+        <ul>
+          <li>Autenticación: login, logout, hidratación de sesión, roles y sanitización de datos guardados.</li>
+          <li>Rutas privadas: redirección a login y control de acceso por rol.</li>
+          <li>APIs: CRUD de proyectos, elementos y ejecución de simulaciones.</li>
+          <li>Interfaz: tarjetas de proyecto, menús contextuales, formularios y estados vacíos.</li>
+          <li>Simulador: normalización de proyectos, coordenadas, nodos, conexiones y payloads.</li>
+        </ul>
+        <span class="page-number">Página 15</span>
+      </section>
+
+      <!-- stack -->
+      <section id="stack" class="page">
+        <span class="kicker">Tecnologías</span>
+        <h2>Pila tecnológica</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Capa</th>
+              <th>Tecnologías</th>
+              <th>Uso</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Backend</td>
+              <td>Java 25, Spring Boot 4, Spring Security, Spring Data JPA, Gradle</td>
+              <td>API REST, seguridad, persistencia y simulación.</td>
+            </tr>
+            <tr>
+              <td>Base de datos</td>
+              <td>PostgreSQL</td>
+              <td>Datos relacionales del sistema.</td>
+            </tr>
+            <tr>
+              <td>Web</td>
+              <td>React 19, TypeScript, Vite 8, React Router, Axios, React Leaflet, D3, @xyflow/react</td>
+              <td>SPA, mapas, diagramas, llamadas API y visualización.</td>
+            </tr>
+            <tr>
+              <td>Android</td>
+              <td>Java, Android SDK 26+, AppCompat, Material, ConstraintLayout</td>
+              <td>Aplicación móvil nativa.</td>
+            </tr>
+            <tr>
+              <td>Pruebas</td>
+              <td>JUnit, Spring Test, Vitest, Testing Library, jsdom</td>
+              <td>Validación automatizada de backend y frontend.</td>
+            </tr>
+            <tr>
+              <td>ERP auxiliar</td>
+              <td>Odoo 19, Docker Compose, PostgreSQL 15</td>
+              <td>Entorno independiente para posibles necesidades de gestión empresarial.</td>
+            </tr>
+            <tr>
+              <td>Despliegue</td>
+              <td>Raspberry Pi 5, dominio dam-project.yarcrasy.com, builds web y APK</td>
+              <td>Entorno de producción y distribución.</td>
+            </tr>
+          </tbody>
+        </table>
+        <span class="page-number">Página 16</span>
+      </section>
+
+      <!-- comparison -->
+      <section id="comparison" class="page">
+        <span class="kicker">Comparativa</span>
+        <h2>Comparación de tecnologías</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Decisión</th>
+              <th>Alternativas</th>
+              <th>Motivo de elección</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Spring Boot</td>
+              <td>Node/Express, Laravel</td>
+              <td>Encaja con Java, JPA, seguridad integrada y estructura clara para API REST.</td>
+            </tr>
+            <tr>
+              <td>PostgreSQL</td>
+              <td>MySQL, SQLite</td>
+              <td>Base relacional robusta, adecuada para relaciones entre proyectos, nodos y simulaciones.</td>
+            </tr>
+            <tr>
+              <td>React + Vite</td>
+              <td>Angular, Vue</td>
+              <td>Desarrollo rápido, ecosistema amplio y buen soporte para componentes de diagramas.</td>
+            </tr>
+            <tr>
+              <td>Android nativo Java</td>
+              <td>Kotlin, React Native, Flutter</td>
+              <td>Aprovecha conocimientos del ciclo y mantiene integración directa con SDK Android.</td>
+            </tr>
+            <tr>
+              <td>Axios</td>
+              <td>fetch nativo</td>
+              <td>Centraliza base URL, cabeceras, interceptores y gestión de errores.</td>
+            </tr>
+            <tr>
+              <td>@xyflow/react</td>
+              <td>Canvas propio, SVG manual</td>
+              <td>Ofrece nodos y conexiones listas para un simulador visual mantenible.</td>
+            </tr>
+            <tr>
+              <td>Docker Compose para Odoo</td>
+              <td>Instalación manual, contenedores separados</td>
+              <td>Permite levantar Odoo y PostgreSQL de forma reproducible y aislada.</td>
+            </tr>
+          </tbody>
+        </table>
+        <span class="page-number">Página 17</span>
+      </section>
+
+      <!-- repositories -->
+      <section id="repositories" class="page">
+        <span class="kicker">Repositorios</span>
+        <h2>Organización del repositorio</h2>
+        <p>El proyecto se mantiene como monorepo para coordinar backend, web, Android, despliegue y documentación desde
+          un único punto.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Carpeta</th>
+              <th>Contenido</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>backend/</code></td>
+              <td>API Spring Boot, modelos, controladores, servicios, repositorios, seguridad y tests.</td>
+            </tr>
+            <tr>
+              <td><code>web-refactored/</code></td>
+              <td>Aplicación web actual en React, TypeScript y Vite.</td>
+            </tr>
+            <tr>
+              <td><code>Web/</code></td>
+              <td>Versión anterior o base de la web, con componentes y documentación técnica por módulos.</td>
+            </tr>
+            <tr>
+              <td><code>Android/</code></td>
+              <td>Aplicación Android nativa.</td>
+            </tr>
+            <tr>
+              <td><code>screenshots/</code></td>
+              <td>Capturas usadas en README y documentación.</td>
+            </tr>
+            <tr>
+              <td><code>DocumentationWeb/</code></td>
+              <td>Documentación final navegable y preparada para exportar a PDF.</td>
+            </tr>
+            <tr>
+              <td><code>odoo/</code></td>
+              <td>Configuración auxiliar de docker-compose.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p><strong>Repositorio remoto:</strong> <a
+            href="https://github.com/YarCrasy/RenewableEnergyProject">github.com/YarCrasy/RenewableEnergyProject</a></p>
+        <span class="page-number">Página 18</span>
+      </section>
+
+      <!-- planning -->
+      <section id="planning" class="page">
+        <span class="kicker">Planificación</span>
+        <h2>Organización del trabajo</h2>
+        <ol class="timeline">
+          <li><strong>Análisis:</strong> identificación de necesidades, actores, casos de uso y datos principales.</li>
+          <li><strong>Diseño:</strong> modelo de datos, mockups web/móvil y arquitectura de capas.</li>
+          <li><strong>Backend:</strong> creación de entidades, repositorios, controladores, seguridad y simulación.</li>
+          <li><strong>Web:</strong> desarrollo de rutas, login, proyectos, simulador, paneles y administración.</li>
+          <li><strong>Android:</strong> conexión con API, pantallas principales y configuración de build.</li>
+          <li><strong>Pruebas:</strong> tests unitarios, pruebas de integración y validación manual con capturas.</li>
+          <li><strong>Documentación:</strong> README, manuales, documentación final y preparación de PDF.</li>
+        </ol>
+        <h3>Método de seguimiento</h3>
+        <p>La planificación se apoya en tareas por módulo, revisión continua del repositorio y validación por
+          entregables. La separación por carpetas permite trabajar por capas sin bloquear todo el proyecto: backend,
+          web, móvil y documentación pueden evolucionar en paralelo si se respetan los contratos de la API.</p>
+        <span class="page-number">Página 19</span>
+      </section>
+
+      <!-- conclusions -->
+      <section id="conclusions" class="page">
+        <span class="kicker">Conclusiones</span>
+        <h2>Opiniones y reflexión final</h2>
+        <p>El proyecto ha permitido unir varias competencias del ciclo en una solución completa: modelado de datos, API
+          REST, seguridad, interfaces web, aplicación móvil, pruebas y despliegue. La parte más valiosa es que todas las
+          capas trabajan alrededor de un dominio común, no como ejercicios separados.</p>
+        <p>Una dificultad importante ha sido mantener sincronizados los modelos entre backend, web y Android. También
+          exige atención la persistencia de diagramas, porque no basta con guardar un proyecto: hay que conservar nodos,
+          posiciones, cantidades, conexiones y parámetros de simulación.</p>
+        <p>Como mejora futura, el simulador puede incorporar cálculos más avanzados, comparativas económicas,
+          exportación de informes, roles de empresa, colaboración entre usuarios y mayor detalle en el comportamiento de
+          baterías. Aun así, la base actual ya permite demostrar el flujo completo de una herramienta profesional:
+          configurar, simular, guardar y consultar resultados.</p>
+        <span class="page-number">Página 20</span>
+      </section>
+
+      <!-- references -->
+      <section id="references" class="page">
+        <span class="kicker">Referencias</span>
+        <h2>Enlaces y fuentes</h2>
+        <ul>
+          <li><a href="https://github.com/YarCrasy/RenewableEnergyProject">Repositorio del proyecto en GitHub</a></li>
+          <li><a href="https://spring.io/projects/spring-boot">Documentación de Spring Boot</a></li>
+          <li><a href="https://spring.io/projects/spring-security">Documentación de Spring Security</a></li>
+          <li><a href="https://www.postgresql.org/docs/">Documentación de PostgreSQL</a></li>
+          <li><a href="https://vite.dev/">Documentación de Vite</a></li>
+          <li><a href="https://react.dev/">Documentación de React</a></li>
+          <li><a href="https://developer.android.com/">Documentación de Android Developers</a></li>
+          <li><a href="https://open-meteo.com/">Open-Meteo API</a></li>
+          <li>Plantilla ERS y recursos del módulo Acceso a Datos.</li>
+          <li>Capturas del proyecto ubicadas en <code>screenshots/</code>.</li>
+          <li>Capturas extraídas del documento deprecado
+            <code>DocumentaciónFinal-G6-SimuladorEnergiasRenovables (1).docx</code>, guardadas en
+            <code>DocumentationWeb/assets/docx-screenshots/</code>.</li>
+        </ul>
+        <h3>Anexos pendientes</h3>
+        <p>Se recomienda añadir la plantilla de funciones del sistema del módulo de Acceso a Datos, enlaces definitivos
+          a los prototipos, manuales publicados y capturas actualizadas de web y Android.</p>
+        <span class="page-number">Página 21</span>
+      </section>
+      <!-- PRINT_ALL_END -->
+    </main>
+  </div>
+</body>
+
+</html>

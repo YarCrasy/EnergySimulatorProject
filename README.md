@@ -10,6 +10,7 @@
 - [Arquitectura](#arquitectura-general)
 - [Deployment](#deployment)
 - [Instalación](#instalación-rápida-del-proyecto)
+- [Documentación final](./DocumentationWeb/index.html)
 - [Backend](#backend)
 - [Web](#web)
 - [Android](#android)
