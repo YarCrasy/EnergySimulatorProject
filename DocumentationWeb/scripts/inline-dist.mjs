@@ -18,8 +18,8 @@ const css = readFileSync(join(assetsDir, cssName), "utf8")
   .replaceAll("url(/", "url(./");
 const js = readFileSync(join(assetsDir, jsName), "utf8")
   .replaceAll('src="/', 'src="./')
-  .replaceAll('src="/docx-screenshots/', 'src="./docx-screenshots/')
-  .replaceAll("src=/docx-screenshots/", "src=./docx-screenshots/");
+  .replaceAll('src="/assets/images/', 'src="./assets/images/')
+  .replaceAll("src=/assets/images/", "src=./assets/images/");
 
 let html = readFileSync(indexPath, "utf8");
 

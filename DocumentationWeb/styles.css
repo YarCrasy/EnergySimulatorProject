@@ -219,19 +219,13 @@ table {
   table-layout: auto;
 }
 
-.data-dictionary th:first-child,
-.data-dictionary td:first-child {
-  width: 24%;
+.data-dictionary {
+  width: 100%;
 }
 
-.data-dictionary th:nth-child(2),
-.data-dictionary td:nth-child(2) {
-  width: 38%;
-}
-
-.data-dictionary th:nth-child(3),
-.data-dictionary td:nth-child(3) {
-  width: 38%;
+.data-dictionary th,
+.data-dictionary td {
+  width: auto;
 }
 
 .functional-requirements th:last-child,

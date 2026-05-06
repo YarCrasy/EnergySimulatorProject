@@ -1,162 +1,30 @@
-<section id="diagrams" class="page">
-  <span class="kicker">Modelo de datos</span>
-  <h2>Modelo Entidad-Relación y modelo relacional</h2>
-  <p>El modelo de datos de EnergySimulator se organiza alrededor del proyecto energético. Un usuario crea proyectos, cada proyecto contiene nodos colocados en el simulador, esos nodos referencian elementos del catálogo y cada simulación genera resultados agregados y puntos horarios.</p>
-  <p>El diseño separa los datos maestros del catálogo de las instancias usadas en cada proyecto. Así, un mismo panel, receptor o batería puede reutilizarse en muchos proyectos sin duplicar su información técnica.</p>
 
-  <div class="figure-block">
-    <h3>Diagrama Entidad-Relación</h3>
-    <figure class="diagram-figure">
-      <img src="/docx-updated/image34.png" alt="Diagrama Entidad-Relación de EnergySimulator">
-      <figcaption>Modelo Entidad-Relación con usuarios, proyectos, catálogo energético, nodos y simulaciones.</figcaption>
-    </figure>
+<section id="interfaces" class="page">
+  <span class="kicker">Interfaces</span>
+  <h2>Diseño inicial, mockups y prototipado</h2>
+  <p>El prototipado recoge tanto la aplicación web como la móvil. La web prioriza el trabajo con proyectos y diagramas; Android prioriza consulta, autenticación, perfil y acceso a proyectos desde un dispositivo móvil.</p>
+  <p>La documentación visual se apoya en capturas reales extraídas de la aplicación desarrollada. Esto permite mostrar el resultado final en lugar de mantener únicamente mockups iniciales.</p>
+  <p class="note">El prototipo navegable y los diseños iniciales están disponibles en Figma: <a href="https://www.figma.com/design/ZlIX3bd21bxWYEgdSdF7Q7/Untitled?node-id=0-1&p=f&t=zGc4OZkcRLarGXb3-0" target="_blank" rel="noopener noreferrer">abrir prototipo en Figma</a>.</p>
+  <div class="screenshot-grid three">
+    <figure><img src="/images/image8.png" alt="Pantalla de login"><figcaption>Login con acceso seguro.</figcaption></figure>
+    <figure><img src="/images/image7.png" alt="Pantalla de registro con validaciones"><figcaption>Registro con validaciones.</figcaption></figure>
+    <figure><img src="/images/image12.png" alt="Panel de proyectos"><figcaption>Dashboard de proyectos.</figcaption></figure>
+    <figure><img src="/images/image15.png" alt="Simulador principal"><figcaption>Simulador principal.</figcaption></figure>
+    <figure><img src="/images/web-simulator-diagram.png" alt="Diagrama energético"><figcaption>Nodos conectados.</figcaption></figure>
+    <figure><img src="/images/web-users-admin.png" alt="Administración de usuarios"><figcaption>Panel administrativo.</figcaption></figure>
   </div>
-
-  <div class="figure-block">
-    <h3>Diagrama del modelo relacional</h3>
-    <figure class="diagram-figure">
-      <img src="/docx-updated/image11.png" alt="Diagrama del modelo relacional de EnergySimulator">
-      <figcaption>Modelo relacional generado con PlantUML a partir del esquema de base de datos.</figcaption>
-    </figure>
-  </div>
-
-  <h3>USUARIO</h3>
-  <p>Guarda los datos de las personas que utilizan la aplicación, tanto usuarios convencionales como administradores.</p>
-  <table class="data-dictionary">
-    <thead><tr><th>Atributo</th><th>Descripción</th><th>Restricciones</th></tr></thead>
-    <tbody>
-      <tr><td>id</td><td>Identificador único del usuario.</td><td>PK, NOT NULL, AUTO_INCREMENT</td></tr>
-      <tr><td>full_name</td><td>Nombre completo del usuario.</td><td>NOT NULL</td></tr>
-      <tr><td>email</td><td>Correo electrónico usado para autenticación.</td><td>NOT NULL, UNIQUE</td></tr>
-      <tr><td>password_hash</td><td>Hash de la contraseña del usuario.</td><td>NOT NULL</td></tr>
-      <tr><td>date_of_birth</td><td>Fecha de nacimiento.</td><td>NOT NULL</td></tr>
-      <tr><td>is_admin</td><td>Indica si la cuenta tiene permisos de administración.</td><td>NOT NULL, DEFAULT false</td></tr>
-      <tr><td>created_at</td><td>Fecha y hora de registro.</td><td>NOT NULL, DEFAULT CURRENT_TIMESTAMP</td></tr>
-    </tbody>
-  </table>
-
-  <h3>PROYECTO</h3>
-  <p>Representa una simulación creada por un usuario. Incluye los parámetros generales de ubicación, duración, orientación y resultados resumidos.</p>
-  <table class="data-dictionary">
-    <thead><tr><th>Atributo</th><th>Descripción</th><th>Restricciones</th></tr></thead>
-    <tbody>
-      <tr><td>id</td><td>Identificador único del proyecto.</td><td>PK, NOT NULL, AUTO_INCREMENT</td></tr>
-      <tr><td>name</td><td>Nombre del proyecto.</td><td>NOT NULL</td></tr>
-      <tr><td>updated_at</td><td>Fecha de última modificación.</td><td>NOT NULL, se actualiza automáticamente</td></tr>
-      <tr><td>season</td><td>Estación del año usada como referencia, por ejemplo verano.</td><td>NULLABLE</td></tr>
-      <tr><td>latitude</td><td>Latitud geográfica del proyecto.</td><td>NULLABLE, valor real</td></tr>
-      <tr><td>longitude</td><td>Longitud geográfica del proyecto.</td><td>NULLABLE, valor real</td></tr>
-      <tr><td>timezone</td><td>Zona horaria usada para interpretar los datos horarios.</td><td>NULLABLE</td></tr>
-      <tr><td>tilt_angle</td><td>Ángulo de inclinación de los paneles solares.</td><td>NULLABLE, grados</td></tr>
-      <tr><td>azimuth</td><td>Orientación o azimut de los paneles.</td><td>NULLABLE, grados</td></tr>
-      <tr><td>duration_days</td><td>Número de días que se simulan.</td><td>NOT NULL, entero &gt; 0</td></tr>
-      <tr><td>simulation_mode</td><td>Modo de simulación, por ejemplo Open-Meteo.</td><td>NOT NULL</td></tr>
-      <tr><td>system_loss_percent</td><td>Porcentaje de pérdidas del sistema energético.</td><td>NOT NULL, entre 0 y 100</td></tr>
-      <tr><td>energy_enough</td><td>Indica si la generación cubre el consumo previsto.</td><td>NULLABLE, boolean</td></tr>
-      <tr><td>energy_needed</td><td>Energía necesaria estimada.</td><td>NULLABLE, decimal</td></tr>
-      <tr><td>user_id</td><td>Usuario propietario del proyecto.</td><td>FK -> USUARIO(id), NOT NULL, ON DELETE CASCADE</td></tr>
-    </tbody>
-  </table>
-
-  <h3>ELEMENTO_ENERGIA</h3>
-  <p>Catálogo de componentes energéticos disponibles para construir un proyecto: generadores, consumidores y sistemas de almacenamiento.</p>
-  <table class="data-dictionary">
-    <thead><tr><th>Atributo</th><th>Descripción</th><th>Restricciones</th></tr></thead>
-    <tbody>
-      <tr><td>id</td><td>Identificador único del elemento.</td><td>PK, NOT NULL, AUTO_INCREMENT</td></tr>
-      <tr><td>name</td><td>Nombre visible del elemento.</td><td>NOT NULL, UNIQUE</td></tr>
-      <tr><td>category</td><td>Categoría general: generador, consumidor o almacenamiento.</td><td>NOT NULL</td></tr>
-      <tr><td>element_type</td><td>Subtipo técnico, por ejemplo solar, eólico o receptor.</td><td>NOT NULL</td></tr>
-      <tr><td>description</td><td>Descripción larga del elemento.</td><td>NULLABLE</td></tr>
-      <tr><td>power_watt</td><td>Potencia nominal en vatios.</td><td>NOT NULL, &gt;= 0</td></tr>
-      <tr><td>power_consumption</td><td>Consumo del elemento, usado principalmente en receptores.</td><td>NULLABLE, &gt;= 0</td></tr>
-      <tr><td>base_consumption</td><td>Consumo base asociado a consumidores.</td><td>NULLABLE, &gt;= 0</td></tr>
-      <tr><td>area</td><td>Superficie del generador en metros cuadrados.</td><td>NULLABLE, &gt;= 0</td></tr>
-      <tr><td>efficiency</td><td>Eficiencia del elemento generador.</td><td>NULLABLE, entre 0 y 1</td></tr>
-      <tr><td>image_url</td><td>URL o ruta de imagen representativa.</td><td>NULLABLE</td></tr>
-      <tr><td>brand</td><td>Marca comercial o fabricante.</td><td>NULLABLE</td></tr>
-    </tbody>
-  </table>
-
-  <h3>NODO_PROYECTO</h3>
-  <p>Cada elemento del catálogo colocado en un proyecto, con posición dentro del lienzo y datos propios de esa instancia.</p>
-  <table class="data-dictionary">
-    <thead><tr><th>Atributo</th><th>Descripción</th><th>Restricciones</th></tr></thead>
-    <tbody>
-      <tr><td>id</td><td>Identificador único del nodo.</td><td>PK, NOT NULL, AUTO_INCREMENT</td></tr>
-      <tr><td>project_id</td><td>Proyecto al que pertenece el nodo.</td><td>FK -> PROYECTO(id), NOT NULL, ON DELETE CASCADE</td></tr>
-      <tr><td>element_id</td><td>Elemento del catálogo referenciado.</td><td>FK -> ELEMENTO_ENERGIA(id), NOT NULL, ON DELETE RESTRICT</td></tr>
-      <tr><td>position_x</td><td>Coordenada X en el canvas.</td><td>NOT NULL, decimal</td></tr>
-      <tr><td>position_y</td><td>Coordenada Y en el canvas.</td><td>NOT NULL, decimal</td></tr>
-      <tr><td>type</td><td>Tipo de nodo: generator, consumer o storage.</td><td>NOT NULL</td></tr>
-      <tr><td>quantity</td><td>Cantidad de elementos iguales representados por el nodo.</td><td>NULLABLE, entero &gt;= 1</td></tr>
-      <tr><td>data</td><td>Datos adicionales serializados, como configuración específica del nodo.</td><td>NULLABLE, texto largo / JSON</td></tr>
-    </tbody>
-  </table>
-
-  <h3>SIMULACION_RUN</h3>
-  <p>Ejecución concreta de una simulación. Conserva los parámetros usados y las métricas globales calculadas.</p>
-  <table class="data-dictionary">
-    <thead><tr><th>Atributo</th><th>Descripción</th><th>Restricciones</th></tr></thead>
-    <tbody>
-      <tr><td>id</td><td>Identificador único de la ejecución.</td><td>PK, NOT NULL, AUTO_INCREMENT</td></tr>
-      <tr><td>project_id</td><td>Proyecto simulado.</td><td>FK -> PROYECTO(id), NOT NULL, ON DELETE CASCADE</td></tr>
-      <tr><td>created_at</td><td>Fecha y hora de ejecución.</td><td>NOT NULL, DEFAULT CURRENT_TIMESTAMP</td></tr>
-      <tr><td>provider</td><td>Origen de datos meteorológicos.</td><td>NOT NULL, DEFAULT 'open-meteo'</td></tr>
-      <tr><td>latitude</td><td>Latitud usada para consultar meteorología.</td><td>NULLABLE</td></tr>
-      <tr><td>longitude</td><td>Longitud usada para consultar meteorología.</td><td>NULLABLE</td></tr>
-      <tr><td>timezone</td><td>Zona horaria usada en la simulación.</td><td>NULLABLE</td></tr>
-      <tr><td>duration_days</td><td>Días simulados.</td><td>NULLABLE</td></tr>
-      <tr><td>tilt_angle</td><td>Inclinación usada para los paneles.</td><td>NULLABLE</td></tr>
-      <tr><td>azimuth</td><td>Azimut usado para los paneles.</td><td>NULLABLE</td></tr>
-      <tr><td>total_generation_kwh</td><td>Generación total calculada.</td><td>NULLABLE, decimal &gt;= 0</td></tr>
-      <tr><td>total_consumption_kwh</td><td>Consumo total calculado.</td><td>NULLABLE, decimal &gt;= 0</td></tr>
-      <tr><td>deficit_kwh</td><td>Déficit total de energía.</td><td>NULLABLE, decimal &gt;= 0</td></tr>
-      <tr><td>surplus_kwh</td><td>Excedente total de energía.</td><td>NULLABLE, decimal &gt;= 0</td></tr>
-      <tr><td>self_sufficiency_percent</td><td>Porcentaje de autosuficiencia.</td><td>NULLABLE, decimal entre 0 y 100</td></tr>
-      <tr><td>energy_enough</td><td>Indica si la simulación cubre la demanda.</td><td>NULLABLE, boolean</td></tr>
-    </tbody>
-  </table>
-
-  <h3>SIMULACION_PUNTO</h3>
-  <p>Resultado horario de una simulación. Permite reconstruir gráficos y analizar la evolución de generación, consumo y balance.</p>
-  <table class="data-dictionary">
-    <thead><tr><th>Atributo</th><th>Descripción</th><th>Restricciones</th></tr></thead>
-    <tbody>
-      <tr><td>id</td><td>Identificador único del punto horario.</td><td>PK, NOT NULL, AUTO_INCREMENT</td></tr>
-      <tr><td>simulation_run_id</td><td>Ejecución de simulación a la que pertenece.</td><td>FK -> SIMULACION_RUN(id), NOT NULL, ON DELETE CASCADE</td></tr>
-      <tr><td>timestamp</td><td>Momento horario representado.</td><td>NOT NULL, único por simulación y hora</td></tr>
-      <tr><td>generation_w</td><td>Potencia generada en vatios.</td><td>NOT NULL, decimal &gt;= 0</td></tr>
-      <tr><td>consumption_w</td><td>Potencia consumida en vatios.</td><td>NOT NULL, decimal &gt;= 0</td></tr>
-      <tr><td>balance_w</td><td>Balance horario entre generación y consumo.</td><td>NOT NULL, decimal</td></tr>
-      <tr><td>deficit_kwh</td><td>Déficit energético de esa hora.</td><td>NULLABLE, decimal &gt;= 0</td></tr>
-      <tr><td>surplus_kwh</td><td>Excedente energético de esa hora.</td><td>NULLABLE, decimal &gt;= 0</td></tr>
-      <tr><td>cloud_cover</td><td>Nubosidad usada en el cálculo.</td><td>NULLABLE, decimal &gt;= 0</td></tr>
-      <tr><td>irradiance</td><td>Irradiancia solar del periodo.</td><td>NULLABLE, decimal &gt;= 0</td></tr>
-      <tr><td>is_day</td><td>Indica si el punto corresponde a horas de día.</td><td>NOT NULL, boolean</td></tr>
-    </tbody>
-  </table>
-
-  <h3>Relaciones y reglas de negocio</h3>
+  <h3>Vistas principales</h3>
   <table>
-    <thead><tr><th>Entidad origen</th><th>Entidad destino</th><th>Cardinalidad</th><th>Reglas</th></tr></thead>
+    <thead><tr><th>Vista</th><th>Elementos principales</th><th>Objetivo de diseño</th></tr></thead>
     <tbody>
-      <tr><td>USUARIO</td><td>PROYECTO</td><td>1:N</td><td>Un usuario puede tener varios proyectos. Si se elimina un usuario, se borran sus proyectos en cascada.</td></tr>
-      <tr><td>PROYECTO</td><td>NODO_PROYECTO</td><td>1:N</td><td>Un proyecto contiene muchos nodos. Al eliminar un proyecto, se eliminan sus nodos.</td></tr>
-      <tr><td>ELEMENTO_ENERGIA</td><td>NODO_PROYECTO</td><td>1:N</td><td>Un elemento del catálogo puede aparecer en muchos nodos. No se permite eliminarlo si hay nodos que lo referencian.</td></tr>
-      <tr><td>PROYECTO</td><td>SIMULACION_RUN</td><td>1:N</td><td>Un proyecto puede tener muchas ejecuciones. Al eliminar el proyecto, se borran todas.</td></tr>
-      <tr><td>SIMULACION_RUN</td><td>SIMULACION_PUNTO</td><td>1:N</td><td>Cada simulación genera muchos puntos horarios. Al eliminar la ejecución, se borran sus puntos.</td></tr>
+      <tr><td>Login y registro</td><td>Formularios minimalistas, validación en tiempo real, mensajes claros y navegación entre crear cuenta e iniciar sesión.</td><td>Reducir errores de entrada y facilitar el acceso al sistema.</td></tr>
+      <tr><td>Dashboard de proyectos</td><td>Listado de proyectos, fecha de actualización, botón Nuevo Proyecto y menú contextual para abrir o eliminar.</td><td>Permitir recuperar trabajo anterior y crear simulaciones rápidamente.</td></tr>
+      <tr><td>Simulador principal</td><td>Canvas central, catálogo lateral por categorías, buscador, panel de proyecto, panel de propiedades, controles de zoom, bloqueo y centrado.</td><td>Construir sistemas energéticos de forma visual e interactiva.</td></tr>
+      <tr><td>Panel de administración</td><td>Tablas CRUD de usuarios y elementos, formularios de edición, alta de registros y confirmaciones de eliminación.</td><td>Mantener usuarios y catálogo sin acceder directamente a la base de datos.</td></tr>
+      <tr><td>Android</td><td>Pantallas nativas para login, proyectos y perfil; WebView para cargar el simulador.</td><td>Reutilizar el simulador web y ofrecer acceso móvil coherente.</td></tr>
     </tbody>
   </table>
-
-  <h3>Restricciones de mantenimiento</h3>
-  <ul>
-    <li>El email debe ser único y la contraseña se almacena siempre como hash.</li>
-    <li>La duración de simulación debe ser mayor que cero.</li>
-    <li>Las pérdidas del sistema se limitan entre 0 y 100%.</li>
-    <li>La eficiencia se guarda entre 0 y 1; potencias, áreas, déficit y excedente no pueden ser negativos.</li>
-    <li>Los puntos horarios se identifican por la simulación y el timestamp para evitar duplicados.</li>
-    <li>Cualquier cambio en entidades, atributos o relaciones debe reflejarse en diagramas, tablas y SQL antes de producción.</li>
-  </ul>
-  <span class="page-number">Página 4</span>
+  <h3>Estados contemplados</h3>
+  <ul><li>Carga durante peticiones a API.</li><li>Error de conexión o credenciales incorrectas.</li><li>Usuario sin proyectos.</li><li>Validaciones junto al campo afectado.</li><li>Confirmación antes de eliminar proyectos, usuarios o elementos.</li><li>Resultados visibles tras una simulación correcta.</li></ul>
+  <span class="page-number">Página 8</span>
 </section>

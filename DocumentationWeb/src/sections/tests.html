@@ -1,29 +1,403 @@
-
-<section id="tests" class="page">
+﻿<section id="tests" class="page">
   <span class="kicker">Testing</span>
-  <h2>Tests de prueba</h2>
+  <h2>Tests de backend y frontend</h2>
+  <p>El proyecto EnergySimulator cuenta con una batería de pruebas tanto en el backend Java/Spring como en el frontend
+    React. Las pruebas permiten validar que la API funcione correctamente, que los componentes visuales se rendericen
+    adecuadamente y que los flujos críticos —autenticación, CRUD de proyectos, simulación— se comporten según lo
+    esperado antes de integrar cambios en la aplicación web y Android.</p>
+  <figure class="diagram-figure">
+    <img src="/images/image4.png" alt="Pruebas con Postman - creaci&oacute;n de usuario">
+    <figcaption>listado de prueba de peticiones realizadas en Postman</figcaption>
+  </figure>
   <div class="grid two">
-      <div class="card"><h3>Backend</h3><p>El apartado de prueba del manual de desarrollo backend valida que la API funcione correctamente antes de integrar cambios en la aplicación web y Android. Las pruebas se ejecutan con Gradle, JUnit Platform y Spring Boot Test, generando además un informe de cobertura con JaCoCo.</p><pre><code>cd backend
-./gradlew test
-./gradlew jacocoTestReport
-./gradlew build</code></pre><ul><li><strong>Pruebas unitarias:</strong> comprueban la lógica aislada de servicios, validaciones y cálculos sin depender de la interfaz.</li><li><strong>Pruebas de integración:</strong> verifican controladores, repositorios, serialización JSON y comunicación con la capa de persistencia.</li><li><strong>Pruebas de API:</strong> revisan endpoints REST, códigos HTTP, autenticación JWT y permisos de usuario/administrador.</li><li><strong>Informe de cobertura:</strong> JaCoCo permite revisar qué partes del backend quedan cubiertas por los tests.</li><li><strong>Resultado esperado:</strong> la tarea `test` debe terminar en verde y el informe HTML debe generarse en `backend/build/reports/jacoco/test/html/index.html`.</li></ul></div>
-    <div class="card"><h3>Frontend</h3><p>La web usa Vitest, Testing Library y jsdom.</p><pre><code>cd web
+    <div class="card">
+
+      <h3>Backend</h3>
+      <p>Las pruebas del backend se realizaron mediante <strong>Postman</strong>, una herramienta de testing de API que
+        permite enviar peticiones HTTP y verificar las respuestas de los endpoints REST del servidor.</p>
+      <p>Se hicieron pruebas manuales de los verbos <strong>GET, POST, PUT y DELETE</strong> sobre las principales
+        clases del simulador (usuarios, proyectos, consumos), comprobando que los endpoints responden correctamente con
+        los c&oacute;digos HTTP esperados (200 OK, 201 Created, 404 Not Found, etc.).</p>
+      <ul>
+        <li><strong>Pruebas de creaci&oacute;n (POST):</strong> env&iacute;o de datos en formato JSON al endpoint
+          correspondiente y verificaci&oacute;n de que el recurso se crea con su ID autogenerado.</li>
+        <li><strong>Pruebas de consulta (GET):</strong> obtenci&oacute;n de la lista de recursos y verificaci&oacute;n
+          de que los datos devueltos coinciden con los almacenados.</li>
+        <li><strong>Pruebas de actualizaci&oacute;n (PUT):</strong> modificaci&oacute;n de un recurso existente enviando
+          los nuevos datos en el body y comprobando la respuesta con los cambios aplicados.</li>
+        <li><strong>Pruebas de eliminaci&oacute;n (DELETE):</strong> borrado de un recurso por su ID y
+          confirmaci&oacute;n mediante el c&oacute;digo de respuesta y los datos del elemento eliminado.</li>
+        <li><strong>Importante:</strong> al enviar datos en Postman, debe seleccionarse la opci&oacute;n <em>Body &rarr;
+            raw &rarr; JSON</em> para que el servidor interprete correctamente la informaci&oacute;n.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Frontend</h3>
+      <p>El frontend web usa Vitest como test runner, junto con React Testing Library para la validación de componentes
+        y jsdom como entorno de navegador simulado. Los tests se organizan en tres categorías: lógica de autenticación,
+        llamadas a la API e interacción con componentes visuales.</p>
+      <pre><code>cd web
 npm run test
 npm run test:watch
-npm run test:coverage</code></pre><ul><li>Flujos de login y autenticación.</li><li>CRUD de proyectos y elementos.</li><li>Rutas privadas, tarjetas y utilidades del simulador.</li><li>Mocks de API para probar errores sin depender del servidor real.</li></ul></div>
+npm run test:coverage</code></pre>
+      <p>Los tests siguen el patrón <strong>Arrange, Act, Assert (AAA)</strong> y utilizan mocks para aislar las
+        dependencias externas (axios, react-router-dom, localStorage).</p>
+      <p>La cobertura se genera automáticamente con <code>npm run test:coverage</code> y el informe HTML queda
+        disponible en la carpeta <code>web/coverage/</code>.</p>
+    </div>
   </div>
-  <h3>Pruebas manuales</h3>
-  <table>
-    <thead><tr><th>Área</th><th>Flujo verificado</th><th>Resultado esperado</th></tr></thead>
+
+  <h3>Tests de autenticación — <code>tests/Logics/</code></h3>
+  <p>Los tests de lógica cubren el flujo completo de inicio de sesión, el comportamiento del proveedor de contexto de
+    autenticación y la seguridad frente a ataques de inyección y manipulación de sesión.</p>
+
+  <h4>Login — <code>Logics/Login/login.flow.test.tsx</code></h4>
+  <p>Este archivo verifica el flujo completo de la página de inicio de sesión, desde el relleno de credenciales hasta la
+    redirección según el rol del usuario.</p>
+  <ul>
+    <li><strong>Redirección a administración:</strong> cuando el backend responde con rol <code>admin</code>, la
+      navegación redirige a <code>/administration/users</code>.</li>
+    <li><strong>Redirección a proyectos:</strong> cuando el rol es <code>user</code>, redirige a <code>/projects</code>.
+    </li>
+    <li><strong>CTA del simulador:</strong> si el usuario viene desde el botón "Probar simulador"
+      (<code>redirectToSimulator: true</code>), tras autenticarse se crea un proyecto automáticamente y se navega a
+      <code>/simulator/{id}</code>.</li>
+    <li><strong>Error de creación de proyecto:</strong> si <code>createProject</code> falla, se muestra una alerta y se
+      redirige al panel por defecto según el rol.</li>
+    <li><strong>Error de login:</strong> cuando las credenciales son inválidas, se muestra una alerta con el mensaje del
+      backend y no se redirige.</li>
+    <li><strong>Prevención de doble envío:</strong> mientras <code>isSubmitting</code> está activo, el botón muestra
+      "Ingresando..." y está deshabilitado, bloqueando submits adicionales.</li>
+    <li><strong>Rol indefinido:</strong> si el rol no es <code>admin</code>, se aplica el fallback
+      <code>/projects</code> por defecto.</li>
+    <li><strong>Navegación a registro:</strong> el botón "Crear cuenta" navega correctamente a <code>/register</code>.
+    </li>
+    <li><strong>Campos vacíos:</strong> si <code>FormData.get</code> devuelve <code>null</code> para email o password,
+      se envían cadenas vacías.</li>
+  </ul>
+
+  <h4>AuthProvider (comportamiento) — <code>Logics/Login/authContext.behavior.test.tsx</code></h4>
+  <p>Prueba el proveedor de contexto de autenticación en condiciones normales, verificando la hidratación desde
+    localStorage, la persistencia tras login exitoso y la limpieza al cerrar sesión.</p>
+  <ul>
+    <li><strong>Estado inicial:</strong> sin sesión previa, <code>loading</code> es <code>false</code> y
+      <code>user</code>/<code>token</code> son <code>null</code>.</li>
+    <li><strong>Hidratación desde localStorage:</strong> cuando hay datos válidos guardados, el provider los restaura
+      automáticamente.</li>
+    <li><strong>Sesión corrupta:</strong> si el JSON guardado es inválido, se descarta y se limpia el almacenamiento.
+    </li>
+    <li><strong>Login exitoso — mapeo de roles:</strong> <code>admin: false</code> se traduce a rol <code>user</code>;
+      <code>admin: true</code> se traduce a rol <code>admin</code>.</li>
+    <li><strong>Respaldo de nombre:</strong> si el payload no incluye <code>name</code>, se usa <code>fullName</code>;
+      si ninguno está presente, se usa cadena vacía.</li>
+    <li><strong>Login fallido:</strong> si el backend responde con un mensaje de error, se propaga; si no hay detalle,
+      se usa el mensaje genérico "Usuario o contrasena incorrectos".</li>
+    <li><strong>Logout:</strong> limpia el usuario, el token y los datos persistidos en localStorage.</li>
+  </ul>
+
+  <h4>AuthProvider (seguridad) — <code>Logics/Security/authContext.security.test.tsx</code></h4>
+  <p>Validaciones de seguridad sobre el contexto de autenticación para prevenir XSS, manipulación de roles y datos
+    corruptos.</p>
+  <ul>
+    <li><strong>Sanitización XSS:</strong> al hidratar desde localStorage o al recibir datos del backend, se eliminan
+      etiquetas HTML (<code>&lt;script&gt;</code>) y prefijos peligrosos como <code>javascript:</code>.</li>
+    <li><strong>Prevención de escalación de privilegios:</strong> roles manipulados como <code>super-admin</code> se
+      normalizan a <code>user</code>.</li>
+    <li><strong>Sesión sin id:</strong> si falta el campo <code>id</code>, la sesión se descarta por completo.</li>
+    <li><strong>Valor no objeto:</strong> si localStorage contiene un valor no objeto (p.ej. un string plano), se
+      descarta.</li>
+    <li><strong>Campos no string:</strong> nombres numéricos o emails nulos se normalizan a cadena vacía.</li>
+    <li><strong>Login sin token:</strong> si el backend responde sin token ni usuario, no se persiste la sesión y se
+      lanza un error controlado.</li>
+  </ul>
+
+  <h3>Tests de API — <code>tests/APIs/</code></h3>
+  <p>Los tests de API verifican que los módulos de comunicación con el backend manejen correctamente las respuestas
+    esperadas, los casos límite y los errores de red. Utilizan mocks de axios para aislar las pruebas del servidor real.
+  </p>
+
+  <h4>Proyectos — <code>APIs/projects/</code></h4>
+  <table class="data-dictionary">
+    <thead>
+      <tr>
+        <th>Archivo</th>
+        <th>Verbo</th>
+        <th>Casos cubiertos</th>
+      </tr>
+    </thead>
     <tbody>
-      <tr><td>Web</td><td>Registro, login y cierre de sesión.</td><td>Sesión creada, token guardado y rutas privadas accesibles.</td></tr>
-      <tr><td>Proyectos</td><td>Crear, abrir, editar y eliminar un proyecto.</td><td>Datos persistidos y reflejados en el panel.</td></tr>
-      <tr><td>Simulador</td><td>Añadir nodos, conectarlos, modificar propiedades y simular.</td><td>Resultados visibles y guardados en el proyecto.</td></tr>
-      <tr><td>Administración</td><td>Gestionar usuarios y elementos del catálogo.</td><td>Operaciones protegidas por rol administrador.</td></tr>
-      <tr><td>Android</td><td>Login, carga de proyectos y navegación principal.</td><td>La app consume la misma API que la web.</td></tr>
-      <tr><td>Android WebView</td><td>Abrir simulador desde sesión autenticada.</td><td>El WebView carga la SPA con el token inyectado y mantiene la sesión.</td></tr>
+      <tr>
+        <td><code>get.behavior.test.ts</code></td>
+        <td>GET</td>
+        <td>
+          <ul>
+            <li><code>getAllProjects</code> devuelve el arreglo del backend cuando hay datos.</li>
+            <li><code>getAllProjects</code> devuelve <code>[]</code> si la respuesta no es un arreglo.</li>
+            <li><code>getAllProjects</code> devuelve <code>[]</code> silenciosamente si falla la API.</li>
+            <li><code>getProjectsByUser</code> usa el endpoint dedicado <code>/projects/user/{id}</code> y fallback a
+              <code>/projects</code> si falla.</li>
+            <li><code>getProjectById</code> devuelve el proyecto cuando la API responde correctamente.</li>
+            <li><code>getProjectById</code> lanza error si se invoca sin id.</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td><code>post.behavior.test.ts</code></td>
+        <td>POST</td>
+        <td>
+          <ul>
+            <li><code>createProject</code> usa <code>{}</code> por defecto cuando no recibe payload.</li>
+            <li><code>createProject</code> relanza el error del API cuando falla.</li>
+            <li><code>runProjectSimulation</code> envía el payload al endpoint <code>/projects/{id}/simulations</code>.
+            </li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td><code>put.behavior.test.ts</code></td>
+        <td>PUT</td>
+        <td>
+          <ul>
+            <li><code>updateProject</code> lanza error si falta el id.</li>
+            <li><code>updateProject</code> realiza la petición PUT y devuelve la respuesta del backend.</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td><code>delete.behavior.test.ts</code></td>
+        <td>DELETE</td>
+        <td>
+          <ul>
+            <li><code>deleteProject</code> devuelve <code>true</code> cuando la eliminación es exitosa.</li>
+            <li><code>deleteProject</code> lanza error si falta el id.</li>
+          </ul>
+        </td>
+      </tr>
     </tbody>
   </table>
-  <p>Las pruebas deben cubrir autenticación, creación de proyectos, actualización de diagramas, ejecución de simulación, errores de API y conectividad con Open-Meteo.</p>
+
+  <h4>Elementos — <code>APIs/elements/</code></h4>
+  <table class="data-dictionary">
+    <thead>
+      <tr>
+        <th>Archivo</th>
+        <th>Verbo</th>
+        <th>Casos cubiertos</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>get.behavior.test.ts</code></td>
+        <td>GET</td>
+        <td>
+          <ul>
+            <li><code>getAllElements</code> devuelve los elementos del backend cuando hay datos.</li>
+            <li><code>getAllElements</code> usa un fallback de 3 elementos por defecto cuando el backend devuelve un
+              arreglo vacío.</li>
+            <li><code>getAllElements</code> usa el mismo fallback si la API falla por completo.</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td><code>post.behavior.test.ts</code></td>
+        <td>POST</td>
+        <td>
+          <ul>
+            <li><code>createElement</code> normaliza el tipo <code>storage</code> a <code>battery</code> y usa el
+              endpoint genérico.</li>
+            <li><code>createElement</code> utiliza endpoints específicos según el tipo de elemento.</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td><code>put.behavior.test.ts</code></td>
+        <td>PUT</td>
+        <td>
+          <ul>
+            <li><code>updateElement</code> enruta los generadores a su controlador específico.</li>
+            <li><code>updateElement</code> utiliza el endpoint genérico para consumidores y baterías.</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td><code>delete.behavior.test.ts</code></td>
+        <td>DELETE</td>
+        <td>
+          <ul>
+            <li><code>deleteElement</code> usa <code>consumer-element</code> por defecto cuando no se especifica tipo.
+            </li>
+            <li><code>deleteElement</code> utiliza la ruta adecuada según la categoría del elemento.</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Tests de interfaz — <code>tests/Interfaces/</code></h3>
+  <p>Los tests de interfaz verifican el comportamiento visual e interactivo de los componentes de React, incluyendo
+    menús contextuales, acciones de tarjetas de proyecto y protección de rutas privadas.</p>
+
+  <h4>ProjectCard — menú contextual</h4>
+  <table class="data-dictionary">
+    <thead>
+      <tr>
+        <th>Archivo</th>
+        <th>Casos cubiertos</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>contextMenu.test.tsx</code></td>
+        <td>
+          <ul>
+            <li>Abre el menú contextual al hacer clic derecho sobre la tarjeta.</li>
+            <li>Renderiza las opciones "Abrir" y "Eliminar" con la posición correcta del cursor.</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td><code>contextMenu.close.test.tsx</code></td>
+        <td>
+          <ul>
+            <li>Cierra el menú al hacer clic fuera del contenedor.</li>
+            <li>Cierra el menú al presionar la tecla Escape.</li>
+            <li>Cierra el menú al hacer scroll en la ventana.</li>
+            <li>Mantiene el menú abierto al hacer clic dentro del contenedor.</li>
+            <li>Ignora teclas distintas de Escape (p.ej. Enter) y mantiene el menú abierto.</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td><code>actions.behavior.test.tsx</code></td>
+        <td>
+          <ul>
+            <li>El botón accesible de menú abre el contexto con las coordenadas del botón.</li>
+            <li>Sin <code>onOpen</code>, el botón "Abrir simulador" navega por id del proyecto.</li>
+            <li>Con <code>onOpen</code>, el botón delega en el callback proporcionado.</li>
+            <li>Con <code>onDelete</code>, la opción "Eliminar" delega en el callback.</li>
+            <li>Sin <code>onDelete</code>, confirma mediante <code>window.confirm</code> y registra en consola.</li>
+            <li>Si el menú está abierto, el clic sobre la tarjeta solo lo cierra sin ejecutar <code>onOpen</code>.</li>
+            <li>El clic sobre la tarjeta llama a <code>onOpen</code> cuando el menú no está abierto.</li>
+            <li><code>touchend</code> limpia el timeout pendiente sin abrir el menú.</li>
+            <li>Ignora <code>touchstart</code> con más de un toque para no abrir el menú accidentalmente.</li>
+            <li>El <em>long press</em> abre el menú y <code>touchend</code> hace <code>preventDefault</code>.</li>
+            <li><code>touchmove</code> y <code>touchcancel</code> cancelan el <em>long press</em> antes de abrir el
+              menú.</li>
+            <li>Renderiza imagen y texto "Sin registro" cuando falta <code>lastUpdated</code>.</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>PrivateRoute — protección de rutas</h4>
+  <table class="data-dictionary">
+    <thead>
+      <tr>
+        <th>Archivo</th>
+        <th>Casos cubiertos</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>redirectUnautenticated.test.tsx</code></td>
+        <td>
+          <ul>
+            <li>Redirige a <code>/login</code> si no hay usuario autenticado.</li>
+            <li>Muestra el contenido protegido cuando el usuario está autenticado.</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Pruebas manuales</h3>
+  <p>Además de las pruebas automatizadas, se realizan pruebas manuales sobre los flujos completos de la aplicación,
+    verificando la integración entre frontend, backend y servicios externos.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Área</th>
+        <th>Flujo verificado</th>
+        <th>Resultado esperado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Web</td>
+        <td>Registro, login y cierre de sesión.</td>
+        <td>Sesión creada, token guardado y rutas privadas accesibles.</td>
+      </tr>
+      <tr>
+        <td>Proyectos</td>
+        <td>Crear, abrir, editar y eliminar un proyecto.</td>
+        <td>Datos persistidos y reflejados en el panel.</td>
+      </tr>
+      <tr>
+        <td>Simulador</td>
+        <td>Añadir nodos, conectarlos, modificar propiedades y simular.</td>
+        <td>Resultados visibles y guardados en el proyecto.</td>
+      </tr>
+      <tr>
+        <td>Administración</td>
+        <td>Gestionar usuarios y elementos del catálogo.</td>
+        <td>Operaciones protegidas por rol administrador.</td>
+      </tr>
+      <tr>
+        <td>Android</td>
+        <td>Login, carga de proyectos y navegación principal.</td>
+        <td>La app consume la misma API que la web.</td>
+      </tr>
+      <tr>
+        <td>Android WebView</td>
+        <td>Abrir simulador desde sesión autenticada.</td>
+        <td>El WebView carga la SPA con el token inyectado y mantiene la sesión.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Configuración y troubleshooting</h3>
+  <p>Los tests frontend se configuran desde <code>web/vite.config.ts</code> con el entorno <code>jsdom</code> y el
+    archivo de setup <code>tests/setupTests.ts</code> que importa los matchers de
+    <code>@testing-library/jest-dom/vitest</code> y ejecuta <code>cleanup</code> tras cada prueba.</p>
+  <pre><code>// web/vite.config.ts (fragmento relevante)
+test: {
+  environment: "jsdom",
+  globals: false,
+  include: ["tests/**/*.test.ts", "tests/**/*.test.tsx"],
+  setupFiles: ["./tests/setupTests.ts"],
+  clearMocks: true,
+  restoreMocks: true,
+}</code></pre>
+  <p>Problemas comunes y solución:</p>
+  <ul>
+    <li><strong>Failed to resolve import "@/...":</strong> revisar alias en <code>web/vite.config.js</code> y la ruta
+      exacta (mayúsculas/minúsculas).</li>
+    <li><strong>esbuild build() is unavailable in this environment:</strong> ejecutar tests fuera del sandbox del IDE.
+    </li>
+    <li><strong>ReferenceError: fetch is not defined:</strong> en este proyecto se mockea <code>@api/api</code> (axios),
+      no <code>fetch</code>.</li>
+    <li><strong>Error de entorno DOM:</strong> confirmar <code>environment: 'jsdom'</code> y <code>setupFiles</code> en
+      <code>web/vite.config.js</code>.</li>
+  </ul>
+
+  <div class="figure-block">
+    <h3>Capturas del proceso de testing manual</h3>
+    <div class="screenshot-grid three">
+      <figure><img src="/images/confirm-delete-project.png" alt="Confirmación de borrado en tests">
+        <figcaption>Confirmación de eliminación durante pruebas manuales.</figcaption>
+      </figure>
+      <figure><img src="/images/login-with-errors.png" alt="Errores de validación">
+        <figcaption>Validación de errores en formulario de login.</figcaption>
+      </figure>
+      <figure><img src="/images/web-simulator-diagram.png" alt="Simulador con nodos">
+        <figcaption>Simulador con nodos conectados durante pruebas.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <p>Las pruebas deben cubrir autenticación, creación de proyectos, actualización de diagramas, ejecución de simulación,
+    errores de API y conectividad con Open-Meteo. La cobertura mínima objetivo es del 70% tanto en backend como en
+    frontend.</p>
   <span class="page-number">Página 14</span>
 </section>

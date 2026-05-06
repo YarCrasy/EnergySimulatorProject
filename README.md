@@ -1,7 +1,8 @@
 # Simulador de energías renovables
 
 [![Java](https://img.shields.io/badge/Java-25-red)](https://java.com)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-green)](https://spring.io)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0-green)](https://spring.io)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)](https://postgresql.org)
 [![React](https://img.shields.io/badge/React-18.2-blue)](https://reactjs.org)
 [![Android](https://img.shields.io/badge/Android-API%2024+-brightgreen)](https://android.com)
 
@@ -61,16 +62,16 @@ git clone https://github.com/YarCrasy/EnergySimulatorProject.git
 cd EnergySimulatorProject
 ```
 ## Backend
-**Tecnologías:** Java 21, Spring Boot, Spring Data JPA, Gradle, MySQL.
+**Tecnologías:** Java 25, Spring Boot, Spring Data JPA, Gradle, PostgreSQL.
 
 ### Requisitos previos
-- JDK 21+
-- Gradle Wrapper incluido (`backend-api/gradlew`).
-- Archivo `backend-api/src/main/resources/application.properties` configurado con la URL de base de datos y credenciales.
+- JDK 25+
+- Gradle Wrapper incluido (`backend/gradlew`).
+- Archivo `backend/src/main/resources/application.properties` configurado con la URL de base de datos y credenciales.
 
 ### Puesta en marcha (Local)
 ```bash
-cd backend-api
+cd backend
 ./gradlew bootRun
 ```
 El backend corre en `http://localhost:8080` y permite CORS desde cualquier origen por defecto.
