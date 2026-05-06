@@ -53,6 +53,7 @@ public class ProjectsActivity extends AppCompatActivity {
     private TextView projectsTitle;
     private TextView projectsSubtitle;
     private ActivityResultLauncher<Intent> projectLauncher;
+    private ActivityResultLauncher<Intent> detailLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,6 +188,19 @@ public class ProjectsActivity extends AppCompatActivity {
                         }
                     }
                 });
+        detailLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result == null || result.getData() == null) return;
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        String deletedId = data.getStringExtra(ProjectDetailActivity.EXTRA_DELETED_PROJECT_ID);
+                        if (deletedId != null && sessionUser != null && sessionUser.getProjects() != null) {
+                            sessionUser.getProjects().removeIf(pr -> pr.getId() != null && deletedId.equals(String.valueOf(pr.getId())));
+                            renderProjects(sessionUser.getProjects());
+                        }
+                    }
+                });
     }
 
 
@@ -206,13 +220,13 @@ public class ProjectsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onRenameRequested(Project p) {
-                setupRenameProject(p);
+            public void onViewProject(Project p) {
+                openProjectDetail(p);
             }
 
             @Override
             public void onDeleteRequested(Project p) {
-               setupDeleteProject(p);
+                setupDeleteProject(p);
             }
         });
 
@@ -245,56 +259,17 @@ public class ProjectsActivity extends AppCompatActivity {
         metricDemandValue.setText(String.format(java.util.Locale.US, "%.1f kWh", totalDemand));
     }
 
-    private void setupRenameProject(Project p) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ProjectsActivity.this);
-        builder.setTitle("Renombrar proyecto");
-
-        final EditText input = new EditText(ProjectsActivity.this);
-        input.setText(p.getName());
-        input.setSelection(input.getText().length());
-        builder.setView(input);
-
-        builder.setPositiveButton("Guardar", (dialog, which) -> {
-            String newName = input.getText().toString().trim();
-            if (newName.isEmpty()) {
-                Toast.makeText(ProjectsActivity.this,
-                        "El nombre no puede estar vacío", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            new Thread(() -> {
-                try {
-                    JSONObject payload = new JSONObject();
-                    payload.put("name", newName);
-                    Project updated = ProjectsAPI.updateProject(p.getId(), payload);
-
-                    runOnUiThread(() -> {
-                        // actualizar en la lista local
-                        if (sessionUser != null && sessionUser.getProjects() != null) {
-                            for (int i = 0; i < sessionUser.getProjects().size(); i++) {
-                                Project proj = sessionUser.getProjects().get(i);
-                                if (proj.getId().equals(updated.getId())) {
-                                    proj.setName(updated.getName());
-                                    proj.setUpdatedAt(updated.getUpdatedAt());
-                                    break;
-                                }
-                            }
-                        }
-                        renderProjects(sessionUser != null ? sessionUser.getProjects() : null);
-                        Toast.makeText(ProjectsActivity.this,
-                                "Nombre actualizado", Toast.LENGTH_SHORT).show();
-                    });
-                } catch (Exception e) {
-                    runOnUiThread(() ->
-                            Toast.makeText(ProjectsActivity.this,
-                                    "Error al actualizar: " + e.getMessage(),
-                                    Toast.LENGTH_LONG).show());
-                }
-            }).start();
-        });
-
-        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
-        builder.show();
+    private void openProjectDetail(Project p) {
+        Intent intent = new Intent(this, ProjectDetailActivity.class);
+        intent.putExtra(ProjectDetailActivity.EXTRA_PROJECT, p);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.putExtra(ProjectDetailActivity.EXTRA_USER, sessionUser);
+        } else {
+            intent.putExtra(ProjectDetailActivity.EXTRA_USER, sessionUser);
+        }
+        detailLauncher.launch(intent);
     }
+
     private void setupDeleteProject(Project p) {
         AlertDialog.Builder builder = new AlertDialog.Builder(ProjectsActivity.this);
         builder.setTitle("Eliminar proyecto");
@@ -351,6 +326,16 @@ public class ProjectsActivity extends AppCompatActivity {
                     Intent intent = new Intent(ProjectsActivity.this, WebSimulatorActivity.class);
                     intent.putExtra("projectId", newProject.getId());
                     intent.putExtra("userToken", sessionUser.getAuthToken());  // ← Pasar token
+                    try {
+                        JSONObject userData = new JSONObject();
+                        userData.put("id", sessionUser.getId());
+                        userData.put("fullName", sessionUser.getFullName());
+                        userData.put("email", sessionUser.getEmail());
+                        userData.put("admin", sessionUser.isAdmin());
+                        intent.putExtra("userData", userData.toString());
+                    } catch (Exception ex) {
+                        // Ignorar si no se puede serializar, al menos enviamos el token
+                    }
                     startActivity(intent);
                 });
 

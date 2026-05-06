@@ -1,7 +1,10 @@
 package ies.elrincon.energysimulator;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,8 +26,6 @@ import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText fullName;
-    EditText dateOfBirth;
     EditText username;
     EditText password;
     Button loginBtn;
@@ -44,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        fullName = findViewById(R.id.fullName);
-        dateOfBirth = findViewById(R.id.dateOfBirth);
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         loginBtn = findViewById(R.id.login);
@@ -84,30 +83,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
-        String name = fullName.getText().toString().trim();
-        String birthDate = dateOfBirth.getText().toString().trim();
-        String email = username.getText().toString().trim();
-        String pass = password.getText().toString().trim();
-        String validationError = validateRegistration(name, birthDate, email, pass);
-        if (validationError != null) {
-            errorMessage.setText(validationError);
-            return;
-        }
-        errorMessage.setText("");
-        setLoading(true);
-        loginExecutor.execute(() -> {
-            try {
-                User user = UsersAPI.register(name, birthDate, email, pass);
-                user.setProjects((ArrayList<Project>) ProjectsAPI.getProjectsFromUser(user.getId()));
-                runOnUiThread(() -> navigateToProject(user));
-            } catch (Exception e) {
-                runOnUiThread(() -> {
-                    setLoading(false);
-                    String message = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
-                    errorMessage.setText(getString(R.string.register_error, message));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_register, null);
+        EditText registerFullName = dialogView.findViewById(R.id.registerFullName);
+        EditText registerDateOfBirth = dialogView.findViewById(R.id.registerDateOfBirth);
+        EditText registerEmail = dialogView.findViewById(R.id.registerEmail);
+        EditText registerPassword = dialogView.findViewById(R.id.registerPassword);
+
+        AlertDialog dialog = builder.setView(dialogView)
+            .setPositiveButton(R.string.register, null)
+                .setNegativeButton(android.R.string.cancel, null)
+                .create();
+
+        dialog.setOnShowListener(d -> {
+            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(v -> {
+                String name = registerFullName.getText().toString().trim();
+                String birthDate = registerDateOfBirth.getText().toString().trim();
+                String email = registerEmail.getText().toString().trim();
+                String pass = registerPassword.getText().toString().trim();
+                String validationError = validateRegistration(name, birthDate, email, pass);
+                if (validationError != null) {
+                    errorMessage.setText(validationError);
+                    return;
+                }
+                dialog.dismiss();
+                errorMessage.setText("");
+                setLoading(true);
+                loginExecutor.execute(() -> {
+                    try {
+                        User user = UsersAPI.register(name, birthDate, email, pass);
+                        user.setProjects((ArrayList<Project>) ProjectsAPI.getProjectsFromUser(user.getId()));
+                        runOnUiThread(() -> navigateToProject(user));
+                    } catch (Exception e) {
+                        runOnUiThread(() -> {
+                            setLoading(false);
+                            String message = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
+                            errorMessage.setText(getString(R.string.register_error, message));
+                        });
+                    }
                 });
-            }
+            });
         });
+        dialog.show();
     }
 
     private void navigateToProject(User user) {

@@ -12,6 +12,8 @@ import android.webkit.WebViewClient;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,15 +22,17 @@ import ies.elrincon.energysimulator.api.ApiConnection;
 
 public class WebSimulatorActivity extends AppCompatActivity {
     private static final String TAG = "WebSimulator";
-    // URL base de tu web desplegada (cambiar según entorno)
-    private static final String WEB_BASE_URL = BuildConfig.WEB_BASE_URL != null
-            ? BuildConfig.WEB_BASE_URL
-            : "http://192.168.1.248:5173";  // IP para desarrollo local
+    // URLs disponibles
+    private static final String LOCAL_WEB_BASE_URL = "http://192.168.1.248:5173";
+    private static final String REMOTE_WEB_BASE_URL = "https://dam-project.yarcrasy.com";
+    // Usar la URL configurada en build o la local si no está definida
+    private String activeWebBaseUrl = BuildConfig.WEB_BASE_URL != null ? BuildConfig.WEB_BASE_URL : LOCAL_WEB_BASE_URL;
 
     private WebView webView;
     private TextView statusView;
     private Long projectId;
     private String userToken;
+    private String userData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +46,12 @@ public class WebSimulatorActivity extends AppCompatActivity {
         // Obtener datos del intent
         if (getIntent().hasExtra("projectId")) projectId = getIntent().getLongExtra("projectId", -1);
         if (getIntent().hasExtra("userToken")) userToken = getIntent().getStringExtra("userToken");
+        if (getIntent().hasExtra("userData")) userData = getIntent().getStringExtra("userData");
 
         setupWebView();
         loadSimulatorWithAuth();
         setupBackNavigation();
-        logMessage("Intentando conectar a: " + WEB_BASE_URL);
+        logMessage("Intentando conectar a: " + activeWebBaseUrl);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -67,7 +72,7 @@ public class WebSimulatorActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 logMessage("Cargado: " + url);
-                statusView.setText(getString(R.string.web_status_connected, WEB_BASE_URL));
+                statusView.setText(getString(R.string.web_status_connected, view.getUrl()));
             }
 
             @Override
@@ -91,59 +96,59 @@ public class WebSimulatorActivity extends AppCompatActivity {
     }
 
     private void loadSimulatorWithAuth() {
+        String url = buildSimulatorUrl(activeWebBaseUrl);
+        logMessage("Cargando URL: " + url);
+        injectAuthAndLoad(url);
+    }
+
+    private String buildSimulatorUrl(String baseUrl) {
         if (projectId == null || projectId == -1) {
-            // Si no hay projectId, ir al dashboard de proyectos web
-            String url = WEB_BASE_URL + "/projects";
-            injectAuthAndLoad(url);
-        } else {
-            // Ir directamente al simulador con el proyecto
-            String url = WEB_BASE_URL + "/simulator/" + projectId;
-            injectAuthAndLoad(url);
+            return baseUrl + "/projects";
         }
+        return baseUrl + "/simulator/" + projectId;
     }
 
     private void injectAuthAndLoad(String url) {
-        statusView.setText("Cargando simulador...");
+        runOnUiThread(() -> {
+            try {
+                statusView.setText("Cargando simulador...");
 
-        // Limpiar cookies anteriores
-        CookieManager.getInstance().removeAllCookies(null);
+                // Obtener token
+                String token = userToken;
+                if (token == null || token.isEmpty()) {
+                    token = ApiConnection.getBearerToken();
+                }
 
-        // Si tenemos token, lo inyectamos en localStorage y cookies
-        if (userToken != null && !userToken.isEmpty()) {
-            // Método 1: Inyectar token en localStorage vía JavaScript
-            String jsCode = "javascript:(function() {" +
-                    "localStorage.setItem('auth:token', '" + userToken + "');" +
-                    "localStorage.setItem('auth:user', JSON.stringify({token: '" + userToken + "'}));" +
-                    "console.log('Token inyectado en localStorage');" +
-                    "})()";
+                // Limpiar cookies anteriores
+                CookieManager.getInstance().removeAllCookies(null);
+                CookieManager.getInstance().setAcceptCookie(true);
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
+                }
 
-            // Método 2: También establecer cookie para compatibilidad
-            CookieManager.getInstance().setCookie(WEB_BASE_URL, "auth_token=" + userToken);
-            CookieManager.getInstance().setCookie(WEB_BASE_URL, "token=" + userToken);
-            CookieManager.getInstance().flush();
+                if (token != null && !token.isEmpty() && userData != null && !userData.isEmpty()) {
+                    // Establecer cookie para compatibilidad
+                    CookieManager.getInstance().setCookie(activeWebBaseUrl, "auth_token=" + token);
+                    CookieManager.getInstance().setCookie(activeWebBaseUrl, "token=" + token);
+                    CookieManager.getInstance().flush();
 
-            // Cargar URL y luego inyectar JS
-            webView.loadUrl(url);
-            webView.evaluateJavascript(jsCode, null);
-
-            logMessage("Token inyectado en WebView");
-        } else {
-            // Si no hay token, intentar obtener de ApiConnection
-            String token = ApiConnection.getBearerToken();
-            if (token != null && !token.isEmpty()) {
-                String jsCode = "javascript:(function() {" +
-                        "localStorage.setItem('auth:token', '" + token + "');" +
-                        "localStorage.setItem('auth:user', JSON.stringify({token: '" + token + "'}));" +
-                        "})()";
-                webView.loadUrl(url);
-                webView.evaluateJavascript(jsCode, null);
-                CookieManager.getInstance().setCookie(WEB_BASE_URL, "auth_token=" + token);
-                CookieManager.getInstance().flush();
-                logMessage("Token desde ApiConnection inyectado");
-            } else {
-                webView.loadUrl(url);
+                    // Cargar una página intermedia que inyecte token y usuario en localStorage y luego redirija al simulador
+                    String authHtml = "<html><body><script>" +
+                            "localStorage.setItem('auth:user', " + JSONObject.quote(userData) + ");" +
+                            "localStorage.setItem('auth:token', " + JSONObject.quote(token) + ");" +
+                            "window.location.replace('" + url + "');" +
+                            "</script></body></html>";
+                    webView.loadDataWithBaseURL(activeWebBaseUrl, authHtml, "text/html", "utf-8", null);
+                    logMessage("Token y usuario inyectados en localStorage, cargando simulador");
+                } else {
+                    webView.loadUrl(url);
+                    logMessage("Cargando URL sin token o sin userData: " + url);
+                }
+            } catch (Exception e) {
+                logMessage("Error: " + e.getMessage());
+                statusView.setText("Error: " + e.getMessage());
             }
-        }
+        });
     }
 
     private void logMessage(String message) {
