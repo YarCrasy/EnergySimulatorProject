@@ -1,0 +1,23 @@
+
+<section id="manual-developer" class="page">
+  <span class="kicker">Manual de desarrollador</span>
+  <h2>Entorno local y trabajo técnico</h2>
+  <h3>Requisitos previos</h3>
+  <ul><li>Git para clonar el repositorio.</li><li>JDK 25 para el backend.</li><li>PostgreSQL para la base de datos local.</li><li>Node.js y npm para Vite.</li><li>Android Studio y Android SDK para la app móvil.</li></ul>
+  <h3>Backend</h3>
+  <pre><code>cd backend
+./gradlew bootRun
+./gradlew test
+./gradlew build</code></pre>
+  <h3>Frontend web</h3>
+  <pre><code>cd web-refactored
+npm install
+npm run dev
+npm run build
+npm run test</code></pre>
+  <h3>Android</h3>
+  <pre><code>cd Android
+./gradlew assembleDebug</code></pre>
+  <p>La variable <code>VITE_API_URL</code> permite cambiar la URL del backend. Si no existe, el frontend usa <code>http://localhost:8080/api</code> en desarrollo.</p>
+  <span class="page-number">Página 12</span>
+</section>

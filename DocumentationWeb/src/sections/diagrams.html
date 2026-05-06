@@ -1,0 +1,30 @@
+
+<section id="diagrams" class="page">
+  <span class="kicker">Modelo de datos</span>
+  <h2>Entidades principales y justificación</h2>
+  <p>El simulador se apoya en un modelo centrado en proyectos. Cada usuario crea escenarios energéticos, añade elementos del catálogo al lienzo y ejecuta simulaciones con datos meteorológicos. El backend persiste estas estructuras con JPA y PostgreSQL.</p>
+  <table>
+    <thead><tr><th>Entidad</th><th>Responsabilidad</th></tr></thead>
+    <tbody>
+      <tr><td>User</td><td>Usuarios registrados, credenciales y rol de administración.</td></tr>
+      <tr><td>Project</td><td>Escenario energético con propietario, localización, fecha, inclinación, azimut, duración y resultados resumidos.</td></tr>
+      <tr><td>Element</td><td>Entidad base del catálogo con nombre, categoría, descripción e imagen.</td></tr>
+      <tr><td>GeneratorElement</td><td>Paneles o generadores con marca, área, eficiencia y potencia nominal.</td></tr>
+      <tr><td>ConsumerElement</td><td>Cargas de consumo con potencia base, pico y perfil.</td></tr>
+      <tr><td>BatteryElement</td><td>Sistemas de almacenamiento con capacidad y límites de carga/descarga.</td></tr>
+      <tr><td>ProjectNode</td><td>Instancia de un elemento dentro de un proyecto, con posición, cantidad y configuración.</td></tr>
+      <tr><td>ProjectNodeConnection</td><td>Relación entre nodos del diagrama.</td></tr>
+      <tr><td>SimulationRun</td><td>Ejecución de simulación con métricas globales.</td></tr>
+      <tr><td>SimulationPoint</td><td>Resultado horario de generación, consumo, balance, irradiancia y nubosidad.</td></tr>
+    </tbody>
+  </table>
+  <h3>Relaciones principales</h3>
+  <pre><code>USERS 1--N PROJECTS
+PROJECTS 1--N PROJECT_NODES
+ELEMENTS 1--N PROJECT_NODES
+PROJECTS 1--N PROJECT_NODE_CONNECTIONS
+PROJECTS 1--N SIMULATION_RUNS
+SIMULATION_RUNS 1--N SIMULATION_POINTS</code></pre>
+  <p>Separar catálogo y nodos evita duplicar datos técnicos: un mismo panel o consumidor puede reutilizarse en varios proyectos, mientras cada nodo guarda su posición y configuración propia.</p>
+  <span class="page-number">Página 4</span>
+</section>

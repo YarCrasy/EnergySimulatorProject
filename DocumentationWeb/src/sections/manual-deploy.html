@@ -1,0 +1,25 @@
+
+<section id="manual-deploy" class="page">
+  <span class="kicker">Manual de deploy</span>
+  <h2>Despliegue de la aplicación</h2>
+  <p>Este manual está dirigido a la persona técnica que instala la solución en el entorno del cliente o en producción.</p>
+  <h3>Base de datos</h3>
+  <ul><li>Instalar PostgreSQL y crear <code>energysimulatordb</code>.</li><li>Crear el usuario de aplicación o adaptar <code>backend/InitBD.sql</code>.</li><li>Configurar credenciales fuera del repositorio.</li></ul>
+  <h3>Backend</h3>
+  <pre><code>spring.datasource.url=jdbc:postgresql://localhost:5432/energysimulatordb
+spring.datasource.username=SimulatorUser
+spring.datasource.password=SimulatorUserPassword123
+app.jwt.secret=change-this-secret-key-before-production</code></pre>
+  <h3>Builds</h3>
+  <pre><code>cd backend
+./gradlew build
+
+cd web-refactored
+npm install
+npm run build
+
+cd Android
+./gradlew assembleDebug</code></pre>
+  <p>Para release, Android usa <code>https://dam.yarcrasy.com/api/</code> como backend y <code>https://dam-project.yarcrasy.com</code> como web base.</p>
+  <span class="page-number">Página 13</span>
+</section>

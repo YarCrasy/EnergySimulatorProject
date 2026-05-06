@@ -1,0 +1,18 @@
+
+<section id="system" class="page">
+  <span class="kicker">Arquitectura</span>
+  <h2>Funcionamiento y especificaciones técnicas</h2>
+  <p>El sistema se organiza como un monorepo con tres superficies principales. La aplicación web y la app Android consumen la misma API REST. El backend se encarga de seguridad, persistencia, reglas de negocio y simulación.</p>
+  <pre><code>React/Vite Web --------\\
+                       -> Spring Boot API -> PostgreSQL
+Android Java ----------/          |
+                                  -> Open-Meteo</code></pre>
+  <div class="grid three">
+    <div class="card"><h3>Servidor</h3><p>Spring Boot expone endpoints bajo <code>/api</code> para usuarios, proyectos, elementos, nodos, conexiones y simulaciones.</p></div>
+    <div class="card"><h3>Web</h3><p>La SPA en React gestiona rutas públicas, rutas protegidas, panel de proyectos, simulador visual y administración.</p></div>
+    <div class="card"><h3>Android</h3><p>La app nativa en Java reutiliza la API para login, proyectos, perfil y acceso al simulador.</p></div>
+  </div>
+  <h3>Endpoints destacados</h3>
+  <ul><li><code>POST /api/users/login</code>: autenticación.</li><li><code>GET /api/projects/user/{userId}</code>: proyectos del usuario.</li><li><code>PUT /api/projects/{id}</code>: actualización de proyecto.</li><li><code>GET /api/elements</code>: catálogo energético.</li><li><code>POST /api/projects/{projectId}/simulations</code>: simulación.</li></ul>
+  <span class="page-number">Página 7</span>
+</section>
