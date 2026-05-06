@@ -126,7 +126,7 @@ h3 {
 
 h1 {
   max-width: 820px;
-  font-size: clamp(2.1rem, 4vw, 4rem);
+  font-size: clamp(2.1rem, 4vw, 3rem);
 }
 
 h2 {
@@ -234,6 +234,21 @@ table {
   width: 38%;
 }
 
+.functional-requirements th:last-child,
+.functional-requirements td:last-child {
+  width: 88px;
+  white-space: nowrap;
+}
+
+.functional-requirements {
+  table-layout: fixed;
+}
+
+.functional-requirements th:first-child,
+.functional-requirements td:first-child {
+  width: 72px;
+}
+
 th,
 td {
   padding: 10px 12px;
@@ -268,33 +283,6 @@ pre {
   border-radius: 8px;
   background: #16231d;
   color: #eef8f1;
-}
-
-.manual-card {
-  display: grid;
-  gap: 8px;
-  min-height: 150px;
-  padding: 18px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #fbfdfb;
-  color: inherit;
-  text-decoration: none;
-}
-
-.manual-card:hover {
-  border-color: var(--brand);
-  background: var(--soft);
-}
-
-.manual-card strong {
-  color: var(--brand-dark);
-  font-size: 1.05rem;
-}
-
-.manual-card span {
-  color: var(--muted);
-  font-weight: 400;
 }
 
 .timeline {
@@ -363,6 +351,10 @@ figure img {
 
 .wide-diagram img {
   max-height: 820px;
+}
+
+.use-case-figure {
+  background: #ffffff;
 }
 
 figcaption {

@@ -183,13 +183,13 @@ O copiar `dist/` a un servidor Nginx/Apache.
 El archivo `Android/app/build.gradle.kts` define URLs específicas:
 
 - Para `debug`:
-  - `BACKEND_BASE_URL = "http://192.168.1.248:8080/api/"`
-  - `WEB_BASE_URL = "http://192.168.1.248:5173"`
+  - `BACKEND_BASE_URL = "http://IP_DEL_EQUIPO:8080/api/"`
+  - `WEB_BASE_URL = "http://IP_DEL_EQUIPO:5173"`
 - Para `release`:
   - `BACKEND_BASE_URL = "https://dam.yarcrasy.com/api/"`
   - `WEB_BASE_URL = "https://dam-project.yarcrasy.com"`
 
-Esto significa que el APK de debug espera el backend accesible en la red local.
+Esto significa que el APK de debug espera el backend y la web accesibles en la red local. `IP_DEL_EQUIPO` debe sustituirse por la IP del ordenador que ejecuta Spring Boot y Vite; no es una URL estable de despliegue.
 
 ### 3.3 Ejecutar en emulador o dispositivo
 

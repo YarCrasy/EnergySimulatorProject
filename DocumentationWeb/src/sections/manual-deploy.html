@@ -40,11 +40,12 @@ cd Android
       <tr><td>Web</td><td>Desarrollo</td><td><code>http://localhost:5173</code></td></tr>
       <tr><td>Web API</td><td>Desarrollo</td><td><code>http://localhost:8080/api</code></td></tr>
       <tr><td>Web API</td><td>Producción</td><td><code>https://dam.yarcrasy.com/api</code></td></tr>
-      <tr><td>Android debug</td><td>Red local</td><td><code>http://192.168.1.248:8080/api/</code> y <code>http://192.168.1.248:5173</code></td></tr>
+      <tr><td>Android debug</td><td>Red local</td><td><code>http://IP_DEL_EQUIPO:8080/api/</code> y <code>http://IP_DEL_EQUIPO:5173</code>, sustituyendo <code>IP_DEL_EQUIPO</code> por la IP del ordenador que ejecuta backend y Vite.</td></tr>
       <tr><td>Android release</td><td>Producción</td><td><code>https://dam.yarcrasy.com/api/</code> y <code>https://dam-project.yarcrasy.com</code></td></tr>
     </tbody>
   </table>
   <h3>Producción</h3>
+  <p class="note">Las URLs <code>localhost</code> son válidas para ejecutar web y backend en el mismo equipo. En Android debug no se debe documentar una IP privada fija: cada red local requiere sustituirla por la IP real del equipo de desarrollo o por la URL pública si se prueba contra producción.</p>
   <ul><li>Servir el frontend web como archivos estáticos desde <code>web/dist</code>.</li><li>Publicar el backend detrás de HTTPS y un proxy inverso si se despliega en servidor propio.</li><li>Configurar CORS para permitir únicamente los dominios de la web y de las apps autorizadas.</li><li>Cambiar <code>spring.jpa.hibernate.ddl-auto</code> a <code>validate</code> o <code>none</code> cuando existan datos reales.</li><li>Guardar copias de seguridad periódicas de PostgreSQL.</li></ul>
   <h3>Checklist final</h3>
   <ul><li>Base de datos creada y con permisos correctos.</li><li>JWT secret sustituido por una clave segura.</li><li>Backend responde en <code>/api</code>.</li><li>Frontend apunta a la URL pública correcta mediante <code>VITE_API_URL</code>.</li><li>APK/AAB Android generado con configuración de release.</li><li>La app Android está firmada con keystore de release si se va a publicar.</li><li>Login, listado de proyectos, administración y simulación probados tras el despliegue.</li></ul>
