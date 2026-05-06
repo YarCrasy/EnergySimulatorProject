@@ -33,7 +33,7 @@
     h1 {
       font-size: clamp(2.2rem, 4vw, 3.6rem);
       line-height: 1.1;
-      color: var(--legals-text);
+      color: var(--text-high);
     }
 
     p {
@@ -107,7 +107,7 @@
     }
 
     h3 {
-      color: var(--legals-text);
+      color: var(--text-high);
       font-size: 1.2rem;
     }
 
@@ -144,7 +144,7 @@
 
       h2 {
         font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-        color: var(--legals-text);
+        color: var(--text-high);
         margin-bottom: 1.5rem;
       }
     }
@@ -172,7 +172,7 @@
     flex-direction: column;
     justify-content: flex-end;
     padding: 1rem;
-    color: var(--legals-text);
+    color: var(--text-high);
 
     span {
       font-size: 1.4rem;
@@ -212,7 +212,7 @@
 
     h3 {
       margin: 0.4rem 0;
-      color: var(--legals-text);
+      color: var(--text-high);
     }
 
     p {

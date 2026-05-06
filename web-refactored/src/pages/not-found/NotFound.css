@@ -1,6 +1,4 @@
 .notfound-page {
-  --page-padding: clamp(1.5rem, 4vw, 3.5rem);
-  --page-padding-mobile: 1.5rem 1rem 3rem;
   min-height: calc(100vh - 120px);
   display: flex;
   align-items: center;

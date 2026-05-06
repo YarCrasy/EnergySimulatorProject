@@ -2,9 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: clamp(1.5rem, 4vw, 3rem);
-  --page-padding: clamp(1.5rem, 4vw, 3.5rem) clamp(1rem, 5vw, 3.5rem) 4rem;
-}
-
+  
 .register-shell {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -32,7 +30,7 @@
 
 .register-hero h1 {
   font-size: clamp(2rem, 4vw, 3rem);
-  color: var(--legals-text);
+  color: var(--text-high);
   line-height: 1.15;
 }
 
@@ -116,7 +114,7 @@
 
 .register-card header h2 {
   font-size: 1.8rem;
-  color: var(--legals-text);
+  color: var(--text-high);
 }
 
 .register-login-hint {
@@ -152,7 +150,7 @@
   flex-direction: column;
   justify-content: flex-end;
   gap: 0.75rem;
-  color: var(--legals-text);
+  color: var(--text-high);
 }
 
 .register-visual__overlay h3 {
@@ -169,4 +167,6 @@
   .register-hero {
     border-radius: 28px;
   }
+}
+
 }

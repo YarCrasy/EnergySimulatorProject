@@ -51,14 +51,10 @@ function SimulatorInner() {
   } = useSimulatorPage();
 
   useEffect(() => {
-    if (!isResultsModalOpen) {
-      return;
-    }
+    if (!isResultsModalOpen) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setIsResultsModalOpen(false);
-      }
+      if (event.key === "Escape") setIsResultsModalOpen(false);
     };
 
     window.addEventListener("keydown", handleKeyDown);

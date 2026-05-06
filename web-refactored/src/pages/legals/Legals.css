@@ -42,14 +42,14 @@
     h1 {
       font-size: clamp(2.4rem, 5vw, 3.7rem);
       line-height: 1.05;
-      color: var(--legals-text);
+      color: var(--text-high);
       margin-bottom: 1rem;
     }
 
     .legals-lede {
       max-width: 760px;
       font-size: 1.05rem;
-      color: var(--legals-muted);
+      color: var(--text-muted);
       line-height: 1.6;
       margin-bottom: 1.5rem;
     }
@@ -64,7 +64,7 @@
         align-items: center;
         justify-content: center;
         border: 1px solid rgba(162, 255, 134, 0.4);
-        color: var(--legals-accent);
+        color: var(--accent-main);
         background: rgba(6, 15, 36, 0.55);
         padding: 0.55rem 1.15rem;
         border-radius: 999px;
@@ -93,12 +93,12 @@
       box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
 
       h2 {
-        color: var(--legals-text);
+        color: var(--text-high);
         font-size: 1.35rem;
       }
 
       p {
-        color: var(--legals-muted);
+        color: var(--text-muted);
         line-height: 1.5;
       }
 
@@ -125,7 +125,7 @@
           width: 0.6rem;
           height: 0.6rem;
           border-radius: 999px;
-          background: linear-gradient(135deg, var(--legals-accent), var(--legals-accent-2));
+          background: linear-gradient(135deg, var(--accent-main), var(--accent-alt));
           box-shadow: 0 0 12px rgba(92, 225, 230, 0.65);
         }
       }
@@ -152,7 +152,7 @@
       h3 {
         font-size: 1.5rem;
         margin-bottom: 1rem;
-        color: var(--legals-text);
+        color: var(--text-high);
       }
 
       .timeline-track {
@@ -167,7 +167,7 @@
           background: rgba(5, 12, 27, 0.82);
 
           .timeline-year {
-            color: var(--legals-muted);
+            color: var(--text-muted);
             font-size: 0.85rem;
             letter-spacing: 0.12em;
             text-transform: uppercase;
@@ -175,14 +175,14 @@
 
           .timeline-label {
             margin: 0.35rem 0;
-            color: var(--legals-text);
+            color: var(--text-high);
             font-size: 1.05rem;
             font-weight: 600;
           }
 
           .timeline-detail {
             min-height: 80px;
-            color: var(--legals-muted);
+            color: var(--text-muted);
             line-height: 1.45;
             font-size: 0.95rem;
           }
@@ -196,7 +196,7 @@
             text-transform: uppercase;
             letter-spacing: 0.08em;
             background: rgba(162, 255, 134, 0.12);
-            color: var(--legals-accent);
+            color: var(--accent-main);
           }
         }
       }
@@ -211,11 +211,11 @@
 
       h3 {
         font-size: 1.5rem;
-        color: var(--legals-text);
+        color: var(--text-high);
       }
 
       p {
-        color: var(--legals-muted);
+        color: var(--text-muted);
         line-height: 1.5;
       }
 
@@ -241,12 +241,12 @@
         }
 
         span {
-          color: var(--legals-muted);
+          color: var(--text-muted);
           font-size: 0.85rem;
         }
 
         strong {
-          color: var(--legals-text);
+          color: var(--text-high);
           font-size: 0.98rem;
           font-weight: 600;
           text-align: right;

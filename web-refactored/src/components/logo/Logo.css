@@ -2,7 +2,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.85rem;
-  color: var(--legals-text);
+  color: var(--text-high);
   text-decoration: none;
 
   .logo-mark {
