@@ -3,21 +3,59 @@
   <span class="kicker">Manual de desarrollador</span>
   <h2>Entorno local y trabajo técnico</h2>
   <h3>Requisitos previos</h3>
-  <ul><li>Git para clonar el repositorio.</li><li>JDK 25 para el backend.</li><li>PostgreSQL para la base de datos local.</li><li>Node.js y npm para Vite.</li><li>Android Studio y Android SDK para la app móvil.</li></ul>
+  <table>
+    <thead><tr><th>Herramienta</th><th>Versión mínima</th><th>Uso</th></tr></thead>
+    <tbody>
+      <tr><td>Git</td><td>2.40+</td><td>Clonado del repositorio y trabajo con ramas.</td></tr>
+      <tr><td>Node.js</td><td>18+</td><td>Frontend web React/Vite y documentación web.</td></tr>
+      <tr><td>Java JDK</td><td>25+</td><td>Backend Spring Boot y compilación Android.</td></tr>
+      <tr><td>PostgreSQL</td><td>14+</td><td>Base de datos local y producción.</td></tr>
+      <tr><td>Android Studio</td><td>Hedgehog o superior</td><td>Desarrollo, emulador y compilación de la app Android.</td></tr>
+    </tbody>
+  </table>
+  <h3>Estructura del repositorio</h3>
+  <pre><code>EnergySimulatorProject/
+  backend/
+    src/main/java/ies/elrincon/backend/
+      api/           Controladores REST
+      models/        Entidades JPA
+      repositories/  DAOs
+      services/      Lógica de negocio
+      security/      JWT y CORS
+      config/        Configuración general
+  web/
+    src/
+      components/    Componentes React
+      pages/         Páginas de la app
+      api/           Cliente HTTP Axios
+      hooks/         Custom hooks
+      models/        Interfaces TypeScript
+  Android/
+    app/src/main/java/ies/elrincon/energysimulator/
+      api/           Cliente HTTP
+      models/        POJOs
+      activities/    Pantallas
+      adapters/      Adaptadores RecyclerView
+  DocumentationWeb/  Documentación final navegable e imprimible</code></pre>
   <h3>Backend</h3>
   <pre><code>cd backend
 ./gradlew bootRun
 ./gradlew test
+./gradlew jacocoTestReport
 ./gradlew build</code></pre>
   <h3>Frontend web</h3>
-  <pre><code>cd web-refactored
+  <pre><code>cd web
 npm install
 npm run dev
 npm run build
 npm run test</code></pre>
   <h3>Android</h3>
   <pre><code>cd Android
-./gradlew assembleDebug</code></pre>
-  <p>La variable <code>VITE_API_URL</code> permite cambiar la URL del backend. Si no existe, el frontend usa <code>http://localhost:8080/api</code> en desarrollo.</p>
+./gradlew :app:assembleDebug
+./gradlew :app:installDebug</code></pre>
+  <h3>Configuración</h3>
+  <ul><li>El backend lee la conexión a PostgreSQL desde <code>backend/src/main/resources/application.properties</code>.</li><li>La variable <code>VITE_API_URL</code> permite cambiar la URL del backend. Si no existe, el frontend usa <code>http://localhost:8080/api</code> en desarrollo.</li><li>Android define URLs distintas para debug y release desde <code>Android/app/build.gradle.kts</code>.</li><li>Las claves JWT y credenciales de base de datos deben sustituirse antes de producción.</li></ul>
+  <h3>Convenciones</h3>
+  <ul><li>camelCase para variables y métodos.</li><li>PascalCase para clases y componentes.</li><li>JavaDoc obligatorio en métodos públicos relevantes.</li><li>Logs con SLF4J usando niveles DEBUG, INFO, WARN y ERROR.</li><li>Servicios de backend separados de controladores y repositorios.</li><li>Componentes React reutilizables, con llamadas HTTP centralizadas en la capa <code>api</code>.</li><li>Tests con patrón Arrange, Act, Assert y mocks para aislar llamadas externas.</li><li>Cobertura mínima objetivo del 70% en backend.</li></ul>
   <span class="page-number">Página 12</span>
 </section>

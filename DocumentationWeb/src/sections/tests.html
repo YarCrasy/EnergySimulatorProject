@@ -4,11 +4,25 @@
   <h2>Tests de prueba</h2>
   <div class="grid two">
     <div class="card"><h3>Backend</h3><p>El backend usa JUnit Platform y dependencias de testing de Spring Boot.</p><pre><code>cd backend
-./gradlew test</code></pre><ul><li>Arranque del contexto Spring.</li><li>Validación de utilidades de seguridad JWT.</li><li>Pruebas ampliables para controladores y servicios.</li></ul></div>
-    <div class="card"><h3>Frontend</h3><p>La web usa Vitest, Testing Library y jsdom.</p><pre><code>cd web-refactored
+./gradlew test
+./gradlew jacocoTestReport</code></pre><ul><li>Tests unitarios de servicios y repositorios.</li><li>Tests de integración de controladores y base de datos.</li><li>Pruebas end-to-end de flujos completos.</li><li>Cobertura mínima objetivo del 70%.</li></ul></div>
+    <div class="card"><h3>Frontend</h3><p>La web usa Vitest, Testing Library y jsdom.</p><pre><code>cd web
 npm run test
-npm run test:watch</code></pre><ul><li>Flujos de login y autenticación.</li><li>CRUD de proyectos y elementos.</li><li>Rutas privadas, tarjetas y utilidades del simulador.</li></ul></div>
+npm run test:watch
+npm run test:coverage</code></pre><ul><li>Flujos de login y autenticación.</li><li>CRUD de proyectos y elementos.</li><li>Rutas privadas, tarjetas y utilidades del simulador.</li><li>Mocks de API para probar errores sin depender del servidor real.</li></ul></div>
   </div>
-  <p>Las pruebas deben cubrir autenticación, creación de proyectos, actualización de diagramas, ejecución de simulación y errores de API.</p>
+  <h3>Pruebas manuales</h3>
+  <table>
+    <thead><tr><th>Área</th><th>Flujo verificado</th><th>Resultado esperado</th></tr></thead>
+    <tbody>
+      <tr><td>Web</td><td>Registro, login y cierre de sesión.</td><td>Sesión creada, token guardado y rutas privadas accesibles.</td></tr>
+      <tr><td>Proyectos</td><td>Crear, abrir, editar y eliminar un proyecto.</td><td>Datos persistidos y reflejados en el panel.</td></tr>
+      <tr><td>Simulador</td><td>Añadir nodos, conectarlos, modificar propiedades y simular.</td><td>Resultados visibles y guardados en el proyecto.</td></tr>
+      <tr><td>Administración</td><td>Gestionar usuarios y elementos del catálogo.</td><td>Operaciones protegidas por rol administrador.</td></tr>
+      <tr><td>Android</td><td>Login, carga de proyectos y navegación principal.</td><td>La app consume la misma API que la web.</td></tr>
+      <tr><td>Android WebView</td><td>Abrir simulador desde sesión autenticada.</td><td>El WebView carga la SPA con el token inyectado y mantiene la sesión.</td></tr>
+    </tbody>
+  </table>
+  <p>Las pruebas deben cubrir autenticación, creación de proyectos, actualización de diagramas, ejecución de simulación, errores de API y conectividad con Open-Meteo.</p>
   <span class="page-number">Página 14</span>
 </section>

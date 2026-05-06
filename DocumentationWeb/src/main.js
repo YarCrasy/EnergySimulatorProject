@@ -24,3 +24,65 @@ app.innerHTML = `
 `;
 
 document.querySelector("#print-document")?.addEventListener("click", () => window.print());
+
+const navLinks = Array.from(document.querySelectorAll(".sidebar a"));
+const sectionsByPosition = Array.from(document.querySelectorAll("main section[id]"));
+
+const setActiveLink = (id) => {
+  navLinks.forEach((link) => {
+    link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
+  });
+};
+
+const getActiveSectionId = () => {
+  const marker = window.innerHeight * 0.28;
+  let activeId = sectionsByPosition[0]?.id;
+
+  for (const section of sectionsByPosition) {
+    const top = section.getBoundingClientRect().top;
+    if (top <= marker) {
+      activeId = section.id;
+    } else {
+      break;
+    }
+  }
+
+  return activeId;
+};
+
+let ticking = false;
+
+const updateActiveFromScroll = () => {
+  ticking = false;
+  const id = getActiveSectionId();
+  if (id) {
+    setActiveLink(id);
+  }
+};
+
+const requestActiveUpdate = () => {
+  if (!ticking) {
+    ticking = true;
+    window.requestAnimationFrame(updateActiveFromScroll);
+  }
+};
+
+navLinks.forEach((link) => {
+  link.addEventListener("click", () => {
+    const id = link.getAttribute("href")?.slice(1);
+    if (id) {
+      setActiveLink(id);
+    }
+  });
+});
+
+window.addEventListener("scroll", requestActiveUpdate, { passive: true });
+window.addEventListener("resize", requestActiveUpdate);
+window.addEventListener("hashchange", () => {
+  const id = window.location.hash.slice(1);
+  if (id) {
+    setActiveLink(id);
+  }
+});
+
+updateActiveFromScroll();

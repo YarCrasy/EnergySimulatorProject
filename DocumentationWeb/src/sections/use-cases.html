@@ -1,17 +1,51 @@
-
 <section id="use-cases" class="page">
   <span class="kicker">Casos de uso</span>
-  <h2>Versión inicial</h2>
+  <h2>Actores y casos de uso</h2>
+  <p>Los casos de uso describen cómo interactúan los usuarios con el sistema. Se contemplan usuarios sin autenticar, usuarios registrados, usuarios autenticados, administradores y el servicio externo Open-Meteo.</p>
+
+  <h3>Actores</h3>
   <table>
-    <thead><tr><th>Código</th><th>Actor</th><th>Descripción</th><th>Resultado esperado</th></tr></thead>
+    <thead><tr><th>Actor</th><th>Descripción</th></tr></thead>
     <tbody>
-      <tr><td>CU-01</td><td>Usuario</td><td>Registrarse e iniciar sesión.</td><td>Acceso a proyectos propios con token válido.</td></tr>
-      <tr><td>CU-02</td><td>Usuario</td><td>Crear, editar y eliminar proyectos.</td><td>Proyecto persistido y visible en web/móvil.</td></tr>
-      <tr><td>CU-03</td><td>Usuario</td><td>Añadir elementos al simulador.</td><td>Nodos colocados en el lienzo con cantidad y posición.</td></tr>
-      <tr><td>CU-04</td><td>Usuario</td><td>Conectar nodos del diagrama.</td><td>Relaciones guardadas para representar el sistema energético.</td></tr>
-      <tr><td>CU-05</td><td>Usuario</td><td>Ejecutar simulación.</td><td>Resultados de producción, consumo, déficit, excedente y autosuficiencia.</td></tr>
-      <tr><td>CU-06</td><td>Administrador</td><td>Gestionar usuarios.</td><td>Consulta y administración de cuentas registradas.</td></tr>
-      <tr><td>CU-07</td><td>Administrador</td><td>Gestionar catálogo de elementos.</td><td>Altas, bajas y cambios en generadores, consumidores y baterías.</td></tr>
+      <tr><td>Usuario no autenticado</td><td>Persona que todavía no ha iniciado sesión. Puede registrarse o acceder al login.</td></tr>
+      <tr><td>Usuario registrado</td><td>Persona con cuenta activa que puede autenticarse con email y contraseña.</td></tr>
+      <tr><td>Usuario autenticado</td><td>Usuario con token válido que puede crear proyectos, diseñar sistemas y simular.</td></tr>
+      <tr><td>Administrador</td><td>Usuario con rol admin. Puede gestionar usuarios y catálogo energético.</td></tr>
+      <tr><td>Open-Meteo</td><td>Sistema externo que proporciona datos meteorológicos reales para la simulación.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Resumen de casos</h3>
+  <table>
+    <thead><tr><th>Código</th><th>Actor</th><th>Caso de uso</th><th>Resultado esperado</th></tr></thead>
+    <tbody>
+      <tr><td>CU-01</td><td>Usuario no autenticado</td><td>Registrarse en el sistema.</td><td>Cuenta creada y disponible para iniciar sesión.</td></tr>
+      <tr><td>CU-02</td><td>Usuario registrado</td><td>Iniciar sesión.</td><td>Token JWT generado y acceso al panel de proyectos.</td></tr>
+      <tr><td>CU-03</td><td>Usuario autenticado</td><td>Crear proyecto nuevo.</td><td>Proyecto abierto en el simulador.</td></tr>
+      <tr><td>CU-04</td><td>Usuario autenticado</td><td>Abrir o continuar proyecto existente.</td><td>Proyecto cargado con sus nodos y configuración.</td></tr>
+      <tr><td>CU-05</td><td>Usuario autenticado</td><td>Añadir elementos al simulador.</td><td>Generadores, consumidores o almacenadores colocados en el lienzo.</td></tr>
+      <tr><td>CU-06</td><td>Usuario autenticado</td><td>Conectar elementos.</td><td>Conexiones visibles mediante líneas.</td></tr>
+      <tr><td>CU-07</td><td>Usuario autenticado</td><td>Modificar propiedades de elementos.</td><td>Cambios reflejados en el dashboard y listos para guardar.</td></tr>
+      <tr><td>CU-08</td><td>Usuario autenticado</td><td>Configurar parámetros geográficos.</td><td>Latitud, longitud, inclinación, azimut y duración preparados para simular.</td></tr>
+      <tr><td>CU-09</td><td>Usuario autenticado</td><td>Ejecutar simulación energética.</td><td>Resultados calculados con datos de Open-Meteo.</td></tr>
+      <tr><td>CU-10</td><td>Usuario autenticado</td><td>Guardar proyecto o simulación.</td><td>Proyecto persistido en la cuenta del usuario.</td></tr>
+      <tr><td>CU-11</td><td>Usuario autenticado</td><td>Eliminar proyecto.</td><td>Proyecto borrado tras confirmación.</td></tr>
+      <tr><td>CU-12</td><td>Administrador</td><td>Gestionar usuarios.</td><td>Usuarios creados, editados o eliminados.</td></tr>
+      <tr><td>CU-13</td><td>Administrador</td><td>Gestionar elementos del catálogo.</td><td>Elementos creados, editados o borrados.</td></tr>
+      <tr><td>CU-14</td><td>Usuario autenticado</td><td>Cerrar sesión.</td><td>Token eliminado y usuario devuelto al login.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Detalle de casos principales</h3>
+  <table>
+    <thead><tr><th>Caso</th><th>Precondición</th><th>Flujo principal</th><th>Excepciones</th><th>Postcondición</th></tr></thead>
+    <tbody>
+      <tr><td>CU-01 Registro</td><td>Tener acceso a la aplicación.</td><td>El usuario entra en registro, introduce nombre, email, fecha y contraseña; el sistema valida campos, crea la cuenta y muestra confirmación.</td><td>Nombre con números o menos de 4 letras, email inválido o duplicado, fecha futura, contraseña sin complejidad suficiente o campos incompletos.</td><td>El usuario puede iniciar sesión con sus credenciales.</td></tr>
+      <tr><td>CU-02 Login</td><td>Tener una cuenta activa.</td><td>El usuario introduce email y contraseña; el backend verifica credenciales, genera JWT y redirige al panel.</td><td>Credenciales incorrectas, usuario inexistente o backend no disponible.</td><td>El usuario accede a sus proyectos.</td></tr>
+      <tr><td>CU-03 Crear proyecto</td><td>Haber iniciado sesión.</td><td>El usuario pulsa Nuevo Proyecto; se abre el simulador vacío; añade elementos, configura parámetros, simula y guarda.</td><td>Error de conexión, datos incompletos o fallo al guardar.</td><td>El proyecto queda almacenado en la cuenta.</td></tr>
+      <tr><td>CU-09 Simular</td><td>Proyecto con elementos mínimos y parámetros geográficos válidos.</td><td>El usuario lanza simulación; el backend consulta Open-Meteo, calcula generación, consumo, déficit, excedente y autosuficiencia; se guardan ejecución y puntos horarios.</td><td>Faltan elementos mínimos, coordenadas inválidas, fallo de Open-Meteo o respuesta vacía del backend.</td><td>Los resultados se muestran en la interfaz y quedan asociados al proyecto.</td></tr>
+      <tr><td>CU-12 Administrar usuarios</td><td>Usuario con rol administrador.</td><td>El admin entra en administración, consulta la tabla de usuarios y puede crear, editar o eliminar cuentas.</td><td>Validaciones de registro incumplidas, cancelación de borrado o error de permisos.</td><td>La tabla se actualiza con los cambios aplicados.</td></tr>
+      <tr><td>CU-13 Gestionar catálogo</td><td>Usuario con rol administrador.</td><td>El admin navega a receptores o elementos, crea uno nuevo, edita datos existentes o elimina registros tras confirmación.</td><td>Faltan nombre o potencia, coordenadas inválidas o elemento referenciado por nodos existentes.</td><td>El catálogo queda actualizado para el simulador.</td></tr>
     </tbody>
   </table>
   <span class="page-number">Página 6</span>

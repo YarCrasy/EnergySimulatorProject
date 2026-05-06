@@ -1,13 +1,79 @@
-
 <section id="manual-user" class="page">
   <span class="kicker">Manual de usuario</span>
-  <h2>Uso de la aplicación</h2>
-  <p>Este manual está dirigido a la persona que utilizará el simulador para crear proyectos energéticos, configurar componentes renovables y consultar resultados.</p>
-  <h3>Inicio de sesión y registro</h3>
-  <div class="evidence-strip"><figure><img src="/docx-screenshots/web-login.png" alt="Login"><figcaption>Inicio de sesión.</figcaption></figure><figure><img src="/docx-screenshots/login-with-errors.png" alt="Errores"><figcaption>Validación de errores.</figcaption></figure><figure><img src="/docx-screenshots/search-consumption.png" alt="Búsqueda"><figcaption>Búsqueda en catálogo.</figcaption></figure></div>
-  <ol><li>Accede a la pantalla de login.</li><li>Introduce correo electrónico y contraseña.</li><li>Si todavía no tienes cuenta, abre registro y completa los datos obligatorios.</li><li>Tras iniciar sesión, la aplicación carga tus proyectos.</li></ol>
-  <h3>Gestión de proyectos y simulador</h3>
-  <div class="evidence-strip"><figure><img src="/docx-screenshots/web-projects-grid.png" alt="Proyectos"><figcaption>Panel de proyectos.</figcaption></figure><figure><img src="/docx-screenshots/web-simulator-workspace.png" alt="Simulador"><figcaption>Simulador energético.</figcaption></figure><figure><img src="/docx-screenshots/web-simulator-diagram.png" alt="Diagrama"><figcaption>Nodos y relaciones.</figcaption></figure></div>
-  <ol><li>Crea un proyecto nuevo.</li><li>Añade generadores, consumidores y baterías.</li><li>Configura cantidad, consumo, generación o almacenamiento.</li><li>Ejecuta la simulación y revisa métricas.</li><li>Guarda el proyecto para recuperarlo después.</li></ol>
+  <h2>Uso de la aplicación web</h2>
+  <p>Este manual guía el uso de EnergySimulator desde la creación de cuenta hasta la ejecución de simulaciones. Sirve tanto para usuarios convencionales como para administradores, aunque las funciones administrativas solo aparecen con rol admin.</p>
+
+  <h3>Requisitos del sistema</h3>
+  <table>
+    <thead><tr><th>Requisito</th><th>Detalle</th></tr></thead>
+    <tbody>
+      <tr><td>Navegador recomendado</td><td>Google Chrome para mayor estabilidad; también compatible con Firefox, Edge y Safari.</td></tr>
+      <tr><td>Conexión</td><td>Conexión estable, preferiblemente 4G o superior, para cargar imágenes, API y resultados sin cortes.</td></tr>
+      <tr><td>Dispositivos web</td><td>Ordenador o tablet para una experiencia cómoda en el simulador.</td></tr>
+      <tr><td>Móvil</td><td>Android 8.0 o superior para la aplicación Android.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Registro e inicio de sesión</h3>
+  <div class="evidence-strip"><figure><img src="/docx-updated/image7.png" alt="Registro con validaciones"><figcaption>Registro de usuario.</figcaption></figure><figure><img src="/docx-updated/image8.png" alt="Login"><figcaption>Inicio de sesión.</figcaption></figure><figure><img src="/docx-updated/image1.png" alt="Error de login"><figcaption>Mensaje de credenciales incorrectas.</figcaption></figure></div>
+  <ol><li>Desde la página de inicio, pulsa Iniciar sesión.</li><li>Si no tienes cuenta, selecciona Crear cuenta.</li><li>Completa nombre, email, fecha de nacimiento y contraseña.</li><li>El sistema valida cada campo antes de permitir crear el usuario.</li><li>Cuando aparece el mensaje de usuario creado, vuelve al login e inicia sesión.</li></ol>
+  <table>
+    <thead><tr><th>Campo</th><th>Validación</th></tr></thead>
+    <tbody>
+      <tr><td>Nombre completo</td><td>Mínimo 4 letras y sin números.</td></tr>
+      <tr><td>Email</td><td>Formato válido de correo electrónico y no duplicado.</td></tr>
+      <tr><td>Fecha de nacimiento</td><td>No puede ser una fecha futura.</td></tr>
+      <tr><td>Contraseña</td><td>Mínimo 8 caracteres, al menos una mayúscula, una minúscula y un número.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Panel de proyectos</h3>
+  <div class="evidence-strip"><figure><img src="/docx-updated/image12.png" alt="Panel de proyectos"><figcaption>Panel principal.</figcaption></figure><figure><img src="/docx-updated/image9.png" alt="Menú de proyecto"><figcaption>Acciones abrir y eliminar.</figcaption></figure><figure><img src="/docx-screenshots/confirm-delete-project.png" alt="Confirmación"><figcaption>Confirmación de borrado.</figcaption></figure></div>
+  <ul><li>El panel muestra todos los proyectos guardados por el usuario.</li><li>El botón Nuevo Proyecto crea un proyecto y abre el simulador.</li><li>El menú de cada tarjeta permite abrir o eliminar un proyecto.</li><li>Al abrir un proyecto se recuperan sus elementos, relaciones y configuración.</li><li>Eliminar un proyecto requiere confirmación y borra sus nodos y simulaciones asociadas.</li></ul>
+
+  <h3>Simulador</h3>
+  <div class="evidence-strip"><figure><img src="/docx-updated/image15.png" alt="Simulador vacío"><figcaption>Área de trabajo.</figcaption></figure><figure><img src="/docx-screenshots/search-consumption.png" alt="Búsqueda de elementos"><figcaption>Búsqueda en catálogo.</figcaption></figure><figure><img src="/docx-screenshots/web-simulator-diagram.png" alt="Nodos conectados"><figcaption>Nodos conectados.</figcaption></figure></div>
+  <ol><li>Abre un proyecto nuevo o existente.</li><li>En el catálogo lateral, elige una categoría: generadores, consumidores o almacenadores.</li><li>Haz clic en un elemento para añadirlo automáticamente al área de trabajo.</li><li>Arrastra el nodo para colocarlo en la posición deseada.</li><li>Selecciona un elemento de origen y después un receptor para crear una conexión visual.</li><li>Configura propiedades como nombre, potencia y cantidad.</li><li>Ajusta latitud, longitud, días de simulación e inclinación de paneles.</li><li>Guarda el proyecto o pulsa Simular para calcular resultados.</li></ol>
+  <p class="note"><strong>Nota:</strong> al cambiar la cantidad de un elemento no se duplican nodos visualmente; se muestra la cantidad sobre el propio nodo, por ejemplo <code>x2</code>.</p>
+
+  <h3>Controles del lienzo</h3>
+  <table>
+    <thead><tr><th>Control</th><th>Función</th></tr></thead>
+    <tbody>
+      <tr><td><code>+</code></td><td>Acercar la pizarra o canvas.</td></tr>
+      <tr><td><code>-</code></td><td>Alejar la pizarra.</td></tr>
+      <tr><td>Centrar</td><td>Recolocar la vista sobre los elementos del proyecto.</td></tr>
+      <tr><td>Bloqueo</td><td>Fijar elementos en el área de trabajo para evitar movimientos accidentales.</td></tr>
+      <tr><td>Tecla borrar</td><td>Eliminar un nodo seleccionado si se añadió por error.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Manual de administración</h3>
+  <p>Cuando inicia sesión un administrador, la aplicación muestra funciones para gestionar usuarios y elementos del catálogo. Estas acciones deben realizarse con cuidado porque afectan a datos compartidos por toda la aplicación.</p>
+  <div class="evidence-strip"><figure><img src="/docx-screenshots/web-users-admin.png" alt="Usuarios admin"><figcaption>Administración de usuarios.</figcaption></figure><figure><img src="/docx-screenshots/web-consumption-admin.png" alt="Formulario consumo"><figcaption>Formulario de consumo.</figcaption></figure><figure><img src="/docx-screenshots/web-consumption-inventory.png" alt="Inventario"><figcaption>Inventario de elementos.</figcaption></figure></div>
+  <table>
+    <thead><tr><th>Acción</th><th>Pasos</th><th>Consideraciones</th></tr></thead>
+    <tbody>
+      <tr><td>Navegar</td><td>Usa la barra superior para cambiar entre usuarios, receptores y cierre de sesión.</td><td>Solo aparece si el usuario tiene rol administrador.</td></tr>
+      <tr><td>Editar usuario</td><td>Pulsa Editar, revisa el formulario cargado, modifica datos y guarda.</td><td>La contraseña no se muestra; se puede asignar una nueva si cumple validaciones.</td></tr>
+      <tr><td>Eliminar usuario</td><td>Pulsa Eliminar y confirma el aviso.</td><td>La eliminación es definitiva y actualiza la tabla automáticamente.</td></tr>
+      <tr><td>Crear usuario</td><td>Pulsa Nuevo usuario, completa el formulario y guarda.</td><td>Usa las mismas reglas de validación que el registro público.</td></tr>
+      <tr><td>Crear elemento</td><td>Abre Receptores o catálogo, pulsa Nuevo elemento, introduce datos y guarda.</td><td>Nombre y consumo/potencia son obligatorios; coordenadas X/Y son opcionales.</td></tr>
+      <tr><td>Editar elemento</td><td>Pulsa Editar en el elemento, cambia sus datos y guarda.</td><td>Cancelar cierra el formulario sin aplicar cambios.</td></tr>
+      <tr><td>Eliminar elemento</td><td>Pulsa Eliminar y confirma.</td><td>Si el elemento está referenciado por proyectos, la base de datos puede impedir borrarlo.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Preguntas frecuentes</h3>
+  <table>
+    <thead><tr><th>Pregunta</th><th>Respuesta</th></tr></thead>
+    <tbody>
+      <tr><td>¿Por qué no puedo iniciar sesión?</td><td>Comprueba que el email y la contraseña son correctos. Si todavía no tienes cuenta, debes registrarte primero.</td></tr>
+      <tr><td>¿Cómo mover los elementos en el simulador?</td><td>Haz clic sobre el elemento y arrástralo con el ratón hasta la posición deseada.</td></tr>
+      <tr><td>¿Qué navegador es el más adecuado?</td><td>Se recomienda Google Chrome, aunque también funcionan Firefox, Edge y Safari.</td></tr>
+      <tr><td>¿Puedo eliminar un proyecto?</td><td>Sí. En tu lista de proyectos abre el menú contextual y selecciona Eliminar. Se pedirá confirmación.</td></tr>
+      <tr><td>La simulación no devuelve resultados.</td><td>Revisa que haya elementos configurados, ubicación válida y conexión a Internet para consultar Open-Meteo.</td></tr>
+    </tbody>
+  </table>
   <span class="page-number">Página 11</span>
 </section>

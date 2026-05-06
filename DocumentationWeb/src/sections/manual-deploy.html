@@ -5,21 +5,48 @@
   <p>Este manual está dirigido a la persona técnica que instala la solución en el entorno del cliente o en producción.</p>
   <h3>Base de datos</h3>
   <ul><li>Instalar PostgreSQL y crear <code>energysimulatordb</code>.</li><li>Crear el usuario de aplicación o adaptar <code>backend/InitBD.sql</code>.</li><li>Configurar credenciales fuera del repositorio.</li></ul>
+  <pre><code>psql -U postgres
+CREATE DATABASE energysimulatordb;
+CREATE USER "SimulatorUser" WITH PASSWORD 'SimulatorUserPassword123';
+GRANT ALL PRIVILEGES ON DATABASE energysimulatordb TO "SimulatorUser";</code></pre>
   <h3>Backend</h3>
   <pre><code>spring.datasource.url=jdbc:postgresql://localhost:5432/energysimulatordb
 spring.datasource.username=SimulatorUser
 spring.datasource.password=SimulatorUserPassword123
 app.jwt.secret=change-this-secret-key-before-production</code></pre>
+  <h3>Backend local y JAR desplegable</h3>
+  <pre><code>cd backend
+./gradlew bootRun
+./gradlew bootJar
+java -jar build/libs/backend-0.0.1-SNAPSHOT.jar</code></pre>
   <h3>Builds</h3>
   <pre><code>cd backend
 ./gradlew build
 
-cd web-refactored
+cd web
 npm install
 npm run build
+npm run preview
 
 cd Android
-./gradlew assembleDebug</code></pre>
+./gradlew :app:assembleDebug
+./gradlew :app:bundleRelease</code></pre>
   <p>Para release, Android usa <code>https://dam.yarcrasy.com/api/</code> como backend y <code>https://dam-project.yarcrasy.com</code> como web base.</p>
+  <h3>URLs de despliegue</h3>
+  <table>
+    <thead><tr><th>Superficie</th><th>Entorno</th><th>URL</th></tr></thead>
+    <tbody>
+      <tr><td>Backend</td><td>Local</td><td><code>http://localhost:8080</code></td></tr>
+      <tr><td>Web</td><td>Desarrollo</td><td><code>http://localhost:5173</code></td></tr>
+      <tr><td>Web API</td><td>Desarrollo</td><td><code>http://localhost:8080/api</code></td></tr>
+      <tr><td>Web API</td><td>Producción</td><td><code>https://dam.yarcrasy.com/api</code></td></tr>
+      <tr><td>Android debug</td><td>Red local</td><td><code>http://192.168.1.248:8080/api/</code> y <code>http://192.168.1.248:5173</code></td></tr>
+      <tr><td>Android release</td><td>Producción</td><td><code>https://dam.yarcrasy.com/api/</code> y <code>https://dam-project.yarcrasy.com</code></td></tr>
+    </tbody>
+  </table>
+  <h3>Producción</h3>
+  <ul><li>Servir el frontend web como archivos estáticos desde <code>web/dist</code>.</li><li>Publicar el backend detrás de HTTPS y un proxy inverso si se despliega en servidor propio.</li><li>Configurar CORS para permitir únicamente los dominios de la web y de las apps autorizadas.</li><li>Cambiar <code>spring.jpa.hibernate.ddl-auto</code> a <code>validate</code> o <code>none</code> cuando existan datos reales.</li><li>Guardar copias de seguridad periódicas de PostgreSQL.</li></ul>
+  <h3>Checklist final</h3>
+  <ul><li>Base de datos creada y con permisos correctos.</li><li>JWT secret sustituido por una clave segura.</li><li>Backend responde en <code>/api</code>.</li><li>Frontend apunta a la URL pública correcta mediante <code>VITE_API_URL</code>.</li><li>APK/AAB Android generado con configuración de release.</li><li>La app Android está firmada con keystore de release si se va a publicar.</li><li>Login, listado de proyectos, administración y simulación probados tras el despliegue.</li></ul>
   <span class="page-number">Página 13</span>
 </section>

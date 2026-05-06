@@ -1,13 +1,56 @@
-
 <section id="requirements" class="page">
   <span class="kicker">Requisitos</span>
-  <h2>Requisitos generales del sistema</h2>
-  <p>El objetivo principal es definir una solución que permita gestionar proyectos energéticos renovables y simular si una configuración cubre la demanda prevista.</p>
-  <div class="grid two">
-    <div class="card"><h3>Funcionales</h3><ul><li>Registrar e iniciar sesión de usuarios.</li><li>Gestionar proyectos propios.</li><li>Crear diagramas con generadores, consumidores y baterías.</li><li>Guardar posición, cantidad y configuración de cada nodo.</li><li>Ejecutar simulaciones energéticas por proyecto.</li><li>Consultar generación, consumo, déficit y excedente.</li><li>Administrar usuarios y elementos del catálogo.</li><li>Acceder desde aplicación web y Android.</li></ul></div>
-    <div class="card"><h3>No funcionales</h3><ul><li>API REST clara y reutilizable.</li><li>Persistencia relacional con PostgreSQL.</li><li>Autenticación mediante token JWT.</li><li>Interfaz responsive para escritorio y móvil.</li><li>Pruebas automatizadas en backend y frontend.</li><li>Despliegue preparado para local y producción.</li><li>Mensajes de error comprensibles.</li><li>Separación entre presentación, lógica y datos.</li></ul></div>
-  </div>
+  <h2>Requisitos de usuario</h2>
+  <p>Antes de programar se analizaron las necesidades reales del usuario del simulador, las peticiones del centro y el comportamiento esperado en herramientas similares. De ese análisis salen los requisitos funcionales, que describen lo que el sistema debe hacer, y los no funcionales, que describen cómo debe comportarse.</p>
+
+  <h3>Requisitos funcionales</h3>
+  <p>Las prioridades se clasifican como alta cuando el requisito es imprescindible, media cuando es importante pero no bloqueante, y baja cuando puede quedar como mejora posterior.</p>
+  <table>
+    <thead><tr><th>ID</th><th>Descripción</th><th>Prioridad</th></tr></thead>
+    <tbody>
+      <tr><td>RF-01</td><td>Registro de nuevo usuario con validación de email y contraseña segura.</td><td>Alta</td></tr>
+      <tr><td>RF-02</td><td>Inicio de sesión con email y contraseña, generando un token JWT para acceder a recursos protegidos.</td><td>Alta</td></tr>
+      <tr><td>RF-03</td><td>Crear un proyecto nuevo desde el panel de proyectos.</td><td>Alta</td></tr>
+      <tr><td>RF-04</td><td>Agregar elementos de consumo al proyecto.</td><td>Alta</td></tr>
+      <tr><td>RF-05</td><td>Agregar generadores, especialmente placas solares, al proyecto.</td><td>Alta</td></tr>
+      <tr><td>RF-06</td><td>Conectar elementos entre sí dentro del simulador visual.</td><td>Media</td></tr>
+      <tr><td>RF-07</td><td>Modificar propiedades de elementos, como nombre, potencia, cantidad y parámetros propios.</td><td>Media</td></tr>
+      <tr><td>RF-08</td><td>Ejecutar una simulación energética consultando datos meteorológicos reales de Open-Meteo.</td><td>Alta</td></tr>
+      <tr><td>RF-09</td><td>Visualizar resultados de simulación: generación, consumo, déficit, excedente, balance y autosuficiencia.</td><td>Alta</td></tr>
+      <tr><td>RF-10</td><td>Guardar el proyecto para poder recuperarlo desde la cuenta del usuario.</td><td>Alta</td></tr>
+      <tr><td>RF-11</td><td>Eliminar un proyecto propio con confirmación previa.</td><td>Media</td></tr>
+      <tr><td>RF-12</td><td>Configurar ajustes geográficos: latitud, longitud, inclinación, azimut y días de exposición.</td><td>Media</td></tr>
+      <tr><td>RF-13</td><td>Administración de usuarios para rol admin: listar, crear, editar y eliminar cuentas.</td><td>Media</td></tr>
+      <tr><td>RF-14</td><td>Gestión del catálogo de elementos energéticos para rol admin.</td><td>Media</td></tr>
+      <tr><td>RF-15</td><td>Exportar o descargar informes de simulación.</td><td>Baja, mejora futura si no está habilitada en la versión entregada</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Requisitos no funcionales</h3>
+  <table>
+    <thead><tr><th>ID</th><th>Descripción</th><th>Objetivo</th></tr></thead>
+    <tbody>
+      <tr><td>RNF-01</td><td>Disponibilidad del sistema.</td><td>La aplicación debe estar funcionando la mayor parte del tiempo durante el periodo de uso educativo.</td></tr>
+      <tr><td>RNF-02</td><td>Rendimiento.</td><td>La página web debe cargar en menos de 3 segundos con una conexión doméstica estable.</td></tr>
+      <tr><td>RNF-03</td><td>Seguridad.</td><td>Autenticación mediante JWT, contraseñas guardadas con hash y rutas protegidas para usuarios y administradores.</td></tr>
+      <tr><td>RNF-04</td><td>Accesibilidad.</td><td>Contraste suficiente, etiquetas en formularios, navegación por teclado y uso de atributos semánticos o ARIA cuando sea necesario.</td></tr>
+      <tr><td>RNF-05</td><td>Usabilidad.</td><td>Un usuario sin explicación previa debe poder crear un proyecto y ejecutar una simulación siguiendo la interfaz.</td></tr>
+      <tr><td>RNF-06</td><td>Escalabilidad.</td><td>El diseño por capas debe permitir añadir más usuarios, proyectos y funciones en versiones futuras.</td></tr>
+      <tr><td>RNF-07</td><td>Mantenibilidad.</td><td>Código modular, documentado, con nombres claros y separación entre frontend, backend, Android y documentación.</td></tr>
+    </tbody>
+  </table>
+
   <h3>Requisitos de información</h3>
-  <p>El sistema debe conservar usuarios, proyectos, catálogo de elementos, nodos del diagrama, conexiones, parámetros de simulación y resultados históricos.</p>
+  <table>
+    <thead><tr><th>Información</th><th>Datos que debe conservar</th><th>Motivo</th></tr></thead>
+    <tbody>
+      <tr><td>Usuarios</td><td>Nombre, email, contraseña cifrada, fecha de nacimiento, rol y fecha de registro.</td><td>Permitir autenticación, administración y trazabilidad.</td></tr>
+      <tr><td>Proyectos</td><td>Nombre, propietario, ubicación, duración, orientación, pérdidas y resultados resumidos.</td><td>Guardar el contexto completo de cada simulación.</td></tr>
+      <tr><td>Catálogo</td><td>Nombre, categoría, tipo, potencia, consumo, área, eficiencia, imagen y marca.</td><td>Reutilizar componentes técnicos en distintos proyectos.</td></tr>
+      <tr><td>Nodos</td><td>Elemento referenciado, proyecto, posición X/Y, tipo, cantidad y datos adicionales.</td><td>Reconstruir visualmente el simulador cuando se abre un proyecto.</td></tr>
+      <tr><td>Simulaciones</td><td>Proveedor, parámetros usados, generación, consumo, déficit, excedente y autosuficiencia.</td><td>Consultar resultados históricos y comparar ejecuciones.</td></tr>
+      <tr><td>Puntos horarios</td><td>Timestamp, generación, consumo, balance, irradiancia, nubosidad, déficit, excedente e indicador de día.</td><td>Representar gráficos y analizar el comportamiento energético por horas.</td></tr>
+    </tbody>
+  </table>
   <span class="page-number">Página 5</span>
 </section>

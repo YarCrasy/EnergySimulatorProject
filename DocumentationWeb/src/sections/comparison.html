@@ -2,12 +2,12 @@
 <section id="comparison" class="page">
   <span class="kicker">Comparativa</span>
   <h2>Comparación de tecnologías</h2>
-  <table><thead><tr><th>Decisión</th><th>Alternativas</th><th>Motivo de elección</th></tr></thead><tbody>
-    <tr><td>Spring Boot</td><td>Node/Express, Laravel</td><td>Encaja con Java, JPA, seguridad integrada y estructura clara para API REST.</td></tr>
-    <tr><td>PostgreSQL</td><td>MySQL, SQLite</td><td>Base relacional robusta, adecuada para relaciones entre proyectos, nodos y simulaciones.</td></tr>
-    <tr><td>React + Vite</td><td>Angular, Vue</td><td>Desarrollo rápido, ecosistema amplio y buen soporte para componentes de diagramas.</td></tr>
-    <tr><td>Android nativo Java</td><td>Kotlin, React Native, Flutter</td><td>Aprovecha conocimientos del ciclo y mantiene integración directa con SDK Android.</td></tr>
-    <tr><td>@xyflow/react</td><td>Canvas propio, SVG manual</td><td>Ofrece nodos y conexiones listas para un simulador visual mantenible.</td></tr>
+  <table><thead><tr><th>Decisión</th><th>Alternativas valoradas</th><th>Motivo de elección</th><th>Motivo de descarte</th></tr></thead><tbody>
+    <tr><td>Spring Boot</td><td>Node.js con Express, Django</td><td>Encaja con Java, trabajado durante el ciclo, integra seguridad JWT, JPA y estructura clara por controladores, servicios y repositorios.</td><td>Express requería más decisiones manuales de seguridad; Django implicaba aprender Python a un nivel no trabajado por el equipo.</td></tr>
+    <tr><td>React + TypeScript</td><td>Vue, Angular</td><td>El equipo ya tenía experiencia, facilita componentes reutilizables y TypeScript evita errores al conectar con la API.</td><td>Angular resultaba pesado para el tamaño del proyecto; Vue no aportaba ventaja clara frente a React.</td></tr>
+    <tr><td>Android nativo Java</td><td>Kotlin, Flutter</td><td>Java era la herramienta trabajada en el módulo de Android y permitía controlar actividades, layouts y WebView sin aprender otro stack.</td><td>Kotlin y Flutter habrían añadido incertidumbre y tiempo de aprendizaje con plazo ajustado.</td></tr>
+    <tr><td>PostgreSQL</td><td>MySQL</td><td>Se adapta bien al despliegue final y al modelo relacional del proyecto.</td><td>MySQL funcionaba en fase inicial, pero PostgreSQL resultó más práctico en el despliegue final.</td></tr>
+    <tr><td>@xyflow/react</td><td>Canvas propio, SVG manual</td><td>Ofrece nodos y conexiones mantenibles para el simulador visual.</td><td>Un canvas propio habría requerido implementar selección, movimiento, conexiones y estado desde cero.</td></tr>
   </tbody></table>
   <span class="page-number">Página 16</span>
 </section>

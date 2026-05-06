@@ -1,18 +1,63 @@
-
 <section id="system" class="page">
   <span class="kicker">Arquitectura</span>
   <h2>Funcionamiento y especificaciones técnicas</h2>
-  <p>El sistema se organiza como un monorepo con tres superficies principales. La aplicación web y la app Android consumen la misma API REST. El backend se encarga de seguridad, persistencia, reglas de negocio y simulación.</p>
-  <pre><code>React/Vite Web --------\\
-                       -> Spring Boot API -> PostgreSQL
-Android Java ----------/          |
-                                  -> Open-Meteo</code></pre>
-  <div class="grid three">
-    <div class="card"><h3>Servidor</h3><p>Spring Boot expone endpoints bajo <code>/api</code> para usuarios, proyectos, elementos, nodos, conexiones y simulaciones.</p></div>
-    <div class="card"><h3>Web</h3><p>La SPA en React gestiona rutas públicas, rutas protegidas, panel de proyectos, simulador visual y administración.</p></div>
-    <div class="card"><h3>Android</h3><p>La app nativa en Java reutiliza la API para login, proyectos, perfil y acceso al simulador.</p></div>
+  <p>EnergySimulator se compone de tres capas: backend Java con Spring Boot, frontend web React/TypeScript y aplicación Android nativa en Java. Todas las superficies se comunican mediante una API REST protegida con JWT.</p>
+
+  <div class="figure-block">
+    <figure class="diagram-figure wide-diagram">
+      <img src="/docx-updated/image5.png" alt="Diagrama de arquitectura con Android, WebView, React, Spring Boot, base de datos y Open-Meteo">
+      <figcaption>Arquitectura general: Android nativo, simulador web embebido en WebView, backend Spring Boot, PostgreSQL y Open-Meteo.</figcaption>
+    </figure>
   </div>
-  <h3>Endpoints destacados</h3>
-  <ul><li><code>POST /api/users/login</code>: autenticación.</li><li><code>GET /api/projects/user/{userId}</code>: proyectos del usuario.</li><li><code>PUT /api/projects/{id}</code>: actualización de proyecto.</li><li><code>GET /api/elements</code>: catálogo energético.</li><li><code>POST /api/projects/{projectId}/simulations</code>: simulación.</li></ul>
+
+  <div class="grid three">
+    <div class="card"><h3>Backend</h3><p>Spring Boot expone controladores REST, servicios de negocio, repositorios JPA, seguridad con Spring Security y generación/verificación de JWT.</p></div>
+    <div class="card"><h3>Frontend web</h3><p>React y TypeScript implementan la SPA con login, registro, proyectos, simulador visual, administración, llamadas Axios y rutas protegidas.</p></div>
+    <div class="card"><h3>Android</h3><p>La app Java implementa login, listado de proyectos y perfil de forma nativa. El simulador se reutiliza mediante WebView.</p></div>
+  </div>
+
+  <h3>Flujo de autenticación</h3>
+  <table>
+    <thead><tr><th>Paso</th><th>Responsable</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Cliente web o Android</td><td>Envía email y contraseña al endpoint de login.</td></tr>
+      <tr><td>2</td><td>Spring Security</td><td>Valida las credenciales contra la base de datos.</td></tr>
+      <tr><td>3</td><td>Backend</td><td>Genera un token JWT firmado si las credenciales son correctas.</td></tr>
+      <tr><td>4</td><td>Cliente</td><td>Guarda el token en almacenamiento local o contexto seguro de la app.</td></tr>
+      <tr><td>5</td><td>Cliente</td><td>Incluye <code>Authorization: Bearer &lt;token&gt;</code> en cada petición privada.</td></tr>
+      <tr><td>6</td><td>Backend</td><td>Verifica firma, expiración y permisos antes de conceder acceso.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Flujo de simulación</h3>
+  <table>
+    <thead><tr><th>Paso</th><th>Acción</th><th>Resultado</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>El usuario selecciona consumidores, generadores y almacenadores.</td><td>El proyecto contiene nodos configurables en el canvas.</td></tr>
+      <tr><td>2</td><td>Configura latitud, longitud, inclinación, azimut y días de exposición.</td><td>El backend recibe parámetros geográficos y técnicos.</td></tr>
+      <tr><td>3</td><td>El usuario pulsa simular.</td><td>El frontend envía el proyecto y los parámetros a la API.</td></tr>
+      <tr><td>4</td><td>El backend consulta Open-Meteo.</td><td>Se obtienen irradiancia, nubosidad y datos horarios reales.</td></tr>
+      <tr><td>5</td><td>El servicio calcula balance energético.</td><td>Se generan generación, consumo, déficit, excedente y autosuficiencia.</td></tr>
+      <tr><td>6</td><td>Se persiste la simulación.</td><td>Se guardan <code>SimulationRun</code> y sus puntos horarios.</td></tr>
+      <tr><td>7</td><td>El frontend recibe resultados.</td><td>La interfaz representa métricas y gráficos.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Endpoints principales</h3>
+  <table>
+    <thead><tr><th>Recurso</th><th>Métodos</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td><code>/api/users</code></td><td>POST, GET, PUT, DELETE</td><td>Gestión de usuarios y operaciones administrativas.</td></tr>
+      <tr><td><code>/api/users/login</code></td><td>POST</td><td>Autenticación y emisión del token JWT.</td></tr>
+      <tr><td><code>/api/projects</code></td><td>GET, POST, PUT, DELETE</td><td>CRUD de proyectos energéticos.</td></tr>
+      <tr><td><code>/api/elements</code></td><td>GET, POST, PUT, DELETE</td><td>Catálogo de elementos energéticos; las escrituras son administrativas.</td></tr>
+      <tr><td><code>/api/simulations</code></td><td>GET, POST</td><td>Ejecución y consulta de simulaciones.</td></tr>
+      <tr><td><code>/api/projects/{id}/simulations</code></td><td>GET, POST</td><td>Simulaciones asociadas a un proyecto concreto.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Integración del simulador en Android</h3>
+  <p>Android implementa de forma nativa las pantallas de autenticación, listado de proyectos y perfil. Para evitar duplicar el simulador completo, la app abre el simulador web en un WebView. Antes de cargarlo, inyecta el JWT del usuario autenticado en <code>localStorage</code> y cookies, de forma que la SPA se abre con sesión ya iniciada.</p>
+  <p>Esta decisión permite mantener un único simulador visual en React, garantizar coherencia entre web y móvil y reducir el esfuerzo de mantenimiento.</p>
   <span class="page-number">Página 7</span>
 </section>

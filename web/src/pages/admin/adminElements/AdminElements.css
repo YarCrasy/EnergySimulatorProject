@@ -1,0 +1,60 @@
+.admin-elements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+
+  article {
+    border: 1px solid var(--surface-line);
+    border-radius: 18px;
+    background: rgba(6, 15, 36, 0.78);
+    padding: 1.2rem;
+  }
+
+  svg {
+    color: var(--accent-main);
+  }
+
+  h2 {
+    margin: 0.8rem 0 0.35rem;
+    font-size: 1.1rem;
+  }
+
+  p {
+    margin: 0 0 0.8rem;
+    color: var(--text-muted);
+  }
+
+  span {
+    font-weight: 800;
+  }
+}
+
+.admin-card-actions {
+  margin-top: 0.8rem;
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.admin-element-form {
+  display: grid;
+  gap: 0.75rem;
+
+  label {
+    display: grid;
+    gap: 0.35rem;
+    font-weight: 700;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 12px;
+    background: rgba(3, 11, 28, 0.7);
+    color: var(--text-high);
+    font: inherit;
+    padding: 0.7rem 0.8rem;
+  }
+}

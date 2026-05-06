@@ -3,16 +3,27 @@
   <span class="kicker">Interfaces</span>
   <h2>Diseño inicial, mockups y prototipado</h2>
   <p>El prototipado recoge tanto la aplicación web como la móvil. La web prioriza el trabajo con proyectos y diagramas; Android prioriza consulta, autenticación, perfil y acceso a proyectos desde un dispositivo móvil.</p>
-  <p><strong>Enlace del prototipo:</strong> pendiente de añadir el enlace compartido de Figma, Penpot, Canva o la herramienta usada.</p>
+  <p>La documentación visual se apoya en capturas reales extraídas de la aplicación desarrollada. Esto permite mostrar el resultado final en lugar de mantener únicamente mockups iniciales.</p>
   <div class="screenshot-grid three">
-    <figure><img src="/docx-screenshots/web-home-hero.png" alt="Página inicial del simulador energético"><figcaption>Página inicial con propuesta de valor.</figcaption></figure>
-    <figure><img src="/docx-screenshots/web-login.png" alt="Pantalla de inicio de sesión"><figcaption>Formulario de acceso.</figcaption></figure>
-    <figure><img src="/docx-screenshots/web-projects-grid.png" alt="Listado de proyectos"><figcaption>Listado de proyectos.</figcaption></figure>
-    <figure><img src="/docx-screenshots/web-simulator-workspace.png" alt="Simulador web"><figcaption>Vista completa del simulador.</figcaption></figure>
-    <figure><img src="/docx-screenshots/web-simulator-diagram.png" alt="Diagrama energético"><figcaption>Diagrama con nodos conectados.</figcaption></figure>
+    <figure><img src="/docx-updated/image8.png" alt="Pantalla de login"><figcaption>Login con acceso seguro.</figcaption></figure>
+    <figure><img src="/docx-updated/image7.png" alt="Pantalla de registro con validaciones"><figcaption>Registro con validaciones.</figcaption></figure>
+    <figure><img src="/docx-updated/image12.png" alt="Panel de proyectos"><figcaption>Dashboard de proyectos.</figcaption></figure>
+    <figure><img src="/docx-updated/image15.png" alt="Simulador principal"><figcaption>Simulador principal.</figcaption></figure>
+    <figure><img src="/docx-screenshots/web-simulator-diagram.png" alt="Diagrama energético"><figcaption>Nodos conectados.</figcaption></figure>
     <figure><img src="/docx-screenshots/web-users-admin.png" alt="Administración de usuarios"><figcaption>Panel administrativo.</figcaption></figure>
   </div>
-  <h3>Mockups mínimos</h3>
-  <ul><li>Web: login, registro, listado de proyectos, simulador, perfil y administración.</li><li>Android: login, listado de proyectos, detalle/simulador, perfil y ayuda.</li><li>Estados: carga, error de conexión, usuario sin proyectos y confirmación de borrado.</li></ul>
+  <h3>Vistas principales</h3>
+  <table>
+    <thead><tr><th>Vista</th><th>Elementos principales</th><th>Objetivo de diseño</th></tr></thead>
+    <tbody>
+      <tr><td>Login y registro</td><td>Formularios minimalistas, validación en tiempo real, mensajes claros y navegación entre crear cuenta e iniciar sesión.</td><td>Reducir errores de entrada y facilitar el acceso al sistema.</td></tr>
+      <tr><td>Dashboard de proyectos</td><td>Listado de proyectos, fecha de actualización, botón Nuevo Proyecto y menú contextual para abrir o eliminar.</td><td>Permitir recuperar trabajo anterior y crear simulaciones rápidamente.</td></tr>
+      <tr><td>Simulador principal</td><td>Canvas central, catálogo lateral por categorías, buscador, panel de proyecto, panel de propiedades, controles de zoom, bloqueo y centrado.</td><td>Construir sistemas energéticos de forma visual e interactiva.</td></tr>
+      <tr><td>Panel de administración</td><td>Tablas CRUD de usuarios y elementos, formularios de edición, alta de registros y confirmaciones de eliminación.</td><td>Mantener usuarios y catálogo sin acceder directamente a la base de datos.</td></tr>
+      <tr><td>Android</td><td>Pantallas nativas para login, proyectos y perfil; WebView para cargar el simulador.</td><td>Reutilizar el simulador web y ofrecer acceso móvil coherente.</td></tr>
+    </tbody>
+  </table>
+  <h3>Estados contemplados</h3>
+  <ul><li>Carga durante peticiones a API.</li><li>Error de conexión o credenciales incorrectas.</li><li>Usuario sin proyectos.</li><li>Validaciones junto al campo afectado.</li><li>Confirmación antes de eliminar proyectos, usuarios o elementos.</li><li>Resultados visibles tras una simulación correcta.</li></ul>
   <span class="page-number">Página 8</span>
 </section>

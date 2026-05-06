@@ -102,7 +102,7 @@ Para producción, reemplaza las propiedades sensibles mediante variables de ento
 
 ### 2.2 Dependencias y scripts
 
-`web-refactored/package.json` define:
+`web/package.json` define:
 
 - `npm install`
 - `npm run dev`
@@ -112,7 +112,7 @@ Para producción, reemplaza las propiedades sensibles mediante variables de ento
 
 ### 2.3 Configuración de la API
 
-El frontend usa `web-refactored/src/api/api.ts` para resolver la URL del backend:
+El frontend usa `web/src/api/api.ts` para resolver la URL del backend:
 
 ```ts
 const defaultBaseUrl =
@@ -120,7 +120,7 @@ const defaultBaseUrl =
   (import.meta.env.PROD ? "https://dam.yarcrasy.com/api" : "http://localhost:8080/api");
 ```
 
-Para cambiar la URL de backend localmente, crea un archivo `.env` en `web-refactored/` con:
+Para cambiar la URL de backend localmente, crea un archivo `.env` en `web/` con:
 
 ```dotenv
 VITE_API_URL=http://localhost:8080/api
@@ -129,7 +129,7 @@ VITE_API_URL=http://localhost:8080/api
 ### 2.4 Ejecutar en desarrollo
 
 ```bash
-cd /Users/nicolaityc/Desktop/EnergySimulatorProject/web-refactored
+cd /Users/nicolaityc/Desktop/EnergySimulatorProject/web
 npm install
 npm run dev
 ```
@@ -141,21 +141,21 @@ El servidor Vite se expone en:
 ### 2.5 Generar build de producción
 
 ```bash
-cd /Users/nicolaityc/Desktop/EnergySimulatorProject/web-refactored
+cd /Users/nicolaityc/Desktop/EnergySimulatorProject/web
 npm install
 npm run build
 ```
 
 Los archivos estáticos quedan en:
 
-- `web-refactored/dist/`
+- `web/dist/`
 
 ### 2.6 Servir la build de producción
 
 Puedes usar cualquier servidor estático. Por ejemplo:
 
 ```bash
-cd /Users/nicolaityc/Desktop/EnergySimulatorProject/web-refactored
+cd /Users/nicolaityc/Desktop/EnergySimulatorProject/web
 npm run preview
 ```
 
@@ -164,7 +164,7 @@ O copiar `dist/` a un servidor Nginx/Apache.
 ### 2.7 Notas de despliegue
 
 - El frontend está diseñado como SPA con Vite.
-- Usa alias definidos en `web-refactored/vite.config.ts` para rutas internas.
+- Usa alias definidos en `web/vite.config.ts` para rutas internas.
 - En producción, si no se define `VITE_API_URL`, usa `https://dam.yarcrasy.com/api`.
 
 ---
@@ -256,14 +256,12 @@ Por ahora el `build.gradle.kts` no incluye un `signingConfig` de release, así q
 
 ### Backend
 ```bash
-cd /Users/nicolaityc/Desktop/EnergySimulatorProject/backend
 ./gradlew bootRun
 ./gradlew bootJar
 ```
 
 ### Frontend web
 ```bash
-cd /Users/nicolaityc/Desktop/EnergySimulatorProject/web-refactored
 npm install
 npm run dev
 npm run build
@@ -271,7 +269,6 @@ npm run build
 
 ### Android
 ```bash
-cd /Users/nicolaityc/Desktop/EnergySimulatorProject/Android
 ./gradlew :app:assembleDebug
 ./gradlew :app:installDebug
 ./gradlew :app:bundleRelease
@@ -283,8 +280,8 @@ cd /Users/nicolaityc/Desktop/EnergySimulatorProject/Android
 
 - `backend/src/main/resources/application.properties`
 - `backend/build.gradle`
-- `web-refactored/package.json`
-- `web-refactored/vite.config.ts`
-- `web-refactored/src/api/api.ts`
+- `web/package.json`
+- `web/vite.config.ts`
+- `web/src/api/api.ts`
 - `Android/app/build.gradle.kts`
 - `Android/local.properties`

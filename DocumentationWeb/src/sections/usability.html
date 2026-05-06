@@ -2,12 +2,15 @@
 <section id="usability" class="page">
   <span class="kicker">Usabilidad</span>
   <h2>Criterios aplicados</h2>
-  <table><thead><tr><th>Aspecto</th><th>Decisión de diseño</th><th>Justificación</th></tr></thead><tbody>
-    <tr><td>Claridad</td><td>Textos breves, botones reconocibles y agrupación por tareas.</td><td>El usuario debe saber qué hacer sin leer instrucciones largas.</td></tr>
-    <tr><td>Consistencia</td><td>Mismo patrón de navegación en web y móvil.</td><td>Reduce aprendizaje y errores al cambiar de dispositivo.</td></tr>
-    <tr><td>Feedback</td><td>Estados de carga, errores y resultados visibles.</td><td>Evita incertidumbre durante peticiones a la API.</td></tr>
-    <tr><td>Prevención de errores</td><td>Confirmaciones y validación de formularios.</td><td>Protege proyectos y datos de usuario.</td></tr>
-    <tr><td>Accesibilidad</td><td>Contraste suficiente, etiquetas, foco visible y estructura semántica.</td><td>Facilita uso con teclado y tecnologías de apoyo.</td></tr>
+  <p>Antes del desarrollo se estudió cómo interactuarían los usuarios con la aplicación, priorizando flujos directos, pantallas reconocibles y validación temprana para evitar errores.</p>
+  <table><thead><tr><th>Aspecto</th><th>Decisión de diseño</th><th>Justificación</th><th>Evidencia en la app</th></tr></thead><tbody>
+    <tr><td>Consistencia visual</td><td>Misma paleta de colores, iconografía y espaciado basado en grilla de 8px.</td><td>Reduce la curva de aprendizaje entre pantallas.</td><td>Botones, tarjetas y paneles mantienen el mismo lenguaje visual.</td></tr>
+    <tr><td>Retroalimentación inmediata</td><td>Toasts, estados de carga, errores visibles y validación en tiempo real.</td><td>El usuario sabe qué está ocurriendo después de cada acción.</td><td>Login, registro y formularios administrativos muestran mensajes junto al campo o acción afectada.</td></tr>
+    <tr><td>Diseño responsive</td><td>Enfoque mobile-first desde 320px.</td><td>Permite usar la aplicación en ordenador, tablet y móvil.</td><td>Paneles y grids se adaptan a una columna cuando el ancho es reducido.</td></tr>
+    <tr><td>Objetivos táctiles</td><td>Controles principales con tamaño mínimo cercano a 48x48px.</td><td>Facilita interacción en pantallas táctiles.</td><td>Botones de acciones, menús y controles del simulador son visibles y pulsables.</td></tr>
+    <tr><td>Contraste y legibilidad</td><td>Contraste mínimo 4.5:1, fuente sans-serif y textos no inferiores a 14px.</td><td>Mejora lectura y accesibilidad siguiendo WCAG AA.</td><td>Texto claro sobre fondos oscuros y estados resaltados con color y posición.</td></tr>
+    <tr><td>Navegación intuitiva</td><td>Menús etiquetados, botones con estados hover y flujos comunes con pocos pasos.</td><td>Crear, simular y guardar no debe requerir explicación previa.</td><td>Nuevo Proyecto, Guardar y Simular aparecen como acciones destacadas.</td></tr>
+    <tr><td>Accesibilidad web</td><td>Imágenes con alt, labels asociados, navegación por teclado y ARIA cuando el HTML semántico no basta.</td><td>Incluye a usuarios con tecnologías de apoyo y evita depender solo del color.</td><td>Formularios y capturas documentadas incluyen estructura semántica.</td></tr>
   </tbody></table>
   <div class="screenshot-grid three">
     <figure><img src="/docx-screenshots/login-with-errors.png" alt="Formulario con error"><figcaption>Feedback de error.</figcaption></figure>

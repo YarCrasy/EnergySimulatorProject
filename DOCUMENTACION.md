@@ -495,7 +495,7 @@ EnergySimulatorProject/
 │   │   └── db/migration/           # Flyway/Liquibase
 │   └── build.gradle
 │
-├── web-refactored/
+├── web/
 │   ├── src/
 │   │   ├── components/             # Componentes React
 │   │   ├── pages/                  # Páginas
@@ -537,7 +537,7 @@ spring.datasource.password=root
 #### Frontend Web
 
 ```bash
-cd web-refactored
+cd web
 
 # Instalar dependencias
 npm install
@@ -879,7 +879,7 @@ cd backend
 ### Test del Frontend Web
 
 ```bash
-cd web-refactored
+cd web
 npm run test
 npm run test:coverage
 ```

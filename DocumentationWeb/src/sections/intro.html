@@ -2,9 +2,14 @@
 <section id="intro" class="page">
   <span class="kicker">Introducción</span>
   <h2>Descripción del proyecto</h2>
-  <p>El proyecto surge de la necesidad de disponer de una herramienta sencilla para estudiar instalaciones de energías renovables antes de tomar decisiones de diseño. En un contexto donde la eficiencia energética y el autoconsumo tienen cada vez más importancia, el sistema permite representar componentes, configurar consumos y consultar resultados de simulación sin depender de hojas de cálculo externas.</p>
-  <p>La solución se desarrolla como proyecto intermodular de 2º DAM en el IES El Rincón. Está pensada para una empresa o equipo técnico que quiera evaluar proyectos de energía renovable, presentar escenarios a clientes y mantener un catálogo básico de generadores, baterías y elementos consumidores.</p>
-  <p>La idea principal es construir una plataforma compuesta por backend, aplicación web y aplicación Android. La web ofrece el entorno más completo para crear proyectos y simular diagramas; la app móvil acerca las funciones principales a técnicos o usuarios que necesiten consultar proyectos desde un dispositivo Android; el backend centraliza autenticación, persistencia y cálculo de simulaciones.</p>
+  <h3>De dónde surge la necesidad</h3>
+  <p>La transición hacia energías renovables es hoy una necesidad real, no una opción. Sin embargo, diseñar un sistema fotovoltaico eficiente requiere conocimientos técnicos muy específicos y, normalmente, acceso a herramientas de simulación de pago que están fuera del alcance de estudiantes y pequeños profesionales.</p>
+  <p>En base a esta situación, el CIFP San Cristóbal busca cubrir esta necesidad en colaboración con el IES El Rincón, con el objetivo de disponer de una herramienta que permita simular sistemas fotovoltaicos para el alumnado de Grado Superior de energías renovables.</p>
+  <h3>Para qué entidad se desarrolla</h3>
+  <p>Este simulador nace como herramienta educativa para el CIFP San Cristóbal, aunque su diseño es lo suficientemente genérico como para ser útil en cualquier centro formativo, universidad o empresa del sector energético que quiera enseñar o explorar el funcionamiento de las instalaciones solares sin necesidad de hardware especializado.</p>
+  <h3>Resumen de la idea</h3>
+  <p><strong>EnergySimulator</strong> es una plataforma web y móvil que permite diseñar, simular y analizar sistemas de energía solar de forma visual e interactiva. El usuario crea proyectos, añade componentes como generadores, consumidores y baterías, los conecta entre sí y lanza una simulación que tiene en cuenta datos meteorológicos reales a través de la API gratuita Open-Meteo.</p>
+  <p>El resultado es una herramienta accesible, práctica y visualmente clara, pensada para que cualquier persona, con o sin experiencia técnica, pueda aprender sobre energías renovables de manera significativa.</p>
   <div class="grid three">
     <div class="metric"><strong>Web</strong><br>React, Vite, diagramas y paneles de administración.</div>
     <div class="metric"><strong>Servidor</strong><br>Spring Boot, API REST, seguridad JWT y PostgreSQL.</div>

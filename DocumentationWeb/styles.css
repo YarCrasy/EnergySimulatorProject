@@ -175,6 +175,7 @@ li + li {
 }
 
 .note {
+  margin-top: 10px;
   padding: 16px 18px;
   border-left: 4px solid var(--brand);
   background: var(--soft);
@@ -215,6 +216,22 @@ table {
   border-collapse: collapse;
   margin: 16px 0;
   font-size: 0.95rem;
+  table-layout: auto;
+}
+
+.data-dictionary th:first-child,
+.data-dictionary td:first-child {
+  width: 24%;
+}
+
+.data-dictionary th:nth-child(2),
+.data-dictionary td:nth-child(2) {
+  width: 38%;
+}
+
+.data-dictionary th:nth-child(3),
+.data-dictionary td:nth-child(3) {
+  width: 38%;
 }
 
 th,
@@ -222,6 +239,12 @@ td {
   padding: 10px 12px;
   border: 1px solid var(--line);
   vertical-align: top;
+  width: auto;
+}
+
+th:first-child,
+td:first-child {
+  white-space: nowrap;
 }
 
 th {
@@ -245,6 +268,46 @@ pre {
   border-radius: 8px;
   background: #16231d;
   color: #eef8f1;
+}
+
+.manual-card {
+  display: grid;
+  gap: 8px;
+  min-height: 150px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfdfb;
+  color: inherit;
+  text-decoration: none;
+}
+
+.manual-card:hover {
+  border-color: var(--brand);
+  background: var(--soft);
+}
+
+.manual-card strong {
+  color: var(--brand-dark);
+  font-size: 1.05rem;
+}
+
+.manual-card span {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.timeline {
+  display: grid;
+  gap: 10px;
+  padding-left: 0;
+  list-style: none;
+}
+
+.timeline li {
+  padding: 12px 14px;
+  border-left: 4px solid var(--accent);
+  background: #fbf8ee;
 }
 
 pre code {
@@ -280,6 +343,26 @@ figure img {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
+}
+
+.diagram-figure {
+  margin: 18px 0;
+}
+
+.figure-block {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.diagram-figure img {
+  max-height: 720px;
+  aspect-ratio: auto;
+  object-fit: contain;
+  background: #ffffff;
+}
+
+.wide-diagram img {
+  max-height: 820px;
 }
 
 figcaption {
@@ -355,6 +438,17 @@ figcaption {
   .toc {
     columns: 1;
   }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: normal;
+  }
+
+  th,
+  td {
+    min-width: 150px;
+  }
 }
 
 @media print {
@@ -429,9 +523,23 @@ figcaption {
 
   .card,
   .note,
+  .figure-block,
   figure,
-  table,
   pre {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  table {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr {
     break-inside: avoid;
     page-break-inside: avoid;
   }
@@ -457,6 +565,15 @@ figcaption {
     max-height: 90mm;
     object-fit: contain;
     background: #f0f4f1;
+  }
+
+  .diagram-figure img {
+    max-height: 210mm;
+    background: #ffffff;
+  }
+
+  .wide-diagram img {
+    max-height: 165mm;
   }
 
   .screenshot-grid.three figure img,

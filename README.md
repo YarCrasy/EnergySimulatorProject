@@ -32,7 +32,7 @@
 [Manual de Usuario (Android)](https://docs.google.com/document/d/1SdTfeUq5j6bhIeMLVS9A8FnPbdgZmPRywt4s4j0Jkxc/edit?usp=drive_link)
 
 Para la descarga del APK de la versión Android, puede dirigirse a la parte
-derecha del repositorio GitHub y entrar en el apartado de **Releases** o abrir directamente este [enlace](https://github.com/YarCrasy/RenewableEnergyProject/releases/tag/0.0.1-snapshoot) y descargar el apk como se muestra en la imagen.
+derecha del repositorio GitHub y entrar en el apartado de **Releases** o abrir directamente este [enlace](https://github.com/YarCrasy/EnergySimulatorProject/releases/tag/0.0.1-snapshoot) y descargar el apk como se muestra en la imagen.
 
 ![alt text](./image.png)
 
@@ -57,8 +57,8 @@ Este proyecto es Plataforma integral para simular y gestiónar soluciones de ene
 
 ### 1. Clonar repositorio
 ```bash
-git clone https://github.com/YarCrasy/RenewableEnergyProject.git
-cd RenewableEnergyProject
+git clone https://github.com/YarCrasy/EnergySimulatorProject.git
+cd EnergySimulatorProject
 ```
 ## Backend
 **Tecnologías:** Java 21, Spring Boot, Spring Data JPA, Gradle, MySQL.
@@ -96,7 +96,7 @@ Para ejecutar pruebas:
 
 ### Instalación y ejecución (Local)
 ```bash
-cd Web
+cd web
 npm install
 npm run dev
 ```
@@ -112,7 +112,7 @@ El servidor Vite se expone en `http://localhost:5173`.
 ### Testing
 #### Requisitos / Setup
 - Node LTS recomendado (Node 18+).
-- Instalar dependencias en `Web/` con `npm install`.
+- Instalar dependencias en `web/` con `npm install`.
 
 #### Comandos completos
 - `npm run test`
@@ -123,7 +123,7 @@ El servidor Vite se expone en `http://localhost:5173`.
 
 #### Cobertura (detalle)
 - Se revisan métricas de `lines`, `branches`, `functions` y `statements`.
-- El reporte se genera en `Web/coverage/` (`Web/coverage/index.html`).
+- El reporte se genera en `web/coverage/` (`web/coverage/index.html`).
 - Regla de equipo: no aceptar PR si baja cobertura en módulos críticos (`WorkspaceUtils`, `api/projects`, `ProjectCard`, `PrivateRoute`).
 
 #### Qué se está testeando
@@ -152,10 +152,10 @@ it('updateProject lanza error si falta id', async () => {
 - Limpieza de estado con `afterEach(() => vi.restoreAllMocks())`.
 
 #### Troubleshooting
-- `Failed to resolve import "@/..."`: revisar alias en `Web/vite.config.js` y ruta exacta (mayúsculas/minúsculas).
+- `Failed to resolve import "@/..."`: revisar alias en `web/vite.config.js` y ruta exacta (mayúsculas/minúsculas).
 - `esbuild build() is unavailable in this environment`: ejecutar tests fuera del sandbox.
 - `ReferenceError: fetch is not defined`: en este proyecto se mockea `@api/api` (axios), no `fetch`.
-- Error de entorno DOM: confirmar `environment: 'jsdom'` y `setupFiles` en `Web/vite.config.js`.
+- Error de entorno DOM: confirmar `environment: 'jsdom'` y `setupFiles` en `web/vite.config.js`.
 
 ### Funcionalidades clave
 - Página de proyectos con menú contextual para abrir o eliminar proyectos.
