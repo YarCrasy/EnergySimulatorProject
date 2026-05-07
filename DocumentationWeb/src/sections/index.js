@@ -7,6 +7,7 @@ import useCases from "./use-cases.html?raw";
 import system from "./system.html?raw";
 import interfaces from "./interfaces.html?raw";
 import usability from "./usability.html?raw";
+import manuals from "./manuals.html?raw";
 import manualUser from "./manual-user.html?raw";
 import manualDeveloper from "./manual-developer.html?raw";
 import manualDeploy from "./manual-deploy.html?raw";
@@ -28,6 +29,7 @@ export const sections = [
   system,
   interfaces,
   usability,
+  manuals,
   manualUser,
   manualDeveloper,
   manualDeploy,
