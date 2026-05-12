@@ -213,10 +213,8 @@ public class ProjectsActivity extends AppCompatActivity {
         cardView.setProjectCardListener(new ProjectCardView.ProjectCardListener() {
             @Override
             public void onOpenProject(Project p) {
-                // Abrir el simulador pasando el proyecto
-                Intent intent = new Intent(ProjectsActivity.this, SimulatorActivity.class);
-                intent.putExtra(SimulatorActivity.EXTRA_PROJECT, p);
-                projectLauncher.launch(intent);
+                // Abrir el simulador web pasando el proyecto
+                openWebSimulator(p.getId());
             }
 
             @Override
@@ -322,22 +320,7 @@ public class ProjectsActivity extends AppCompatActivity {
                 JSONObject response = ApiConnection.post("projects", newProjectPayload);
                 Project newProject = new Project(response);
 
-                runOnUiThread(() -> {
-                    Intent intent = new Intent(ProjectsActivity.this, WebSimulatorActivity.class);
-                    intent.putExtra("projectId", newProject.getId());
-                    intent.putExtra("userToken", sessionUser.getAuthToken());  // ← Pasar token
-                    try {
-                        JSONObject userData = new JSONObject();
-                        userData.put("id", sessionUser.getId());
-                        userData.put("fullName", sessionUser.getFullName());
-                        userData.put("email", sessionUser.getEmail());
-                        userData.put("admin", sessionUser.isAdmin());
-                        intent.putExtra("userData", userData.toString());
-                    } catch (Exception ex) {
-                        // Ignorar si no se puede serializar, al menos enviamos el token
-                    }
-                    startActivity(intent);
-                });
+                runOnUiThread(() -> openWebSimulator(newProject.getId()));
 
             } catch (Exception e) {
                 runOnUiThread(() -> {
@@ -345,6 +328,18 @@ public class ProjectsActivity extends AppCompatActivity {
                 });
             }
         }).start();
+    }
+
+    private void openWebSimulator(Long projectId) {
+        Intent intent = new Intent(this, WebSimulatorActivity.class);
+        intent.putExtra("projectId", projectId);
+        intent.putExtra("userToken", sessionUser.getAuthToken());
+        try {
+            intent.putExtra("userData", sessionUser.toJSON().toString());
+        } catch (Exception ex) {
+            // Fallback si falla el toJSON
+        }
+        startActivity(intent);
     }
 
     private void logout() {
