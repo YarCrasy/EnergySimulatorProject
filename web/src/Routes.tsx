@@ -1,15 +1,17 @@
-import Home from "./pages/home/Home";
-import About from "./pages/about/About";
-import Legals from "./pages/legals/Legals";
-import Locations from "./pages/locations/Locations";
-import Login from "./pages/login/Login";
-import Register from "./pages/register/Register";
-import AdminHome from "./pages/admin/AdminHome";
-import AdminUsers from "./pages/admin/adminUsers/AdminUsers";
-import AdminElements from "./pages/admin/adminElements/AdminElements";
-import Profile from "./pages/profile/Profile";
-import Projects from "./pages/projects/Projects";
-import Simulator from "./pages/simulator/Simulator";
+import {
+  LazyHome as Home,
+  LazyAbout as About,
+  LazyLegals as Legals,
+  LazyLocations as Locations,
+  LazyLogin as Login,
+  LazyRegister as Register,
+  LazyAdminHome as AdminHome,
+  LazyAdminUsers as AdminUsers,
+  LazyAdminElements as AdminElements,
+  LazyProfile as Profile,
+  LazyProjects as Projects,
+  LazySimulator as Simulator,
+} from "./pages";
 
 export const publicRoutes = [
   { path: "/", element: <Home /> },

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 
 import { useAuth } from "./auth/auth";
@@ -26,21 +26,23 @@ function App() {
     <>
       {!hideHeader && <Header />}
 
-      <Routes>
+      <Suspense fallback={<Spinner text="Cargando página..." />}>
+        <Routes>
 
-        {publicRoutes.map((route) => (
-          <Route key={route.path} path={route.path} element={route.element} />
-        ))}
-
-        <Route element={protectedRouteElement}>
-          {protectedRoutes.map((route) => (
+          {publicRoutes.map((route) => (
             <Route key={route.path} path={route.path} element={route.element} />
           ))}
-        </Route>
 
-        <Route path="*" element={<NotFound />} />
+          <Route element={protectedRouteElement}>
+            {protectedRoutes.map((route) => (
+              <Route key={route.path} path={route.path} element={route.element} />
+            ))}
+          </Route>
 
-      </Routes>
+          <Route path="*" element={<NotFound />} />
+
+        </Routes>
+      </Suspense>
 
       {!hideFooter && <Footer />}
     </>
