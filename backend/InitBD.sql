@@ -1,4 +1,4 @@
--- Run with: psql -U postgres -f InitBD.sql
+-- Run with: psql -u postgres -f InitBD.sql
 
 -- 1) Crear rol de la app si no existe
 SELECT 'CREATE ROLE "SimulatorUser" LOGIN PASSWORD ''SimulatorUserPassword123'' NOSUPERUSER NOCREATEDB NOCREATEROLE'
@@ -15,6 +15,10 @@ WHERE NOT EXISTS (
 -- 3) Permisos de base de datos
 REVOKE ALL ON DATABASE energysimulatordb FROM PUBLIC;
 GRANT ALL PRIVILEGES ON DATABASE energysimulatordb TO "SimulatorUser";
+
+-- *******************************************
+--  Run again: psql -u postgres -f InitBD.sql
+-- *******************************************
 
 -- 4) Cambiar a la base de datos de la app
 \connect energysimulatordb;
