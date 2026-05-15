@@ -18,7 +18,8 @@ public class SecurityConfig {
     private static final String ADMIN = "ADMIN";
     private static final String[] PUBLIC_ENDPOINTS = {
             "/error",
-            "/api/users/login"
+            "/api/users/login",
+            "/actuator/health"
     };
     private static final String[] ADMIN_USER_READ_ENDPOINTS = {
             "/api/users",

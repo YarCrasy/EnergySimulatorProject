@@ -1,117 +1,76 @@
 services:
-
-  # ──────────────────────────────────────────────
-  #  PostgreSQL
-  # ──────────────────────────────────────────────
+  # --- Base de datos PostgreSQL ---
   db:
-    image: postgres:16-alpine
-    container_name: energysimulator-db
+    image: postgres:18-alpine
+    container_name: db
     restart: unless-stopped
     environment:
-      POSTGRES_DB: energysimulatordb
-      POSTGRES_USER: SimulatorUser
-      POSTGRES_PASSWORD: SimulatorUserPassword123
+      - POSTGRES_DB=energysimulatordb
+      - POSTGRES_USER=SimulatorUser
+      - POSTGRES_PASSWORD=SimulatorUserPassword123
+    volumes:
+      - ./database:/var/lib/postgresql/18/docker
     ports:
       - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./backend-data/InitBD.sql:/docker-entrypoint-initdb.d/InitBD.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U SimulatorUser -d energysimulatordb"]
-      interval: 10s
+      interval: 5s
       timeout: 5s
-      retries: 5
-      start_period: 10s
-    networks:
-      - energysimulator-network
 
-  # ──────────────────────────────────────────────
-  #  Backend (Spring Boot)
-  # ──────────────────────────────────────────────
+      retries: 5
+
+  #--- Backend Spring Boot ---
   backend:
-    build:
-      context: .
-      dockerfile: backend/Dockerfile
-    image: energysimulator-backend:latest
-    container_name: energysimulator-backend
+    image: eclipse-temurin:25-jre-alpine
+    container_name: backend
     restart: unless-stopped
+    working_dir: /app
+    command: ["java", "-jar", "app.jar"]
+    volumes:
+      - ./backend/backend-0.0.1-SNAPSHOT.jar:/app/app.jar:ro
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/energysimulatordb
+      - SPRING_DATASOURCE_USERNAME=SimulatorUser
+      - SPRING_DATASOURCE_PASSWORD=SimulatorUserPassword123
+      - SERVER_PORT=8081
     depends_on:
       db:
         condition: service_healthy
+    ports:
+      - "8081:8081"
     healthcheck:
-      test: ["CMD-SHELL", "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/localhost/8080' 2>/dev/null && echo 'up' || exit 1"]
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8081/actuator/health || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 10
-      start_period: 40s
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/energysimulatordb
-      SPRING_DATASOURCE_USERNAME: SimulatorUser
-      SPRING_DATASOURCE_PASSWORD: SimulatorUserPassword123
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      APP_JWT_SECRET: "change-this-secret-key-before-production"
-    ports:
-      - "8080:8080"
-    networks:
-      - energysimulator-network
+      start_period: 30s
 
-  # ──────────────────────────────────────────────
-  #  Frontend (Nginx)
-  # ──────────────────────────────────────────────
-  frontend:
-    image: nginx:alpine
-    container_name: energysimulator-frontend
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:8081:80"
-    volumes:
-      - ./frontend-data/dist:/usr/share/nginx/html:ro
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - certbot_www:/var/www/certbot
-    depends_on:
-      - backend
-    networks:
-      - energysimulator-network
-      - nginx-proxy-manager_default
-
-  # ──────────────────────────────────────────────
-  #  Demo Data Loader (se ejecuta una vez al iniciar)
-  # ──────────────────────────────────────────────
-  demo-data-loader:
-    image: postgres:16-alpine
-    container_name: energysimulator-demo-data
-    restart: "no"
+  #--- Inicializador de datos (usa backend/InsertDemoData.sql) ---
+  db-init:
+    image: postgres:18-alpine
+    container_name: db-init
     depends_on:
       backend:
         condition: service_healthy
-    volumes:
-      - ./backend-data/InsertDemoData.sql:/InsertDemoData.sql:ro
     environment:
-      PGPASSWORD: SimulatorUserPassword123
-    command: >
-      sh -c '
-        echo "========================================"
-        echo " Insertando datos de demostración..."
-        echo "========================================"
-        psql -h db -U SimulatorUser -d energysimulatordb -f /InsertDemoData.sql
-        echo "========================================"
-        echo " Datos de demostración insertados."
-        echo "========================================"
-      '
-    networks:
-      - energysimulator-network
+      - PGPASSWORD=SimulatorUserPassword123
+    volumes:
+      - ./backend/InsertDemoData.sql:/init.sql:ro
+    entrypoint: >
+      sh -c "
+        echo 'Esperando 5 segundos extra para asegurar que las tablas estén creadas...';
+        sleep 5;
+        echo 'Insertando datos de prueba...';
+        psql -h db -U SimulatorUser -d energysimulatordb -f /init.sql;
+        echo 'Datos insertados correctamente.';
+      "
 
-volumes:
-  postgres_data:
-    name: energysimulator_postgres_data
-  certbot_www:
-    name: energysimulator_certbot_www
-
-networks:
-  energysimulator-network:
-    name: energysimulator-network
-    driver: bridge
-  nginx-proxy-manager_default:
-    name: nginx-proxy-manager_default
-    external: true
-
+  # --- Frontend Nginx ---
+  web:
+    image: nginx:alpine
+    container_name: web
+    restart: unless-stopped
+    volumes:
+      - ./frontend/dist:/usr/share/nginx/html:ro
+    ports:
+      - "8080:80"
