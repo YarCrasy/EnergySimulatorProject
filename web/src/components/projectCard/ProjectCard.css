@@ -62,10 +62,16 @@
 .project-card-footer {
   display: flex;
   gap: 0.75rem;
+  padding: 0 1.35rem 1.35rem;
+}
+
+.project-card-btn-link {
+  flex: 1;
+  text-decoration: none;
 }
 
 .project-card-btn {
-  flex: 1;
+  width: 100%;
   border: none;
   border-radius: 16px;
   padding: 0.85rem 1rem;
