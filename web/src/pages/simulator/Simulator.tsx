@@ -107,6 +107,7 @@ function SimulatorInner() {
               edges={edges}
               nodeTypes={nodeTypes}
               style={{ width: "100%", height: "100%" }}
+              preventScrolling={false}
               onNodesChange={onNodesChange}
               onEdgesChange={onEdgesChange}
               onConnect={onConnect}

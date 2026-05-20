@@ -143,7 +143,6 @@
     }
   }
 
-
   .simulator-status {
     margin: 0;
     border-bottom: 1px solid var(--sim-line);
@@ -166,7 +165,6 @@
     flex: 1 1 auto;
     width: 100%;
 
-    .react-flow__controls,
     .react-flow__minimap {
       background: rgba(10, 18, 38, 0.92);
     }
@@ -280,12 +278,17 @@
     height: 100dvw;
     max-height: none;
     min-height: 0;
+    overflow: auto;
     transform: rotate(90deg);
     transform-origin: top right;
 
+    .flow-shell {
+      height: 100dvw;
+    }
+
     .simulation-modal-content {
       z-index: 1;
-      width: calc(100dvh - 48px);
+      width: calc(100dvh - 4px);
       height: calc(100dvw - 48px);
     }
   }

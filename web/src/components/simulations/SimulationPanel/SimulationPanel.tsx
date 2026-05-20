@@ -34,9 +34,7 @@ export function SimulationPanel({ simulation }: { simulation: SimulationRun | nu
         <FaChartLine aria-hidden="true" />
         Resultados
       </h2>
-      {!simulation ? (
-        <p>Ejecuta una simulacion para ver curvas y tabla.</p>
-      ) : (
+      {!simulation ? (<p>Ejecuta una simulacion para ver curvas y tabla.</p>) : (
         <>
           <div className="simulation-overview">
             <div className="result-summary">
