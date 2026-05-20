@@ -1,20 +1,31 @@
 import { FaArrowRight, FaCubes, FaUser, FaUsers } from "react-icons/fa";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 import { useAuth } from "@auth/auth";
 import "./AdminHome.css";
 
 function AdminHome() {
-  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   if (user?.role !== "admin") {
     return <Navigate to="/projects" replace />;
   }
 
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
     <main className="admin-home">
       <section className="admin-hero">
-        <p className="admin-badge">Panel de administración</p>
+        <div className="admin-header">
+          <p className="admin-badge">Panel de administración</p>
+          <button type="button" className="admin-logout" onClick={handleLogout}>
+            Cerrar sesion
+          </button>
+        </div>
         <h1 className="admin-title">Centro de gestión</h1>
         <p className="admin-subtitle">
           Accede rapidamente a la administración de usuarios y al catalogo de

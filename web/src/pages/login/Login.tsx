@@ -3,6 +3,7 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { createProject } from "../../api/projects";
 import { useAuth, type AuthLoginResult } from "@auth/auth";
+import PasswordInput from "../../components/passwordInput/PasswordInput";
 import "./Login.css";
 import loginImg from "@jpg/loginImg.jpg";
 
@@ -38,6 +39,7 @@ function Login() {
   const location = useLocation();
   const { login, user, isAuthenticated, loading } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [password, setPassword] = useState("");
   const redirectToSimulator = Boolean((location.state as { redirectToSimulator?: boolean } | null)?.redirectToSimulator);
 
   if (!loading && isAuthenticated && user) {
@@ -101,7 +103,15 @@ function Login() {
 
             <div className="form-control">
               <label htmlFor="password">Contraseña</label>
-              <input type="password" id="password" name="password" placeholder="••••••••" required />
+              <PasswordInput
+                id="password"
+                name="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="••••••••"
+                required
+                autoComplete="current-password"
+              />
             </div>
 
             <div className="login-actions">

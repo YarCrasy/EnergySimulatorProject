@@ -43,7 +43,7 @@
   color: #ff8a8a;
 }
 
-.register-form button {
+.register-form .button-group button {
   min-height: 44px;
   border-radius: 999px;
   border: none;
@@ -56,11 +56,11 @@
   box-shadow: 0 18px 35px rgba(92, 225, 230, 0.45);
 }
 
-.register-form button:hover {
+.register-form .button-group button:hover {
   transform: translateY(-2px);
 }
 
-.register-form button:disabled {
+.register-form .button-group button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
@@ -80,7 +80,7 @@
 
 @media (max-width: 600px) {
   .register-form input,
-  .register-form button {
+  .register-form .button-group button {
     font-size: 0.9rem;
   }
 }

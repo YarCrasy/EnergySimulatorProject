@@ -6,7 +6,7 @@
   justify-content: center;
 
   .login-shell {
-    width: min(1100px, 100%);
+    width: min(1200px, 100%);
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: clamp(1.5rem, 4vw, 3rem);

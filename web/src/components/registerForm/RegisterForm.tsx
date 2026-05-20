@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
+import PasswordInput from "../passwordInput/PasswordInput";
 import useRegisterForm from "./useRegisterForm";
 import type { EditableUser } from "./types";
 import "./RegisterForm.css";
@@ -32,7 +33,7 @@ export default function RegisterForm({ editingUser, onSuccess, onCancel }: Regis
           value={form.fullName}
           onChange={handleChange}
           type="text"
-          placeholder="Juan Perez"
+          placeholder="Nombre completo..."
         />
         {errors.fullName && <span className="error">{errors.fullName}</span>}
       </div>
@@ -57,14 +58,14 @@ export default function RegisterForm({ editingUser, onSuccess, onCancel }: Regis
       </div>
 
       <div className="form-field">
-        <label htmlFor="register-passwordHash">Contrasena</label>
-        <input
+        <label htmlFor="register-passwordHash">Contraseña</label>
+        <PasswordInput
           id="register-passwordHash"
           name="passwordHash"
           value={form.passwordHash}
           onChange={handleChange}
-          type="password"
           placeholder="********"
+          autoComplete="new-password"
         />
         {errors.passwordHash && <span className="error">{errors.passwordHash}</span>}
       </div>
